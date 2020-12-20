@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "id": "44079bd5-c855-41e4-b8f7-4990ba1adb1c",
+      "name": "Adria Claret",
+      "email": "adria.claret@gmail.com",
+      "pricing": "trimestral",
+      "lastPayment": "2020-09-19T22:00:44.000Z",
+      "notified": false,
+      "warned": false
+    }
+  ]
+}
