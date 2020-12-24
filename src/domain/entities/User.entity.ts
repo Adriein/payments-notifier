@@ -53,7 +53,7 @@ export class User {
     const maxDate = dayjs(this.lastPayment)
       .add(this.pricingToMonths(this.pricing), 'month')
       .subtract(3, 'day');
-   
+
     if (maxDate.isSame(today, 'day')) {
       return true;
     }
@@ -62,8 +62,12 @@ export class User {
   }
 
   public resetNotificationState(): void {
-    this.setSentDefaulter();
-    this.setSentWarning();
+    if (this.sentDefaulter) {
+      this.setSentDefaulter();
+    }
+    if (this.sentWarning) {
+      this.setSentWarning();
+    }
   }
 
   private pricingToMonths(pricing: string) {

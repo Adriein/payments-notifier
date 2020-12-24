@@ -5,7 +5,7 @@
       "name": "Adria Claret",
       "email": "adria.claret@gmail.com",
       "pricing": "trimestral",
-      "lastPayment": "Sun Dec 20 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
+      "lastPayment": "Mon Dec 21 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
       "notified": false,
       "warned": false
     },
@@ -14,9 +14,9 @@
       "name": "Alfredo Lamda",
       "email": "adria.claret@gmail.com",
       "pricing": "mensual",
-      "lastPayment": "Fri Nov 27 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
+      "lastPayment": "Thu Nov 26 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
       "notified": false,
-      "warned": true
+      "warned": false
     }
   ]
 }
