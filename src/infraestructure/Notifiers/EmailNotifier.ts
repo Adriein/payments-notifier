@@ -13,7 +13,7 @@ export class EmailNotifier implements INotifier {
       text: 'Información sobre pago',
       html: payload,
     };
-
+    
     await sgMail.send(msg);
   }
 }

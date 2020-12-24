@@ -1,13 +1,22 @@
 {
   "users": [
     {
-      "id": "44079bd5-c855-41e4-b8f7-4990ba1adb1c",
+      "id": "84db227e-6cde-47d1-81ef-528ddb0db978",
       "name": "Adria Claret",
       "email": "adria.claret@gmail.com",
       "pricing": "trimestral",
-      "lastPayment": "2020-09-19T22:00:44.000Z",
+      "lastPayment": "Sun Dec 20 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
       "notified": false,
       "warned": false
+    },
+    {
+      "id": "9c19c9e2-e2f8-410a-b8cb-54457b0ec023",
+      "name": "Alfredo Lamda",
+      "email": "adria.claret@gmail.com",
+      "pricing": "mensual",
+      "lastPayment": "Fri Nov 27 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
+      "notified": false,
+      "warned": true
     }
   ]
 }

@@ -6,7 +6,7 @@ import { ExcelService } from '../Excel/ExcelService';
 
 export type DefaultersExcelContent = {
   nombre: string;
-  tipo_de_quota: string;
+  tipo_de_cuota: string;
   email: string;
   fecha_de_pago: string;
 };
@@ -28,7 +28,7 @@ router.post(
           new IngestDefaultersCommand(
             row.nombre,
             row.email,
-            row.tipo_de_quota,
+            row.tipo_de_cuota,
             row.fecha_de_pago
           )
         );
@@ -45,20 +45,8 @@ router.get(
   '/defaulters',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const service = new ExcelService();
 
-      const excel = service.read() as DefaultersExcelContent[];
-
-      for (const row of excel) {
-        await commandBus.execute(
-          new CheckForDefaultersCommand(
-            row.nombre,
-            row.email,
-            row.tipo_de_quota,
-            row.fecha_de_pago
-          )
-        );
-      }
+      await commandBus.execute(new CheckForDefaultersCommand());
 
       res.status(200).send();
     } catch (error) {
@@ -71,20 +59,7 @@ router.get(
   '/report',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const service = new ExcelService();
-
-      const excel = service.read() as DefaultersExcelContent[];
-
-      for (const row of excel) {
-        await commandBus.execute(
-          new CheckForDefaultersCommand(
-            row.nombre,
-            row.email,
-            row.tipo_de_quota,
-            row.fecha_de_pago
-          )
-        );
-      }
+      
 
       res.status(200).send();
     } catch (error) {

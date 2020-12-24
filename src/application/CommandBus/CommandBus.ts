@@ -2,14 +2,15 @@ import { ICommand, ICommandBus } from '../../domain/interfaces';
 import { EmailNotifier } from '../../infraestructure/Notifiers/EmailNotifier';
 import { CheckForDefaultersHandler } from '../handlers/CheckForDefaultersHandler';
 import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
-import { LowDbRepository } from '../../infraestructure/Data/LowDbRepository';
+import { LowDbRepository } from '../../infraestructure/Data/Repositories/LowDbRepository';
 import { User } from '../../domain/entities/User.entity';
 import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
 import { IngestDefaultersHandler } from '../handlers/IngestDefaultersHandler';
+import { UserMapper } from '../../infraestructure/Data/Mappers/UserMapper';
 
 export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
-  private repository = new LowDbRepository<User>('users');
+  private repository = new LowDbRepository<User>('users', new UserMapper());
   constructor() {}
 
   public async execute(command: ICommand): Promise<any> {

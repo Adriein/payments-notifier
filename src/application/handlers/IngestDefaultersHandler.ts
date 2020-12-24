@@ -7,10 +7,31 @@ import { LastPaymentDate } from '../../domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../domain/VO/Pricing.vo';
 
 export class IngestDefaultersHandler implements IHandler<void> {
-  constructor(private repository: IRepository<any>) {}
+  constructor(private repository: IRepository<User>) {}
 
   public async handle(commands: ICommand): Promise<void> {
     const command = commands as IngestDefaultersCommand;
+
+    const userOnDb = await this.repository.findOne(command.name);
+
+    if (userOnDb) {
+      const email = new Email(command.email).email;
+      const pricing = new Pricing(command.pricing).pricingType;
+      const lastPaymentDate = new LastPaymentDate(command.lastPayment).date;
+
+      const user = new User(
+        userOnDb.getId(),
+        command.name,
+        email,
+        pricing,
+        lastPaymentDate,
+        userOnDb.getSentWarning(),
+        userOnDb.getSentDefaulter()
+      );
+      
+      await this.repository.update(user);
+      return;
+    }
 
     const user = User.build(
       command.name,
@@ -19,20 +40,11 @@ export class IngestDefaultersHandler implements IHandler<void> {
       new LastPaymentDate(command.lastPayment)
     );
 
-    const exists: any = await this.repository.findOne(user.getName());
-
-    if (exists) {
-      return;
-    }
-
-    await this.repository.save({
-      id: user.getId(),
-      name: user.getName(),
-      email: user.getEmail(),
-      pricing: user.getPricing(),
-      lastPayment: user.getPaymentDate(),
-      notified: false,
-      warned: false,
-    });
+    await this.repository.save(user);
   }
+
+  private hasSubstantialChange(email: string, pricing: string, lastPaymentDate: Date, user: User): boolean {
+    if(email !== user.getEmail() )
+  }
+
 }

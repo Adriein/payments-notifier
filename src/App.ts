@@ -11,7 +11,7 @@ import Database from './infraestructure/Data/Database';
 
 export default class App {
   public init() {
-    console.log(chalk.blue('> Starting up...'));
+    console.log(chalk.blue('> Starting up... 🚀'));
 
     console.log(chalk.blue('> Checking env variables...'));
 
@@ -25,7 +25,7 @@ export default class App {
 
     this.checkEnvVariables();
 
-    console.log(chalk.blue('> Env variables setted correctly'));
+    console.log(chalk.blue('> Env variables setted correctly ✨'));
 
     Database.getInstance();
 
@@ -53,7 +53,7 @@ export default class App {
     }
 
     app.listen(app.get('port'), () => {
-      console.log(chalk.bgGreen.black.bold(`Server running...`));
+      console.log(chalk.green.bold(`> Server running... ✅`));
     });
   }
 

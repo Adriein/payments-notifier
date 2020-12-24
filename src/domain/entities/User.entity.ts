@@ -12,14 +12,22 @@ export class User {
     pricing: Pricing,
     lastPayment: LastPaymentDate
   ): User {
-    return new User(uuidv4(), name, email, pricing, lastPayment, false, false);
+    return new User(
+      uuidv4(),
+      name,
+      email.email,
+      pricing.pricingType,
+      lastPayment.date,
+      false,
+      false
+    );
   }
   constructor(
     private id: string,
     private name: string,
-    private email: Email,
-    private pricing: Pricing,
-    private lastPayment: LastPaymentDate,
+    private email: string,
+    private pricing: string,
+    private lastPayment: Date,
     private sentWarning: boolean,
     private sentDefaulter: boolean
   ) {}
@@ -27,8 +35,8 @@ export class User {
   public isDefaulter(): boolean {
     const today = dayjs(new Date());
 
-    const maxDate = dayjs(this.lastPayment.date).add(
-      this.pricingToMonths(this.pricing.pricingType),
+    const maxDate = dayjs(this.lastPayment).add(
+      this.pricingToMonths(this.pricing),
       'month'
     );
 
@@ -42,19 +50,20 @@ export class User {
   public isTwoDaysBeforeExpiration(): boolean {
     const today = dayjs(new Date());
 
-    const maxDate = dayjs(this.lastPayment.date).add(
-      this.pricingToMonths(this.pricing.pricingType),
-      'month'
-    );
-
-    if (
-      maxDate.isAfter(today.subtract(2, 'day')) ||
-      maxDate.isSame(today.subtract(2, 'day'))
-    ) {
+    const maxDate = dayjs(this.lastPayment)
+      .add(this.pricingToMonths(this.pricing), 'month')
+      .subtract(3, 'day');
+   
+    if (maxDate.isSame(today, 'day')) {
       return true;
     }
 
     return false;
+  }
+
+  public resetNotificationState(): void {
+    this.setSentDefaulter();
+    this.setSentWarning();
   }
 
   private pricingToMonths(pricing: string) {
@@ -77,22 +86,30 @@ export class User {
   }
 
   public getEmail(): string {
-    return this.email.email;
+    return this.email;
   }
 
   public getPricing(): string {
-    return this.pricing.pricingType;
+    return this.pricing;
   }
 
   public getPaymentDate(): Date {
-    return this.lastPayment.date;
+    return this.lastPayment;
+  }
+
+  public getSentDefaulter(): boolean {
+    return this.sentDefaulter;
+  }
+
+  public getSentWarning(): boolean {
+    return this.sentWarning;
   }
 
   public setSentDefaulter(): void {
-    this.sentDefaulter = true;
+    this.sentDefaulter = !this.sentDefaulter;
   }
 
   public setSentWarning(): void {
-    this.sentWarning = true;
+    this.sentWarning = !this.sentWarning;
   }
 }

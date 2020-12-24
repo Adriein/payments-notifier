@@ -1,12 +1,8 @@
-import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
 import { User } from '../../domain/entities/User.entity';
 import { ICommand, IHandler, INotifier } from '../../domain/interfaces';
 import { IRepository } from '../../domain/interfaces/IRepository';
 import { AboutToExpire } from '../../domain/templates/AboutToExpire.template';
 import { Expired } from '../../domain/templates/Expired.template';
-import { Email } from '../../domain/VO/Email.vo';
-import { LastPaymentDate } from '../../domain/VO/LastPaymentDate.vo';
-import { Pricing } from '../../domain/VO/Pricing.vo';
 
 export class CheckForDefaultersHandler implements IHandler<void> {
   constructor(
@@ -15,37 +11,33 @@ export class CheckForDefaultersHandler implements IHandler<void> {
   ) {}
 
   public async handle(commands: ICommand): Promise<void> {
-    const command = commands as CheckForDefaultersCommand;
+    const users = await this.repository.find({});
 
-    const user = User.build(
-      command.name,
-      new Email(command.email),
-      new Pricing(command.pricing),
-      new LastPaymentDate(command.lastPayment)
-    );
+    for (const user of users) {
 
-    if (!user.isDefaulter()) {
-      return;
-    }
+      if (user.isTwoDaysBeforeExpiration() && !user.getSentWarning()) {
+        const template = new AboutToExpire(user.getName()).generate();
 
-    if (user.isTwoDaysBeforeExpiration()) {
-      const template = new AboutToExpire(user.getName()).generate();
+        await this.notifier.notify(user.getEmail(), template);
+
+        user.setSentWarning();
+
+        await this.repository.update(user);
+
+        continue;
+      }
+
+      if (!user.isDefaulter() || user.getSentDefaulter()) {
+        continue;
+      }
+
+      const template = new Expired(user.getName()).generate();
 
       await this.notifier.notify(user.getEmail(), template);
 
-      user.setSentWarning();
+      user.setSentDefaulter();
 
-      await this.repository.save(user);
-
-      return;
+      await this.repository.update(user);
     }
-
-    const template = new Expired(user.getName()).generate();
-
-    await this.notifier.notify(user.getEmail(), template);
-
-    user.setSentDefaulter();
-
-    await this.repository.save(user);
   }
 }
