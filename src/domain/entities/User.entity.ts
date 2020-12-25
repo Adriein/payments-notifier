@@ -28,8 +28,8 @@ export class User {
     private email: string,
     private pricing: string,
     private lastPayment: Date,
-    private sentWarning: boolean,
-    private sentDefaulter: boolean
+    private isWarned: boolean,
+    private isNotified: boolean
   ) {}
 
   public isDefaulter(): boolean {
@@ -62,11 +62,11 @@ export class User {
   }
 
   public resetNotificationState(): void {
-    if (this.sentDefaulter) {
-      this.setSentDefaulter();
+    if (this.isNotified) {
+      this.setIsNotified();
     }
-    if (this.sentWarning) {
-      this.setSentWarning();
+    if (this.isWarned) {
+      this.setIsWarned();
     }
   }
 
@@ -101,19 +101,19 @@ export class User {
     return this.lastPayment;
   }
 
-  public getSentDefaulter(): boolean {
-    return this.sentDefaulter;
+  public getIsNotified(): boolean {
+    return this.isNotified;
   }
 
-  public getSentWarning(): boolean {
-    return this.sentWarning;
+  public getIsWarned(): boolean {
+    return this.isWarned;
   }
 
-  public setSentDefaulter(): void {
-    this.sentDefaulter = !this.sentDefaulter;
+  public setIsNotified(): void {
+    this.isNotified = !this.isNotified;
   }
 
-  public setSentWarning(): void {
-    this.sentWarning = !this.sentWarning;
+  public setIsWarned(): void {
+    this.isWarned = !this.isWarned;
   }
 }

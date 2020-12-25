@@ -7,6 +7,8 @@ import { User } from '../../domain/entities/User.entity';
 import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
 import { IngestDefaultersHandler } from '../handlers/IngestDefaultersHandler';
 import { UserMapper } from '../../infraestructure/Data/Mappers/UserMapper';
+import { GenerateReportCommand } from '../../domain/commands/GenerateReportCommand';
+import { GenerateReportHandler } from '../handlers/GenerateReportHandler';
 
 export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
@@ -24,6 +26,10 @@ export class CommandBus implements ICommandBus {
 
     if (command instanceof IngestDefaultersCommand) {
       return new IngestDefaultersHandler(this.repository);
+    }
+
+    if (command instanceof GenerateReportCommand) {
+      return new GenerateReportHandler(this.notifier, this.repository);
     }
 
     throw new Error();

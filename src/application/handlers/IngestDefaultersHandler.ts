@@ -5,7 +5,6 @@ import { IRepository } from '../../domain/interfaces/IRepository';
 import { Email } from '../../domain/VO/Email.vo';
 import { LastPaymentDate } from '../../domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../domain/VO/Pricing.vo';
-import dayjs from 'dayjs';
 
 export class IngestDefaultersHandler implements IHandler<void> {
   constructor(private repository: IRepository<User>) {}
@@ -37,8 +36,8 @@ export class IngestDefaultersHandler implements IHandler<void> {
         email,
         pricing,
         lastPaymentDate,
-        userOnDb.getSentWarning(),
-        userOnDb.getSentDefaulter()
+        userOnDb.getIsWarned(),
+        userOnDb.getIsNotified()
       );
 
       await this.repository.update(user);

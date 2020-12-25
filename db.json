@@ -6,8 +6,8 @@
       "email": "adria.claret@gmail.com",
       "pricing": "trimestral",
       "lastPayment": "Mon Dec 21 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
-      "notified": false,
-      "warned": false
+      "notified": true,
+      "warned": true
     },
     {
       "id": "9c19c9e2-e2f8-410a-b8cb-54457b0ec023",
@@ -15,8 +15,26 @@
       "email": "adria.claret@gmail.com",
       "pricing": "mensual",
       "lastPayment": "Thu Nov 26 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
-      "notified": false,
-      "warned": false
+      "notified": true,
+      "warned": true
+    },
+    {
+      "id": "9c19c9e2-e2f8-410a-b8cb-54457b0ec023",
+      "name": "Senior seniur",
+      "email": "adria.claret@gmail.com",
+      "pricing": "mensual",
+      "lastPayment": "Thu Nov 26 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
+      "notified": true,
+      "warned": true
+    },
+    {
+      "id": "9c19c9e2-e2f8-410a-b8cb-54457b0ec023",
+      "name": "Juan Martin",
+      "email": "adria.claret@gmail.com",
+      "pricing": "mensual",
+      "lastPayment": "Thu Nov 26 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
+      "notified": true,
+      "warned": true
     }
   ]
 }

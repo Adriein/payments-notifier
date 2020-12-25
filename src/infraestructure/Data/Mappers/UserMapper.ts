@@ -30,8 +30,8 @@ export class UserMapper {
       email: domain.getEmail(),
       pricing: domain.getPricing(),
       lastPayment: domain.getPaymentDate().toString(),
-      notified: domain.getSentDefaulter(),
-      warned: domain.getSentWarning(),
+      notified: domain.getIsNotified(),
+      warned: domain.getIsWarned(),
     };
   }
 }

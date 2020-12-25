@@ -1,6 +1,7 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../application/CommandBus/CommandBus';
 import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
+import { GenerateReportCommand } from '../../domain/commands/GenerateReportCommand';
 import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
 import { ExcelService } from '../Excel/ExcelService';
 
@@ -45,7 +46,6 @@ router.get(
   '/defaulters',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-
       await commandBus.execute(new CheckForDefaultersCommand());
 
       res.status(200).send();
@@ -59,7 +59,7 @@ router.get(
   '/report',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      
+      await commandBus.execute(new GenerateReportCommand());
 
       res.status(200).send();
     } catch (error) {
