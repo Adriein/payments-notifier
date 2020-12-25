@@ -1,14 +1,14 @@
-import { ICommand, ICommandBus } from '../../domain/interfaces';
+import { ICommand, ICommandBus } from '../../domain/Interfaces';
 import { EmailNotifier } from '../../infraestructure/Notifiers/EmailNotifier';
-import { CheckForDefaultersHandler } from '../handlers/CheckForDefaultersHandler';
-import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
+import { CheckForDefaultersHandler } from '../Handlers/CheckForDefaultersHandler';
+import { CheckForDefaultersCommand } from '../../domain/Commands/CheckForDefaultersCommand';
 import { LowDbRepository } from '../../infraestructure/Data/Repositories/LowDbRepository';
-import { User } from '../../domain/entities/User.entity';
-import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
-import { IngestDefaultersHandler } from '../handlers/IngestDefaultersHandler';
+import { User } from '../../domain/Entities/User.entity';
+import { IngestDefaultersCommand } from '../../domain/Commands/IngestDefaultersCommand';
+import { IngestDefaultersHandler } from '../Handlers/IngestDefaultersHandler';
 import { UserMapper } from '../../infraestructure/Data/Mappers/UserMapper';
-import { GenerateReportCommand } from '../../domain/commands/GenerateReportCommand';
-import { GenerateReportHandler } from '../handlers/GenerateReportHandler';
+import { GenerateReportCommand } from '../../domain/Commands/GenerateReportCommand';
+import { GenerateReportHandler } from '../Handlers/GenerateReportHandler';
 
 export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();

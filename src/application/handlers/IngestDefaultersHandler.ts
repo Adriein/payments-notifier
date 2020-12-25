@@ -1,7 +1,7 @@
-import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
-import { User } from '../../domain/entities/User.entity';
-import { ICommand, IHandler } from '../../domain/interfaces';
-import { IRepository } from '../../domain/interfaces/IRepository';
+import { IngestDefaultersCommand } from '../../domain/Commands/IngestDefaultersCommand';
+import { User } from '../../domain/Entities/User.entity';
+import { ICommand, IHandler } from '../../domain/Interfaces';
+import { IRepository } from '../../domain/Interfaces/IRepository';
 import { Email } from '../../domain/VO/Email.vo';
 import { LastPaymentDate } from '../../domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../domain/VO/Pricing.vo';

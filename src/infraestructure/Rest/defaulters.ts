@@ -1,8 +1,8 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../application/CommandBus/CommandBus';
-import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
-import { GenerateReportCommand } from '../../domain/commands/GenerateReportCommand';
-import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
+import { CheckForDefaultersCommand } from '../../domain/Commands/CheckForDefaultersCommand';
+import { GenerateReportCommand } from '../../domain/Commands/GenerateReportCommand';
+import { IngestDefaultersCommand } from '../../domain/Commands/IngestDefaultersCommand';
 import { ExcelService } from '../Excel/ExcelService';
 
 export type DefaultersExcelContent = {

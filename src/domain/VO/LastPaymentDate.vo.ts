@@ -1,4 +1,4 @@
-import { LastPaymentDateError } from '../errors';
+import { LastPaymentDateError } from '../Errors';
 import dayjs from 'dayjs';
 
 export class LastPaymentDate {

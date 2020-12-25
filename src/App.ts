@@ -1,7 +1,5 @@
 require('dotenv').config();
 import 'reflect-metadata';
-import low from 'lowdb';
-import FileSync from 'lowdb/adapters/FileSync';
 import express from 'express';
 import bodyParser from 'body-parser';
 import chalk from 'chalk';
@@ -11,9 +9,9 @@ import Database from './infraestructure/Data/Database';
 
 export default class App {
   public init() {
-    console.log(chalk.blue('> Starting up... 🚀'));
+    console.log(chalk.cyan('> Starting up... 🚀'));
 
-    console.log(chalk.blue('> Checking env variables...'));
+    console.log(chalk.cyan('> Checking env variables...'));
 
     process.on('exit', (code) => {
       console.log(
@@ -25,7 +23,7 @@ export default class App {
 
     this.checkEnvVariables();
 
-    console.log(chalk.blue('> Env variables setted correctly ✨'));
+    console.log(chalk.cyan('> Env variables setted correctly ✨'));
 
     Database.getInstance();
 
@@ -33,7 +31,7 @@ export default class App {
 
     app.set('port', process.env.PORT || 5000);
     console.log(
-      chalk.blue(
+      chalk.cyan(
         `> App Environment: PORT: ${app.get('port')} CONFIG: ${
           process.env.NODE_ENV
         } `

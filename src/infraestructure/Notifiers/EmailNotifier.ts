@@ -1,4 +1,4 @@
-import { INotifier } from '../../domain/interfaces';
+import { INotifier } from '../../domain/Interfaces';
 import sgMail from '@sendgrid/mail';
 
 type EmailConfig = {
