@@ -1,7 +1,7 @@
 import { readdirSync, existsSync } from 'fs';
 import XSLX from 'xlsx';
-import { ExcelError } from '../../domain/Errors/ExcelError';
-import { IExcelService } from '../../domain/Services/IExcelService';
+import { ExcelError } from '../../domain/errors/ExcelError';
+import { IExcelService } from '../../domain/services/IExcelService';
 
 export class ExcelService implements IExcelService {
   private path = `${process.cwd()}/public`;

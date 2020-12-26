@@ -1,13 +1,13 @@
-import { ICommand, ICommandBus } from '../../domain/Interfaces';
+import { ICommand, ICommandBus } from '../../domain/interfaces';
 import { EmailNotifier } from '../../infraestructure/Notifiers/EmailNotifier';
 import { CheckForDefaultersHandler } from '../Handlers/CheckForDefaultersHandler';
-import { CheckForDefaultersCommand } from '../../domain/Commands/CheckForDefaultersCommand';
+import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
 import { LowDbRepository } from '../../infraestructure/Data/Repositories/LowDbRepository';
 import { User } from '../../domain/Entities/User.entity';
-import { IngestDefaultersCommand } from '../../domain/Commands/IngestDefaultersCommand';
+import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
 import { IngestDefaultersHandler } from '../Handlers/IngestDefaultersHandler';
 import { UserMapper } from '../../infraestructure/Data/Mappers/UserMapper';
-import { GenerateReportCommand } from '../../domain/Commands/GenerateReportCommand';
+import { GenerateReportCommand } from '../../domain/commands/GenerateReportCommand';
 import { GenerateReportHandler } from '../Handlers/GenerateReportHandler';
 
 export class CommandBus implements ICommandBus {

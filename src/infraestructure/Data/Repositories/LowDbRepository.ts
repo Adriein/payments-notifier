@@ -1,5 +1,5 @@
-import { IMapper } from '../../../domain/Interfaces';
-import { IRepository } from '../../../domain/Interfaces/IRepository';
+import { IMapper } from '../../../domain/interfaces';
+import { IRepository } from '../../../domain/interfaces/IRepository';
 import { GenericRepository } from './GenericRepository';
 
 export class LowDbRepository<T> extends GenericRepository<T> implements IRepository<T> {

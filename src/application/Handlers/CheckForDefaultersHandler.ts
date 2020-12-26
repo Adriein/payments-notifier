@@ -1,8 +1,8 @@
-import { User } from '../../domain/Entities/User.entity';
+import { User } from '../../domain/entities/User.entity';
 import { ICommand, IHandler, INotifier } from '../../domain/Interfaces';
-import { IRepository } from '../../domain/Interfaces/IRepository';
-import { AboutToExpire } from '../../domain/Templates/AboutToExpire.template';
-import { Expired } from '../../domain/Templates/Expired.template';
+import { IRepository } from '../../domain/interfaces/IRepository';
+import { AboutToExpire } from '../../domain/templates/AboutToExpire.template';
+import { Expired } from '../../domain/templates/Expired.template';
 
 export class CheckForDefaultersHandler implements IHandler<void> {
   constructor(
