@@ -68,4 +68,15 @@ router.get(
   }
 );
 
+router.get(
+  '/health',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.status(200).send('Alive');
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export { router as defaulters };
