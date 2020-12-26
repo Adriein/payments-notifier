@@ -1,5 +1,5 @@
 import { PricingType } from '../constants';
-import { PricingError } from '../Errors';
+import { PricingError } from '../errors';
 
 export class Pricing {
   constructor(public pricingType: string) {

@@ -1,6 +1,6 @@
 import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
 import { User } from '../../domain/entities/User.entity';
-import { ICommand, IHandler } from '../../domain/Interfaces';
+import { ICommand, IHandler } from '../../domain/interfaces';
 import { IRepository } from '../../domain/interfaces/IRepository';
 import { Email } from '../../domain/VO/Email.vo';
 import { LastPaymentDate } from '../../domain/VO/LastPaymentDate.vo';

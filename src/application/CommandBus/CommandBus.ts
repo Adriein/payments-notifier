@@ -3,7 +3,7 @@ import { EmailNotifier } from '../../infraestructure/Notifiers/EmailNotifier';
 import { CheckForDefaultersHandler } from '../Handlers/CheckForDefaultersHandler';
 import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
 import { LowDbRepository } from '../../infraestructure/Data/Repositories/LowDbRepository';
-import { User } from '../../domain/Entities/User.entity';
+import { User } from '../../domain/entities/User.entity';
 import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
 import { IngestDefaultersHandler } from '../Handlers/IngestDefaultersHandler';
 import { UserMapper } from '../../infraestructure/Data/Mappers/UserMapper';

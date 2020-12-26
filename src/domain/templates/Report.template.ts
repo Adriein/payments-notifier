@@ -1,4 +1,4 @@
-import { User } from '../Entities/User.entity';
+import { User } from '../entities/User.entity';
 import { Template } from './Template';
 
 export type ReportType = {
