@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import { errorHandler } from './middlewares';
 import { defaulters } from './infraestructure/Rest/defaulters';
 import Database from './infraestructure/Data/Database';
+import path from 'path';
 
 export default class App {
   public init() {
@@ -48,6 +49,14 @@ export default class App {
           res.redirect(`https://${req.header('host')}${req.url}`);
         else next();
       });
+
+      app.use(express.static('client/build'));
+
+      app.get('*', (req, res) => {
+        res.sendFile(
+          path.resolve(__dirname, '..', 'client', 'build', 'index.html')
+        );
+      });
     }
 
     app.listen(app.get('port'), () => {
@@ -56,7 +65,12 @@ export default class App {
   }
 
   private checkEnvVariables() {
-    if (!process.env.SEND_GRID_API_KEY) {
+    if (
+      !process.env.SEND_GRID_API_KEY ||
+      !process.env.NODE_ENV ||
+      !process.env.ADMIN_EMAIL ||
+      !process.env.ADMIN_NAME
+    ) {
       process.exit(1);
     }
   }

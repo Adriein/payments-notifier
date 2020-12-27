@@ -15,7 +15,15 @@ export default class Database {
 
     if (!data) {
       console.log(chalk.yellow('> Populating db...'));
-      this.db.defaults({ users: [] }).write();
+      this.db
+        .defaults({
+          users: [],
+          roles: {
+            admin: { email: 'ivanmfit@gmail.com', name: 'Ivan' },
+            god: { email: 'adria.claret@gmail.com', name: 'Adri' },
+          },
+        })
+        .write();
     }
 
     console.log(chalk.yellow('> Lowdb created ✨'));

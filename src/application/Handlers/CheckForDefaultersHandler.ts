@@ -10,7 +10,7 @@ export class CheckForDefaultersHandler implements IHandler<void> {
     private repository: IRepository<User>
   ) {}
 
-  public async handle(commands: ICommand): Promise<void> {
+  public async handle(command: ICommand): Promise<void> {
     const users = await this.repository.find({});
 
     for (const user of users) {

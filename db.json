@@ -1,40 +1,13 @@
 {
-  "users": [
-    {
-      "id": "84db227e-6cde-47d1-81ef-528ddb0db978",
-      "name": "Adria Claret",
-      "email": "adria.claret@gmail.com",
-      "pricing": "trimestral",
-      "lastPayment": "Mon Dec 21 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
-      "notified": true,
-      "warned": true
+  "users": [],
+  "roles": {
+    "admin": {
+      "email": "ivanmfit@gmail.com",
+      "name": "Ivan"
     },
-    {
-      "id": "9c19c9e2-e2f8-410a-b8cb-54457b0ec023",
-      "name": "Alfredo Lamda",
+    "god": {
       "email": "adria.claret@gmail.com",
-      "pricing": "mensual",
-      "lastPayment": "Thu Nov 26 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
-      "notified": true,
-      "warned": true
-    },
-    {
-      "id": "9c19c9e2-e2f8-410a-b8cb-54457b0ec023",
-      "name": "Senior seniur",
-      "email": "adria.claret@gmail.com",
-      "pricing": "mensual",
-      "lastPayment": "Thu Nov 26 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
-      "notified": true,
-      "warned": true
-    },
-    {
-      "id": "9c19c9e2-e2f8-410a-b8cb-54457b0ec023",
-      "name": "Juan Martin",
-      "email": "adria.claret@gmail.com",
-      "pricing": "mensual",
-      "lastPayment": "Thu Nov 26 2020 00:00:44 GMT+0100 (hora estándar de Europa central)",
-      "notified": true,
-      "warned": true
+      "name": "Adri"
     }
-  ]
+  }
 }

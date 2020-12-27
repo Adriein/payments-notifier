@@ -6,11 +6,11 @@ import { Report, ReportType } from '../../domain/templates/Report.template';
 export class GenerateReportHandler implements IHandler<void> {
   constructor(
     private notifier: INotifier,
-    private repository: IRepository<User>
+    private usersRepository: IRepository<User>
   ) {}
 
   public async handle(command: ICommand): Promise<void> {
-    const usersOnDb = await this.repository.find({});
+    const usersOnDb = await this.usersRepository.find({});
 
     let report: ReportType = {
       summary: { defaulters: 0, notifieds: 0, total: usersOnDb.length },
@@ -30,8 +30,16 @@ export class GenerateReportHandler implements IHandler<void> {
       }
     }
 
-    const template = new Report('Ivan', report).generate();
+    const template = new Report(
+      process.env.NODE_ENV! === 'PRO' ? process.env.ADMIN_NAME! : 'Adri',
+      report
+    ).generate();
 
-    this.notifier.notify('adria.claret@gmail.com', template);
+    await this.notifier.notify(
+      process.env.NODE_ENV! === 'PRO'
+        ? process.env.ADMIN_EMAIL!
+        : 'adria.claret@gmail.com',
+      template
+    );
   }
 }

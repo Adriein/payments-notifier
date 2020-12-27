@@ -1,6 +1,7 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../application/CommandBus/CommandBus';
 import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
+import { EnsureUsersConsistencyCommand } from '../../domain/commands/EnsureUsersConsistencyCommand';
 import { GenerateReportCommand } from '../../domain/commands/GenerateReportCommand';
 import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
 import { ExcelService } from '../Excel/ExcelService';
@@ -23,6 +24,8 @@ router.post(
       const service = new ExcelService();
 
       const excel = service.read() as DefaultersExcelContent[];
+
+      await commandBus.execute(new EnsureUsersConsistencyCommand(excel));
 
       for (const row of excel) {
         await commandBus.execute(

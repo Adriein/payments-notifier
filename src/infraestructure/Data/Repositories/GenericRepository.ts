@@ -40,7 +40,11 @@ export abstract class GenericRepository<T> implements IRepository<T> {
     // @ts-ignore
     this.db.get(this.entity).push(datamodel).write();
   }
-  async delete(id: string): Promise<number> {
-    throw new Error();
+  async delete(id: string): Promise<void> {
+    this.db
+      .get(this.entity)
+      // @ts-ignore
+      .remove({ id })
+      .write();
   }
 }

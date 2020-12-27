@@ -16,7 +16,7 @@ export class EmailNotifier implements INotifier {
   public async notify(destination: string, payload: string): Promise<void> {
     let msg;
 
-    if(destination === 'ivanmfit@gmail.com') {
+    if(destination === process.env.ADMIN_EMAIL) {
       msg = this.adminConfig(destination, payload);
     }else {
       msg = this.clientConfig(destination, payload);

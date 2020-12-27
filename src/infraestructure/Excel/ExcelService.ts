@@ -4,7 +4,7 @@ import { ExcelError } from '../../domain/errors/ExcelError';
 import { IExcelService } from '../../domain/services/IExcelService';
 
 export class ExcelService implements IExcelService {
-  private path = `${process.cwd()}/public`;
+  private path = `${process.cwd()}/files`;
 
   private exists(): string {
     const files = readdirSync(this.path, { withFileTypes: true });
