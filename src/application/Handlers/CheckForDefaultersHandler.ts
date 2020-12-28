@@ -13,8 +13,7 @@ export class CheckForDefaultersHandler implements IHandler<void> {
   public async handle(command: ICommand): Promise<void> {
     const users = await this.repository.find({});
 
-    for (const user of users) {
-
+    for (const user of users) {      
       if (user.isTwoDaysBeforeExpiration() && !user.getIsWarned()) {
         const template = new AboutToExpire(user.getName()).generate();
 
