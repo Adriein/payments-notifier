@@ -18,10 +18,6 @@ export default class Database {
       this.db
         .defaults({
           users: [],
-          roles: {
-            admin: { email: 'ivanmfit@gmail.com', name: 'Ivan' },
-            god: { email: 'adria.claret@gmail.com', name: 'Adri' },
-          },
         })
         .write();
     }
