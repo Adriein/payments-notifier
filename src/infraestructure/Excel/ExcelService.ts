@@ -1,10 +1,11 @@
 import { readdirSync, existsSync } from 'fs';
 import XSLX from 'xlsx';
+import { FILES_PATH } from '../../constants';
 import { ExcelError } from '../../domain/errors/ExcelError';
 import { IExcelService } from '../../domain/services/IExcelService';
 
 export class ExcelService implements IExcelService {
-  private path = `${process.cwd()}/files`;
+  private path = FILES_PATH;
 
   private exists(): string {
     const files = readdirSync(this.path, { withFileTypes: true });
