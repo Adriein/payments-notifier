@@ -29,17 +29,19 @@ router.post(
         new FileError('No file uploaded');
       }
 
+      deleteOldExcels();
+
       const file = req.files!.defaulters as fileUpload.UploadedFile;
 
-      file.mv(`${FILES_PATH}/defaulters.xlsx`);
+      await file.mv(`${FILES_PATH}/defaulters.xlsx`);
 
       const service = new ExcelService();
 
       const excel = service.read() as DefaultersExcelContent[];
 
       await commandBus.execute(new EnsureUsersConsistencyCommand(excel));
-      console.log(excel.length)
-      for (const row of excel) {     
+
+      for (const row of excel) {
         await commandBus.execute(
           new IngestDefaultersCommand(
             row.nombre,

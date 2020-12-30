@@ -1,7 +1,7 @@
 import { CustomError } from './CustomError';
 
 export class EmailError extends CustomError {
-  statusCode = 500;
+  statusCode = 400;
 
   constructor() {
     super('Email must have the correct format');

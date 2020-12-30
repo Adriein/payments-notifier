@@ -1,7 +1,7 @@
 import { CustomError } from './CustomError';
 
 export class LastPaymentDateError extends CustomError {
-  statusCode = 500;
+  statusCode = 400;
 
   constructor() {
     super('Last payment date must have a correct format of YYYY-MM-DD');
