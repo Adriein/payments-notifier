@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { SubscriptionError } from '../errors/SubscriptionError';
 import { Email } from '../VO/Email.vo';
 import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
+import { Password } from '../VO/Password.vo';
 import { Pricing } from '../VO/Pricing.vo';
 import { Subscription } from './Subscription.entity';
 
@@ -16,6 +17,7 @@ export class User {
   ) {}
 
   private subscription?: Subscription;
+  private password?: string;
 
   public createSubscription(
     pricing: Pricing,
@@ -109,5 +111,10 @@ export class User {
     }
 
     throw new SubscriptionError();
+  }
+
+  public async setPassword(password: string): Promise<void> {
+    const passwordVO = new Password(password);
+    this.password = await passwordVO.getHashedPassword();
   }
 }

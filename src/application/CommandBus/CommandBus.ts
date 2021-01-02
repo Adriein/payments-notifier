@@ -2,8 +2,6 @@ import { ICommand, ICommandBus } from '../../domain/interfaces';
 import { EmailNotifier } from '../../infraestructure/Notifiers/EmailNotifier';
 import { CheckForDefaultersHandler } from '../Handlers/Defaulters/CheckForDefaultersHandler';
 import { CheckForDefaultersCommand } from '../../domain/commands/Defaulters/CheckForDefaultersCommand';
-import { LowDbRepository } from '../../infraestructure/Data/Repositories/LowDbRepository';
-import { User } from '../../domain/entities/User.entity';
 import { IngestDefaultersCommand } from '../../domain/commands/Defaulters/IngestDefaultersCommand';
 import { IngestDefaultersHandler } from '../Handlers/Defaulters/IngestDefaultersHandler';
 import { UserMapper } from '../../infraestructure/Data/Mappers/UserMapper';
@@ -15,10 +13,11 @@ import { RegisterCommand } from '../../domain/commands/Auth/RegisterCommand';
 import { RegisterHandler } from '../Handlers/Auth/RegisterHandler';
 import { SignInCommand } from '../../domain/commands/Auth/SignInCommand';
 import { SignInHandler } from '../Handlers/Auth/SignInHandler';
+import { UserRepository } from '../../infraestructure/Data/Repositories/UserRepository';
 
 export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
-  private usersRepository = new LowDbRepository<User>('users', new UserMapper());
+  private usersRepository = new UserRepository('users', new UserMapper());
   constructor() {}
 
   public async execute(command: ICommand): Promise<any> {
