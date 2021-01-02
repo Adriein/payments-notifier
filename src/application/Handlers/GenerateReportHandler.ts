@@ -30,10 +30,7 @@ export class GenerateReportHandler implements IHandler<void> {
       }
     }
 
-    const template = new Report(
-      process.env.NODE_ENV! === 'PRO' ? process.env.ADMIN_NAME! : 'Adri',
-      report
-    ).generate();
+    const template = new Report(report).generate();
 
     await this.notifier.notify(
       process.env.NODE_ENV! === 'PRO'

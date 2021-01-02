@@ -75,7 +75,7 @@ export default class App {
       !process.env.SEND_GRID_API_KEY ||
       !process.env.NODE_ENV ||
       !process.env.ADMIN_EMAIL ||
-      !process.env.ADMIN_NAME
+      !process.env.DAYS_BEFORE_EXPIRATION
     ) {
       process.exit(1);
     }

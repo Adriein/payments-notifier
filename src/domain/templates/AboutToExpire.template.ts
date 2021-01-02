@@ -1,8 +1,19 @@
+import { PricingType } from '../constants';
+import { User } from '../entities/User.entity';
 import { Template } from './Template';
 
 export class AboutToExpire extends Template {
-  constructor(protected user: string) {
+  constructor(protected user: User) {
     super();
+  }
+
+  private beautyPricing(pricing: string) {
+    switch(pricing) {
+      case PricingType.monthly:
+        return 'mensual'
+      case PricingType.quarterly:
+        return 'trimestral'
+    }
   }
 
   public generate(): string {
@@ -25,7 +36,7 @@ export class AboutToExpire extends Template {
                 <td width="30" class="spacer">&nbsp;</td>
                 <td align="center">
                   <h5 style="font-family: Arial, Helvetica, sans-serif; font-size: 32px; color: #404040; margin-top: 0; margin-bottom: 20px; padding: 0; line-height: 135%" class="headline">El servicio está a punto de caducar 🥶</h5>
-                  <p style="font-family: Arial, Helvetica, sans-serif; color: #555555; font-size: 14px; padding: 0 40px;"><strong>Hola, ${this.user}</strong>. Este es un correo automático para informarte de que en 2 días vence la tarifa contratada y es hora de renovar para seguir disfrutando de los servicios. ⚡
+                  <p style="font-family: Arial, Helvetica, sans-serif; color: #555555; font-size: 14px; padding: 0 40px;"><strong>Hola, ${this.user.getName()}</strong>. Este es un correo automático de @IvanMFit para informarte de que en ${process.env.DAYS_BEFORE_EXPIRATION} días vence tu asesoría ${this.beautyPricing(this.user.getPricing())} contratada y es hora de renovar para seguir disfrutando de los servicios. ⚡
                   </p>
                 </td>
                 <td width="30" class="spacer">&nbsp;</td>

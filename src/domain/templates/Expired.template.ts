@@ -1,7 +1,8 @@
+import { User } from '../entities/User.entity';
 import { Template } from './Template';
 
 export class Expired extends Template {
-  constructor(protected user: string) {
+  constructor(protected user: User) {
     super();
   }
 
@@ -25,7 +26,7 @@ export class Expired extends Template {
                 <td width="30" class="spacer">&nbsp;</td>
                 <td align="center">
                   <h5 style="font-family: Arial, Helvetica, sans-serif; font-size: 32px; color: #404040; margin-top: 0; margin-bottom: 20px; padding: 0; line-height: 135%" class="headline">El servicio ha caducado 😔</h5>
-                  <p style="font-family: Arial, Helvetica, sans-serif; color: #555555; font-size: 14px; padding: 0 40px;"><strong>Hola, ${this.user}</strong>. Este es un correo automático para informarte de que la tarifa contratada ha vencido, si quieres seguir disfrutando de los servicios debes de renovar pagando la tarifa que desees. 🚀
+                  <p style="font-family: Arial, Helvetica, sans-serif; color: #555555; font-size: 14px; padding: 0 40px;"><strong>Hola, ${this.user.getName()}</strong>. Este es un correo automático para informarte de que la tarifa contratada ha vencido, si quieres seguir disfrutando de los servicios debes de renovar pagando la tarifa que desees. 🚀
                   </p>
                 </td>
                 <td width="30" class="spacer">&nbsp;</td>

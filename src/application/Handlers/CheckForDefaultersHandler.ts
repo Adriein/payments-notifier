@@ -15,7 +15,7 @@ export class CheckForDefaultersHandler implements IHandler<void> {
 
     for (const user of users) {      
       if (user.isTwoDaysBeforeExpiration() && !user.getIsWarned()) {
-        const template = new AboutToExpire(user.getName()).generate();
+        const template = new AboutToExpire(user).generate();
 
         await this.notifier.notify(user.getEmail(), template);
 
@@ -30,9 +30,9 @@ export class CheckForDefaultersHandler implements IHandler<void> {
         continue;
       }
 
-      const template = new Expired(user.getName()).generate();
+      // const template = new Expired(user.getName()).generate();
 
-      await this.notifier.notify(user.getEmail(), template);
+      // await this.notifier.notify(user.getEmail(), template);
 
       user.setIsNotified();
 

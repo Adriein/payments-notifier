@@ -8,8 +8,10 @@ export type ReportType = {
 };
 
 export class Report extends Template {
-  constructor(protected user: string, private report: ReportType) {
+  protected user: User;
+  constructor(private report: ReportType) {
     super();
+    this.user = report.defaulters[0];
   }
 
   public generate(): string {
@@ -32,10 +34,14 @@ export class Report extends Template {
                 <td width="30" class="spacer">&nbsp;</td>
                 <td align="center">
                   <h5 style="font-family: Arial, Helvetica, sans-serif; font-size: 32px; color: #404040; margin-top: 0; margin-bottom: 20px; padding: 0; line-height: 135%" class="headline">Clientes con tarifa expirada ❌</h5>
-                  ${this.report.defaulters.map(
-                    (defaulter) =>
-                      `<p>${defaulter.getName()} - ${defaulter.getEmail()}</p>`
-                  )}
+                  ${
+                    this.report.defaulters.length > 0
+                      ? this.report.defaulters.map(
+                          (defaulter) =>
+                            `<p>${defaulter.getName()} - ${defaulter.getEmail()}</p>`
+                        )
+                      : 'Hoy no hay usuarios con la tarifa caducada'
+                  }
                   </p>
                 </td>
                 <td width="30" class="spacer">&nbsp;</td>

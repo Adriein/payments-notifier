@@ -32,6 +32,8 @@ export class User {
     private isNotified: boolean
   ) {}
 
+  private daysBeforeExpiration = parseInt(process.env.DAYS_BEFORE_EXPIRATION!);
+
   public isDefaulter(): boolean {
     const today = dayjs(new Date());
 
@@ -51,7 +53,7 @@ export class User {
     const today = dayjs(new Date());
     const maxDate = dayjs(this.lastPayment)
       .add(this.pricingToMonths(this.pricing), 'month')
-      .subtract(2, 'day');
+      .subtract(this.daysBeforeExpiration, 'day');
     
     if (maxDate.isSame(today, 'day')) {
       return true;
