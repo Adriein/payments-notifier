@@ -1,10 +1,10 @@
-import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
-import { User } from '../../domain/entities/User.entity';
-import { ICommand, IHandler } from '../../domain/interfaces';
-import { IRepository } from '../../domain/interfaces/IRepository';
-import { Email } from '../../domain/VO/Email.vo';
-import { LastPaymentDate } from '../../domain/VO/LastPaymentDate.vo';
-import { Pricing } from '../../domain/VO/Pricing.vo';
+import { IngestDefaultersCommand } from '../../../domain/commands/Defaulters/IngestDefaultersCommand';
+import { User } from '../../../domain/entities/User.entity';
+import { ICommand, IHandler } from '../../../domain/interfaces';
+import { IRepository } from '../../../domain/interfaces/IRepository';
+import { Email } from '../../../domain/VO/Email.vo';
+import { LastPaymentDate } from '../../../domain/VO/LastPaymentDate.vo';
+import { Pricing } from '../../../domain/VO/Pricing.vo';
 
 export class IngestDefaultersHandler implements IHandler<void> {
   constructor(private repository: IRepository<User>) {}

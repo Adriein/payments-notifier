@@ -1,9 +1,9 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../application/CommandBus/CommandBus';
-import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
-import { EnsureUsersConsistencyCommand } from '../../domain/commands/EnsureUsersConsistencyCommand';
-import { GenerateReportCommand } from '../../domain/commands/GenerateReportCommand';
-import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
+import { CheckForDefaultersCommand } from '../../domain/commands/Defaulters/CheckForDefaultersCommand';
+import { EnsureUsersConsistencyCommand } from '../../domain/commands/Defaulters/EnsureUsersConsistencyCommand';
+import { GenerateReportCommand } from '../../domain/commands/Defaulters/GenerateReportCommand';
+import { IngestDefaultersCommand } from '../../domain/commands/Defaulters/IngestDefaultersCommand';
 import { FileError } from '../../domain/errors/FileError';
 import { ExcelService } from '../Excel/ExcelService';
 import fileUpload from 'express-fileupload';

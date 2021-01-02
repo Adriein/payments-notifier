@@ -1,16 +1,20 @@
 import { ICommand, ICommandBus } from '../../domain/interfaces';
 import { EmailNotifier } from '../../infraestructure/Notifiers/EmailNotifier';
-import { CheckForDefaultersHandler } from '../Handlers/CheckForDefaultersHandler';
-import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
+import { CheckForDefaultersHandler } from '../Handlers/Defaulters/CheckForDefaultersHandler';
+import { CheckForDefaultersCommand } from '../../domain/commands/Defaulters/CheckForDefaultersCommand';
 import { LowDbRepository } from '../../infraestructure/Data/Repositories/LowDbRepository';
 import { User } from '../../domain/entities/User.entity';
-import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
-import { IngestDefaultersHandler } from '../Handlers/IngestDefaultersHandler';
+import { IngestDefaultersCommand } from '../../domain/commands/Defaulters/IngestDefaultersCommand';
+import { IngestDefaultersHandler } from '../Handlers/Defaulters/IngestDefaultersHandler';
 import { UserMapper } from '../../infraestructure/Data/Mappers/UserMapper';
-import { GenerateReportCommand } from '../../domain/commands/GenerateReportCommand';
-import { GenerateReportHandler } from '../Handlers/GenerateReportHandler';
-import { EnsureUsersConsistencyCommand } from '../../domain/commands/EnsureUsersConsistencyCommand';
-import { EnsureUsersConsistencyHandler } from '../Handlers/EnsureUsersConsistencyHandler';
+import { GenerateReportCommand } from '../../domain/commands/Defaulters/GenerateReportCommand';
+import { GenerateReportHandler } from '../Handlers/Defaulters/GenerateReportHandler';
+import { EnsureUsersConsistencyCommand } from '../../domain/commands/Defaulters/EnsureUsersConsistencyCommand';
+import { EnsureUsersConsistencyHandler } from '../Handlers/Defaulters/EnsureUsersConsistencyHandler';
+import { RegisterCommand } from '../../domain/commands/Auth/RegisterCommand';
+import { RegisterHandler } from '../Handlers/Auth/RegisterHandler';
+import { SignInCommand } from '../../domain/commands/Auth/SignInCommand';
+import { SignInHandler } from '../Handlers/Auth/SignInHandler';
 
 export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
@@ -36,6 +40,14 @@ export class CommandBus implements ICommandBus {
 
     if (command instanceof EnsureUsersConsistencyCommand) {
       return new EnsureUsersConsistencyHandler(this.usersRepository);
+    }
+
+    if (command instanceof RegisterCommand) {
+      return new RegisterHandler(this.usersRepository);
+    }
+
+    if (command instanceof SignInCommand) {
+      return new SignInHandler(this.usersRepository);
     }
 
     throw new Error();

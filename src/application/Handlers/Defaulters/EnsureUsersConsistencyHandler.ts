@@ -1,7 +1,7 @@
-import { EnsureUsersConsistencyCommand } from '../../domain/commands/EnsureUsersConsistencyCommand';
-import { User } from '../../domain/entities/User.entity';
-import { ICommand } from '../../domain/interfaces';
-import { IRepository } from '../../domain/interfaces/IRepository';
+import { EnsureUsersConsistencyCommand } from '../../../domain/commands/Defaulters/EnsureUsersConsistencyCommand';
+import { User } from '../../../domain/entities/User.entity';
+import { ICommand } from '../../../domain/interfaces';
+import { IRepository } from '../../../domain/interfaces/IRepository';
 
 export class EnsureUsersConsistencyHandler {
   constructor(private repository: IRepository<User>) {}

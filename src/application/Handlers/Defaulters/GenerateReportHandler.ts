@@ -1,7 +1,7 @@
-import { User } from '../../domain/entities/User.entity';
-import { ICommand, IHandler, INotifier } from '../../domain/interfaces';
-import { IRepository } from '../../domain/interfaces/IRepository';
-import { Report, ReportType } from '../../domain/templates/Report.template';
+import { User } from '../../../domain/entities/User.entity';
+import { ICommand, IHandler, INotifier } from '../../../domain/interfaces';
+import { IRepository } from '../../../domain/interfaces/IRepository';
+import { Report, ReportType } from '../../../domain/templates/Report.template';
 
 export class GenerateReportHandler implements IHandler<void> {
   constructor(
