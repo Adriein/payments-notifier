@@ -1,83 +1,35 @@
 import { v4 as uuidv4 } from 'uuid';
-import dayjs from 'dayjs';
-import { PricingType } from '../constants';
 import { Email } from '../VO/Email.vo';
-import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
-import { Pricing } from '../VO/Pricing.vo';
+import { Subscription } from './Subscription.entity';
 
 export class User {
   public static build(
     name: string,
     email: Email,
-    pricing: Pricing,
-    lastPayment: LastPaymentDate
+    subscription: Subscription
   ): User {
-    return new User(
-      uuidv4(),
-      name,
-      email.email,
-      pricing.pricingType,
-      lastPayment.date,
-      false,
-      false
-    );
+    return new User(uuidv4(), name, email.email, subscription);
   }
   constructor(
     private id: string,
     private name: string,
     private email: string,
-    private pricing: string,
-    private lastPayment: Date,
-    private isWarned: boolean,
-    private isNotified: boolean
+    private subscription?: Subscription
   ) {}
 
-  public isDefaulter(): boolean {
-    const today = dayjs(new Date());
-
-    const maxDate = dayjs(this.lastPayment).add(
-      this.pricingToMonths(this.pricing),
-      'month'
-    );
-
-    if (maxDate.isBefore(today)) {
-      return true;
+  get isDefaulter(): () =>  boolean {
+    if(this.subscription) {
+      return this.subscription.isDefaulter;
     }
-
-    return false;
+    throw new Error();
   }
 
-  public isTwoDaysBeforeExpiration(): boolean {
-    const today = dayjs(new Date());
-    const maxDate = dayjs(this.lastPayment)
-      .add(this.pricingToMonths(this.pricing), 'month')
-      .subtract(2, 'day');
-    
-    if (maxDate.isSame(today, 'day')) {
-      return true;
-    }
-
-    return false;
+  get isTwoDaysBeforeExpiration(): (() => boolean) | undefined {
+    return this.subscription?.isTwoDaysBeforeExpiration;
   }
 
-  public resetNotificationState(): void {
-    if (this.isNotified) {
-      this.setIsNotified();
-    }
-    if (this.isWarned) {
-      this.setIsWarned();
-    }
-  }
-
-  private pricingToMonths(pricing: string) {
-    switch (pricing) {
-      case PricingType.monthly:
-        return 1;
-      case PricingType.quarterly:
-        return 3;
-      default:
-        return 0;
-    }
+  get resetNotificationState(): (() => void) | undefined {
+    return this.subscription?.resetNotificationState;
   }
 
   public getId(): string {
@@ -92,27 +44,27 @@ export class User {
     return this.email;
   }
 
-  public getPricing(): string {
-    return this.pricing;
+  public getPricing(): (() => string) | undefined {
+    return this.subscription?.getPricing;
   }
 
-  public getPaymentDate(): Date {
-    return this.lastPayment;
+  public getPaymentDate(): (() => Date) | undefined {
+    return this.subscription?.getPaymentDate;
   }
 
-  public getIsNotified(): boolean {
-    return this.isNotified;
+  public getIsNotified(): (() => boolean) | undefined {
+    return this.subscription?.getIsNotified;
   }
 
-  public getIsWarned(): boolean {
-    return this.isWarned;
+  public getIsWarned(): (() => boolean) | undefined {
+    return this.subscription?.getIsWarned;
   }
 
-  public setIsNotified(): void {
-    this.isNotified = !this.isNotified;
+  public setIsNotified(): (() => void) | undefined {
+    return this.subscription?.setIsNotified;
   }
 
-  public setIsWarned(): void {
-    this.isWarned = !this.isWarned;
+  public setIsWarned(): (() => void) | undefined {
+    return this.subscription?.setIsWarned;
   }
 }
