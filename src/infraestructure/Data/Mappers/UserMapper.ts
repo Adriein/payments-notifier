@@ -1,4 +1,6 @@
 import { User } from '../../../domain/entities/User.entity';
+import { LastPaymentDate } from '../../../domain/VO/LastPaymentDate.vo';
+import { Pricing } from '../../../domain/VO/Pricing.vo';
 
 type users = {
   id: string;
@@ -12,15 +14,17 @@ type users = {
 
 export class UserMapper {
   public domain(datamodel: users): User {
-    return new User(
-      datamodel.id,
-      datamodel.name,
-      datamodel.email,
-      datamodel.pricing,
-      new Date(datamodel.lastPayment),
+
+    const user = new User(datamodel.id, datamodel.name, datamodel.email);
+
+    user.createSubscription(
+      new Pricing(datamodel.pricing),
+      new LastPaymentDate(datamodel.lastPayment),
       datamodel.warned,
       datamodel.notified
     );
+    
+    return user;
   }
 
   public datamodel(domain: User): users {

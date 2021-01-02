@@ -10,6 +10,6 @@ export class PricingError extends CustomError {
   }
 
   serialize() {
-    return [{ message: this.message, field: 'Pricing on User' }];
+    return [{ message: this.message, field: 'Pricing on Subscription' }];
   }
 }

@@ -10,6 +10,6 @@ export class LastPaymentDateError extends CustomError {
   }
 
   serialize() {
-    return [{ message: this.message, field: 'LastPaymentDate on User' }];
+    return [{ message: this.message, field: 'LastPaymentDate on Subscription' }];
   }
 }

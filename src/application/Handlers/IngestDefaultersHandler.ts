@@ -16,13 +16,13 @@ export class IngestDefaultersHandler implements IHandler<void> {
 
     if (userOnDb) {
       const email = new Email(command.email).email;
-      const pricing = new Pricing(command.pricing).pricingType;
-      const lastPaymentDate = new LastPaymentDate(command.lastPayment).date;
+      const pricing = new Pricing(command.pricing);
+      const lastPaymentDate = new LastPaymentDate(command.lastPayment);
 
       const hasSubstantialChanges = this.hasSubstantialChange(
         email,
-        pricing,
-        lastPaymentDate,
+        pricing.pricingType,
+        lastPaymentDate.date,
         userOnDb
       );
 
@@ -30,10 +30,9 @@ export class IngestDefaultersHandler implements IHandler<void> {
         userOnDb.resetNotificationState();
       }
 
-      const user = new User(
-        userOnDb.getId(),
-        command.name,
-        email,
+      const user = new User(userOnDb.getId(), command.name, email);
+
+      user.createSubscription(
         pricing,
         lastPaymentDate,
         userOnDb.getIsWarned(),
@@ -44,9 +43,9 @@ export class IngestDefaultersHandler implements IHandler<void> {
       return;
     }
 
-    const user = User.build(
-      command.name,
-      new Email(command.email),
+    const user = User.build(command.name, new Email(command.email));
+
+    user.createSubscription(
       new Pricing(command.pricing),
       new LastPaymentDate(command.lastPayment)
     );
