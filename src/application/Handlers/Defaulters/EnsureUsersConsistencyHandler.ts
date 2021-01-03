@@ -16,7 +16,7 @@ export class EnsureUsersConsistencyHandler {
     if (users.length > command.rows.length) {
       for (const user of users) {
         if (!emails.includes(user.getEmail())) {
-          this.repository.delete(user.getId());
+          await this.repository.delete(user.getId());
         }
       }
     }

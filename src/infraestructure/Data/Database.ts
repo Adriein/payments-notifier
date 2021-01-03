@@ -1,28 +1,32 @@
-import low from 'lowdb';
+import pg from 'pg';
 import chalk from 'chalk';
-import FileSync from 'lowdb/adapters/FileSync';
 
 export default class Database {
   private static instance: Database;
-  private db: low.LowdbSync<any>;
+  private pool?: pg.Pool;
 
   private constructor() {
-    console.log(chalk.yellow('> Creating lowdb...'));
-    const adapter = new FileSync('db.json');
-    this.db = low(adapter);
+    console.log(chalk.yellow('> Establishing db connection... 💫'));
 
-    const data = this.db.get('users').value();
+    (async () => {
+      try {
+        this.pool = new pg.Pool({
+          host: process.env.DATABASE_HOST!,
+          port: parseInt(process.env.DATABASE_PORT!),
+          database: process.env.DATABASE_NAME!,
+          user: process.env.DATABASE_USER!,
+          password: process.env.DATABASE_PASSWORD!,
+        });
 
-    if (!data) {
-      console.log(chalk.yellow('> Populating db...'));
-      this.db
-        .defaults({
-          users: [],
-        })
-        .write();
-    }
+        await this.pool.query('SELECT 1 + 1;');
+      } catch (error) {
+        throw new Error();
+      }
+    })();
 
-    console.log(chalk.yellow('> Lowdb created ✨'));
+    console.log(
+      chalk.yellow(`> Connected to ${process.env.DATABASE_NAME!} DB ✨`)
+    );
   }
 
   public static getInstance(): Database {
@@ -33,7 +37,7 @@ export default class Database {
     return Database.instance;
   }
 
-  public getConnection(): low.LowdbSync<any> {
-    return this.db;
+  public getConnection(): pg.Pool {
+    return this.pool!;
   }
 }

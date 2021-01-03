@@ -1,10 +1,26 @@
+import { v4 as uuidv4 } from 'uuid';
 import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
 import { Pricing } from '../VO/Pricing.vo';
 import dayjs from 'dayjs';
 import { PricingType } from '../constants';
 
 export class Subscription {
+  public static build(
+    pricing: Pricing,
+    lastPayment: LastPaymentDate,
+    isWarned: boolean,
+    isNotified: boolean
+  ): Subscription {
+    return new Subscription(
+      uuidv4(),
+      pricing,
+      lastPayment,
+      isWarned,
+      isNotified
+    );
+  }
   constructor(
+    private id: string,
     private pricing: Pricing,
     private lastPayment: LastPaymentDate,
     private isWarned: boolean,
@@ -81,5 +97,9 @@ export class Subscription {
 
   public setIsWarned(): void {
     this.isWarned = !this.isWarned;
+  }
+
+  public getId(): string {
+    return this.id;
   }
 }

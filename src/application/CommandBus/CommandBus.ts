@@ -14,10 +14,14 @@ import { RegisterHandler } from '../Handlers/Auth/RegisterHandler';
 import { SignInCommand } from '../../domain/commands/Auth/SignInCommand';
 import { SignInHandler } from '../Handlers/Auth/SignInHandler';
 import { UserRepository } from '../../infraestructure/Data/Repositories/UserRepository';
+import { ReadUserCommand } from '../../domain/commands/User/ReadUserCommand';
+import { ReadUserHandler } from '../Handlers/User/ReadUserHandler';
+import { UserFinder } from '../../domain/services/UserFinder';
 
 export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
   private usersRepository = new UserRepository('users', new UserMapper());
+  private userFinder = new UserFinder(this.usersRepository);
   constructor() {}
 
   public async execute(command: ICommand): Promise<any> {
@@ -46,7 +50,11 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof SignInCommand) {
-      return new SignInHandler(this.usersRepository);
+      return new SignInHandler(this.userFinder);
+    }
+
+    if (command instanceof ReadUserCommand) {
+      return new ReadUserHandler(this.userFinder);
     }
 
     throw new Error();

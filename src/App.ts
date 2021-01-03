@@ -11,6 +11,7 @@ import { errorHandler } from './middlewares';
 import { defaulters } from './infraestructure/Rest/defaulters';
 import Database from './infraestructure/Data/Database';
 import { FILES_PATH } from './constants';
+import { auth } from './infraestructure/Rest/auth';
 
 export default class App {
   public init() {
@@ -55,6 +56,7 @@ export default class App {
       })
     );
     app.use(fileUpload());
+    app.use('/api/v1', auth);
     app.use('/api/v1', defaulters);
     app.use(errorHandler);
 
@@ -84,7 +86,6 @@ export default class App {
       !process.env.SEND_GRID_API_KEY ||
       !process.env.NODE_ENV ||
       !process.env.ADMIN_EMAIL ||
-      !process.env.ADMIN_NAME ||
       !process.env.JWT_KEY
     ) {
       process.exit(1);
@@ -98,6 +99,6 @@ export default class App {
 
     fs.mkdirSync(FILES_PATH);
 
-    console.log(chalk.cyan('> File folders created 📁'));
+    console.log(chalk.yellow('> File folders created 📁'));
   }
 }

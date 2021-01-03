@@ -4,7 +4,7 @@ import { UserAlreadyExistsError } from '../../../domain/errors/UserAlreadyExists
 import { ICommand, IHandler } from '../../../domain/interfaces';
 import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
 import { Email } from '../../../domain/VO/Email.vo';
-
+import { Password } from '../../../domain/VO/Password.vo';
 
 export class RegisterHandler implements IHandler<void> {
   constructor(private repository: IUserRepository) {}
@@ -12,7 +12,7 @@ export class RegisterHandler implements IHandler<void> {
   public async handle(comm: ICommand): Promise<void> {
     const command = comm as RegisterCommand;
 
-    const exists = this.repository.findByName(command.username);
+    const exists = await this.repository.findByEmail(new Email(command.email));
 
     if (exists) {
       throw new UserAlreadyExistsError();
@@ -20,8 +20,8 @@ export class RegisterHandler implements IHandler<void> {
 
     const user = User.build(command.username, new Email(command.email));
 
-    await user.setPassword(command.password);
+    await user.createPassword(new Password(command.password));
 
-    this.repository.save(user);
+    await this.repository.save(user);
   }
 }

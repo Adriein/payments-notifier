@@ -1,19 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
 import { SubscriptionError } from '../errors/SubscriptionError';
+import { ISerialize } from '../interfaces/ISerialize';
 import { Email } from '../VO/Email.vo';
 import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
 import { Password } from '../VO/Password.vo';
 import { Pricing } from '../VO/Pricing.vo';
 import { Subscription } from './Subscription.entity';
 
-export class User {
+export class User implements ISerialize {
   public static build(name: string, email: Email): User {
-    return new User(uuidv4(), name, email.email);
+    return new User(uuidv4(), name, email);
   }
   constructor(
     private id: string,
     private name: string,
-    private email: string
+    private email: Email
   ) {}
 
   private subscription?: Subscription;
@@ -25,7 +26,7 @@ export class User {
     isWarned: boolean = false,
     isNotified: boolean = false
   ): void {
-    this.subscription = new Subscription(
+    this.subscription = Subscription.build(
       pricing,
       lastPayment,
       isWarned,
@@ -64,7 +65,7 @@ export class User {
   }
 
   public getEmail(): string {
-    return this.email;
+    return this.email.email;
   }
 
   public getPricing(): string {
@@ -113,8 +114,38 @@ export class User {
     throw new SubscriptionError();
   }
 
-  public async setPassword(password: string): Promise<void> {
-    const passwordVO = new Password(password);
-    this.password = await passwordVO.getHashedPassword();
+  public async createPassword(password: Password): Promise<void> {
+    this.password = await password.getHashedPassword();
+  }
+
+  public getPassword(): string | undefined {
+    return this.password;
+  }
+
+  public setPassword(password: Password): void {
+    this.password = password.password;
+  }
+
+  public get subscriptionId(): () => string | null {
+    if (!this.subscription) {
+      return () => null;
+    }
+    return this.subscription!.getId;
+  }
+
+  public serialize(): Object {
+    return {
+      id: this.id,
+      username: this.name,
+      email: this.email.email,
+      subscription: this.subscription
+        ? {
+            pricing: this.getPricing(),
+            lastPayment: this.getPaymentDate(),
+            isWarned: this.getIsWarned(),
+            isNotified: this.getIsNotified(),
+          }
+        : null,
+    };
   }
 }

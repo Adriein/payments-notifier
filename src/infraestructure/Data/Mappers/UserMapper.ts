@@ -1,41 +1,34 @@
 import { User } from '../../../domain/entities/User.entity';
-import { LastPaymentDate } from '../../../domain/VO/LastPaymentDate.vo';
-import { Pricing } from '../../../domain/VO/Pricing.vo';
+import { Email } from '../../../domain/VO/Email.vo';
+import { Password } from '../../../domain/VO/Password.vo';
 
 type users = {
   id: string;
-  name: string;
+  username: string;
   email: string;
-  pricing: string;
-  lastPayment: string;
-  notified: boolean;
-  warned: boolean;
+  password: string;
+  subscription_id?: string | null;
 };
 
 export class UserMapper {
   public domain(datamodel: users): User {
-
-    const user = new User(datamodel.id, datamodel.name, datamodel.email);
-
-    user.createSubscription(
-      new Pricing(datamodel.pricing),
-      new LastPaymentDate(datamodel.lastPayment),
-      datamodel.warned,
-      datamodel.notified
+    const user = new User(
+      datamodel.id,
+      datamodel.username,
+      new Email(datamodel.email)
     );
-    
+    user.setPassword(new Password(datamodel.password));
+
     return user;
   }
 
   public datamodel(domain: User): users {
     return {
       id: domain.getId(),
-      name: domain.getName(),
+      username: domain.getName(),
       email: domain.getEmail(),
-      pricing: domain.getPricing(),
-      lastPayment: domain.getPaymentDate().toString(),
-      notified: domain.getIsNotified(),
-      warned: domain.getIsWarned(),
+      password: domain.getPassword()!,
+      subscription_id: domain.subscriptionId(),
     };
   }
 }

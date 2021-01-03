@@ -30,7 +30,7 @@ export class IngestDefaultersHandler implements IHandler<void> {
         userOnDb.resetNotificationState();
       }
 
-      const user = new User(userOnDb.getId(), command.name, email);
+      const user = new User(userOnDb.getId(), command.name, new Email(email));
 
       user.createSubscription(
         pricing,
