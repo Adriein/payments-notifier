@@ -15,19 +15,32 @@ export abstract class GenericRepository<T> implements IRepository<T> {
   }
   async save(entity: T): Promise<void> {
     const datamodel = this.mapper.datamodel(entity);
-    await this.db.query(
-      `INSERT INTO ${this.entity} VALUES(${Object.keys(datamodel)
-        .map(
-          (key) => `${datamodel[key] !== null ? `'${datamodel[key]}'` : null}`
-        )
-        .join(',')})`
-    );
+    await this.db.query(this.buildInsertQuery(datamodel));
   }
 
   async update(entity: T): Promise<void> {
     throw new Error();
   }
   async delete(id: string): Promise<void> {
-    throw new Error();
+    await this.db.query(`DELETE FROM ${this.entity} WHERE id='${id}' AND subscription_id IS NOT NULL`);
+  }
+
+  protected buildInsertQuery(datamodel: any): string {
+    return `INSERT INTO ${this.entity} VALUES(${Object.keys(datamodel)
+      .map((key) => `${datamodel[key] !== null ? `'${datamodel[key]}'` : null}`)
+      .join(',')});`;
+  }
+
+  protected buildUpdateQuery(datamodel: any): string {
+
+    return `UPDATE ${this.entity} SET ${Object.keys(datamodel)
+      .map((key) => {
+        return `${key}=${
+          datamodel[key] === null || datamodel[key] === undefined
+            ? null
+            : `'${datamodel[key]}'`
+        }`;
+      })
+      .join(',')};`;
   }
 }

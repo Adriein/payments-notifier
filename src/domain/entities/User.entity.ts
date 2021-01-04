@@ -11,14 +11,34 @@ export class User implements ISerialize {
   public static build(name: string, email: Email): User {
     return new User(uuidv4(), name, email);
   }
-  constructor(
-    private id: string,
-    private name: string,
-    private email: Email
-  ) {}
+  constructor(private id: string, private name: string, private email: Email) {}
 
   private subscription?: Subscription;
   private password?: string;
+
+  public getId(): string {
+    return this.id;
+  }
+
+  public getName(): string {
+    return this.name;
+  }
+
+  public getEmail(): string {
+    return this.email.email;
+  }
+
+  public async createPassword(password: Password): Promise<void> {
+    this.password = await password.getHashedPassword();
+  }
+
+  public getPassword(): string | undefined {
+    return this.password;
+  }
+
+  public setPassword(password: Password): void {
+    this.password = password.password;
+  }
 
   public createSubscription(
     pricing: Pricing,
@@ -32,6 +52,30 @@ export class User implements ISerialize {
       isWarned,
       isNotified
     );
+  }
+
+  public setSubscription(
+    id: string,
+    pricing: Pricing,
+    lastPayment: LastPaymentDate,
+    isWarned: boolean,
+    isNotified: boolean
+  ): void {
+    this.subscription = new Subscription(
+      id,
+      pricing,
+      lastPayment,
+      isWarned,
+      isNotified
+    );
+  }
+
+  public hasSubscription(): boolean {
+    if (this.subscription) {
+      return true;
+    }
+
+    return false;
   }
 
   get isDefaulter(): () => boolean {
@@ -54,18 +98,6 @@ export class User implements ISerialize {
     }
 
     throw new SubscriptionError();
-  }
-
-  public getId(): string {
-    return this.id;
-  }
-
-  public getName(): string {
-    return this.name;
-  }
-
-  public getEmail(): string {
-    return this.email.email;
   }
 
   public getPricing(): string {
@@ -112,18 +144,6 @@ export class User implements ISerialize {
     }
 
     throw new SubscriptionError();
-  }
-
-  public async createPassword(password: Password): Promise<void> {
-    this.password = await password.getHashedPassword();
-  }
-
-  public getPassword(): string | undefined {
-    return this.password;
-  }
-
-  public setPassword(password: Password): void {
-    this.password = password.password;
   }
 
   public get subscriptionId(): () => string | null {

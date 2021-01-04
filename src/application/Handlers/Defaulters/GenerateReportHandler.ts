@@ -1,16 +1,15 @@
-import { User } from '../../../domain/entities/User.entity';
 import { ICommand, IHandler, INotifier } from '../../../domain/interfaces';
-import { IRepository } from '../../../domain/interfaces/IRepository';
 import { Report, ReportType } from '../../../domain/templates/Report.template';
+import { UserRepository } from '../../../infraestructure/Data/Repositories/UserRepository';
 
 export class GenerateReportHandler implements IHandler<void> {
   constructor(
     private notifier: INotifier,
-    private usersRepository: IRepository<User>
+    private usersRepository: UserRepository
   ) {}
 
   public async handle(command: ICommand): Promise<void> {
-    const usersOnDb = await this.usersRepository.find({});
+    const usersOnDb = await this.usersRepository.findAll();
 
     let report: ReportType = {
       summary: { defaulters: 0, notifieds: 0, total: usersOnDb.length },

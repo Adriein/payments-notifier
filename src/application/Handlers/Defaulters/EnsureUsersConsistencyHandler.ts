@@ -1,15 +1,16 @@
 import { EnsureUsersConsistencyCommand } from '../../../domain/commands/Defaulters/EnsureUsersConsistencyCommand';
-import { User } from '../../../domain/entities/User.entity';
+import { Log } from '../../../domain/Decorators/Log';
 import { ICommand } from '../../../domain/interfaces';
-import { IRepository } from '../../../domain/interfaces/IRepository';
+import { UserRepository } from '../../../infraestructure/Data/Repositories/UserRepository';
 
 export class EnsureUsersConsistencyHandler {
-  constructor(private repository: IRepository<User>) {}
+  constructor(private repository: UserRepository) {}
 
+  @Log(process.env.LOG_LEVEL)
   public async handle(comm: ICommand): Promise<void> {
     const command = comm as EnsureUsersConsistencyCommand;
 
-    const users = await this.repository.find({});
+    const users = await this.repository.findAll();
 
     const emails = command.rows.map((row) => row.email);
 

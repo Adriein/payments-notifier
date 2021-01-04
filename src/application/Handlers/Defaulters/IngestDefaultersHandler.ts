@@ -1,32 +1,38 @@
 import { IngestDefaultersCommand } from '../../../domain/commands/Defaulters/IngestDefaultersCommand';
+import { Log } from '../../../domain/Decorators/Log';
 import { User } from '../../../domain/entities/User.entity';
 import { ICommand, IHandler } from '../../../domain/interfaces';
-import { IRepository } from '../../../domain/interfaces/IRepository';
 import { Email } from '../../../domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../../domain/VO/Pricing.vo';
+import { UserRepository } from '../../../infraestructure/Data/Repositories/UserRepository';
 
 export class IngestDefaultersHandler implements IHandler<void> {
-  constructor(private repository: IRepository<User>) {}
+  constructor(private repository: UserRepository) {}
 
+  @Log(process.env.LOG_LEVEL)
   public async handle(commands: ICommand): Promise<void> {
     const command = commands as IngestDefaultersCommand;
 
-    const userOnDb = await this.repository.findOne(command.name);
+    const userOnDb = await this.repository.findByEmail(
+      new Email(command.email)
+    );
 
     if (userOnDb) {
       const email = new Email(command.email).email;
       const pricing = new Pricing(command.pricing);
       const lastPaymentDate = new LastPaymentDate(command.lastPayment);
 
-      const hasSubstantialChanges = this.hasSubstantialChange(
-        email,
-        pricing.pricingType,
-        lastPaymentDate.date,
-        userOnDb
+      /*If the payment date is the field that changed we don't have to
+       mantain the old state otherwise we have to keep the state as it's persisted in the db*/
+
+      const dateUptaded = this.paymentDateUpdated(
+        userOnDb.getPaymentDate(),
+        lastPaymentDate.date
+        
       );
 
-      if (hasSubstantialChanges) {
+      if (dateUptaded) {
         userOnDb.resetNotificationState();
       }
 
@@ -53,16 +59,11 @@ export class IngestDefaultersHandler implements IHandler<void> {
     await this.repository.save(user);
   }
 
-  private hasSubstantialChange(
-    email: string,
-    pricing: string,
-    lastPaymentDate: Date,
-    user: User
+  private paymentDateUpdated(
+    storedPaymentDate: Date,
+    providedPaymentDate: Date
   ): boolean {
-    if (
-      (email !== user.getEmail() || pricing !== user.getPricing(),
-      lastPaymentDate.valueOf() !== user.getPaymentDate().valueOf())
-    ) {
+    if (storedPaymentDate.valueOf() !== providedPaymentDate.valueOf()) {
       return true;
     }
 

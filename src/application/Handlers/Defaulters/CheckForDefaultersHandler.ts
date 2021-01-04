@@ -1,17 +1,16 @@
-import { User } from '../../../domain/entities/User.entity';
 import { ICommand, IHandler, INotifier } from '../../../domain/interfaces';
-import { IRepository } from '../../../domain/interfaces/IRepository';
 import { AboutToExpire } from '../../../domain/templates/AboutToExpire.template';
 import { Expired } from '../../../domain/templates/Expired.template';
+import { UserRepository } from '../../../infraestructure/Data/Repositories/UserRepository';
 
 export class CheckForDefaultersHandler implements IHandler<void> {
   constructor(
     private notifier: INotifier,
-    private repository: IRepository<User>
+    private repository: UserRepository
   ) {}
 
   public async handle(command: ICommand): Promise<void> {
-    const users = await this.repository.find({});
+    const users = await this.repository.findAll();
 
     for (const user of users) {      
       if (user.isTwoDaysBeforeExpiration() && !user.getIsWarned()) {
