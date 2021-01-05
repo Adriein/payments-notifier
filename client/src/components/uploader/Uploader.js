@@ -3,6 +3,7 @@ import server from '../../api/server';
 import { DEFAULT, ERROR, SUCCESS } from '../../constants';
 import './Uploader.css';
 import Loader from '../Loader/Loader';
+import Copyright from '../copyright/Copyright';
 
 export default function Uploader() {
   const [submited, setSubmited] = useState({ status: DEFAULT, msg: '' });
@@ -55,19 +56,22 @@ export default function Uploader() {
   };
 
   return (
-    <div className="uploader">
-      {submited.status === DEFAULT && !isLoading && (
-        <div>
-          <input id="uploader" type="file" hidden="hidden" />
-          <button onClick={handleUpload} className="button button--primary">
-            Seleccionar
-          </button>
-          <span className="span">Ningún excel seleccionado...</span>
-        </div>
-      )}
-      {submited.status === SUCCESS && !isLoading && <p>{submited.msg} ✅</p>}
-      {submited.status === ERROR && !isLoading && <p>{submited.msg} ❌</p>}
-      {isLoading && <Loader />}
+    <div className="center">
+      <div className="uploader">
+        {submited.status === DEFAULT && !isLoading && (
+          <div>
+            <input id="uploader" type="file" hidden="hidden" />
+            <button onClick={handleUpload} className="button button--primary">
+              Seleccionar
+            </button>
+            <span className="span">Ningún excel seleccionado...</span>
+          </div>
+        )}
+        {submited.status === SUCCESS && !isLoading && <p>{submited.msg} ✅</p>}
+        {submited.status === ERROR && !isLoading && <p>{submited.msg} ❌</p>}
+        {isLoading && <Loader />}
+      </div>
+      <Copyright />
     </div>
   );
 }
