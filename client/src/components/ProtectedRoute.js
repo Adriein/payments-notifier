@@ -4,11 +4,12 @@ import { Context as AuthContext } from '../context/AuthContext';
 
 export default function ProtectedRoute({ component: Component, ...rest }) {
   const {getToken}= useContext(AuthContext);
+  console.log(getToken);
   return (
     <Route
       {...rest}
       render={(props) =>
-        getToken() ? (
+        getToken ? (
           <Component {...props} />
         ) : (
           <Redirect

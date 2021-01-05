@@ -6,12 +6,18 @@ import { Email } from '../VO/Email.vo';
 export class UserFinder {
   constructor(private repository: IUserRepository) {}
 
-  public async find(email: string): Promise<User> {
-    const user = await this.repository.findByEmail(new Email(email));
+  public async find(
+    email: string | undefined = undefined
+  ): Promise<User | User[]> {
+    if (email) {
+      const user = await this.repository.findByEmail(new Email(email));
 
-    if (!user) {
-      throw new UserNotExistError(email);
+      if (!user) {
+        throw new UserNotExistError(email);
+      }
+      return user;
     }
-    return user;
+
+    return await this.repository.findAll();
   }
 }

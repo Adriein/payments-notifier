@@ -13,14 +13,16 @@ const authReducer = (state, action) => {
 };
 
 const signin = (dispatch) => {
-  return async ({ username, password }) => {
+  return async ({ email, password }) => {
     try {
       const [response] = (
-        await server.post('api/auth/signin', {
-          username,
+        await server.post('/signin', {
+          email,
           password,
         })
       ).data;
+
+      console.log(response);
 
       dispatch({ type: 'signin' });
     } catch (error) {

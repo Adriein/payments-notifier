@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Login.css';
 
 import signinImg from '../../img/log.svg';
 import registerImg from '../../img/register.svg';
 
 import useInputState from '../../hooks/useInputState';
+import { Context as AuthContext } from '../../context/AuthContext';
+import { Redirect } from 'react-router-dom';
 
 import {
   FaUser,
@@ -15,11 +17,16 @@ import {
 } from 'react-icons/fa';
 
 export default function Login() {
+  const { signin, getToken } = useContext(AuthContext);
   const [form, handleChange, reset] = useInputState({
     username: '',
     email: '',
     password: '',
   });
+
+  if (getToken) {
+    return <Redirect to="/home" />;
+  }
 
   const handleRegister = (event) => {
     event.preventDefault();
@@ -27,7 +34,8 @@ export default function Login() {
 
   const handleSignin = (event) => {
     event.preventDefault();
-    console.log(form);
+    signin({ email: form.email, password: form.password });
+    reset();
   };
 
   //Handle animations
@@ -145,7 +153,8 @@ export default function Login() {
           <div className="content">
             <h3>Eres nuevo ?</h3>
             <p>
-              Pincha abajo para registrarte y empezar a disfrutar de todas las ventajas que te ofrece IvPay
+              Pincha abajo para registrarte y empezar a disfrutar de todas las
+              ventajas que te ofrece IvPay
             </p>
             <button
               onClick={handleRegisterForm}
@@ -161,7 +170,8 @@ export default function Login() {
           <div className="content">
             <h3>Ya eres uno de nosotros ?</h3>
             <p>
-              Genial, pincha abajo y entra para usar todas las ventajas de la app
+              Genial, pincha abajo y entra para usar todas las ventajas de la
+              app
             </p>
             <button
               onClick={handleLoginForm}

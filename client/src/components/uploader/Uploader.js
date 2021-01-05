@@ -4,6 +4,7 @@ import { DEFAULT, ERROR, SUCCESS } from '../../constants';
 import './Uploader.css';
 import Loader from '../Loader/Loader';
 import Copyright from '../copyright/Copyright';
+import { UserTable } from '../UserTable/UserTable';
 
 export default function Uploader() {
   const [submited, setSubmited] = useState({ status: DEFAULT, msg: '' });
@@ -72,6 +73,7 @@ export default function Uploader() {
         {isLoading && <Loader />}
       </div>
       <Copyright />
+      <UserTable/>
     </div>
   );
 }
