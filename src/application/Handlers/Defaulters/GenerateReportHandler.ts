@@ -18,12 +18,12 @@ export class GenerateReportHandler implements IHandler<void> {
     };
 
     for (const user of usersOnDb) {
-      if (user.getIsNotified()) {
+      if (user.isNotified()) {
         report['summary']['defaulters'] = report['summary']['defaulters'] + 1;
         report['defaulters'] = [...report['defaulters'], user];
         continue;
       }
-      if (user.getIsWarned()) {
+      if (user.isWarned()) {
         report['summary']['notifieds'] = report['summary']['notifieds'] + 1;
         report['notifieds'] = [...report['notifieds'], user];
       }

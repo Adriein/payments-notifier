@@ -3,8 +3,9 @@ import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
 import { Pricing } from '../VO/Pricing.vo';
 import dayjs from 'dayjs';
 import { PricingType } from '../constants';
+import { ISerializable } from '../interfaces/ISerializable';
 
-export class Subscription {
+export class Subscription implements ISerializable {
   public static build(
     pricing: Pricing,
     lastPayment: LastPaymentDate,
@@ -20,18 +21,18 @@ export class Subscription {
     );
   }
   constructor(
-    private id: string,
-    private pricing: Pricing,
-    private lastPayment: LastPaymentDate,
-    private isWarned: boolean,
-    private isNotified: boolean
+    private _id: string,
+    private _pricing: Pricing,
+    private _lastPayment: LastPaymentDate,
+    private _isWarned: boolean,
+    private _isNotified: boolean
   ) {}
 
-  public isDefaulter(): boolean {
+  public isDefaulter = (): boolean => {
     const today = dayjs(new Date());
 
-    const maxDate = dayjs(this.lastPayment.date).add(
-      this.pricingToMonths(this.pricing.pricingType),
+    const maxDate = dayjs(this._lastPayment.date()).add(
+      this.pricingToMonths(this._pricing.pricingType),
       'month'
     );
 
@@ -40,12 +41,12 @@ export class Subscription {
     }
 
     return false;
-  }
+  };
 
-  public isTwoDaysBeforeExpiration(): boolean {
+  public isTwoDaysBeforeExpiration = (): boolean => {
     const today = dayjs(new Date());
-    const maxDate = dayjs(this.lastPayment.date)
-      .add(this.pricingToMonths(this.pricing.pricingType), 'month')
+    const maxDate = dayjs(this._lastPayment.date())
+      .add(this.pricingToMonths(this._pricing.pricingType), 'month')
       .subtract(2, 'day');
 
     if (maxDate.isSame(today, 'day')) {
@@ -53,16 +54,16 @@ export class Subscription {
     }
 
     return false;
-  }
+  };
 
-  public resetNotificationState(): void {
-    if (this.isNotified) {
+  public resetNotificationState = (): void => {
+    if (this._isNotified) {
       this.setIsNotified();
     }
-    if (this.isWarned) {
+    if (this._isWarned) {
       this.setIsWarned();
     }
-  }
+  };
 
   private pricingToMonths(pricing: string) {
     switch (pricing) {
@@ -75,31 +76,51 @@ export class Subscription {
     }
   }
 
-  public getPricing(): string {
-    return this.pricing.pricingType;
+  private pricingBeautifier(pricing: string) {
+    switch (pricing) {
+      case PricingType.monthly:
+        return 'mensual';
+      case PricingType.quarterly:
+        return 'trimestral';
+    }
   }
 
-  public getPaymentDate(): Date {
-    return this.lastPayment.date;
-  }
+  public id = (): string => {
+    return this._id;
+  };
 
-  public getIsNotified(): boolean {
-    return this.isNotified;
-  }
+  public pricing = (): string => {
+    return this._pricing.pricingType;
+  };
 
-  public getIsWarned(): boolean {
-    return this.isWarned;
-  }
+  public paymentDate = (): Date => {
+    return this._lastPayment.date();
+  };
+
+  public isNotified = (): boolean => {
+    return this._isNotified;
+  };
+
+  public isWarned = (): boolean => {
+    return this._isWarned;
+  };
 
   public setIsNotified(): void {
-    this.isNotified = !this.isNotified;
+    this._isNotified = !this._isNotified;
   }
 
   public setIsWarned(): void {
-    this.isWarned = !this.isWarned;
+    this._isWarned = !this._isWarned;
   }
 
-  public getId(): string {
-    return this.id;
-  }
+  public serialize = (): Object => {
+    return {
+      pricing: this.pricingBeautifier(this.pricing()),
+      lastPayment: `${this.paymentDate().getDate()}/${
+        this.paymentDate().getMonth() + 1
+      }/${this.paymentDate().getFullYear()}`,
+      isWarned: this.isWarned() ? 'Si' : 'No',
+      isNotified: this.isNotified() ? 'Si' : 'No',
+    };
+  };
 }

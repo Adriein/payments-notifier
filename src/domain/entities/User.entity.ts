@@ -1,17 +1,23 @@
 import { v4 as uuidv4 } from 'uuid';
 import { SubscriptionError } from '../errors/SubscriptionError';
-import { ISerialize } from '../interfaces/ISerialize';
+import { ISerializable } from '../interfaces/ISerializable';
 import { Email } from '../VO/Email.vo';
 import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
 import { Password } from '../VO/Password.vo';
 import { Pricing } from '../VO/Pricing.vo';
 import { Subscription } from './Subscription.entity';
+import { UserConfig } from './UserConfig.entity';
 
-export class User implements ISerialize {
-  public static build(name: string, email: Email): User {
-    return new User(uuidv4(), name, email);
+export class User implements ISerializable {
+  public static build(name: string, email: Email, config: UserConfig): User {
+    return new User(uuidv4(), name, email, config);
   }
-  constructor(private id: string, private name: string, private email: Email) {}
+  constructor(
+    private id: string,
+    private name: string,
+    private email: Email,
+    private config: UserConfig
+  ) {}
 
   private subscription?: Subscription;
   private password?: string;
@@ -100,31 +106,31 @@ export class User implements ISerialize {
     throw new SubscriptionError();
   }
 
-  public getPricing(): string {
+  public get pricing(): () => string {
     if (this.subscription) {
-      return this.subscription.getPricing();
+      return this.subscription.pricing;
     }
 
     throw new SubscriptionError();
   }
 
-  public getPaymentDate(): Date {
+  public get paymentDate(): () => Date {
     if (this.subscription) {
-      return this.subscription.getPaymentDate();
+      return this.subscription.paymentDate;
     }
     throw new SubscriptionError();
   }
 
-  public getIsNotified(): boolean {
+  public get isNotified(): () => boolean {
     if (this.subscription) {
-      return this.subscription.getIsNotified();
+      return this.subscription.isNotified;
     }
     throw new SubscriptionError();
   }
 
-  public getIsWarned(): boolean {
+  public get isWarned(): () => boolean {
     if (this.subscription) {
-      return this.subscription.getIsWarned();
+      return this.subscription.isWarned;
     }
 
     throw new SubscriptionError();
@@ -150,7 +156,23 @@ export class User implements ISerialize {
     if (!this.subscription) {
       return () => null;
     }
-    return this.subscription!.getId;
+    return this.subscription!.id;
+  }
+
+  public get sendNotifications(): () => boolean {
+    return this.config.getSendNotifications;
+  }
+
+  public get sendWarnings(): () => boolean {
+    return this.config.getSendWarnings;
+  }
+
+  public get lang(): () => string {
+    return this.config.getLang;
+  }
+
+  public get role(): () => string {
+    return this.config.getRole;
   }
 
   public serialize(): Object {
@@ -158,14 +180,9 @@ export class User implements ISerialize {
       id: this.id,
       username: this.name,
       email: this.email.email,
-      subscription: this.subscription
-        ? {
-            pricing: this.getPricing(),
-            lastPayment: this.getPaymentDate(),
-            isWarned: this.getIsWarned(),
-            isNotified: this.getIsNotified(),
-          }
-        : null,
+      defaulter: this.subscription ? (this.isDefaulter() ? 'Si' : 'No') : null,
+      subscription: this.subscription ? this.subscription.serialize() : null,
+      config: this.config.serialize(),
     };
   }
 }

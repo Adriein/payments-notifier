@@ -13,7 +13,7 @@ export class CheckForDefaultersHandler implements IHandler<void> {
     const users = await this.repository.findAll();
 
     for (const user of users) {      
-      if (user.isTwoDaysBeforeExpiration() && !user.getIsWarned()) {
+      if (user.isTwoDaysBeforeExpiration() && !user.isWarned()) {
         const template = new AboutToExpire(user.getName()).generate();
 
         await this.notifier.notify(user.getEmail(), template);
@@ -25,7 +25,7 @@ export class CheckForDefaultersHandler implements IHandler<void> {
         continue;
       }
 
-      if (!user.isDefaulter() || user.getIsNotified()) {
+      if (!user.isDefaulter() || user.isNotified()) {
         continue;
       }
 

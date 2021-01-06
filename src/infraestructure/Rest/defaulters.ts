@@ -8,7 +8,7 @@ import { FileError } from '../../domain/errors/FileError';
 import { ExcelService } from '../Excel/ExcelService';
 import fileUpload from 'express-fileupload';
 import fs from 'fs';
-import { FILES_PATH } from '../../constants';
+import { FILES_PATH } from '../../domain/constants';
 import { requireAuth } from '../../middlewares/auth';
 
 export type DefaultersExcelContent = {

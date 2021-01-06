@@ -10,8 +10,9 @@ import fs from 'fs';
 import { errorHandler } from './middlewares';
 import { defaulters } from './infraestructure/Rest/defaulters';
 import Database from './infraestructure/Data/Database';
-import { FILES_PATH } from './constants';
+import { FILES_PATH } from './domain/constants';
 import { auth } from './infraestructure/Rest/auth';
+import { users } from './infraestructure/Rest/users';
 
 export default class App {
   public init() {
@@ -57,6 +58,7 @@ export default class App {
     );
     app.use(fileUpload());
     app.use('/api/v1', auth);
+    app.use('/api/v1', users);
     app.use('/api/v1', defaulters);
     app.use(errorHandler);
 

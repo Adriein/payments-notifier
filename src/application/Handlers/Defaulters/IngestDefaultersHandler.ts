@@ -1,6 +1,8 @@
 import { IngestDefaultersCommand } from '../../../domain/commands/Defaulters/IngestDefaultersCommand';
+import { LANG_ES, USER_ROLE } from '../../../domain/constants';
 import { Log } from '../../../domain/Decorators/Log';
 import { User } from '../../../domain/entities/User.entity';
+import { UserConfig } from '../../../domain/entities/UserConfig.entity';
 import { ICommand, IHandler } from '../../../domain/interfaces';
 import { Email } from '../../../domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../domain/VO/LastPaymentDate.vo';
@@ -27,29 +29,42 @@ export class IngestDefaultersHandler implements IHandler<void> {
        mantain the old state otherwise we have to keep the state as it's persisted in the db*/
 
       const dateUptaded = this.paymentDateUpdated(
-        userOnDb.getPaymentDate(),
-        lastPaymentDate.date
-        
+        userOnDb.paymentDate(),
+        lastPaymentDate.date()
       );
 
       if (dateUptaded) {
         userOnDb.resetNotificationState();
       }
 
-      const user = new User(userOnDb.getId(), command.name, new Email(email));
+      const user = new User(
+        userOnDb.getId(),
+        command.name,
+        new Email(email),
+        new UserConfig(
+          userOnDb.lang(),
+          userOnDb.role(),
+          userOnDb.sendNotifications(),
+          userOnDb.sendWarnings()
+        )
+      );
 
       user.createSubscription(
         pricing,
         lastPaymentDate,
-        userOnDb.getIsWarned(),
-        userOnDb.getIsNotified()
+        userOnDb.isWarned(),
+        userOnDb.isNotified()
       );
 
       await this.repository.update(user);
       return;
     }
 
-    const user = User.build(command.name, new Email(command.email));
+    const user = User.build(
+      command.name,
+      new Email(command.email),
+      new UserConfig(LANG_ES, USER_ROLE)
+    );
 
     user.createSubscription(
       new Pricing(command.pricing),

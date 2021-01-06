@@ -1,3 +1,35 @@
-export class UserConfig {
-    constructor(private sendNotifications: boolean, private sendWarnings: boolean, lang: string, role: string){}
+import { ISerializable } from '../interfaces/ISerializable';
+
+export class UserConfig implements ISerializable {
+  constructor(
+    private lang: string,
+    private role: string,
+    private sendNotifications: boolean = true,
+    private sendWarnings: boolean = false
+  ) {}
+
+  public getSendNotifications = (): boolean => {
+    return this.sendNotifications;
+  };
+
+  public getSendWarnings = (): boolean => {
+    return this.sendWarnings;
+  };
+
+  public getLang = (): string => {
+    return this.lang;
+  };
+
+  public getRole = (): string => {
+    return this.role;
+  };
+
+  public serialize = (): Object => {
+    return {
+      sendNotifications: this.getSendNotifications() ? 'Si' : 'No',
+      sendWarnings: this.getSendWarnings() ? 'Si' : 'No',
+      language: this.getLang(),
+      role: this.getRole(),
+    };
+  };
 }

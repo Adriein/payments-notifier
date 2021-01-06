@@ -1,10 +1,11 @@
-import { SUBSCRIPTIONS_TABLE } from '../../../domain/constants';
+import { CONFIG_TABLE, SUBSCRIPTIONS_TABLE } from '../../../domain/constants';
 import { Log } from '../../../domain/Decorators/Log';
 import { User } from '../../../domain/entities/User.entity';
 import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
 import { Email } from '../../../domain/VO/Email.vo';
 import { UserMapper } from '../Mappers/UserMapper';
 import { GenericRepository } from './GenericRepository';
+import { v4 as uuidv4 } from 'uuid';
 
 export class UserRepository
   extends GenericRepository<User>
@@ -21,18 +22,11 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async findByEmail(email: Email): Promise<User | undefined> {
     const { rows } = await this.db.query(
-      `SELECT * FROM ${this.entity} WHERE email='${email.email}';`
+      `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE email='${email.email}';`
     );
 
     if (rows.length < 1) {
       return undefined;
-    }
-
-    if (rows[0].subscription_id !== null) {
-      const result = await this.db.query(
-        `SELECT * FROM ${SUBSCRIPTIONS_TABLE} WHERE id='${rows[0].subscription_id}';`
-      );
-      return this.mapper.domain(rows[0], result.rows[0]);
     }
 
     return this.mapper.domain(rows[0]);
@@ -40,44 +34,56 @@ export class UserRepository
 
   @Log(process.env.LOG_LEVEL)
   async findAll(): Promise<User[]> {
-    const { rows } = await this.db.query(`SELECT * FROM ${this.entity}`);
+    const { rows } = await this.db.query(
+      `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id;`
+    );
 
     return rows.map((row) => this.mapper.domain(row));
   }
-  
+
   @Log(process.env.LOG_LEVEL)
   async save(user: User): Promise<void> {
     const datamodel = this.mapper.datamodel(user);
 
+    await this.db.query(this.buildInsertQuery(datamodel));
+
+    await this.db.query(
+      `INSERT INTO ${CONFIG_TABLE} VALUES ($1, $2, $3, $4, $5, $6);`,
+      [
+        uuidv4(),
+        user.lang(),
+        user.role(),
+        user.sendNotifications(),
+        user.sendWarnings(),
+        user.getId(),
+      ]
+    );
+
     if (user.hasSubscription()) {
       await this.db.query(
-        `INSERT INTO ${SUBSCRIPTIONS_TABLE} VALUES ('${user.subscriptionId()}', '${user.getPricing()}', '${user.getPaymentDate()}', '${user.getIsWarned()}', '${user.getIsNotified()}');`
+        `INSERT INTO ${SUBSCRIPTIONS_TABLE} VALUES ('${user.subscriptionId()}', '${user.pricing()}', '${user.paymentDate()}', '${user.isWarned()}', '${user.isNotified()}', '${user.getId()}');`
       );
     }
-
-    await this.db.query(this.buildInsertQuery(datamodel));
   }
 
   @Log(process.env.LOG_LEVEL)
   async update(user: User): Promise<void> {
-
     if (user.hasSubscription()) {
       await this.db.query(
         `UPDATE ${SUBSCRIPTIONS_TABLE}
-         SET pricing='${user.getPricing()}', payment_date='${user.getPaymentDate()}', warned='${user.getIsWarned()}', notified='${user.getIsNotified()}'
-         WHERE id='${user.subscriptionId()}';`
+         SET pricing='${user.pricing()}', payment_date='${user.paymentDate()}', warned='${user.isWarned()}', notified='${user.isNotified()}', '${user.getId()}' WHERE id='${user.subscriptionId()}';`
       );
     }
 
     await this.db.query(
       `UPDATE ${this.entity}
-       SET username='${user.getName()}', email='${user.getEmail()}', password='${user.getPassword()}', subscription_id='${user.subscriptionId()}'
+       SET username='${user.getName()}', email='${user.getEmail()}', password='${user.getPassword()}'
        WHERE id='${user.getId()}';`
     );
   }
 
   @Log(process.env.LOG_LEVEL)
-  async delete(subscriptionId: string): Promise<void> {
-    await this.db.query(`DELETE FROM ${SUBSCRIPTIONS_TABLE} WHERE id='${subscriptionId}'`);
+  async delete(id: string): Promise<void> {
+    await this.db.query(`DELETE FROM ${this.entity} WHERE id='${id}'`);
   }
 }

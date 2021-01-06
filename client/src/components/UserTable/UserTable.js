@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
+
+import { Context as UsersContext } from '../../context/UsersContext';
 
 import './UserTable.css';
 
 export const UserTable = () => {
+  const { buildReport, state } = useContext(UsersContext);
+  useEffect(() => {
+    buildReport();
+  }, []);
+
+  console.log(state);
+
   return (
     <div className="container__table">
       <div>
@@ -21,36 +30,24 @@ export const UserTable = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>No</td>
-              <td>Adri</td>
-              <td>adria.claret@gmail.com</td>
-              <td>mensual</td>
-              <td>08/12/2020</td>
-              <td>No</td>
-            </tr>
-            <tr>
-              <td>No</td>
-              <td>Adri</td>
-              <td>adria.claret@gmail.com</td>
-              <td>mensual</td>
-              <td>08/12/2020</td>
-              <td>No</td>
-            </tr>
-            <tr>
-              <td>No</td>
-              <td>Adri</td>
-              <td>adria.claret@gmail.com</td>
-              <td>mensual</td>
-              <td>08/12/2020</td>
-              <td>No</td>
-            </tr>
+            {state.users.map((user) => {
+              return (
+                <tr>
+                  <td>{user.defaulter}</td>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>{user.subscription.pricing}</td>
+                  <td>{user.subscription.lastPayment}</td>
+                  <td>{user.subscription.isNotified}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
-      <div className="styled-footer">
+      {/* <div className="styled-footer">
         <p>Este es un correo automático de @IvanMFit</p>
-      </div>
+      </div> */}
     </div>
   );
 };
