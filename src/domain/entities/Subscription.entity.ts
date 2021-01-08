@@ -114,11 +114,18 @@ export class Subscription implements ISerializable {
   }
 
   public serialize = (): Object => {
+    const ye = new Intl.DateTimeFormat('es', { year: 'numeric' }).format(
+      this.paymentDate()
+    );
+    const mo = new Intl.DateTimeFormat('es', { month: '2-digit' }).format(
+      this.paymentDate()
+    );
+    const da = new Intl.DateTimeFormat('es', { day: '2-digit' }).format(
+      this.paymentDate()
+    );
     return {
       pricing: this.pricingBeautifier(this.pricing()),
-      lastPayment: `${this.paymentDate().getDate()}/${
-        this.paymentDate().getMonth() + 1
-      }/${this.paymentDate().getFullYear()}`,
+      lastPayment: `${da}/${mo}/${ye}`,
       isWarned: this.isWarned() ? 'Si' : 'No',
       isNotified: this.isNotified() ? 'Si' : 'No',
     };

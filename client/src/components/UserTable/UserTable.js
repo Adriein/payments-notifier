@@ -1,11 +1,10 @@
 import React, { useEffect, useContext } from 'react';
-
 import { Context as UsersContext } from '../../context/UsersContext';
 
 import './UserTable.css';
 
 export const UserTable = () => {
-  const { buildReport, state } = useContext(UsersContext);
+  const { settings, buildReport, state } = useContext(UsersContext);
   useEffect(() => {
     buildReport();
   }, []);
@@ -16,7 +15,8 @@ export const UserTable = () => {
     <div className="container__table">
       <div>
         <div className="config__table">
-          <p>⚙️</p>
+          <p>El preaviso está configurado a 5 días</p>
+          <div onClick={settings}>⚙️</div>
         </div>
         <table className="styled-table">
           <thead>
@@ -27,6 +27,7 @@ export const UserTable = () => {
               <th>Tipo de tarifa 💰</th>
               <th>Fecha último pago 📅</th>
               <th>Notificado 📢</th>
+              <th>Notificaciones activadas 🔉</th>
             </tr>
           </thead>
           <tbody>
@@ -39,15 +40,21 @@ export const UserTable = () => {
                   <td>{user.subscription.pricing}</td>
                   <td>{user.subscription.lastPayment}</td>
                   <td>{user.subscription.isNotified}</td>
+                  <td>
+                    {state.settings ? (
+                      <input type="checkbox" />
+                    ) : (
+                      user.config.sendNotifications
+                    )}
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
-      {/* <div className="styled-footer">
-        <p>Este es un correo automático de @IvanMFit</p>
-      </div> */}
     </div>
   );
 };
+
+export default UserTable;

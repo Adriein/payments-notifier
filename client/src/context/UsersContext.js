@@ -5,6 +5,8 @@ const usersReducer = (state, action) => {
   switch (action.type) {
     case 'build_calculated_report':
       return { ...state, users: [...action.payload] };
+    case 'activate_settings':
+      return { ...state, settings: !state.settings };
     case 'add_error':
       return { ...state, error: action.payload };
     default:
@@ -23,8 +25,14 @@ const buildReport = (dispatch) => {
   };
 };
 
+const settings = (dispatch) => {
+  return () => {
+    dispatch({ type: 'activate_settings' });
+  };
+};
+
 export const { Provider, Context } = createDataContext(
   usersReducer,
-  { buildReport },
-  { users: [], error: undefined }
+  { buildReport, settings },
+  { users: [], error: undefined, settings: false }
 );

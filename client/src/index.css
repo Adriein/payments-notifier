@@ -1,3 +1,11 @@
+:root {
+  --main-color: #009879;
+  --dark-shades: #293632;
+  --dark-accent: #999b74;
+  --light-accent: #93bcb2;
+  --light-shades: #fbfbfa;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -11,10 +19,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #8190C3;
+  background-color: var(--dark-shades);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+

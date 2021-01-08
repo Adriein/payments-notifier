@@ -3,8 +3,6 @@ import server from '../../api/server';
 import { DEFAULT, ERROR, SUCCESS } from '../../constants';
 import './Uploader.css';
 import Loader from '../Loader/Loader';
-import Copyright from '../copyright/Copyright';
-import { UserTable } from '../UserTable/UserTable';
 
 export default function Uploader() {
   const [submited, setSubmited] = useState({ status: DEFAULT, msg: '' });
@@ -57,7 +55,12 @@ export default function Uploader() {
   };
 
   return (
-    <div className="center">
+    <div>
+      {/* <div class="drop-zone">
+        <span class="drop-zone__prompt">Arrastra un archivo o pincha para subir</span>
+        <input type="file" name="myFile" class="drop-zone__input" />
+        <div className="drop-zone__thumb">archivo defaulters.xlsx</div>
+      </div> */}
       <div className="uploader">
         {submited.status === DEFAULT && !isLoading && (
           <div>
@@ -72,8 +75,6 @@ export default function Uploader() {
         {submited.status === ERROR && !isLoading && <p>{submited.msg} ❌</p>}
         {isLoading && <Loader />}
       </div>
-      <Copyright />
-      <UserTable/>
     </div>
   );
 }
