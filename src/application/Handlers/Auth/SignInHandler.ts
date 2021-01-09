@@ -1,4 +1,5 @@
 import { SignInCommand } from '../../../domain/commands/Auth/SignInCommand';
+import { Log } from '../../../domain/Decorators/Log';
 import { User } from '../../../domain/entities/User.entity';
 import { NotAuthorizedError } from '../../../domain/errors/NotAuthorizedError';
 import { UserNotExistError } from '../../../domain/errors/UserNotExistError';
@@ -10,6 +11,7 @@ export class SignInHandler implements IHandler<void> {
   private cryptoService = new CryptoService();
   constructor(private finder: UserFinder) {}
 
+  @Log(process.env.LOG_LEVEL)
   public async handle(comm: ICommand): Promise<void> {
     const command = comm as SignInCommand;
 

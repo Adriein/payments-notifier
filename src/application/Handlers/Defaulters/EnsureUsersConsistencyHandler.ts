@@ -1,10 +1,10 @@
 import { EnsureUsersConsistencyCommand } from '../../../domain/commands/Defaulters/EnsureUsersConsistencyCommand';
 import { Log } from '../../../domain/Decorators/Log';
 import { ICommand } from '../../../domain/interfaces';
-import { UserRepository } from '../../../infraestructure/Data/Repositories/UserRepository';
+import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
 
 export class EnsureUsersConsistencyHandler {
-  constructor(private repository: UserRepository) {}
+  constructor(private repository: IUserRepository) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(comm: ICommand): Promise<void> {

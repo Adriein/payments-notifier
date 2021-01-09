@@ -1,13 +1,15 @@
+import { Log } from '../../../domain/Decorators/Log';
 import { ICommand, IHandler, INotifier } from '../../../domain/interfaces';
+import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
 import { Report, ReportType } from '../../../domain/templates/Report.template';
-import { UserRepository } from '../../../infraestructure/Data/Repositories/UserRepository';
 
 export class GenerateReportHandler implements IHandler<void> {
   constructor(
     private notifier: INotifier,
-    private usersRepository: UserRepository
+    private usersRepository: IUserRepository
   ) {}
 
+  @Log(process.env.LOG_LEVEL)
   public async handle(command: ICommand): Promise<void> {
     const usersOnDb = await this.usersRepository.findAll();
 

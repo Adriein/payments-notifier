@@ -22,7 +22,7 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async findByEmail(email: Email): Promise<User | undefined> {
     const { rows } = await this.db.query(
-      `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE email='${email.email}';`
+      `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE email='${email.email}';`
     );
 
     if (rows.length < 1) {
@@ -35,7 +35,7 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async findAll(): Promise<User[]> {
     const { rows } = await this.db.query(
-      `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id;`
+      `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id;`
     );
 
     return rows.map((row) => this.mapper.domain(row));
@@ -85,5 +85,15 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async delete(id: string): Promise<void> {
     await this.db.query(`DELETE FROM ${this.entity} WHERE id='${id}'`);
+  }
+
+  @Log(process.env.LOG_LEVEL)
+  async updateUserNotifications(
+    configId: string,
+    sendNotifications: boolean
+  ): Promise<void> {
+    await this.db.query(
+      `UPDATE ${CONFIG_TABLE} SET send_notifications=${sendNotifications} WHERE id='${configId}';`
+    );
   }
 }

@@ -1,14 +1,16 @@
+import { Log } from '../../../domain/Decorators/Log';
 import { ICommand, IHandler, INotifier } from '../../../domain/interfaces';
+import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
 import { AboutToExpire } from '../../../domain/templates/AboutToExpire.template';
 import { Expired } from '../../../domain/templates/Expired.template';
-import { UserRepository } from '../../../infraestructure/Data/Repositories/UserRepository';
 
 export class CheckForDefaultersHandler implements IHandler<void> {
   constructor(
     private notifier: INotifier,
-    private repository: UserRepository
+    private repository: IUserRepository
   ) {}
 
+  @Log(process.env.LOG_LEVEL)
   public async handle(command: ICommand): Promise<void> {
     const users = await this.repository.findAll();
 

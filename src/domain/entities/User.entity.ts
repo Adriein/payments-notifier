@@ -175,6 +175,10 @@ export class User implements ISerializable {
     return this.config.getRole;
   }
 
+  public get configId(): () => string | undefined {
+    return this.config.getId;
+  }
+
   public serialize(): Object {
     return {
       id: this.id,

@@ -25,6 +25,18 @@ const buildReport = (dispatch) => {
   };
 };
 
+const changeNotifications = (dispatch) => {
+  return async (updatedUser) => {
+    try {
+      await server.post('/users/config/notifications', updatedUser);
+      const response = (await server.get('/calculatedReport')).data;
+      dispatch({ type: 'build_calculated_report', payload: response });
+    } catch (error) {
+      dispatch({ type: 'add_error', payload: 'Error fetching report' });
+    }
+  };
+};
+
 const settings = (dispatch) => {
   return () => {
     dispatch({ type: 'activate_settings' });
@@ -33,6 +45,6 @@ const settings = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   usersReducer,
-  { buildReport, settings },
+  { buildReport, settings, changeNotifications },
   { users: [], error: undefined, settings: false }
 );

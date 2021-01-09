@@ -5,7 +5,8 @@ export class UserConfig implements ISerializable {
     private lang: string,
     private role: string,
     private sendNotifications: boolean = true,
-    private sendWarnings: boolean = false
+    private sendWarnings: boolean = false,
+    private id?: string
   ) {}
 
   public getSendNotifications = (): boolean => {
@@ -22,6 +23,10 @@ export class UserConfig implements ISerializable {
 
   public getRole = (): string => {
     return this.role;
+  };
+
+  public getId = (): string | undefined => {
+    return this.id;
   };
 
   public serialize = (): Object => {

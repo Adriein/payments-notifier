@@ -17,6 +17,7 @@ type UsersTableJoined = {
   payment_date: string;
   warned: boolean;
   notified: boolean;
+  config_id: string;
   language: string;
   role: string;
   send_notifications: boolean;
@@ -31,10 +32,7 @@ type UsersTable = {
 };
 
 export class UserMapper implements IMapper<User> {
-  @Log(process.env.LOG_LEVEL)
-  public domain(
-    userDatamodel: UsersTableJoined,
-  ): User {
+  public domain(userDatamodel: UsersTableJoined): User {
     const user = new User(
       userDatamodel.id,
       userDatamodel.username,
@@ -43,7 +41,8 @@ export class UserMapper implements IMapper<User> {
         userDatamodel.language,
         userDatamodel.role,
         userDatamodel.send_notifications,
-        userDatamodel.send_warnings
+        userDatamodel.send_warnings,
+        userDatamodel.config_id
       )
     );
     user.setPassword(new Password(userDatamodel.password));
@@ -60,14 +59,12 @@ export class UserMapper implements IMapper<User> {
 
     return user;
   }
-
-  @Log(process.env.LOG_LEVEL)
   public datamodel(domain: User): UsersTable {
     return {
       id: domain.getId(),
       username: domain.getName(),
       email: domain.getEmail(),
-      password: domain.getPassword()!
+      password: domain.getPassword()!,
     };
   }
 }

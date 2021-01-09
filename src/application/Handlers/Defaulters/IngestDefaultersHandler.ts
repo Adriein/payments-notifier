@@ -4,13 +4,13 @@ import { Log } from '../../../domain/Decorators/Log';
 import { User } from '../../../domain/entities/User.entity';
 import { UserConfig } from '../../../domain/entities/UserConfig.entity';
 import { ICommand, IHandler } from '../../../domain/interfaces';
+import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
 import { Email } from '../../../domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../../domain/VO/Pricing.vo';
-import { UserRepository } from '../../../infraestructure/Data/Repositories/UserRepository';
 
 export class IngestDefaultersHandler implements IHandler<void> {
-  constructor(private repository: UserRepository) {}
+  constructor(private repository: IUserRepository) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(commands: ICommand): Promise<void> {

@@ -1,22 +1,39 @@
 import React, { useEffect, useContext } from 'react';
 import { Context as UsersContext } from '../../context/UsersContext';
+import Switch from '../Switch/Switch';
 
 import './UserTable.css';
 
 export const UserTable = () => {
-  const { settings, buildReport, state } = useContext(UsersContext);
+  const { settings, buildReport, state, changeNotifications } = useContext(
+    UsersContext
+  );
   useEffect(() => {
     buildReport();
   }, []);
 
   console.log(state);
 
+  const handleChange = (user) => {
+    const updatedUser = Object.assign({}, user, {
+      config: {
+        ...user.config,
+        sendNotifications: user.config.sendNotifications === 'Si' ? 'No' : 'Si',
+      },
+    });
+    changeNotifications(updatedUser);
+  };
+
   return (
     <div className="container__table">
       <div>
         <div className="config__table">
-          <p>El preaviso está configurado a 5 días</p>
-          <div onClick={settings}>⚙️</div>
+          <p className="config__title fade-in">
+            El preaviso está configurado a 5 días
+          </p>
+          <div className="config__icon" onClick={settings}>
+            ⚙️
+          </div>
         </div>
         <table className="styled-table">
           <thead>
@@ -33,7 +50,7 @@ export const UserTable = () => {
           <tbody>
             {state.users.map((user) => {
               return (
-                <tr>
+                <tr key={user.id}>
                   <td>{user.defaulter}</td>
                   <td>{user.username}</td>
                   <td>{user.email}</td>
@@ -42,7 +59,12 @@ export const UserTable = () => {
                   <td>{user.subscription.isNotified}</td>
                   <td>
                     {state.settings ? (
-                      <input type="checkbox" />
+                      <Switch
+                        active={
+                          user.config.sendNotifications === 'Si' ? true : false
+                        }
+                        onClick={() => handleChange(user)}
+                      />
                     ) : (
                       user.config.sendNotifications
                     )}
