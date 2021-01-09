@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import server from '../../api/server';
 import { DEFAULT, ERROR, SUCCESS } from '../../constants';
 import './Uploader.css';
 import Loader from '../Loader/Loader';
+import { Context as UsersContext } from '../../context/UsersContext';
 
 export default function Uploader() {
+  const { buildReport } = useContext(
+    UsersContext
+  );
   const [submited, setSubmited] = useState({ status: DEFAULT, msg: '' });
   const [file, setFile] = useState(undefined);
   const [isLoading] = useState(false);
@@ -13,6 +17,7 @@ export default function Uploader() {
     (async () => {
       if (file) {
         await upload();
+        buildReport()
       }
     })();
   }, [file]);

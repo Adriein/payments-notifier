@@ -1,10 +1,27 @@
 import createDataContext from './createDataContext';
 import server from '../api/server';
 
+const orderByExpiredSubscription = (users) => {
+  return users.sort((a, b) => {
+    if (a.username < b.username) {
+      return -1;
+    }
+
+    if (a.defaulter > b.defaulter) {
+      return 1;
+    }
+
+    return 0;
+  });
+};
+
 const usersReducer = (state, action) => {
   switch (action.type) {
     case 'build_calculated_report':
-      return { ...state, users: [...action.payload] };
+      return {
+        ...state,
+        users: orderByExpiredSubscription([...action.payload]),
+      };
     case 'activate_settings':
       return { ...state, settings: !state.settings };
     case 'add_error':

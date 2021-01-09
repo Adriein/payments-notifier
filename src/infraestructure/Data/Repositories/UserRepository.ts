@@ -71,7 +71,7 @@ export class UserRepository
     if (user.hasSubscription()) {
       await this.db.query(
         `UPDATE ${SUBSCRIPTIONS_TABLE}
-         SET pricing='${user.pricing()}', payment_date='${user.paymentDate()}', warned='${user.isWarned()}', notified='${user.isNotified()}', '${user.getId()}' WHERE id='${user.subscriptionId()}';`
+         SET pricing='${user.pricing()}', payment_date='${user.paymentDate()}', warned=${user.isWarned()}, notified=${user.isNotified()}, user_id='${user.getId()}' WHERE id='${user.subscriptionId()}';`
       );
     }
 
