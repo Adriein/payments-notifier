@@ -1,10 +1,10 @@
-:root {
+/* :root {
   --main-color: #009879;
   --dark-shades: #293632;
   --dark-accent: #999b74;
   --light-accent: #93bcb2;
   --light-shades: #fbfbfa;
-}
+} */
 
 .container__table {
   margin-top: 20px;
@@ -40,6 +40,9 @@
 }
 
 .config__icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 20px;
   cursor: pointer;
   transition: transform 0.5s;
@@ -82,7 +85,7 @@
 }
 
 .styled-table tbody tr {
-  background-color: #f3f3f3;
+  background-color: #f3f3f3; 
 }
 
 .styled-table tbody tr:last-of-type {
