@@ -5,6 +5,8 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case 'signin':
       return { ...state, isSignedIn: true };
+    case 'signout':
+      return { ...state, isSignedIn: false };
     case 'add_error':
       return { ...state, error: action.payload };
     default:
@@ -31,17 +33,29 @@ const signin = (dispatch) => {
   };
 };
 
-const getToken = () => {
-    const cookie = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('express'));
-    if (cookie) return cookie.split('=')[1];
+const logout = (dispatch) => {
+  return async () => {
+    try {
+      await server.post('/signout', {});
 
-    return undefined;
+      dispatch({ type: 'signout' });
+    } catch (error) {
+      dispatch({ type: 'add_error', payload: 'Invalid Credentials' });
+    }
   };
+};
+
+const getToken = () => {
+  const cookie = document.cookie
+    .split('; ')
+    .find((row) => row.startsWith('express'));
+  if (cookie) return cookie.split('=')[1];
+
+  return undefined;
+};
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, getToken },
+  { signin, getToken, logout },
   { isSignedIn: false, error: undefined }
 );

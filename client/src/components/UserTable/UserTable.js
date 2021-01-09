@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { Context as UsersContext } from '../../context/UsersContext';
 import Switch from '../Switch/Switch';
-import { FcSettings } from 'react-icons/fc';
+import { FcSettings, FcAbout } from 'react-icons/fc';
 
 import './UserTable.css';
 
@@ -30,13 +30,15 @@ export const UserTable = () => {
       <div>
         <div className="config__table">
           <p className="config__title fade-in">
+            <FcAbout size={20} />
             El preaviso está configurado a 5 días
           </p>
+
           {/* <div className="config__icon" onClick={settings}>
             ⚙️
           </div> */}
           <div className="config__icon" onClick={settings}>
-            <FcSettings size={25}/>
+            <FcSettings size={25} />
           </div>
         </div>
         <table className="styled-table">

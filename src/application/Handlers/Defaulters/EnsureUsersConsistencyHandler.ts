@@ -1,4 +1,5 @@
 import { EnsureUsersConsistencyCommand } from '../../../domain/commands/Defaulters/EnsureUsersConsistencyCommand';
+import { USER_ROLE } from '../../../domain/constants';
 import { Log } from '../../../domain/Decorators/Log';
 import { ICommand } from '../../../domain/interfaces';
 import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
@@ -16,7 +17,7 @@ export class EnsureUsersConsistencyHandler {
 
     if (users.length > command.rows.length) {
       for (const user of users) {
-        if (!emails.includes(user.getEmail())) {
+        if (!emails.includes(user.getEmail()) && user.role() === USER_ROLE) {
           await this.repository.delete(user.getId());
         }
       }

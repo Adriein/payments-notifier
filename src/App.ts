@@ -88,7 +88,14 @@ export default class App {
       !process.env.SEND_GRID_API_KEY ||
       !process.env.NODE_ENV ||
       !process.env.ADMIN_EMAIL ||
-      !process.env.JWT_KEY
+      !process.env.JWT_KEY ||
+      !process.env.LOG_LEVEL ||
+      !process.env.DAYS_BEFORE_EXPIRATION ||
+      !process.env.DATABASE_NAME ||
+      !process.env.DATABASE_USER ||
+      !process.env.DATABASE_PASSWORD ||
+      !process.env.DATABASE_PORT ||
+      !process.env.DATABASE_HOST
     ) {
       process.exit(1);
     }

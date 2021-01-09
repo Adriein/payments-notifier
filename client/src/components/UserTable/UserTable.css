@@ -32,6 +32,10 @@
   flex-grow: 1;
 }
 
+.config__title svg {
+  margin-right: 10px;
+}
+
 .config__title input {
   margin-left: 5px;
   width: 30px;
