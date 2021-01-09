@@ -1,20 +1,21 @@
-import { User } from '../../domain/entities/User.entity';
-import { ICommand, IHandler, INotifier } from '../../domain/interfaces';
-import { IRepository } from '../../domain/interfaces/IRepository';
-import { AboutToExpire } from '../../domain/templates/AboutToExpire.template';
-import { Expired } from '../../domain/templates/Expired.template';
+import { Log } from '../../../domain/Decorators/Log';
+import { ICommand, IHandler, INotifier } from '../../../domain/interfaces';
+import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
+import { AboutToExpire } from '../../../domain/templates/AboutToExpire.template';
+import { Expired } from '../../../domain/templates/Expired.template';
 
 export class CheckForDefaultersHandler implements IHandler<void> {
   constructor(
     private notifier: INotifier,
-    private repository: IRepository<User>
+    private repository: IUserRepository
   ) {}
 
+  @Log(process.env.LOG_LEVEL)
   public async handle(command: ICommand): Promise<void> {
-    const users = await this.repository.find({});
+    const users = await this.repository.findAll();
 
     for (const user of users) {      
-      if (user.isTwoDaysBeforeExpiration() && !user.getIsWarned()) {
+      if (user.isTwoDaysBeforeExpiration() && !user.isWarned()) {
         const template = new AboutToExpire(user.getName()).generate();
 
         await this.notifier.notify(user.getEmail(), template);
@@ -26,7 +27,7 @@ export class CheckForDefaultersHandler implements IHandler<void> {
         continue;
       }
 
-      if (!user.isDefaulter() || user.getIsNotified()) {
+      if (!user.isDefaulter() || user.isNotified()) {
         continue;
       }
 

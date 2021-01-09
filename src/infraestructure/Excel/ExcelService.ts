@@ -1,6 +1,6 @@
 import { readdirSync, existsSync } from 'fs';
 import XSLX from 'xlsx';
-import { FILES_PATH } from '../../constants';
+import { FILES_PATH } from '../../domain/constants';
 import { ExcelError } from '../../domain/errors/ExcelError';
 import { IExcelService } from '../../domain/services/IExcelService';
 

@@ -55,19 +55,26 @@ export default function Uploader() {
   };
 
   return (
-    <div className="uploader">
-      {submited.status === DEFAULT && !isLoading && (
-        <div>
-          <input id="uploader" type="file" hidden="hidden" />
-          <button onClick={handleUpload} className="button button--primary">
-            Seleccionar
-          </button>
-          <span className="span">Ningún excel seleccionado...</span>
-        </div>
-      )}
-      {submited.status === SUCCESS && !isLoading && <p>{submited.msg} ✅</p>}
-      {submited.status === ERROR && !isLoading && <p>{submited.msg} ❌</p>}
-      {isLoading && <Loader />}
+    <div>
+      {/* <div class="drop-zone">
+        <span class="drop-zone__prompt">Arrastra un archivo o pincha para subir</span>
+        <input type="file" name="myFile" class="drop-zone__input" />
+        <div className="drop-zone__thumb">archivo defaulters.xlsx</div>
+      </div> */}
+      <div className="uploader">
+        {submited.status === DEFAULT && !isLoading && (
+          <div>
+            <input id="uploader" type="file" hidden="hidden" />
+            <button onClick={handleUpload} className="button button--primary">
+              Seleccionar
+            </button>
+            <span className="span">Ningún excel seleccionado...</span>
+          </div>
+        )}
+        {submited.status === SUCCESS && !isLoading && <p>{submited.msg} ✅</p>}
+        {submited.status === ERROR && !isLoading && <p>{submited.msg} ❌</p>}
+        {isLoading && <Loader />}
+      </div>
     </div>
   );
 }

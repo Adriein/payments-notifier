@@ -1,3 +1,11 @@
+:root {
+  --main-color: #009879;
+  --dark-shades: #293632;
+  --dark-accent: #999b74;
+  --light-accent: #93bcb2;
+  --light-shades: #fbfbfa;
+}
+
 .center {
   height: 100vh;
   display: flex;
@@ -29,6 +37,6 @@
 }
 
 .button--primary {
-  color: #f2f4ef;
-  background: #af3d56;
+  color: var(--light-shades);
+  background: var(--main-color);
 }
