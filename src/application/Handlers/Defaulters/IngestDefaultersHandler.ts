@@ -49,7 +49,8 @@ export class IngestDefaultersHandler implements IHandler<void> {
         )
       );
 
-      user.createSubscription(
+      user.setSubscription(
+        userOnDb.subscriptionId()!,
         pricing,
         lastPaymentDate,
         userOnDb.isWarned(),

@@ -47,7 +47,7 @@ export class Subscription implements ISerializable {
     const today = dayjs(new Date());
     const maxDate = dayjs(this._lastPayment.date())
       .add(this.pricingToMonths(this._pricing.pricingType), 'month')
-      .subtract(2, 'day');
+      .subtract(Number.parseInt(process.env.DAYS_BEFORE_EXPIRATION!), 'day');
 
     if (maxDate.isSame(today, 'day')) {
       return true;
@@ -107,11 +107,11 @@ export class Subscription implements ISerializable {
 
   public setIsNotified = (): void => {
     this._isNotified = !this._isNotified;
-  }
+  };
 
   public setIsWarned = (): void => {
     this._isWarned = !this._isWarned;
-  }
+  };
 
   public serialize = (): Object => {
     const ye = new Intl.DateTimeFormat('es', { year: 'numeric' }).format(

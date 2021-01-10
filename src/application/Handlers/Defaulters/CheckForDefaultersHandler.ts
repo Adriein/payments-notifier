@@ -14,7 +14,7 @@ export class CheckForDefaultersHandler implements IHandler<void> {
   public async handle(command: ICommand): Promise<void> {
     const users = await this.repository.findAll();
 
-    for (const user of users) {
+    for (const user of users) {    
       if (
         user.isConfiguredDaysBeforeExpiration() &&
         !user.isWarned() &&

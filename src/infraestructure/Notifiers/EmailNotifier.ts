@@ -1,5 +1,6 @@
 import { INotifier } from '../../domain/interfaces';
 import sgMail from '@sendgrid/mail';
+import { Log } from '../../domain/Decorators/Log';
 
 type EmailConfig = {
   to: string;
@@ -13,6 +14,7 @@ export class EmailNotifier implements INotifier {
   constructor() {
     sgMail.setApiKey(process.env.SEND_GRID_API_KEY!);
   }
+  @Log(process.env.LOG_LEVEL)
   public async notify(destination: string, payload: string): Promise<void> {
     let msg;
 
