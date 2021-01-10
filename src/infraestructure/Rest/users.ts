@@ -32,7 +32,7 @@ router.post(
       await commandBus.execute(
         new UpdateUserNotificationsCommand(
           req.body.email,
-          req.body.config.sendNotifications
+          req.body.config.sendWarnings
         )
       );
 

@@ -14,8 +14,12 @@ export class CheckForDefaultersHandler implements IHandler<void> {
   public async handle(command: ICommand): Promise<void> {
     const users = await this.repository.findAll();
 
-    for (const user of users) {      
-      if (user.isTwoDaysBeforeExpiration() && !user.isWarned()) {
+    for (const user of users) {
+      if (
+        user.isConfiguredDaysBeforeExpiration() &&
+        !user.isWarned() &&
+        user.sendWarnings()
+      ) {
         const template = new AboutToExpire(user.getName()).generate();
 
         await this.notifier.notify(user.getEmail(), template);
@@ -27,7 +31,7 @@ export class CheckForDefaultersHandler implements IHandler<void> {
         continue;
       }
 
-      if (!user.isDefaulter() || user.isNotified()) {
+      if (!user.isDefaulter() || user.isNotified() || !user.sendNotifications()) {
         continue;
       }
 

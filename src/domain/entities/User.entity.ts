@@ -91,9 +91,9 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
-  get isTwoDaysBeforeExpiration(): () => boolean {
+  get isConfiguredDaysBeforeExpiration(): () => boolean {
     if (this.subscription) {
-      return this.subscription.isTwoDaysBeforeExpiration;
+      return this.subscription.isConfiguredDaysBeforeExpiration;
     }
     throw new SubscriptionError();
   }
@@ -136,7 +136,7 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
-  public setIsNotified(): () => void {
+  public get setIsNotified(): () => void {
     if (this.subscription) {
       return this.subscription.setIsNotified;
     }
@@ -144,7 +144,7 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
-  public setIsWarned(): () => void {
+  public get setIsWarned(): () => void {
     if (this.subscription) {
       return this.subscription.setIsWarned;
     }

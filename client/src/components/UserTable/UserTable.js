@@ -13,13 +13,11 @@ export const UserTable = () => {
     buildReport();
   }, []);
 
-  console.log(state);
-
   const handleChange = (user) => {
     const updatedUser = Object.assign({}, user, {
       config: {
         ...user.config,
-        sendNotifications: user.config.sendNotifications === 'Si' ? 'No' : 'Si',
+        sendWarnings: user.config.sendWarnings === 'Si' ? 'No' : 'Si',
       },
     });
     changeNotifications(updatedUser);
@@ -33,10 +31,6 @@ export const UserTable = () => {
             <FcAbout size={20} />
             El preaviso está configurado a 5 días
           </p>
-
-          {/* <div className="config__icon" onClick={settings}>
-            ⚙️
-          </div> */}
           <div className="config__icon" onClick={settings}>
             <FcSettings size={25} />
           </div>
@@ -62,17 +56,17 @@ export const UserTable = () => {
                   <td>{user.email}</td>
                   <td>{user.subscription.pricing}</td>
                   <td>{user.subscription.lastPayment}</td>
-                  <td>{user.subscription.isNotified}</td>
+                  <td>{user.subscription.isWarned}</td>
                   <td>
                     {state.settings ? (
                       <Switch
                         active={
-                          user.config.sendNotifications === 'Si' ? true : false
+                          user.config.sendWarnings === 'Si' ? true : false
                         }
                         onClick={() => handleChange(user)}
                       />
                     ) : (
-                      user.config.sendNotifications
+                      user.config.sendWarnings
                     )}
                   </td>
                 </tr>

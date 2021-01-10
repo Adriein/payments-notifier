@@ -20,7 +20,7 @@ export class GenerateReportHandler implements IHandler<void> {
     };
 
     for (const user of usersOnDb) {
-      if (user.isNotified()) {
+      if (user.isDefaulter()) {
         report['summary']['defaulters'] = report['summary']['defaulters'] + 1;
         report['defaulters'] = [...report['defaulters'], user];
         continue;
@@ -31,8 +31,12 @@ export class GenerateReportHandler implements IHandler<void> {
       }
     }
 
+    if (report.defaulters.length === 0) {
+      return;
+    }
+    
     const template = new Report(
-      process.env.NODE_ENV! === 'PRO' ? process.env.ADMIN_NAME! : 'Adri',
+      process.env.NODE_ENV! === 'PRO' ? 'Ivan' : 'Adri',
       report
     ).generate();
 

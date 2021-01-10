@@ -8,6 +8,6 @@ export interface IUserRepository extends IRepository<User> {
   findAll(): Promise<User[]>;
   updateUserNotifications(
     configId: string,
-    sendNotifications: boolean
+    sendWarnings: boolean
   ): Promise<void>;
 }

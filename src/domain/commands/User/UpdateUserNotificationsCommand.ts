@@ -1,3 +1,3 @@
 export class UpdateUserNotificationsCommand {
-  constructor(public email: string, public sendNotifications: string) {}
+  constructor(public email: string, public sendWarnings: string) {}
 }

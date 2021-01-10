@@ -4,7 +4,7 @@ export class UserConfig implements ISerializable {
   constructor(
     private lang: string,
     private role: string,
-    private sendNotifications: boolean = true,
+    private sendNotifications: boolean = false,
     private sendWarnings: boolean = false,
     private id?: string
   ) {}

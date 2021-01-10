@@ -43,7 +43,7 @@ export class Subscription implements ISerializable {
     return false;
   };
 
-  public isTwoDaysBeforeExpiration = (): boolean => {
+  public isConfiguredDaysBeforeExpiration = (): boolean => {
     const today = dayjs(new Date());
     const maxDate = dayjs(this._lastPayment.date())
       .add(this.pricingToMonths(this._pricing.pricingType), 'month')
@@ -105,11 +105,11 @@ export class Subscription implements ISerializable {
     return this._isWarned;
   };
 
-  public setIsNotified(): void {
+  public setIsNotified = (): void => {
     this._isNotified = !this._isNotified;
   }
 
-  public setIsWarned(): void {
+  public setIsWarned = (): void => {
     this._isWarned = !this._isWarned;
   }
 

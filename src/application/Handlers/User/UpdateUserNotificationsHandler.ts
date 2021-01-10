@@ -17,11 +17,11 @@ export class UpdateUserNotificationsHandler implements IHandler<void> {
 
     const userOnDb = (await this.finder.find(command.email)) as User;
 
-    const sendNotifications = command.sendNotifications === 'Si' ? true : false;
+    const sendWarnings = command.sendWarnings === 'Si' ? true : false;
 
     await this.userRepository.updateUserNotifications(
       userOnDb.configId()!,
-      sendNotifications
+      sendWarnings
     );
   }
 }
