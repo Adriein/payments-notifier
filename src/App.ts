@@ -2,6 +2,7 @@ require('dotenv').config();
 import 'reflect-metadata';
 import express from 'express';
 import bodyParser from 'body-parser';
+import cookieSession from 'cookie-session';
 import chalk from 'chalk';
 import fileUpload from 'express-fileupload';
 import path from 'path';
@@ -9,7 +10,9 @@ import fs from 'fs';
 import { errorHandler } from './middlewares';
 import { defaulters } from './infraestructure/Rest/defaulters';
 import Database from './infraestructure/Data/Database';
-import { FILES_PATH } from './constants';
+import { FILES_PATH } from './domain/constants';
+import { auth } from './infraestructure/Rest/auth';
+import { users } from './infraestructure/Rest/users';
 
 export default class App {
   public init() {
@@ -45,7 +48,17 @@ export default class App {
     );
 
     app.use(bodyParser.json());
+    app.use(
+      cookieSession({
+        signed: false,
+        secure: false,
+        // maxAge: 900000,
+        httpOnly: false,
+      })
+    );
     app.use(fileUpload());
+    app.use('/api/v1', auth);
+    app.use('/api/v1', users);
     app.use('/api/v1', defaulters);
     app.use(errorHandler);
 
@@ -75,7 +88,14 @@ export default class App {
       !process.env.SEND_GRID_API_KEY ||
       !process.env.NODE_ENV ||
       !process.env.ADMIN_EMAIL ||
-      !process.env.DAYS_BEFORE_EXPIRATION
+      !process.env.JWT_KEY ||
+      !process.env.LOG_LEVEL ||
+      !process.env.DAYS_BEFORE_EXPIRATION ||
+      !process.env.DATABASE_NAME ||
+      !process.env.DATABASE_USER ||
+      !process.env.DATABASE_PASSWORD ||
+      !process.env.DATABASE_PORT ||
+      !process.env.DATABASE_HOST
     ) {
       process.exit(1);
     }
@@ -88,6 +108,6 @@ export default class App {
 
     fs.mkdirSync(FILES_PATH);
 
-    console.log(chalk.cyan('> File folders created 📁'));
+    console.log(chalk.yellow('> File folders created 📁'));
   }
 }

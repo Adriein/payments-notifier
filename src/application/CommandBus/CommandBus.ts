@@ -1,23 +1,31 @@
 import { ICommand, ICommandBus } from '../../domain/interfaces';
 import { EmailNotifier } from '../../infraestructure/Notifiers/EmailNotifier';
-import { CheckForDefaultersHandler } from '../Handlers/CheckForDefaultersHandler';
-import { CheckForDefaultersCommand } from '../../domain/commands/CheckForDefaultersCommand';
-import { LowDbRepository } from '../../infraestructure/Data/Repositories/LowDbRepository';
-import { User } from '../../domain/entities/User.entity';
-import { IngestDefaultersCommand } from '../../domain/commands/IngestDefaultersCommand';
-import { IngestDefaultersHandler } from '../Handlers/IngestDefaultersHandler';
+import { CheckForDefaultersHandler } from '../Handlers/Defaulters/CheckForDefaultersHandler';
+import { CheckForDefaultersCommand } from '../../domain/commands/Defaulters/CheckForDefaultersCommand';
+import { IngestDefaultersCommand } from '../../domain/commands/Defaulters/IngestDefaultersCommand';
+import { IngestDefaultersHandler } from '../Handlers/Defaulters/IngestDefaultersHandler';
 import { UserMapper } from '../../infraestructure/Data/Mappers/UserMapper';
-import { AdminMapper } from '../../infraestructure/Data/Mappers/AdminMapper';
-import { GenerateReportCommand } from '../../domain/commands/GenerateReportCommand';
-import { GenerateReportHandler } from '../Handlers/GenerateReportHandler';
-import { EnsureUsersConsistencyCommand } from '../../domain/commands/EnsureUsersConsistencyCommand';
-import { EnsureUsersConsistencyHandler } from '../Handlers/EnsureUsersConsistencyHandler';
-import { Admin } from '../../domain/entities/Admin.entity';
+import { GenerateReportCommand } from '../../domain/commands/Defaulters/GenerateReportCommand';
+import { GenerateReportHandler } from '../Handlers/Defaulters/GenerateReportHandler';
+import { EnsureUsersConsistencyCommand } from '../../domain/commands/Defaulters/EnsureUsersConsistencyCommand';
+import { EnsureUsersConsistencyHandler } from '../Handlers/Defaulters/EnsureUsersConsistencyHandler';
+import { RegisterCommand } from '../../domain/commands/Auth/RegisterCommand';
+import { RegisterHandler } from '../Handlers/Auth/RegisterHandler';
+import { SignInCommand } from '../../domain/commands/Auth/SignInCommand';
+import { SignInHandler } from '../Handlers/Auth/SignInHandler';
+import { UserRepository } from '../../infraestructure/Data/Repositories/UserRepository';
+import { ReadUserCommand } from '../../domain/commands/User/ReadUserCommand';
+import { ReadUserHandler } from '../Handlers/User/ReadUserHandler';
+import { UserFinder } from '../../domain/services/UserFinder';
+import { ReadCalculatedReportCommand } from '../../domain/commands/User/ReadCalculatedReportCommand';
+import { ReadCalculatedReportHandler } from '../Handlers/User/ReadCalculatedReportHandler';
+import { UpdateUserNotificationsCommand } from '../../domain/commands/User/UpdateUserNotificationsCommand';
+import { UpdateUserNotificationsHandler } from '../Handlers/User/UpdateUserNotificationsHandler';
 
 export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
-  private usersRepository = new LowDbRepository<User>('users', new UserMapper());
-  private adminsRepository = new LowDbRepository<Admin> ('roles', new AdminMapper())
+  private usersRepository = new UserRepository('users', new UserMapper());
+  private userFinder = new UserFinder(this.usersRepository);
   constructor() {}
 
   public async execute(command: ICommand): Promise<any> {
@@ -39,6 +47,26 @@ export class CommandBus implements ICommandBus {
 
     if (command instanceof EnsureUsersConsistencyCommand) {
       return new EnsureUsersConsistencyHandler(this.usersRepository);
+    }
+
+    if (command instanceof RegisterCommand) {
+      return new RegisterHandler(this.usersRepository);
+    }
+
+    if (command instanceof SignInCommand) {
+      return new SignInHandler(this.userFinder);
+    }
+
+    if (command instanceof ReadUserCommand) {
+      return new ReadUserHandler(this.userFinder);
+    }
+
+    if (command instanceof ReadCalculatedReportCommand) {
+      return new ReadCalculatedReportHandler(this.userFinder);
+    }
+
+    if (command instanceof UpdateUserNotificationsCommand) {
+      return new UpdateUserNotificationsHandler(this.userFinder, this.usersRepository);
     }
 
     throw new Error();

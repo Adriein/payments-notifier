@@ -15,7 +15,7 @@ export const errorHandler = (
       .send({ errors: err.serialize() });
   }
 
-  console.log(chalk.red.bold(err));
+  console.log(chalk.red.bold(`> ${err}`));
   res.status(400).send({
     errors: [{ message: 'Something went wrong' }],
   });

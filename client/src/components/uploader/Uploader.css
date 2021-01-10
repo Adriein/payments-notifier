@@ -1,13 +1,23 @@
+/* :root {
+  --main-color: #009879;
+  --dark-shades: #293632;
+  --dark-accent: #999b74;
+  --light-accent: #93bcb2;
+  --light-shades: #fbfbfa;
+} */
+
 .uploader {
-    padding: 20px;
-    background: #F2F4EF;
-    border-radius: 5px;
-    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14),
+  padding: 20px;
+  background: var(--light-shades);
+  border-radius: 5px;
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14),
     0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3);
-    min-width: 300px;
+  min-width: 300px;
+  margin-bottom: 50px;
 }
 
 .span {
-    margin-left: 10px;
-    color: #6B7280;
+  margin-left: 10px;
+  color: #6b7280;
 }
+

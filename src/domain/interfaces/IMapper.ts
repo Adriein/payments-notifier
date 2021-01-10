@@ -1,4 +1,4 @@
 export interface IMapper<T> {
-  domain(datamodel: any): T;
+  domain(...datamodels: any[]): T;
   datamodel(domain: T): any;
 }

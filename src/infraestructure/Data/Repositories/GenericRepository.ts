@@ -8,43 +8,39 @@ export abstract class GenericRepository<T> implements IRepository<T> {
   constructor(protected entity: string, protected mapper: IMapper<T>) {}
 
   async findOne(id: string): Promise<T | undefined> {
-    const entity = this.db
-      .get(this.entity)
-      .value()
-      .find((entity: any) => entity.id === id);
-
-    if (!entity) {
-      return;
-    }
-
-    return this.mapper.domain(entity);
+    throw new Error();
   }
   async find(searchObj: any): Promise<T[]> {
-    const entities = this.db.get(this.entity).value();
-    return entities.map((entity: any) => this.mapper.domain(entity));
+    throw new Error();
   }
   async save(entity: T): Promise<void> {
     const datamodel = this.mapper.datamodel(entity);
-    // @ts-ignore
-    this.db.get(this.entity).push(datamodel).write();
+    await this.db.query(this.buildInsertQuery(datamodel));
   }
 
   async update(entity: T): Promise<void> {
-    const datamodel = this.mapper.datamodel(entity);
-    this.db
-      .get(this.entity)
-      // @ts-ignore
-      .remove({ id: datamodel.id })
-      .write();
-
-    // @ts-ignore
-    this.db.get(this.entity).push(datamodel).write();
+    throw new Error();
   }
   async delete(id: string): Promise<void> {
-    this.db
-      .get(this.entity)
-      // @ts-ignore
-      .remove({ id })
-      .write();
+    await this.db.query(`DELETE FROM ${this.entity} WHERE id='${id}' AND subscription_id IS NOT NULL`);
+  }
+
+  protected buildInsertQuery(datamodel: any): string {
+    return `INSERT INTO ${this.entity} VALUES(${Object.keys(datamodel)
+      .map((key) => `${datamodel[key] !== null ? `'${datamodel[key]}'` : null}`)
+      .join(',')});`;
+  }
+
+  protected buildUpdateQuery(datamodel: any): string {
+
+    return `UPDATE ${this.entity} SET ${Object.keys(datamodel)
+      .map((key) => {
+        return `${key}=${
+          datamodel[key] === null || datamodel[key] === undefined
+            ? null
+            : `'${datamodel[key]}'`
+        }`;
+      })
+      .join(',')};`;
   }
 }
