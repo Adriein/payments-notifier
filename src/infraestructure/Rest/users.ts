@@ -25,6 +25,41 @@ router.get(
 );
 
 router.post(
+  '/users',
+  requireAuth,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await commandBus.execute(
+        new UpdateUserNotificationsCommand(
+          req.body.email,
+          req.body.config.sendWarnings
+        )
+      );
+
+      res.status(200).send();
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.delete(
+  '/users',
+  requireAuth,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const users = (await commandBus.execute(
+        new ReadCalculatedReportCommand()
+      )) as User[];
+
+      res.status(200).send(users.map((user) => user.serialize()));
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
   '/users/config/notifications',
   requireAuth,
   async (req: Request, res: Response, next: NextFunction) => {

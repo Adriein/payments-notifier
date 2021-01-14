@@ -3,6 +3,12 @@ export enum PricingType {
   monthly = 'mensual',
 }
 
+export enum ActivityType {
+  low = 'low',
+  moderate = 'moderate',
+  high = 'high',
+}
+
 export const FILES_PATH = `${process.cwd()}/dist/upload`;
 
 export const SUBSCRIPTIONS_TABLE = 'subscriptions';

@@ -1,10 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import { SubscriptionError } from '../errors/SubscriptionError';
 import { ISerializable } from '../interfaces/ISerializable';
+import { Activity } from '../VO/Activity.vo';
+import { Age } from '../VO/Age.vo';
 import { Email } from '../VO/Email.vo';
 import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
 import { Password } from '../VO/Password.vo';
 import { Pricing } from '../VO/Pricing.vo';
+import { Nutrition } from './Nutrition.entity';
 import { Subscription } from './Subscription.entity';
 import { UserConfig } from './UserConfig.entity';
 
@@ -21,6 +24,7 @@ export class User implements ISerializable {
 
   private subscription?: Subscription;
   private password?: string;
+  private nutrition?: Nutrition;
 
   public getId(): string {
     return this.id;
@@ -76,13 +80,40 @@ export class User implements ISerializable {
     );
   }
 
-  public hasSubscription(): boolean {
+  public createNutrition(
+    weight: number,
+    height: number,
+    age: Age,
+    activity: Activity
+  ) {
+    this.nutrition = Nutrition.build(weight, height, age, activity);
+  }
+
+  public setNutrition(
+    id: string,
+    weight: number,
+    height: number,
+    age: Age,
+    activity: Activity
+  ) {
+    this.nutrition = new Nutrition(id, weight, height, age, activity);
+  }
+
+  public hasNutrition = (): boolean => {
+    if (this.nutrition) {
+      return true;
+    }
+
+    return false;
+  };
+
+  public hasSubscription = (): boolean => {
     if (this.subscription) {
       return true;
     }
 
     return false;
-  }
+  };
 
   get isDefaulter(): () => boolean {
     if (this.subscription) {
@@ -187,6 +218,7 @@ export class User implements ISerializable {
       defaulter: this.subscription ? (this.isDefaulter() ? 'Si' : 'No') : null,
       subscription: this.subscription ? this.subscription.serialize() : null,
       config: this.config.serialize(),
+      nutrition: this.nutrition ? this.nutrition.serialize() : null,
     };
   }
 }
