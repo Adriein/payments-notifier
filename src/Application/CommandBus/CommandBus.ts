@@ -21,6 +21,8 @@ import { ReadCalculatedReportCommand } from '../../Domain/Commands/User/ReadCalc
 import { ReadCalculatedReportHandler } from '../Handlers/User/ReadCalculatedReportHandler';
 import { UpdateUserNotificationsCommand } from '../../Domain/Commands/User/UpdateUserNotificationsCommand';
 import { UpdateUserNotificationsHandler } from '../Handlers/User/UpdateUserNotificationsHandler';
+import { CreateUserCommand } from '../../Domain/Commands/User/CreateUserCommand';
+import { CreateUserHandler } from '../Handlers/User/CreateUserHandler';
 
 export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
@@ -67,6 +69,10 @@ export class CommandBus implements ICommandBus {
 
     if (command instanceof UpdateUserNotificationsCommand) {
       return new UpdateUserNotificationsHandler(this.userFinder, this.usersRepository);
+    }
+
+    if (command instanceof CreateUserCommand) {
+      return new CreateUserHandler(this.userFinder, this.usersRepository);
     }
 
     throw new Error();
