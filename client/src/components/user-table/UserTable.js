@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Context as UsersContext } from '../../context/UsersContext';
-import Switch from '../Switch/Switch';
+import Switch from '../switch/Switch';
 import { FcSettings, FcAbout } from 'react-icons/fc';
 
 import './UserTable.css';

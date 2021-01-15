@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { CustomError } from '../domain/errors';
+import { CustomError } from '../Domain/Errors';
 import chalk from 'chalk';
 
 export const errorHandler = (

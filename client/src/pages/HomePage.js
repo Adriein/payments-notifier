@@ -1,8 +1,8 @@
 import React from 'react';
 import Copyright from '../components/copyright/Copyright';
-import NavBar from '../components/NavBar/NavBar';
+import NavBar from '../components/nav-bar/NavBar';
 import Uploader from '../components/uploader/Uploader';
-import UserTable from '../components/UserTable/UserTable';
+import UserTable from '../components/user-table/UserTable';
 
 export default function HomePage() {
   return (
