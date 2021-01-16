@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Context as AuthContext } from '../../context/AuthContext';
-import './Navbar.css';
+import './Navbar.scss';
 import { FiLogOut } from 'react-icons/fi';
 
 export default function NavBar() {

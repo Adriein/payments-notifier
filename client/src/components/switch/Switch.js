@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import './Switch.css';
+import './Switch.scss';
 
 export default function Switch({ active = false, onClick }) {
   const [isActive, setIsActive] = useState(active);

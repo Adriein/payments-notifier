@@ -3,7 +3,7 @@ import { Context as UsersContext } from '../../context/UsersContext';
 import Switch from '../switch/Switch';
 import { FcSettings, FcAbout } from 'react-icons/fc';
 
-import './UserTable.css';
+import './UserTable.scss';
 
 export const UserTable = () => {
   const { settings, buildReport, state, changeNotifications } = useContext(

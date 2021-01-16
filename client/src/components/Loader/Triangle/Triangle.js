@@ -1,4 +1,4 @@
-import '../Loader.css';
+import '../Loader.scss';
 
 export const Triangle = (props) => (
   <div className="loader triangle">
