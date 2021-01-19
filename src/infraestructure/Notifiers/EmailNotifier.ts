@@ -30,7 +30,7 @@ export class EmailNotifier implements INotifier {
   private clientConfig(destination: string, payload: string): EmailConfig {
     return {
       to: destination,
-      from: 'stoicweekly@gmail.com',
+      from: 'ivanmfit.notificaciones@gmail.com',
       subject: 'Información sobre pago',
       text: 'Información sobre pago',
       html: payload,
@@ -40,7 +40,7 @@ export class EmailNotifier implements INotifier {
   private adminConfig(destination: string, payload: string): EmailConfig {
     return {
       to: destination,
-      from: 'stoicweekly@gmail.com',
+      from: 'ivanmfit.notificaciones@gmail.com',
       subject: 'Informe sobre impagos',
       text: 'Informe sobre impagos',
       html: payload,
