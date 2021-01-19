@@ -1,13 +1,13 @@
-import { IngestDefaultersCommand } from '../../../domain/commands/Defaulters/IngestDefaultersCommand';
-import { LANG_ES, USER_ROLE } from '../../../domain/constants';
-import { Log } from '../../../domain/Decorators/Log';
-import { User } from '../../../domain/entities/User.entity';
-import { UserConfig } from '../../../domain/entities/UserConfig.entity';
-import { ICommand, IHandler } from '../../../domain/interfaces';
-import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
-import { Email } from '../../../domain/VO/Email.vo';
-import { LastPaymentDate } from '../../../domain/VO/LastPaymentDate.vo';
-import { Pricing } from '../../../domain/VO/Pricing.vo';
+import { IngestDefaultersCommand } from '../../../Domain/Commands/Defaulters/IngestDefaultersCommand';
+import { LANG_ES, USER_ROLE } from '../../../Domain/constants';
+import { Log } from '../../../Domain/Decorators/Log';
+import { User } from '../../../Domain/entities/User.entity';
+import { UserConfig } from '../../../Domain/entities/UserConfig.entity';
+import { ICommand, IHandler } from '../../../Domain/interfaces';
+import { IUserRepository } from '../../../Domain/interfaces/IUserRepository';
+import { Email } from '../../../Domain/VO/Email.vo';
+import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
+import { Pricing } from '../../../Domain/VO/Pricing.vo';
 
 export class IngestDefaultersHandler implements IHandler<void> {
   constructor(private repository: IUserRepository) {}

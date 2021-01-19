@@ -1,8 +1,8 @@
-import { Log } from '../../../domain/Decorators/Log';
-import { ICommand, IHandler, INotifier } from '../../../domain/interfaces';
-import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
-import { AboutToExpire } from '../../../domain/templates/AboutToExpire.template';
-import { Expired } from '../../../domain/templates/Expired.template';
+import { Log } from '../../../Domain/Decorators/Log';
+import { ICommand, IHandler, INotifier } from '../../../Domain/interfaces';
+import { IUserRepository } from '../../../Domain/interfaces/IUserRepository';
+import { AboutToExpire } from '../../../Domain/templates/AboutToExpire.template';
+import { Expired } from '../../../Domain/templates/Expired.template';
 
 export class CheckForDefaultersHandler implements IHandler<void> {
   constructor(

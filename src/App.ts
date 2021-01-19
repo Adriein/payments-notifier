@@ -10,7 +10,7 @@ import fs from 'fs';
 import { errorHandler } from './middlewares';
 import { defaulters } from './infraestructure/Rest/defaulters';
 import Database from './infraestructure/Data/Database';
-import { FILES_PATH } from './domain/constants';
+import { FILES_PATH } from './Domain/constants';
 import { auth } from './infraestructure/Rest/auth';
 import { users } from './infraestructure/Rest/users';
 

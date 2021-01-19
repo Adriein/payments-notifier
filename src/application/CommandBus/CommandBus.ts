@@ -1,25 +1,25 @@
-import { ICommand, ICommandBus } from '../../domain/interfaces';
+import { ICommand, ICommandBus } from '../../Domain/interfaces';
 import { EmailNotifier } from '../../infraestructure/Notifiers/EmailNotifier';
 import { CheckForDefaultersHandler } from '../Handlers/Defaulters/CheckForDefaultersHandler';
-import { CheckForDefaultersCommand } from '../../domain/commands/Defaulters/CheckForDefaultersCommand';
-import { IngestDefaultersCommand } from '../../domain/commands/Defaulters/IngestDefaultersCommand';
+import { CheckForDefaultersCommand } from '../../Domain/Commands/Defaulters/CheckForDefaultersCommand';
+import { IngestDefaultersCommand } from '../../Domain/Commands/Defaulters/IngestDefaultersCommand';
 import { IngestDefaultersHandler } from '../Handlers/Defaulters/IngestDefaultersHandler';
 import { UserMapper } from '../../infraestructure/Data/Mappers/UserMapper';
-import { GenerateReportCommand } from '../../domain/commands/Defaulters/GenerateReportCommand';
+import { GenerateReportCommand } from '../../Domain/Commands/Defaulters/GenerateReportCommand';
 import { GenerateReportHandler } from '../Handlers/Defaulters/GenerateReportHandler';
-import { EnsureUsersConsistencyCommand } from '../../domain/commands/Defaulters/EnsureUsersConsistencyCommand';
+import { EnsureUsersConsistencyCommand } from '../../Domain/Commands/Defaulters/EnsureUsersConsistencyCommand';
 import { EnsureUsersConsistencyHandler } from '../Handlers/Defaulters/EnsureUsersConsistencyHandler';
-import { RegisterCommand } from '../../domain/commands/Auth/RegisterCommand';
+import { RegisterCommand } from '../../Domain/Commands/Auth/RegisterCommand';
 import { RegisterHandler } from '../Handlers/Auth/RegisterHandler';
-import { SignInCommand } from '../../domain/commands/Auth/SignInCommand';
+import { SignInCommand } from '../../Domain/Commands/Auth/SignInCommand';
 import { SignInHandler } from '../Handlers/Auth/SignInHandler';
 import { UserRepository } from '../../infraestructure/Data/Repositories/UserRepository';
-import { ReadUserCommand } from '../../domain/commands/User/ReadUserCommand';
+import { ReadUserCommand } from '../../Domain/Commands/User/ReadUserCommand';
 import { ReadUserHandler } from '../Handlers/User/ReadUserHandler';
-import { UserFinder } from '../../domain/services/UserFinder';
-import { ReadCalculatedReportCommand } from '../../domain/commands/User/ReadCalculatedReportCommand';
+import { UserFinder } from '../../Domain/services/UserFinder';
+import { ReadCalculatedReportCommand } from '../../Domain/Commands/User/ReadCalculatedReportCommand';
 import { ReadCalculatedReportHandler } from '../Handlers/User/ReadCalculatedReportHandler';
-import { UpdateUserNotificationsCommand } from '../../domain/commands/User/UpdateUserNotificationsCommand';
+import { UpdateUserNotificationsCommand } from '../../Domain/Commands/User/UpdateUserNotificationsCommand';
 import { UpdateUserNotificationsHandler } from '../Handlers/User/UpdateUserNotificationsHandler';
 
 export class CommandBus implements ICommandBus {

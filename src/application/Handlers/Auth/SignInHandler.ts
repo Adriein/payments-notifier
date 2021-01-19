@@ -1,11 +1,11 @@
-import { SignInCommand } from '../../../domain/commands/Auth/SignInCommand';
-import { Log } from '../../../domain/Decorators/Log';
-import { User } from '../../../domain/entities/User.entity';
-import { NotAuthorizedError } from '../../../domain/errors/NotAuthorizedError';
-import { UserNotExistError } from '../../../domain/errors/UserNotExistError';
-import { ICommand, IHandler } from '../../../domain/interfaces';
-import { CryptoService } from '../../../domain/services/CryptoService';
-import { UserFinder } from '../../../domain/services/UserFinder';
+import { SignInCommand } from '../../../Domain/Commands/Auth/SignInCommand';
+import { Log } from '../../../Domain/Decorators/Log';
+import { User } from '../../../Domain/entities/User.entity';
+import { NotAuthorizedError } from '../../../Domain/errors/NotAuthorizedError';
+import { UserNotExistError } from '../../../Domain/errors/UserNotExistError';
+import { ICommand, IHandler } from '../../../Domain/interfaces';
+import { CryptoService } from '../../../Domain/services/CryptoService';
+import { UserFinder } from '../../../Domain/services/UserFinder';
 
 export class SignInHandler implements IHandler<void> {
   private cryptoService = new CryptoService();

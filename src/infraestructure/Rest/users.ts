@@ -1,9 +1,9 @@
 import { requireAuth } from '../../middlewares/auth';
 import express, { Router, Request, Response, NextFunction } from 'express';
-import { CommandBus } from '../../application/CommandBus/CommandBus';
-import { User } from '../../domain/entities/User.entity';
-import { ReadCalculatedReportCommand } from '../../domain/commands/User/ReadCalculatedReportCommand';
-import { UpdateUserNotificationsCommand } from '../../domain/commands/User/UpdateUserNotificationsCommand';
+import { CommandBus } from '../../Application/CommandBus/CommandBus';
+import { User } from '../../Domain/entities/User.entity';
+import { ReadCalculatedReportCommand } from '../../Domain/Commands/User/ReadCalculatedReportCommand';
+import { UpdateUserNotificationsCommand } from '../../Domain/Commands/User/UpdateUserNotificationsCommand';
 
 const router: Router = express.Router();
 const commandBus = new CommandBus();

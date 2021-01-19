@@ -1,8 +1,8 @@
-import { EnsureUsersConsistencyCommand } from '../../../domain/commands/Defaulters/EnsureUsersConsistencyCommand';
-import { USER_ROLE } from '../../../domain/constants';
-import { Log } from '../../../domain/Decorators/Log';
-import { ICommand } from '../../../domain/interfaces';
-import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
+import { EnsureUsersConsistencyCommand } from '../../../Domain/Commands/Defaulters/EnsureUsersConsistencyCommand';
+import { USER_ROLE } from '../../../Domain/constants';
+import { Log } from '../../../Domain/Decorators/Log';
+import { ICommand } from '../../../Domain/interfaces';
+import { IUserRepository } from '../../../Domain/interfaces/IUserRepository';
 
 export class EnsureUsersConsistencyHandler {
   constructor(private repository: IUserRepository) {}

@@ -1,13 +1,13 @@
-import { RegisterCommand } from '../../../domain/commands/Auth/RegisterCommand';
-import { LANG_ES, USER_ROLE } from '../../../domain/constants';
-import { Log } from '../../../domain/Decorators/Log';
-import { User } from '../../../domain/entities/User.entity';
-import { UserConfig } from '../../../domain/entities/UserConfig.entity';
-import { UserAlreadyExistsError } from '../../../domain/errors/UserAlreadyExistsError';
-import { ICommand, IHandler } from '../../../domain/interfaces';
-import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
-import { Email } from '../../../domain/VO/Email.vo';
-import { Password } from '../../../domain/VO/Password.vo';
+import { RegisterCommand } from '../../../Domain/Commands/Auth/RegisterCommand';
+import { LANG_ES, USER_ROLE } from '../../../Domain/constants';
+import { Log } from '../../../Domain/Decorators/Log';
+import { User } from '../../../Domain/entities/User.entity';
+import { UserConfig } from '../../../Domain/entities/UserConfig.entity';
+import { UserAlreadyExistsError } from '../../../Domain/errors/UserAlreadyExistsError';
+import { ICommand, IHandler } from '../../../Domain/interfaces';
+import { IUserRepository } from '../../../Domain/interfaces/IUserRepository';
+import { Email } from '../../../Domain/VO/Email.vo';
+import { Password } from '../../../Domain/VO/Password.vo';
 
 export class RegisterHandler implements IHandler<void> {
   constructor(private repository: IUserRepository) {}

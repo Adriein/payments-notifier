@@ -1,5 +1,5 @@
-import { IMapper } from '../../../domain/interfaces';
-import { IRepository } from '../../../domain/interfaces/IRepository';
+import { IMapper } from '../../../Domain/interfaces';
+import { IRepository } from '../../../Domain/interfaces/IRepository';
 import Database from '../Database';
 
 export abstract class GenericRepository<T> implements IRepository<T> {

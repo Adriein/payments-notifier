@@ -1,7 +1,7 @@
-import { Log } from '../../../domain/Decorators/Log';
-import { ICommand, IHandler, INotifier } from '../../../domain/interfaces';
-import { IUserRepository } from '../../../domain/interfaces/IUserRepository';
-import { Report, ReportType } from '../../../domain/templates/Report.template';
+import { Log } from '../../../Domain/Decorators/Log';
+import { ICommand, IHandler, INotifier } from '../../../Domain/interfaces';
+import { IUserRepository } from '../../../Domain/interfaces/IUserRepository';
+import { Report, ReportType } from '../../../Domain/templates/Report.template';
 
 export class GenerateReportHandler implements IHandler<void> {
   constructor(

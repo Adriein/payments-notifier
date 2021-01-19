@@ -1,14 +1,14 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
-import { CommandBus } from '../../application/CommandBus/CommandBus';
-import { CheckForDefaultersCommand } from '../../domain/commands/Defaulters/CheckForDefaultersCommand';
-import { EnsureUsersConsistencyCommand } from '../../domain/commands/Defaulters/EnsureUsersConsistencyCommand';
-import { GenerateReportCommand } from '../../domain/commands/Defaulters/GenerateReportCommand';
-import { IngestDefaultersCommand } from '../../domain/commands/Defaulters/IngestDefaultersCommand';
-import { FileError } from '../../domain/errors/FileError';
+import { CommandBus } from '../../Application/CommandBus/CommandBus';
+import { CheckForDefaultersCommand } from '../../Domain/Commands/Defaulters/CheckForDefaultersCommand';
+import { EnsureUsersConsistencyCommand } from '../../Domain/Commands/Defaulters/EnsureUsersConsistencyCommand';
+import { GenerateReportCommand } from '../../Domain/Commands/Defaulters/GenerateReportCommand';
+import { IngestDefaultersCommand } from '../../Domain/Commands/Defaulters/IngestDefaultersCommand';
+import { FileError } from '../../Domain/errors/FileError';
 import { ExcelService } from '../Excel/ExcelService';
 import fileUpload from 'express-fileupload';
 import fs from 'fs';
-import { FILES_PATH } from '../../domain/constants';
+import { FILES_PATH } from '../../Domain/constants';
 import { requireAuth } from '../../middlewares/auth';
 
 export type DefaultersExcelContent = {

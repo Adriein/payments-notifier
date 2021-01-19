@@ -1,11 +1,11 @@
 import { requireAuth } from '../../middlewares/auth';
 import express, { Router, Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { CommandBus } from '../../application/CommandBus/CommandBus';
-import { RegisterCommand } from '../../domain/commands/Auth/RegisterCommand';
-import { ReadUserCommand } from '../../domain/commands/User/ReadUserCommand';
-import { User } from '../../domain/entities/User.entity';
-import { SignInCommand } from '../../domain/commands/Auth/SignInCommand';
+import { CommandBus } from '../../Application/CommandBus/CommandBus';
+import { RegisterCommand } from '../../Domain/Commands/Auth/RegisterCommand';
+import { ReadUserCommand } from '../../Domain/Commands/User/ReadUserCommand';
+import { User } from '../../Domain/entities/User.entity';
+import { SignInCommand } from '../../Domain/Commands/Auth/SignInCommand';
 
 const router: Router = express.Router();
 const commandBus = new CommandBus();

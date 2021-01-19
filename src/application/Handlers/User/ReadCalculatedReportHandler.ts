@@ -1,8 +1,8 @@
-import { User } from '../../../domain/entities/User.entity';
-import { ICommand, IHandler } from '../../../domain/interfaces';
-import { UserFinder } from '../../../domain/services/UserFinder';
-import { USER_ROLE } from '../../../domain/constants';
-import { Log } from '../../../domain/Decorators/Log';
+import { User } from '../../../Domain/entities/User.entity';
+import { ICommand, IHandler } from '../../../Domain/interfaces';
+import { UserFinder } from '../../../Domain/services/UserFinder';
+import { USER_ROLE } from '../../../Domain/constants';
+import { Log } from '../../../Domain/Decorators/Log';
 
 export class ReadCalculatedReportHandler implements IHandler<User[]> {
   constructor(private finder: UserFinder) {}

@@ -1,6 +1,6 @@
-import { INotifier } from '../../domain/interfaces';
+import { INotifier } from '../../Domain/interfaces';
 import sgMail from '@sendgrid/mail';
-import { Log } from '../../domain/Decorators/Log';
+import { Log } from '../../Domain/Decorators/Log';
 
 type EmailConfig = {
   to: string;

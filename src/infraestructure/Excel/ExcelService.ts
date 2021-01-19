@@ -1,8 +1,8 @@
 import { readdirSync, existsSync } from 'fs';
 import XSLX from 'xlsx';
-import { FILES_PATH } from '../../domain/constants';
-import { ExcelError } from '../../domain/errors/ExcelError';
-import { IExcelService } from '../../domain/services/IExcelService';
+import { FILES_PATH } from '../../Domain/constants';
+import { ExcelError } from '../../Domain/errors/ExcelError';
+import { IExcelService } from '../../Domain/services/IExcelService';
 
 export class ExcelService implements IExcelService {
   private path = FILES_PATH;
