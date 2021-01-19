@@ -5,8 +5,6 @@
   color: var(--light-shades);
   font-family: consolas;
   font-size: 20px;
-  position: absolute;
-  top: 0;
   align-content: center;
 }
 
