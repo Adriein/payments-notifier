@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Context as UsersContext } from '../../context/UsersContext';
-import Switch from '../switch/Switch';
+import Switch from '../Switch/Switch';
 import { FcSettings, FcMoneyTransfer } from 'react-icons/fc';
 import { FiDelete } from 'react-icons/fi';
 import Select from '../select/Select';
