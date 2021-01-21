@@ -18,36 +18,70 @@
   }
 }
 .user-table__container {
-  display: flex;
-  flex-direction: column;
   background-color: var(--header-bg-color);
   border-radius: 8px;
   padding: 20px;
   width: 100%;
   .user-table__table {
-    list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    li {
-      display: flex;
-      p {
-        width: 200px;
+    overflow: hidden;
+    border-collapse: collapse;
+    width: 100%;
+    .user-table__table__header {
+      text-align: left;
+      tr th {
         padding: 10px;
-        .user-table__table__payment {
+      }
+    }
+    tr {
+      td {
+        padding: 10px;
+        .user-table__button--payment {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           cursor: pointer;
+          border-radius: 50px;
+          height: 40px;
+          width: 40px;
+          transition: all 0.3s ease-out;
+
+          .user-table__svg {
+            transition: all 0.3s ease-out;
+            &:hover {
+              height: 30px;
+              width: 30px;
+            }
+          }
+
+          &:hover {
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+          }
         }
       }
       .user-table__delete-row {
         color: var(--time-button);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 50px;
+        height: 40px;
+        width: 40px;
+        transition: all 0.3s ease-out;
         svg {
-          cursor: pointer;
+          transition: all 0.3s ease-out;
           &:hover {
             color: red;
+            height: 30px;
+            width: 30px;
           }
+        }
+        &:hover {
+          box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
         }
       }
     }
-    .user-table__table__header p {
+    .user-table__table__header th {
       color: var(--subtitle-color);
       font-weight: bold;
     }

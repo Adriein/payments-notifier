@@ -7,10 +7,16 @@ import Select from '../select/Select';
 
 import './UserTable.scss';
 
-const statusOptions = [
-  { value: 'all', label: 'Todos los usuarios' },
-  { value: 'active', label: 'Usuarios activos' },
-  { value: 'inactive', label: 'Usuarios inactivos' },
+const statusCriteria = [
+  { value: 'all-users', label: 'Todos los usuarios' },
+  { value: 'active-users', label: 'Usuarios activos' },
+  { value: 'inactive-users', label: 'Usuarios inactivos' },
+];
+
+const pricingCriteria = [
+  { value: 'all-pricings', label: 'Todas las tarifas' },
+  { value: 'monthly', label: 'Mensual' },
+  { value: 'quarterly', label: 'Trimestral' },
 ];
 
 export const UserTable = () => {
@@ -38,17 +44,12 @@ export const UserTable = () => {
           <Select
             className="user-table__select"
             title={'Todos los usuarios'}
-            options={statusOptions}
+            options={statusCriteria}
           />
           <Select
             className="user-table__select"
             title={'Todas las tarifas'}
-            options={statusOptions}
-          />
-          <Select
-            className="user-table__select"
-            title={'Todas las notificaciones'}
-            options={statusOptions}
+            options={pricingCriteria}
           />
         </div>
         <div className="user-table__config" onClick={settings}>
@@ -56,45 +57,53 @@ export const UserTable = () => {
         </div>
       </div>
       <div className="user-table__container">
-        <ul className="user-table__table">
-          <li className="user-table__table__header">
-            <p>Nombre</p>
-            <p>Email</p>
-            <p>Estado</p>
-            <p>Tipo de tarifa</p>
-            <p>Tarifa expirada</p>
-            <p>Fecha último pago</p>
-            <p>Notificaciones</p>
-            <p>Registrar pago</p>
-          </li>
-          {state.users.map((user) => {
-            return (
-              <li key={user.id}>
-                <p>{user.username}</p>
-                <p>{user.email}</p>
-                <p>Activo</p>
-                <p>{user.subscription.pricing}</p>
-                <p>{user.defaulter}</p>
-                <p>{user.subscription.lastPayment}</p>
-                <p>
-                  <Switch
-                    active={user.config.sendWarnings === 'Si' ? true : false}
-                    onClick={() => handleChange(user)}
-                  />
-                </p>
-                <p>
-                  <FcMoneyTransfer
-                    size="24px"
-                    className="user-table__table__payment"
-                  />
-                </p>
-                <p className="user-table__delete-row">
-                  <FiDelete size="24px" />
-                </p>
-              </li>
-            );
-          })}
-        </ul>
+        <table className="user-table__table">
+          <thead className="user-table__table__header">
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Estado</th>
+              <th>Tipo de tarifa</th>
+              <th>Tarifa expirada</th>
+              <th>Fecha último pago</th>
+              <th>Notificaciones</th>
+              <th>Registrar pago</th>
+            </tr>
+          </thead>
+          <tbody>
+            {state.users.map((user) => {
+              return (
+                <tr key={user.id}>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>Activo</td>
+                  <td>{user.subscription.pricing}</td>
+                  <td>{user.defaulter}</td>
+                  <td>{user.subscription.lastPayment}</td>
+                  <td>
+                    <Switch
+                      active={user.config.sendWarnings === 'Si' ? true : false}
+                      onClick={() => handleChange(user)}
+                    />
+                  </td>
+                  <td>
+                    <div className="user-table__button--payment">
+                      <FcMoneyTransfer
+                        size="24px"
+                        className="user-table__svg"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div className="user-table__delete-row">
+                      <FiDelete size="24px" />
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </>
   );
