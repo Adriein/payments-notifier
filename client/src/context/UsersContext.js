@@ -22,8 +22,8 @@ const usersReducer = (state, action) => {
         ...state,
         users: orderByExpiredSubscription([...action.payload]),
       };
-    case 'activate_settings':
-      return { ...state, settings: !state.settings };
+    case 'edit':
+      return { ...state, editingUser: action.payload };
     case 'add_error':
       return { ...state, error: action.payload };
     default:
@@ -54,14 +54,42 @@ const changeNotifications = (dispatch) => {
   };
 };
 
-const settings = (dispatch) => {
-  return () => {
-    dispatch({ type: 'activate_settings' });
+const edit = (dispatch) => {
+  return (user) => {
+    dispatch({ type: 'edit', payload: user });
+  };
+};
+
+const save = (dispatch) => {
+  return (user) => {
+    try {
+      console.log(user);
+    } catch (error) {}
+  };
+};
+
+const del = (dispatch) => {
+  return (id) => {
+    try {
+      console.log(id);
+    } catch (error) {}
+  };
+};
+
+const registerPayment = (dispatch) => {
+  return (id) => {
+    try {
+      console.log(id);
+    } catch (error) {}
   };
 };
 
 export const { Provider, Context } = createDataContext(
   usersReducer,
-  { buildReport, settings, changeNotifications },
-  { users: [], error: undefined, settings: false }
+  { buildReport, edit, changeNotifications, save, del, registerPayment },
+  {
+    users: [],
+    error: undefined,
+    editingUser: {},
+  }
 );

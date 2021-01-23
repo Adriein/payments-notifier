@@ -10,8 +10,8 @@ export default function Select({ title, options }) {
         <FiChevronDown className="dropdown-icon"/>
       </div>
       <div className="dropdown-list">
-        {options.map((option) => (
-          <div className="dropdown-list__item">{option.label}</div>
+        {options.map((option, index) => (
+          <div key={index} className="dropdown-list__item">{option.label}</div>
         ))}
       </div>
     </div>

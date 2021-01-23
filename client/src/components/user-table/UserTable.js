@@ -1,11 +1,13 @@
 import React, { useEffect, useContext } from 'react';
 import { Context as UsersContext } from '../../context/UsersContext';
-import Switch from '../Switch/Switch';
+import Switch from '../switch/Switch';
 import { FcSettings, FcMoneyTransfer } from 'react-icons/fc';
-import { FiDelete } from 'react-icons/fi';
+import { FiDelete, FiCheckCircle, FiEdit, FiX } from 'react-icons/fi';
 import Select from '../select/Select';
+import ActionButton from '../action-button/ActionButton';
 
 import './UserTable.scss';
+import useInputState from '../../hooks/useInputState';
 
 const statusCriteria = [
   { value: 'all-users', label: 'Todos los usuarios' },
@@ -20,14 +22,26 @@ const pricingCriteria = [
 ];
 
 export const UserTable = () => {
-  const { settings, buildReport, state, changeNotifications } = useContext(
-    UsersContext
-  );
+  const {
+    edit,
+    save,
+    del,
+    buildReport,
+    state,
+    changeNotifications,
+    registerPayment,
+  } = useContext(UsersContext);
+  const [form, handleChange, reset, setForm] = useInputState({
+    username: '',
+    email: '',
+    pricing: '',
+  });
+
   useEffect(() => {
     buildReport();
   }, []);
 
-  const handleChange = (user) => {
+  const updateNotifications = (user) => {
     const updatedUser = Object.assign({}, user, {
       config: {
         ...user.config,
@@ -35,6 +49,35 @@ export const UserTable = () => {
       },
     });
     changeNotifications(updatedUser);
+  };
+
+  const handleCancelEdit = () => {
+    edit({});
+    reset();
+  };
+
+  const handleEditUser = (user) => () => {
+    edit(user);
+    setForm({
+      username: user.username,
+      email: user.email,
+      pricing: user.subscription.pricing,
+    });
+  };
+
+  const handleSaveUser = () => {
+    const updatedUser = Object.assign({}, state.editingUser, {
+      username: form.username,
+      email: form.email,
+      subscription: { pricing: form.pricing },
+    });
+    save(updatedUser);
+    edit({});
+    reset();
+  };
+
+  const handleDelete = (id) => () => {
+    del(id);
   };
 
   return (
@@ -52,7 +95,7 @@ export const UserTable = () => {
             options={pricingCriteria}
           />
         </div>
-        <div className="user-table__config" onClick={settings}>
+        <div className="user-table__config">
           <FcSettings size={30} />
         </div>
       </div>
@@ -68,36 +111,90 @@ export const UserTable = () => {
               <th>Fecha último pago</th>
               <th>Notificaciones</th>
               <th>Registrar pago</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {state.users.map((user) => {
               return (
                 <tr key={user.id}>
-                  <td>{user.username}</td>
-                  <td>{user.email}</td>
+                  <td>
+                    {user.id === state.editingUser.id ? (
+                      <input
+                        name="username"
+                        type="text"
+                        value={form.username}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      user.username
+                    )}
+                  </td>
+                  <td>
+                    {user.id === state.editingUser.id ? (
+                      <input
+                        name="email"
+                        type="text"
+                        value={form.email}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      user.email
+                    )}
+                  </td>
                   <td>Activo</td>
-                  <td>{user.subscription.pricing}</td>
+                  <td>
+                    {user.id === state.editingUser.id ? (
+                      <input
+                        name="pricing"
+                        type="text"
+                        value={form.pricing}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      user.subscription.pricing
+                    )}
+                  </td>
                   <td>{user.defaulter}</td>
                   <td>{user.subscription.lastPayment}</td>
                   <td>
                     <Switch
                       active={user.config.sendWarnings === 'Si' ? true : false}
-                      onClick={() => handleChange(user)}
+                      onClick={() => updateNotifications(user)}
                     />
                   </td>
                   <td>
-                    <div className="user-table__button--payment">
+                    <ActionButton>
                       <FcMoneyTransfer
                         size="24px"
                         className="user-table__svg"
+                        onClick={() => registerPayment(user.id)}
                       />
-                    </div>
+                    </ActionButton>
                   </td>
-                  <td>
-                    <div className="user-table__delete-row">
-                      <FiDelete size="24px" />
-                    </div>
+                  <td className="user-table__actions">
+                    {user.id === state.editingUser.id ? (
+                      <>
+                        <ActionButton className="user-table__save-row">
+                          <FiCheckCircle size="24px" onClick={handleSaveUser} />
+                        </ActionButton>
+                        <ActionButton className="user-table__delete-row">
+                          <FiX size="24px" onClick={handleCancelEdit} />
+                        </ActionButton>
+                      </>
+                    ) : (
+                      <>
+                        <ActionButton className="user-table__edit-row">
+                          <FiEdit size="24px" onClick={handleEditUser(user)} />
+                        </ActionButton>
+                        <ActionButton className="user-table__delete-row">
+                          <FiDelete
+                            size="24px"
+                            onClick={handleDelete(user.id)}
+                          />
+                        </ActionButton>
+                      </>
+                    )}
                   </td>
                 </tr>
               );
@@ -118,7 +215,7 @@ export default UserTable;
 //         <FcAbout size={20} />
 //         El preaviso está configurado a 5 días
 //       </p>
-//       <div className="config__icon" onClick={settings}>
+//       <div className="config__icon" onClick={edit}>
 //         <FcSettings size={25} />
 //       </div>
 //     </div>
@@ -145,7 +242,7 @@ export default UserTable;
 //               <td>{user.subscription.lastPayment}</td>
 //               <td>{user.subscription.isWarned}</td>
 //               <td>
-//                 {state.settings ? (
+//                 {state.edit ? (
 //                   <Switch
 //                     active={
 //                       user.config.sendWarnings === 'Si' ? true : false

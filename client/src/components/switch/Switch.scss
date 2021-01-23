@@ -7,6 +7,9 @@
   cursor: pointer;
   position: relative;
   transition: 0.2s;
+  &:hover {
+    background: var(--light-inactive-color);
+  }
 }
 
 .lbl::after {
@@ -27,7 +30,10 @@
 }
 
 .switch-item--checked + .lbl {
-  background: #00c8b1;
+  background: var(--success-color);
+  &:hover {
+    background: var(--light-active-button-color);
+  }
 }
 
 #switch-item {
