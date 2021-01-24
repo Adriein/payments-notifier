@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import server from '../../api/server';
 import { DEFAULT, ERROR, SUCCESS } from '../../constants';
 import './Uploader.scss';
-import Loader from '../Loader/Loader';
 import { Context as UsersContext } from '../../context/UsersContext';
 
 export default function Uploader() {
@@ -61,11 +60,6 @@ export default function Uploader() {
 
   return (
     <div>
-      {/* <div class="drop-zone">
-        <span class="drop-zone__prompt">Arrastra un archivo o pincha para subir</span>
-        <input type="file" name="myFile" class="drop-zone__input" />
-        <div className="drop-zone__thumb">archivo defaulters.xlsx</div>
-      </div> */}
       <div className="uploader">
         {submited.status === DEFAULT && !isLoading && (
           <div>
@@ -78,7 +72,6 @@ export default function Uploader() {
         )}
         {submited.status === SUCCESS && !isLoading && <p>{submited.msg} ✅</p>}
         {submited.status === ERROR && !isLoading && <p>{submited.msg} ❌</p>}
-        {isLoading && <Loader />}
       </div>
     </div>
   );
