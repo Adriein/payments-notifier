@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider as AuthProvider } from '../context/AuthContext';
 import { Provider as UsersProvider } from '../context/UsersContext';

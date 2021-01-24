@@ -1,0 +1,133 @@
+// .user-table__wrapper {
+//   width: 100%;
+//   display: flex;
+//   flex-direction: row;
+// }
+
+.user-table__header {
+  display: flex;
+  width: 100%;
+  .user-table__filters {
+    padding: 10px;
+    display: flex;
+    flex-grow: 1;
+  }
+  .user-table__config {
+    margin: auto;
+    svg {
+      cursor: pointer;
+      transition: transform 0.5s;
+      &:hover {
+        transform: rotateZ(70deg) translateZ(0);
+      }
+    }
+  }
+}
+.user-table__container {
+  background-color: var(--header-bg-color);
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  .user-table__table {
+    overflow: hidden;
+    border-collapse: collapse;
+    width: 100%;
+    .user-table__table__header {
+      text-align: left;
+      tr th {
+        padding: 8px;
+      }
+    }
+    tr {
+      td {
+        min-width: 210px;
+        max-width: 210px;
+        padding: 8px;
+        input {
+          width: 100%;
+          padding: 5px;
+          display: block;
+          border-radius: 6px;
+          background-color: var(--body-bg-color);
+          border: none;
+          font: inherit;
+        }
+      }
+      .user-table__actions {
+        display: flex;
+      }
+      .user-table__delete-row {
+        color: var(--time-button);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 50px;
+        height: 30px;
+        width: 30px;
+        transition: all 0.3s ease-out;
+        svg {
+          transition: all 0.3s ease-out;
+          &:hover {
+            color: red;
+            height: 30px;
+            width: 30px;
+          }
+        }
+        &:hover {
+          box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        }
+      }
+      .user-table__save-row {
+        color: var(--success-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 50px;
+        height: 30px;
+        width: 30px;
+        margin-right: 10px;
+        transition: all 0.3s ease-out;
+        svg {
+          transition: all 0.3s ease-out;
+          &:hover {
+            color: green;
+            height: 30px;
+            width: 30px;
+          }
+        }
+        &:hover {
+          box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        }
+      }
+      .user-table__edit-row {
+        color: var(--level-button);
+        margin-right: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 50px;
+        height: 30px;
+        width: 30px;
+        transition: all 0.3s ease-out;
+        svg {
+          transition: all 0.3s ease-out;
+          &:hover {
+            color: var(--level-button);
+            height: 30px;
+            width: 30px;
+          }
+        }
+        &:hover {
+          box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+    .user-table__table__header th {
+      color: var(--subtitle-color);
+      font-weight: bold;
+    }
+  }
+}

@@ -1,0 +1,57 @@
+.lbl {
+  display: inline-block;
+  width: 50px;
+  height: 23px;
+  background: #979797;
+  border-radius: 100px;
+  cursor: pointer;
+  position: relative;
+  transition: 0.2s;
+  &:hover {
+    background: var(--light-inactive-color);
+  }
+}
+
+.lbl::after {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: #eee;
+  border-radius: 100px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: 0.2s;
+}
+
+.switch-item--checked + .lbl::after {
+  left: 31px;
+}
+
+.switch-item--checked + .lbl {
+  background: var(--success-color);
+  &:hover {
+    background: var(--light-active-button-color);
+  }
+}
+
+#switch-item {
+  display: none;
+}
+
+/* ANIMATION */
+
+.fade-in {
+    animation: fadeIn ease 1s;
+    -webkit-animation: fadeIn ease 1s;
+    -moz-animation: fadeIn ease 1s;
+    -o-animation: fadeIn ease 1s;
+    -ms-animation: fadeIn ease 1s;
+    }
+
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+    }
+

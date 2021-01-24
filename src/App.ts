@@ -8,11 +8,11 @@ import fileUpload from 'express-fileupload';
 import path from 'path';
 import fs from 'fs';
 import { errorHandler } from './middlewares';
-import { defaulters } from './infraestructure/Rest/defaulters';
-import Database from './infraestructure/Data/Database';
+import { defaulters } from './Infraestructure/Rest/defaulters';
+import Database from './Infraestructure/Data/Database';
 import { FILES_PATH } from './Domain/constants';
-import { auth } from './infraestructure/Rest/auth';
-import { users } from './infraestructure/Rest/users';
+import { auth } from './Infraestructure/Rest/auth';
+import { users } from './Infraestructure/Rest/users';
 
 export default class App {
   public init() {

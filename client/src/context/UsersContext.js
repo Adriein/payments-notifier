@@ -22,8 +22,8 @@ const usersReducer = (state, action) => {
         ...state,
         users: orderByExpiredSubscription([...action.payload]),
       };
-    case 'activate_settings':
-      return { ...state, settings: !state.settings };
+    case 'edit':
+      return { ...state, editingUser: action.payload };
     case 'add_error':
       return { ...state, error: action.payload };
     default:
@@ -54,14 +54,59 @@ const changeNotifications = (dispatch) => {
   };
 };
 
-const settings = (dispatch) => {
-  return () => {
-    dispatch({ type: 'activate_settings' });
+const edit = (dispatch) => {
+  return (user) => {
+    dispatch({ type: 'edit', payload: user });
+  };
+};
+
+const save = (dispatch) => {
+  return async (user) => {
+    try {
+      await server.put('/users', {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        pricing: user.subscription.pricing,
+      });
+      const response = (await server.get('/calculatedReport')).data;
+      dispatch({ type: 'build_calculated_report', payload: response });
+    } catch (error) {
+      dispatch({ type: 'add_error', payload: 'Error fetching report' });
+    }
+  };
+};
+
+const del = (dispatch) => {
+  return async (email) => {
+    try {
+      await server.delete(`/users/${email}`);
+      const response = (await server.get('/calculatedReport')).data;
+      dispatch({ type: 'build_calculated_report', payload: response });
+    } catch (error) {
+      dispatch({ type: 'add_error', payload: 'Error fetching report' });
+    }
+  };
+};
+
+const registerPayment = (dispatch) => {
+  return async (email) => {
+    try {
+      await server.post('/users/subscription/payment', { email });
+      const response = (await server.get('/calculatedReport')).data;
+      dispatch({ type: 'build_calculated_report', payload: response });
+    } catch (error) {
+      dispatch({ type: 'add_error', payload: 'Error fetching report' });
+    }
   };
 };
 
 export const { Provider, Context } = createDataContext(
   usersReducer,
-  { buildReport, settings, changeNotifications },
-  { users: [], error: undefined, settings: false }
+  { buildReport, edit, changeNotifications, save, del, registerPayment },
+  {
+    users: [],
+    error: undefined,
+    editingUser: {},
+  }
 );

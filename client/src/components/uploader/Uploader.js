@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import server from '../../api/server';
 import { DEFAULT, ERROR, SUCCESS } from '../../constants';
-import './Uploader.css';
+import './Uploader.scss';
 import Loader from '../Loader/Loader';
 import { Context as UsersContext } from '../../context/UsersContext';
 

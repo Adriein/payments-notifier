@@ -24,7 +24,7 @@ const signin = (dispatch) => {
         })
       ).data;
 
-      console.log(response);
+      console.log('aclaret.dev');
 
       dispatch({ type: 'signin' });
     } catch (error) {
