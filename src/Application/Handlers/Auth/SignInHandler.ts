@@ -7,6 +7,7 @@ import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { CryptoService } from '../../../Domain/Services/CryptoService';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 
+
 export class SignInHandler implements IHandler<void> {
   private cryptoService = new CryptoService();
   constructor(private finder: UserFinder) {}
