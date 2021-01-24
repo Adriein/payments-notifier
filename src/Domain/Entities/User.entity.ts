@@ -142,21 +142,21 @@ export class User implements ISerializable {
     return false;
   };
 
-  get isDefaulter(): () => boolean {
+  public get isDefaulter(): () => boolean {
     if (this.subscription) {
       return this.subscription.isDefaulter;
     }
     throw new SubscriptionError();
   }
 
-  get isConfiguredDaysBeforeExpiration(): () => boolean {
+  public get isConfiguredDaysBeforeExpiration(): () => boolean {
     if (this.subscription) {
       return this.subscription.isConfiguredDaysBeforeExpiration;
     }
     throw new SubscriptionError();
   }
 
-  get resetNotificationState(): () => void {
+  public get resetNotificationState(): () => void {
     if (this.subscription) {
       return this.subscription.resetNotificationState;
     }
@@ -205,6 +205,14 @@ export class User implements ISerializable {
   public get setIsWarned(): () => void {
     if (this.subscription) {
       return this.subscription.setIsWarned;
+    }
+
+    throw new SubscriptionError();
+  }
+
+  public get renewSubscription(): () => void {
+    if (this.subscription) {
+      return this.subscription.renewSubscription;
     }
 
     throw new SubscriptionError();

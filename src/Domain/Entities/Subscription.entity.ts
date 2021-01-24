@@ -65,6 +65,11 @@ export class Subscription implements ISerializable {
     }
   };
 
+  public renewSubscription = (): void => {
+    this.resetNotificationState();
+    this._lastPayment = new LastPaymentDate(new Date().toString());
+  };
+
   private pricingToMonths(pricing: string) {
     switch (pricing) {
       case PricingType.monthly:

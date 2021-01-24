@@ -6,6 +6,8 @@ import { ReadCalculatedReportCommand } from '../../Domain/Commands/User/ReadCalc
 import { UpdateUserNotificationsCommand } from '../../Domain/Commands/User/UpdateUserNotificationsCommand';
 import { CreateUserCommand } from '../../Domain/Commands/User/CreateUserCommand';
 import { DeleteUserCommand } from '../../Domain/Commands/User/DeleteUserCommand';
+import { RegisterUserPaymentCommand } from '../../Domain/Commands/User/RegisterUserPaymentCommand';
+import { UpdateUserCommand } from '../../Domain/Commands/User/UpdateUserCommand';
 
 const router: Router = express.Router();
 const commandBus = new CommandBus();
@@ -53,12 +55,47 @@ router.post(
   }
 );
 
+router.put(
+  '/users',
+  requireAuth,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await commandBus.execute(
+        new UpdateUserCommand(
+          req.body.id,
+          req.body.username,
+          req.body.email,
+          req.body.pricing
+        )
+      );
+
+      res.status(200).send();
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 router.delete(
   '/users',
   requireAuth,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await commandBus.execute(new DeleteUserCommand(req.body.id));
+      await commandBus.execute(new DeleteUserCommand(req.body.email));
+      res.status(200).send();
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  '/users/subscription/payment',
+  requireAuth,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await commandBus.execute(new RegisterUserPaymentCommand(req.body.email));
+
       res.status(200).send();
     } catch (error) {
       next(error);

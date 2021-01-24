@@ -1,3 +1,3 @@
 export class DeleteUserCommand {
-  constructor(id: string) {}
+  constructor(public email: string) {}
 }

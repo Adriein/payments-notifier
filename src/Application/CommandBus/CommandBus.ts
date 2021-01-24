@@ -5,8 +5,11 @@ import { EnsureUsersConsistencyCommand } from "../../Domain/Commands/Defaulters/
 import { GenerateReportCommand } from "../../Domain/Commands/Defaulters/GenerateReportCommand";
 import { IngestDefaultersCommand } from "../../Domain/Commands/Defaulters/IngestDefaultersCommand";
 import { CreateUserCommand } from "../../Domain/Commands/User/CreateUserCommand";
+import { DeleteUserCommand } from "../../Domain/Commands/User/DeleteUserCommand";
 import { ReadCalculatedReportCommand } from "../../Domain/Commands/User/ReadCalculatedReportCommand";
 import { ReadUserCommand } from "../../Domain/Commands/User/ReadUserCommand";
+import { RegisterUserPaymentCommand } from "../../Domain/Commands/User/RegisterUserPaymentCommand";
+import { UpdateUserCommand } from "../../Domain/Commands/User/UpdateUserCommand";
 import { UpdateUserNotificationsCommand } from "../../Domain/Commands/User/UpdateUserNotificationsCommand";
 import { ICommand } from "../../domain/interfaces/ICommand";
 import { ICommandBus } from "../../Domain/Interfaces/ICommandBus";
@@ -21,8 +24,11 @@ import { EnsureUsersConsistencyHandler } from "../Handlers/Defaulters/EnsureUser
 import { GenerateReportHandler } from "../Handlers/Defaulters/GenerateReportHandler";
 import { IngestDefaultersHandler } from "../Handlers/Defaulters/IngestDefaultersHandler";
 import { CreateUserHandler } from "../Handlers/User/CreateUserHandler";
+import { DeleteUserHandler } from "../Handlers/User/DeleteUserHandler";
 import { ReadCalculatedReportHandler } from "../Handlers/User/ReadCalculatedReportHandler";
 import { ReadUserHandler } from "../Handlers/User/ReadUserHandler";
+import { RegisterUserPaymentHandler } from "../Handlers/User/RegisterUserPaymentHandler";
+import { UpdateUserHandler } from "../Handlers/User/UpdateUserHandler";
 import { UpdateUserNotificationsHandler } from "../Handlers/User/UpdateUserNotificationsHandler";
 
 
@@ -75,6 +81,18 @@ export class CommandBus implements ICommandBus {
 
     if (command instanceof CreateUserCommand) {
       return new CreateUserHandler(this.userFinder, this.usersRepository);
+    }
+
+    if(command instanceof DeleteUserCommand) {
+      return new DeleteUserHandler(this.userFinder, this.usersRepository);
+    }
+
+    if(command instanceof RegisterUserPaymentCommand) {
+      return new RegisterUserPaymentHandler(this.userFinder, this.usersRepository);
+    }
+
+    if(command instanceof UpdateUserCommand) {
+      return new UpdateUserHandler(this.userFinder, this.usersRepository);
     }
 
     throw new Error();

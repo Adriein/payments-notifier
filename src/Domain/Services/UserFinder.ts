@@ -7,13 +7,22 @@ export class UserFinder {
   constructor(private repository: IUserRepository) {}
 
   public async find(
-    email: string | undefined = undefined
+    email: string | undefined = undefined,
+    id: string | undefined = undefined
   ): Promise<User | User[]> {
     if (email) {
       const user = await this.repository.findByEmail(new Email(email));
 
       if (!user) {
         throw new UserNotExistError(email);
+      }
+      return user;
+    }
+
+    if (id) {
+      const user = await this.repository.findOne(id);
+      if (!user) {
+        throw new UserNotExistError();
       }
       return user;
     }
