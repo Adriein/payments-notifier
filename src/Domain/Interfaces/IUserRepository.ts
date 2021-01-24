@@ -3,7 +3,7 @@ import { Email } from '../VO/Email.vo';
 import { IRepository } from './IRepository';
 
 export interface IUserRepository extends IRepository<User> {
-  findByName(username: string): Promise<User>;
+  findById(id: string): Promise<User | undefined>;
   findByEmail(email: Email): Promise<User | undefined>;
   findAll(): Promise<User[]>;
   updateUserNotifications(

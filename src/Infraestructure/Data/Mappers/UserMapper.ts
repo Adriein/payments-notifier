@@ -32,7 +32,7 @@ type UsersTable = {
 };
 
 export class UserMapper implements IMapper<User> {
-  public domain(userDatamodel: UsersTableJoined): User {
+  public domain(userDatamodel: UsersTableJoined): User {  
     const user = new User(
       userDatamodel.id,
       userDatamodel.username,

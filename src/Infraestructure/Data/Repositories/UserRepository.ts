@@ -15,8 +15,16 @@ export class UserRepository
   }
 
   @Log(process.env.LOG_LEVEL)
-  async findByName(username: string): Promise<User> {
-    throw new Error();
+  async findById(id: string): Promise<User | undefined> {
+    const { rows } = await this.db.query(
+      `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE users.id='${id}';`
+    );
+
+    if (rows.length < 1) {
+      return undefined;
+    }
+
+    return this.mapper.domain(rows[0]);
   }
 
   @Log(process.env.LOG_LEVEL)

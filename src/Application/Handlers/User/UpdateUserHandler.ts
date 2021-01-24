@@ -20,7 +20,7 @@ export class UpdateUserHandler {
     const comm = command as UpdateUserCommand;
 
     const user = (await this.finder.find(undefined, comm.id)) as User;
-
+        
     const updatedUser = new User(
       user.getId(),
       comm.username,

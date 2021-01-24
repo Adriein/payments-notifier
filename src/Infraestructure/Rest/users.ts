@@ -77,11 +77,11 @@ router.put(
 );
 
 router.delete(
-  '/users',
+  '/users/:email',
   requireAuth,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      await commandBus.execute(new DeleteUserCommand(req.body.email));
+    try {     
+      await commandBus.execute(new DeleteUserCommand(req.params.email));
       res.status(200).send();
     } catch (error) {
       next(error);

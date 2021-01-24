@@ -61,26 +61,43 @@ const edit = (dispatch) => {
 };
 
 const save = (dispatch) => {
-  return (user) => {
+  return async (user) => {
     try {
-      console.log(user);
-    } catch (error) {}
+      await server.put('/users', {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        pricing: user.subscription.pricing,
+      });
+      const response = (await server.get('/calculatedReport')).data;
+      dispatch({ type: 'build_calculated_report', payload: response });
+    } catch (error) {
+      dispatch({ type: 'add_error', payload: 'Error fetching report' });
+    }
   };
 };
 
 const del = (dispatch) => {
-  return (id) => {
+  return async (email) => {
     try {
-      console.log(id);
-    } catch (error) {}
+      await server.delete(`/users/${email}`);
+      const response = (await server.get('/calculatedReport')).data;
+      dispatch({ type: 'build_calculated_report', payload: response });
+    } catch (error) {
+      dispatch({ type: 'add_error', payload: 'Error fetching report' });
+    }
   };
 };
 
 const registerPayment = (dispatch) => {
-  return (id) => {
+  return async (email) => {
     try {
-      console.log(id);
-    } catch (error) {}
+      await server.post('/users/subscription/payment', { email });
+      const response = (await server.get('/calculatedReport')).data;
+      dispatch({ type: 'build_calculated_report', payload: response });
+    } catch (error) {
+      dispatch({ type: 'add_error', payload: 'Error fetching report' });
+    }
   };
 };
 

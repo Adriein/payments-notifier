@@ -15,7 +15,7 @@ export class DeleteUserHandler {
   @Log(process.env.LOG_LEVEL)
   async handle(command: ICommand): Promise<void> {
     const comm = command as DeleteUserCommand;
-
+    
     const emailVo = new Email(comm.email);
 
     const user = (await this.finder.find(emailVo.email)) as User;
