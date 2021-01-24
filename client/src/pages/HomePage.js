@@ -6,11 +6,14 @@ import UserTable from '../components/UserTable/UserTable';
 
 export default function HomePage() {
   return (
-    <div className="center">
+    <div>
       <NavBar />
-      <Uploader />
-      <UserTable />
-      <Copyright />
+
+      <div className="center">
+        <Uploader />
+        <UserTable />
+        <Copyright />
+      </div>
     </div>
   );
 }
