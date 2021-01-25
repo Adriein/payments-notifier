@@ -2,7 +2,12 @@
 //   width: 100%;
 //   display: flex;
 //   flex-direction: row;
-// }
+// }ç
+.users__widget {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
 .user-table__header {
   display: flex;
@@ -28,8 +33,8 @@
   border-radius: 8px;
   padding: 20px;
   width: 100%;
+  overflow: auto;
   .user-table__table {
-    overflow: hidden;
     border-collapse: collapse;
     width: 100%;
     .user-table__table__header {
@@ -40,8 +45,8 @@
     }
     tr {
       td {
-        min-width: 210px;
-        max-width: 210px;
+        // min-width: 210px;
+        // max-width: 210px;
         padding: 8px;
         input {
           width: 100%;

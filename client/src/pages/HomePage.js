@@ -7,7 +7,7 @@ import UserTable from '../components/user-table/UserTable';
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="page__container--main">
       <NavBar />
       <div className="wrapper">
         {/* <Uploader /> */}
