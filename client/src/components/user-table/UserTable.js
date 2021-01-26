@@ -85,10 +85,10 @@ export const UserTable = () => {
 
   return (
     <div className="users__widget">
-      {/* <Modal
+      <Modal
         title="Inactivar usuario"
         warning="Estás seguro que deseas inactivar el usuario?"
-      /> */}
+      />
       <div className="user-table__header">
         <div className="user-table__filters">
           <Select
