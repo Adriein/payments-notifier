@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import './UserTable.scss';
 import { Context as UsersContext } from '../../context/UsersContext';
 
@@ -8,7 +8,13 @@ import ActionButton from '../action-button/ActionButton';
 import Modal from '../modal/Modal';
 
 import { FcSettings, FcMoneyTransfer } from 'react-icons/fc';
-import { FiDelete, FiCheckCircle, FiEdit, FiX } from 'react-icons/fi';
+import {
+  FiDelete,
+  FiCheckCircle,
+  FiEdit,
+  FiX,
+  FiAlertCircle,
+} from 'react-icons/fi';
 
 import useInputState from '../../hooks/useInputState';
 
@@ -34,11 +40,15 @@ export const UserTable = () => {
     changeNotifications,
     registerPayment,
   } = useContext(UsersContext);
+
   const [form, handleChange, reset, setForm] = useInputState({
     username: '',
     email: '',
     pricing: '',
   });
+
+  const [modal, setModal] = useState({ state: false, callback: undefined });
+  const [confirm, setConfirm] = useState(false);
 
   useEffect(() => {
     buildReport();
@@ -59,6 +69,10 @@ export const UserTable = () => {
     reset();
   };
 
+  const handleRegisterPayment = (email) => () => {
+    setModal({ state: true, callback: () => registerPayment(email), type: 'success' });
+  }
+
   const handleEditUser = (user) => () => {
     edit(user);
     setForm({
@@ -74,21 +88,53 @@ export const UserTable = () => {
       email: form.email,
       subscription: { pricing: form.pricing },
     });
-    save(updatedUser);
-    edit({});
-    reset();
+    setModal({
+      state: true,
+      callback: [() => save(updatedUser), () => edit({}), () => reset()],
+      type: 'success',
+    });
   };
 
   const handleDelete = (email) => () => {
-    del(email);
+    setModal({ state: true, callback: () => del(email), type: 'warning' });
+  };
+
+  const closeModal = () => {
+    setModal({ state: false, callback: undefined, type: '' });
   };
 
   return (
     <div className="users__widget">
-      <Modal
-        title="Inactivar usuario"
-        warning="Estás seguro que deseas inactivar el usuario?"
-      />
+      {modal.state && modal.type === 'warning' && (
+        <Modal
+          title="Inactivar usuario"
+          type="warning"
+          message="Estás seguro que deseas inactivar el usuario?"
+          icon={<FiAlertCircle size="90px" />}
+          handleClose={closeModal}
+          callback={modal.callback}
+        />
+      )}
+      {modal.state && modal.type === 'success' && (
+        <Modal
+          title="Guardar el usuario"
+          type="success"
+          message="Estás seguro que deseas guardar el usuario?"
+          icon={<FiAlertCircle size="90px" />}
+          handleClose={closeModal}
+          callback={modal.callback}
+        />
+      )}
+      {modal.state && modal.type === 'error' && (
+        <Modal
+          title="Borrar el usuario"
+          type="error"
+          message="Estás seguro que deseas borrar permanentemente?"
+          icon={<FiAlertCircle size="90px" />}
+          handleClose={closeModal}
+          callback={modal.callback}
+        />
+      )}
       <div className="user-table__header">
         <div className="user-table__filters">
           <Select
@@ -178,7 +224,7 @@ export const UserTable = () => {
                       <FcMoneyTransfer
                         size="24px"
                         className="user-table__svg"
-                        onClick={() => registerPayment(user.email)}
+                        onClick={handleRegisterPayment(user.email)}
                       />
                     </ActionButton>
                   </td>
