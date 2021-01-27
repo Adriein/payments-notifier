@@ -32,11 +32,14 @@
       .user-table__table__header {
         position: relative;
         text-align: left;
+        position: relative;
+        z-index: 1;
         tr th:nth-child(1) {
           padding-left: 20px;
         }
         th {
           background: var(--header-bg-color);
+          color: var(--subtitle-color);
           position: sticky;
           top: 0;
           padding: 20px 8px 20px 8px;
@@ -48,10 +51,8 @@
       tr {
         padding: 8px;
         td {
-          // min-width: 210px;
-          // max-width: 210px;
           padding: 8px;
-          input {
+          .user-table__table__input {
             width: 100%;
             padding: 5px;
             display: block;
@@ -132,10 +133,6 @@
             box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
           }
         }
-      }
-      .user-table__table__header th {
-        color: var(--subtitle-color);
-        font-weight: bold;
       }
     }
   }

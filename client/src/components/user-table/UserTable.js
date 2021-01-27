@@ -128,6 +128,7 @@ export const UserTable = () => {
                   <td>
                     {user.id === state.editingUser.id ? (
                       <input
+                        className="user-table__table__input"
                         name="username"
                         type="text"
                         value={form.username}
@@ -140,6 +141,7 @@ export const UserTable = () => {
                   <td>
                     {user.id === state.editingUser.id ? (
                       <input
+                        className="user-table__table__input"
                         name="email"
                         type="text"
                         value={form.email}
@@ -153,6 +155,7 @@ export const UserTable = () => {
                   <td>
                     {user.id === state.editingUser.id ? (
                       <input
+                        className="user-table__table__input"
                         name="pricing"
                         type="text"
                         value={form.pricing}
