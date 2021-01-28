@@ -5,6 +5,7 @@
   border: 1.5px solid var(--subtitle-color);
   border-radius: 6px;
   background: var(--header-bg-color);
+  z-index: 2;
   &:hover{
     .dropdown-icon {
       transform: rotateZ(180deg);

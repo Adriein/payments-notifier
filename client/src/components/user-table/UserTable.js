@@ -6,6 +6,7 @@ import Switch from '../switch/Switch';
 import Select from '../select/Select';
 import ActionButton from '../action-button/ActionButton';
 import Modal from '../modal/Modal';
+import Notification from '../notification/Notification';
 
 import { FcSettings, FcMoneyTransfer } from 'react-icons/fc';
 import {
@@ -14,6 +15,9 @@ import {
   FiEdit,
   FiX,
   FiAlertCircle,
+  FiUserMinus,
+  FiCreditCard,
+  FiUserPlus,
 } from 'react-icons/fi';
 
 import useInputState from '../../hooks/useInputState';
@@ -29,6 +33,41 @@ const pricingCriteria = [
   { value: 'monthly', label: 'Mensual' },
   { value: 'quarterly', label: 'Trimestral' },
 ];
+
+const notificationTypes = {
+  success: {
+    message: 'Usuario guardado correctamente',
+    icon: <FiCheckCircle size="35px" />,
+    type: 'success',
+  },
+};
+
+const modalTypes = {
+  softDelete: {
+    title: 'Inactivar usuario',
+    message: 'Estás seguro que deseas inactivar el usuario?',
+    icon: <FiAlertCircle size="90px" />,
+    colors: 'warning',
+  },
+  save: {
+    title: 'Guardar el usuario',
+    message: 'Estás seguro que deseas guardar el usuario?',
+    icon: <FiCheckCircle size="90px" />,
+    colors: 'success',
+  },
+  hardDelete: {
+    title: 'Borrar el usuario',
+    message: 'Estás seguro que deseas borrar permanentemente?',
+    icon: <FiUserMinus size="90px" />,
+    colors: 'error',
+  },
+  payment: {
+    title: 'Registrar pago',
+    message: 'Estás seguro que deseas registrar el pago para este usuario?',
+    icon: <FiCreditCard size="90px" />,
+    colors: 'success',
+  },
+};
 
 export const UserTable = () => {
   const {
@@ -48,7 +87,6 @@ export const UserTable = () => {
   });
 
   const [modal, setModal] = useState({ state: false, callback: undefined });
-  const [confirm, setConfirm] = useState(false);
 
   useEffect(() => {
     buildReport();
@@ -70,8 +108,12 @@ export const UserTable = () => {
   };
 
   const handleRegisterPayment = (email) => () => {
-    setModal({ state: true, callback: () => registerPayment(email), type: 'success' });
-  }
+    setModal({
+      state: true,
+      callback: () => registerPayment(email),
+      type: 'payment',
+    });
+  };
 
   const handleEditUser = (user) => () => {
     edit(user);
@@ -91,12 +133,12 @@ export const UserTable = () => {
     setModal({
       state: true,
       callback: [() => save(updatedUser), () => edit({}), () => reset()],
-      type: 'success',
+      type: 'save',
     });
   };
 
   const handleDelete = (email) => () => {
-    setModal({ state: true, callback: () => del(email), type: 'warning' });
+    setModal({ state: true, callback: () => del(email), type: 'softDelete' });
   };
 
   const closeModal = () => {
@@ -105,36 +147,22 @@ export const UserTable = () => {
 
   return (
     <div className="users__widget">
-      {modal.state && modal.type === 'warning' && (
+      {modal.state && (
         <Modal
-          title="Inactivar usuario"
-          type="warning"
-          message="Estás seguro que deseas inactivar el usuario?"
-          icon={<FiAlertCircle size="90px" />}
+          title={modalTypes[modal.type].title}
+          type={modalTypes[modal.type].colors}
+          message={modalTypes[modal.type].message}
+          icon={modalTypes[modal.type].icon}
           handleClose={closeModal}
           callback={modal.callback}
         />
       )}
-      {modal.state && modal.type === 'success' && (
-        <Modal
-          title="Guardar el usuario"
-          type="success"
-          message="Estás seguro que deseas guardar el usuario?"
-          icon={<FiAlertCircle size="90px" />}
-          handleClose={closeModal}
-          callback={modal.callback}
-        />
-      )}
-      {modal.state && modal.type === 'error' && (
-        <Modal
-          title="Borrar el usuario"
-          type="error"
-          message="Estás seguro que deseas borrar permanentemente?"
-          icon={<FiAlertCircle size="90px" />}
-          handleClose={closeModal}
-          callback={modal.callback}
-        />
-      )}
+      <Notification
+        message={notificationTypes['success'].message}
+        icon={notificationTypes['success'].icon}
+        type={notificationTypes['success'].type}
+        handleClose={() => console.log('aaa')}
+      />
       <div className="user-table__header">
         <div className="user-table__filters">
           <Select
@@ -148,8 +176,11 @@ export const UserTable = () => {
             options={pricingCriteria}
           />
         </div>
+
         <div className="user-table__config">
-          <FcSettings size={30} />
+          <ActionButton>
+            <FiUserPlus />
+          </ActionButton>
         </div>
       </div>
       <div className="user-table__container">

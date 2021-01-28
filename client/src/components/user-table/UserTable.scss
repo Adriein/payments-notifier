@@ -16,9 +16,9 @@
       svg {
         cursor: pointer;
         transition: transform 0.5s;
-        &:hover {
-          transform: rotateZ(70deg) translateZ(0);
-        }
+        // &:hover {
+        //   transform: rotateZ(70deg) translateZ(0);
+        // }
       }
     }
   }
@@ -32,7 +32,6 @@
       .user-table__table__header {
         position: relative;
         text-align: left;
-        position: relative;
         z-index: 1;
         tr th:nth-child(1) {
           padding-left: 20px;
