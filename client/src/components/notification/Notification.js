@@ -10,7 +10,7 @@ export default function Notification({ icon, message, type, handleClose }) {
         className={
           icon.props.className
             ? icon.props.className
-            : `notification__icon--${type}`
+            : `notification__icon ${type}`
         }
       >
         {icon}

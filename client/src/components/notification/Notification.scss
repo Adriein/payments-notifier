@@ -1,6 +1,18 @@
+.notification__container--success {
+
+}
+
+.notification__container--warning {
+
+}
+
+.notification__container--error {
+
+}
+
 .notification__container {
   background: #ffdb9b;
-  padding: 10px;
+  padding: 15px;
   min-width: 420px;
   position: absolute;
   display: flex;
@@ -11,7 +23,28 @@
   border-radius: 4px;
   border-left: 8px solid #ffa502;
   overflow: hidden;
+  z-index: 1;
+  color: #ce8500;
+  .notification__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin-right: 20px;
+  }
+  .notification__message{
+    flex-grow: 1;
+  }
   .notification__button {
+    position: absolute;
+    height: 100%;
+    width: 50px;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    background: #ffd080;
     svg {
       cursor: pointer;
       transition: all 0.3s ease-out;
