@@ -18,6 +18,7 @@ import {
   FiUserMinus,
   FiCreditCard,
   FiUserPlus,
+  FiXCircle,
 } from 'react-icons/fi';
 
 import useInputState from '../../hooks/useInputState';
@@ -39,6 +40,16 @@ const notificationTypes = {
     message: 'Usuario guardado correctamente',
     icon: <FiCheckCircle size="35px" />,
     type: 'success',
+  },
+  warning: {
+    message: 'Usuario guardado correctamente',
+    icon: <FiCheckCircle size="35px" />,
+    type: 'warning',
+  },
+  error: {
+    message: 'Ha ocurrido un error',
+    icon: <FiXCircle size="35px" />,
+    type: 'error',
   },
 };
 
@@ -86,11 +97,25 @@ export const UserTable = () => {
     pricing: '',
   });
 
-  const [modal, setModal] = useState({ state: false, callback: undefined });
+  const [modal, setModal] = useState({
+    state: false,
+    type: '',
+    callback: undefined,
+  });
+  const [notification, setNotification] = useState([]);
 
   useEffect(() => {
     buildReport();
   }, []);
+
+  useEffect(() => {
+    if (state.success) {
+      setNotification([...notification, { state: true, type: 'success' }]);
+    }
+    if (state.error) {
+      setNotification([...notification, { state: true, type: 'error' }]);
+    }
+  }, [state.success, state.error]);
 
   const updateNotifications = (user) => {
     const updatedUser = Object.assign({}, user, {
@@ -145,6 +170,12 @@ export const UserTable = () => {
     setModal({ state: false, callback: undefined, type: '' });
   };
 
+  const closeNotification = (index) => {
+    console.log(index);
+    console.log()
+    setNotification(notification.filter((notif, i) => index !== i));
+  };
+
   return (
     <div className="users__widget">
       {modal.state && (
@@ -157,12 +188,23 @@ export const UserTable = () => {
           callback={modal.callback}
         />
       )}
-      <Notification
-        message={notificationTypes['success'].message}
-        icon={notificationTypes['success'].icon}
-        type={notificationTypes['success'].type}
-        handleClose={() => console.log('aaa')}
-      />
+      {notification.length !== 0 && (
+        <div className="notifications__widget">
+          {notification.map((notification, index) => {
+            return (
+              <Notification
+                key={index}
+                index={index}
+                message={notificationTypes[notification.type].message}
+                icon={notificationTypes[notification.type].icon}
+                type={notificationTypes[notification.type].type}
+                handleClose={closeNotification}
+              />
+            );
+          })}
+        </div>
+      )}
+
       <div className="user-table__header">
         <div className="user-table__filters">
           <Select

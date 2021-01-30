@@ -24,8 +24,10 @@ const usersReducer = (state, action) => {
       };
     case 'edit':
       return { ...state, editingUser: action.payload };
+    case 'success_action':
+      return { ...state, success: action.payload, error: undefined };
     case 'add_error':
-      return { ...state, error: action.payload };
+      return { ...state, error: action.payload, success: false };
     default:
       return state;
   }
@@ -70,6 +72,8 @@ const save = (dispatch) => {
         pricing: user.subscription.pricing,
       });
       const response = (await server.get('/calculatedReport')).data;
+      dispatch({ type: 'success_action', payload: true });
+      dispatch({ type: 'success_action', payload: false });
       dispatch({ type: 'build_calculated_report', payload: response });
     } catch (error) {
       dispatch({ type: 'add_error', payload: 'Error fetching report' });
@@ -107,6 +111,7 @@ export const { Provider, Context } = createDataContext(
   {
     users: [],
     error: undefined,
+    success: false,
     editingUser: {},
   }
 );
