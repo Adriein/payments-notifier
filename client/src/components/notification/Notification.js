@@ -3,10 +3,10 @@ import './Notification.scss';
 
 import { FiX } from 'react-icons/fi';
 
-export default function Notification({ index, icon, message, type, handleClose }) {
+export default function Notification({ icon, message, type, handleClose }) {
   useEffect(() => {
     const timerId = setTimeout(() => {
-      handleClose(index);
+      handleClose();
     }, 4000);
     return () => timerId && clearTimeout(timerId);
   });

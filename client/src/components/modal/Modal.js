@@ -1,6 +1,7 @@
 import React from 'react';
 import './Modal.scss';
-
+import { Fade } from 'react-awesome-reveal';
+import { Animate } from 'react-simple-animate';
 import { FiX } from 'react-icons/fi';
 
 export default function Modal({

@@ -1,21 +1,21 @@
 import React, { useEffect, useContext, useState } from 'react';
 import './UserTable.scss';
 import { Context as UsersContext } from '../../context/UsersContext';
+import { useToasts } from 'react-toast-notifications';
+import { Animate } from 'react-simple-animate';
 
 import Switch from '../switch/Switch';
 import Select from '../select/Select';
 import ActionButton from '../action-button/ActionButton';
 import Modal from '../modal/Modal';
-import Notification from '../notification/Notification';
 
-import { FcSettings, FcMoneyTransfer } from 'react-icons/fc';
+import { FcMoneyTransfer } from 'react-icons/fc';
 import {
   FiDelete,
   FiCheckCircle,
   FiEdit,
   FiX,
   FiAlertCircle,
-  FiUserMinus,
   FiCreditCard,
   FiUserPlus,
   FiXCircle,
@@ -35,24 +35,6 @@ const pricingCriteria = [
   { value: 'quarterly', label: 'Trimestral' },
 ];
 
-const notificationTypes = {
-  success: {
-    message: 'Usuario guardado correctamente',
-    icon: <FiCheckCircle size="35px" />,
-    type: 'success',
-  },
-  warning: {
-    message: 'Usuario guardado correctamente',
-    icon: <FiCheckCircle size="35px" />,
-    type: 'warning',
-  },
-  error: {
-    message: 'Ha ocurrido un error',
-    icon: <FiXCircle size="35px" />,
-    type: 'error',
-  },
-};
-
 const modalTypes = {
   softDelete: {
     title: 'Inactivar usuario',
@@ -68,8 +50,8 @@ const modalTypes = {
   },
   hardDelete: {
     title: 'Borrar el usuario',
-    message: 'Estás seguro que deseas borrar permanentemente?',
-    icon: <FiUserMinus size="90px" />,
+    message: 'Estás seguro que deseas borrar el usuario?',
+    icon: <FiXCircle size="90px" />,
     colors: 'error',
   },
   payment: {
@@ -89,7 +71,10 @@ export const UserTable = () => {
     state,
     changeNotifications,
     registerPayment,
+    resetToastState,
   } = useContext(UsersContext);
+
+  const { addToast } = useToasts();
 
   const [form, handleChange, reset, setForm] = useInputState({
     username: '',
@@ -102,18 +87,20 @@ export const UserTable = () => {
     type: '',
     callback: undefined,
   });
-  const [notification, setNotification] = useState([]);
 
   useEffect(() => {
     buildReport();
   }, []);
 
   useEffect(() => {
+    console.log(state.success);
     if (state.success) {
-      setNotification([...notification, { state: true, type: 'success' }]);
+      addToast(state.success, { appearance: 'success' });
+      resetToastState();
     }
     if (state.error) {
-      setNotification([...notification, { state: true, type: 'error' }]);
+      addToast(state.error, { appearance: 'error' });
+      resetToastState();
     }
   }, [state.success, state.error]);
 
@@ -163,47 +150,27 @@ export const UserTable = () => {
   };
 
   const handleDelete = (email) => () => {
-    setModal({ state: true, callback: () => del(email), type: 'softDelete' });
+    setModal({ state: true, callback: () => del(email), type: 'hardDelete' });
   };
 
   const closeModal = () => {
     setModal({ state: false, callback: undefined, type: '' });
   };
-
-  const closeNotification = (index) => {
-    console.log(index);
-    console.log()
-    setNotification(notification.filter((notif, i) => index !== i));
-  };
-
+  console.log(modal.state);
   return (
     <div className="users__widget">
-      {modal.state && (
-        <Modal
-          title={modalTypes[modal.type].title}
-          type={modalTypes[modal.type].colors}
-          message={modalTypes[modal.type].message}
-          icon={modalTypes[modal.type].icon}
-          handleClose={closeModal}
-          callback={modal.callback}
-        />
-      )}
-      {notification.length !== 0 && (
-        <div className="notifications__widget">
-          {notification.map((notification, index) => {
-            return (
-              <Notification
-                key={index}
-                index={index}
-                message={notificationTypes[notification.type].message}
-                icon={notificationTypes[notification.type].icon}
-                type={notificationTypes[notification.type].type}
-                handleClose={closeNotification}
-              />
-            );
-          })}
-        </div>
-      )}
+      <Animate play={modal.state} start={{ opacity: 0 }} end={{ opacity: 1 }}>
+        {modal.state && (
+          <Modal
+            title={modalTypes[modal.type].title}
+            type={modalTypes[modal.type].colors}
+            message={modalTypes[modal.type].message}
+            icon={modalTypes[modal.type].icon}
+            handleClose={closeModal}
+            callback={modal.callback}
+          />
+        )}
+      </Animate>
 
       <div className="user-table__header">
         <div className="user-table__filters">
