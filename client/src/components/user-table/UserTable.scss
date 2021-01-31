@@ -32,6 +32,7 @@
     background-color: var(--header-bg-color);
     scroll-behavior: smooth;
     overflow: auto;
+    min-height: 150px;
     .user-table__table {
       border-collapse: collapse;
       width: 100%;

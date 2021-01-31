@@ -15,6 +15,14 @@ const orderByExpiredSubscription = (users) => {
   });
 };
 
+const buildFilters = (filters) => {
+  return `?${filters
+    .map(
+      (filter) => `${filter.field.toLowerCase()}=${filter.value.toLowerCase()}`
+    )
+    .join('&')}`;
+};
+
 const usersReducer = (state, action) => {
   switch (action.type) {
     case 'fetch_action':
@@ -38,7 +46,20 @@ const usersReducer = (state, action) => {
 const buildReport = (dispatch) => {
   return async () => {
     try {
-      const response = (await server.get('/calculatedReport')).data;
+      const response = (await server.get(`/calculatedReport`)).data;
+      dispatch({ type: 'fetch_action', payload: response });
+    } catch (error) {
+      dispatch({ type: 'add_error', payload: 'Error fetching report' });
+    }
+  };
+};
+
+const filterReport = (dispatch) => {
+  return async (filters = []) => {
+    try {
+      const url = buildFilters(filters);
+      console.log(`/calculatedReport${url}`);
+      const response = (await server.get(`/calculatedReport${url}`)).data;
       dispatch({ type: 'fetch_action', payload: response });
     } catch (error) {
       dispatch({ type: 'add_error', payload: 'Error fetching report' });
@@ -148,6 +169,7 @@ export const { Provider, Context } = createDataContext(
     del,
     registerPayment,
     resetToastState,
+    filterReport
   },
   {
     users: [],

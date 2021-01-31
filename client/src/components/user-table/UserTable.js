@@ -24,15 +24,15 @@ import {
 import useInputState from '../../hooks/useInputState';
 
 const statusCriteria = [
-  { value: 'all-users', label: 'Todos los usuarios' },
-  { value: 'active-users', label: 'Usuarios activos' },
-  { value: 'inactive-users', label: 'Usuarios inactivos' },
+  { value: 'all', label: 'Todos los usuarios' },
+  { value: 'true', label: 'Usuarios con tarifa expirada' },
+  { value: 'false', label: 'Usuarios sin tarifa expirada' },
 ];
 
 const pricingCriteria = [
-  { value: 'all-pricings', label: 'Todas las tarifas' },
-  { value: 'monthly', label: 'Mensual' },
-  { value: 'quarterly', label: 'Trimestral' },
+  { value: 'all', label: 'Todas las tarifas' },
+  { value: 'Mensual', label: 'Mensual' },
+  { value: 'Trimestral', label: 'Trimestral' },
 ];
 
 const modalTypes = {
@@ -72,6 +72,7 @@ export const UserTable = () => {
     changeNotifications,
     registerPayment,
     resetToastState,
+    filterReport,
   } = useContext(UsersContext);
 
   const { addToast } = useToasts();
@@ -88,12 +89,13 @@ export const UserTable = () => {
     callback: undefined,
   });
 
+  const [filters, setFilter] = useState([]);
+
   useEffect(() => {
     buildReport();
   }, []);
 
   useEffect(() => {
-    console.log(state.success);
     if (state.success) {
       addToast(state.success, { appearance: 'success' });
       resetToastState();
@@ -103,6 +105,12 @@ export const UserTable = () => {
       resetToastState();
     }
   }, [state.success, state.error]);
+
+  useEffect(() => {
+    if (filters.length) {
+      filterReport(filters);
+    }
+  }, [filters]);
 
   const updateNotifications = (user) => {
     const updatedUser = Object.assign({}, user, {
@@ -156,7 +164,38 @@ export const UserTable = () => {
   const closeModal = () => {
     setModal({ state: false, callback: undefined, type: '' });
   };
-  console.log(modal.state);
+
+  const selectFilter = (type) => (event) => {
+    if (filters.length) {
+      const nonRepeatedFilters = filters.filter(
+        (filter) => filter.field !== type
+      );
+      if (
+        event.currentTarget.dataset.value === 'all' &&
+        nonRepeatedFilters.length
+      ) {
+        setFilter([...nonRepeatedFilters]);
+        return;
+      }
+      if (event.currentTarget.dataset.value === 'all') {
+        setFilter([]);
+        buildReport();
+        return;
+      }
+      setFilter([
+        ...nonRepeatedFilters,
+        { field: type, value: event.currentTarget.dataset.value },
+      ]);
+      return;
+    }
+
+    if (event.currentTarget.dataset.value === 'all') {
+      buildReport();
+    }
+
+    setFilter([{ field: type, value: event.currentTarget.dataset.value }]);
+  };
+
   return (
     <div className="users__widget">
       <Animate play={modal.state} start={{ opacity: 0 }} end={{ opacity: 1 }}>
@@ -171,21 +210,21 @@ export const UserTable = () => {
           />
         )}
       </Animate>
-
       <div className="user-table__header">
         <div className="user-table__filters">
           <Select
             className="user-table__select"
             title={'Todos los usuarios'}
             options={statusCriteria}
+            handleChange={selectFilter('defaulter')}
           />
           <Select
             className="user-table__select"
             title={'Todas las tarifas'}
             options={pricingCriteria}
+            handleChange={selectFilter('pricing')}
           />
         </div>
-
         <div className="user-table__config">
           <ActionButton>
             <FiUserPlus />

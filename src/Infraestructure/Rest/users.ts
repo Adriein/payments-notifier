@@ -17,6 +17,14 @@ router.get(
   requireAuth,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (Object.keys(req.query).length) {
+        const users = (await commandBus.execute(
+          new ReadCalculatedReportCommand(req.query)
+        )) as User[];
+        res.status(200).send(users.map((user) => user.serialize()));
+        return;
+      }
+
       const users = (await commandBus.execute(
         new ReadCalculatedReportCommand()
       )) as User[];
@@ -80,7 +88,7 @@ router.delete(
   '/users/:email',
   requireAuth,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {     
+    try {
       await commandBus.execute(new DeleteUserCommand(req.params.email));
       res.status(200).send();
     } catch (error) {

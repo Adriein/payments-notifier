@@ -1,4 +1,6 @@
 import { Log } from '../Decorators/Log';
+import { Criteria } from '../Entities/Criteria.entity';
+import { Filter } from '../Entities/Filter.entity';
 import { User } from '../Entities/User.entity';
 import { UserNotExistError } from '../Errors/UserNotExistError';
 import { IUserRepository } from '../Interfaces/IUserRepository';
@@ -9,10 +11,11 @@ export class UserFinder {
 
   @Log(process.env.LOG_LEVEL)
   public async find(
-    email: string | undefined = undefined,
-    id: string | undefined = undefined
+    email?: string,
+    id?: string,
+    criteria?: Criteria
   ): Promise<User | User[]> {
-    if (email) {   
+    if (email) {
       const user = await this.repository.findByEmail(new Email(email));
 
       if (!user) {
@@ -27,6 +30,10 @@ export class UserFinder {
         throw new UserNotExistError();
       }
       return user;
+    }
+
+    if (criteria) {
+      return await this.repository.find(criteria);
     }
 
     return await this.repository.findAll();

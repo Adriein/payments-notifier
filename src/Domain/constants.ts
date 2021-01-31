@@ -18,3 +18,14 @@ export const CONFIG_TABLE = 'config';
 export const USER_ROLE = 'user';
 
 export const LANG_ES = 'ES';
+
+export enum OPERATORS {
+  equal = '=',
+  gt = '>',
+  lt = '<',
+  gte = '>=',
+  lte = '<=',
+  ne = '!=',
+  and = 'AND',
+  or = 'OR',
+}
