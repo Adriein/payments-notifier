@@ -15,52 +15,11 @@ import {
   FiCheckCircle,
   FiEdit,
   FiX,
-  FiAlertCircle,
-  FiCreditCard,
   FiUserPlus,
-  FiXCircle,
 } from 'react-icons/fi';
 
 import useInputState from '../../hooks/useInputState';
-
-const statusCriteria = [
-  { value: 'all', label: 'Todos los usuarios' },
-  { value: 'true', label: 'Usuarios con tarifa expirada' },
-  { value: 'false', label: 'Usuarios sin tarifa expirada' },
-];
-
-const pricingCriteria = [
-  { value: 'all', label: 'Todas las tarifas' },
-  { value: 'Mensual', label: 'Mensual' },
-  { value: 'Trimestral', label: 'Trimestral' },
-];
-
-const modalTypes = {
-  softDelete: {
-    title: 'Inactivar usuario',
-    message: 'Estás seguro que deseas inactivar el usuario?',
-    icon: <FiAlertCircle size="90px" />,
-    colors: 'warning',
-  },
-  save: {
-    title: 'Guardar el usuario',
-    message: 'Estás seguro que deseas guardar el usuario?',
-    icon: <FiCheckCircle size="90px" />,
-    colors: 'success',
-  },
-  hardDelete: {
-    title: 'Borrar el usuario',
-    message: 'Estás seguro que deseas borrar el usuario?',
-    icon: <FiXCircle size="90px" />,
-    colors: 'error',
-  },
-  payment: {
-    title: 'Registrar pago',
-    message: 'Estás seguro que deseas registrar el pago para este usuario?',
-    icon: <FiCreditCard size="90px" />,
-    colors: 'success',
-  },
-};
+import { selectData, modalData } from '../../data';
 
 export const UserTable = () => {
   const {
@@ -201,10 +160,10 @@ export const UserTable = () => {
       <Animate play={modal.state} start={{ opacity: 0 }} end={{ opacity: 1 }}>
         {modal.state && (
           <Modal
-            title={modalTypes[modal.type].title}
-            type={modalTypes[modal.type].colors}
-            message={modalTypes[modal.type].message}
-            icon={modalTypes[modal.type].icon}
+            title={modalData[modal.type].title}
+            type={modalData[modal.type].colors}
+            message={modalData[modal.type].message}
+            icon={modalData[modal.type].icon}
             handleClose={closeModal}
             callback={modal.callback}
           />
@@ -215,13 +174,13 @@ export const UserTable = () => {
           <Select
             className="user-table__select"
             title={'Todos los usuarios'}
-            options={statusCriteria}
+            options={selectData.defaulters}
             handleChange={selectFilter('defaulter')}
           />
           <Select
             className="user-table__select"
             title={'Todas las tarifas'}
-            options={pricingCriteria}
+            options={selectData.pricings}
             handleChange={selectFilter('pricing')}
           />
         </div>
