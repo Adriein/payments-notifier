@@ -44,22 +44,15 @@ const usersReducer = (state, action) => {
 };
 
 const buildReport = (dispatch) => {
-  return async () => {
-    try {
-      const response = (await server.get(`/calculatedReport`)).data;
-      dispatch({ type: 'fetch_action', payload: response });
-    } catch (error) {
-      dispatch({ type: 'add_error', payload: 'Error fetching report' });
-    }
-  };
-};
-
-const filterReport = (dispatch) => {
   return async (filters = []) => {
+    let url = '/calculatedReport';
+
+    if (filters.length) {
+      url = url.concat(buildFilters(filters));
+    }
+
     try {
-      const url = buildFilters(filters);
-      console.log(`/calculatedReport${url}`);
-      const response = (await server.get(`/calculatedReport${url}`)).data;
+      const response = (await server.get(url)).data;
       dispatch({ type: 'fetch_action', payload: response });
     } catch (error) {
       dispatch({ type: 'add_error', payload: 'Error fetching report' });
@@ -84,7 +77,7 @@ const changeNotifications = (dispatch) => {
 };
 
 const edit = (dispatch) => {
-  return (user) => {
+  return (user = {}) => {
     dispatch({ type: 'start_edit_action', payload: user });
   };
 };
@@ -169,7 +162,6 @@ export const { Provider, Context } = createDataContext(
     del,
     registerPayment,
     resetToastState,
-    filterReport
   },
   {
     users: [],

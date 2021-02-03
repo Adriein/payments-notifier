@@ -7,14 +7,14 @@ import {
 
 export const selectData = {
   defaulters: [
-    { value: 'all', label: 'Todos los usuarios' },
+    { value: 'default', label: 'Todos los usuarios' },
     { value: 'true', label: 'Usuarios con tarifa expirada' },
     { value: 'false', label: 'Usuarios sin tarifa expirada' },
   ],
   pricings: [
-    { value: 'all', label: 'Todas las tarifas' },
-    { value: 'Mensual', label: 'Mensual' },
-    { value: 'Trimestral', label: 'Trimestral' },
+    { value: 'default', label: 'Todas las tarifas' },
+    { value: 'mensual', label: 'Mensual' },
+    { value: 'trimestral', label: 'Trimestral' },
   ],
 };
 

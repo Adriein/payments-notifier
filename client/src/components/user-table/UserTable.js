@@ -20,6 +20,7 @@ import {
 
 import useInputState from '../../hooks/useInputState';
 import { selectData, modalData } from '../../data';
+import { DEFAULTERS_SELECT, PRICING_SELECT } from '../../constants';
 
 export const UserTable = () => {
   const {
@@ -51,8 +52,12 @@ export const UserTable = () => {
   const [filters, setFilter] = useState([]);
 
   useEffect(() => {
+    if (filters.length) {
+      buildReport(filters);
+      return;
+    }
     buildReport();
-  }, []);
+  }, [filters]);
 
   useEffect(() => {
     if (state.success) {
@@ -65,12 +70,6 @@ export const UserTable = () => {
     }
   }, [state.success, state.error]);
 
-  useEffect(() => {
-    if (filters.length) {
-      filterReport(filters);
-    }
-  }, [filters]);
-
   const updateNotifications = (user) => {
     const updatedUser = Object.assign({}, user, {
       config: {
@@ -82,7 +81,7 @@ export const UserTable = () => {
   };
 
   const handleCancelEdit = () => {
-    edit({});
+    edit();
     reset();
   };
 
@@ -125,34 +124,41 @@ export const UserTable = () => {
   };
 
   const selectFilter = (type) => (event) => {
-    if (filters.length) {
-      const nonRepeatedFilters = filters.filter(
-        (filter) => filter.field !== type
-      );
-      if (
-        event.currentTarget.dataset.value === 'all' &&
-        nonRepeatedFilters.length
-      ) {
-        setFilter([...nonRepeatedFilters]);
-        return;
-      }
-      if (event.currentTarget.dataset.value === 'all') {
-        setFilter([]);
-        buildReport();
-        return;
-      }
-      setFilter([
-        ...nonRepeatedFilters,
+    setFilter((prevState) => {
+      const state = [...prevState.filter((filter) => filter.field !== type)];
+      return [
+        ...state,
         { field: type, value: event.currentTarget.dataset.value },
-      ]);
-      return;
-    }
+      ];
+    });
+    // if (filters.length) {
+    //   const nonRepeatedFilters = filters.filter(
+    //     (filter) => filter.field !== type
+    //   );
+    //   if (
+    //     event.currentTarget.dataset.value === 'all' &&
+    //     nonRepeatedFilters.length
+    //   ) {
+    //     setFilter([...nonRepeatedFilters]);
+    //     return;
+    //   }
+    //   if (event.currentTarget.dataset.value === 'all') {
+    //     setFilter([]);
+    //     buildReport();
+    //     return;
+    //   }
+    //   setFilter([
+    //     ...nonRepeatedFilters,
+    //     { field: type, value: event.currentTarget.dataset.value },
+    //   ]);
+    //   return;
+    // }
 
-    if (event.currentTarget.dataset.value === 'all') {
-      buildReport();
-    }
+    // if (event.currentTarget.dataset.value === 'all') {
+    //   buildReport();
+    // }
 
-    setFilter([{ field: type, value: event.currentTarget.dataset.value }]);
+    // setFilter([{ field: type, value: event.currentTarget.dataset.value }]);
   };
 
   return (
@@ -173,15 +179,13 @@ export const UserTable = () => {
         <div className="user-table__filters">
           <Select
             className="user-table__select"
-            title={'Todos los usuarios'}
             options={selectData.defaulters}
-            handleChange={selectFilter('defaulter')}
+            handleChange={selectFilter(DEFAULTERS_SELECT)}
           />
           <Select
             className="user-table__select"
-            title={'Todas las tarifas'}
             options={selectData.pricings}
-            handleChange={selectFilter('pricing')}
+            handleChange={selectFilter(PRICING_SELECT)}
           />
         </div>
         <div className="user-table__config">

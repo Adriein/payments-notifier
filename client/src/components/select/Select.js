@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './Select.scss';
 import { FiChevronDown } from 'react-icons/fi';
 
-export default function Select({ title, options, handleChange }) {
-  const [selected, setSelected] = useState(undefined);
+export default function Select({ options, handleChange }) {
+  const [selected, setSelected] = useState(options[0].label);
   const handleSelect = (event) => {
     setSelected(event.currentTarget.innerHTML);
     handleChange(event);
@@ -11,7 +11,7 @@ export default function Select({ title, options, handleChange }) {
   return (
     <div className="dropdown">
       <div className="dropdown-select">
-        <span className="select">{selected ? selected : title}</span>
+        <span className="select">{selected}</span>
         <FiChevronDown className="dropdown-icon" />
       </div>
       <div className="dropdown-list">

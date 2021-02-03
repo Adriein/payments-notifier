@@ -1,6 +1,5 @@
 import { Log } from '../Decorators/Log';
 import { Criteria } from '../Entities/Criteria.entity';
-import { Filter } from '../Entities/Filter.entity';
 import { User } from '../Entities/User.entity';
 import { UserNotExistError } from '../Errors/UserNotExistError';
 import { IUserRepository } from '../Interfaces/IUserRepository';
