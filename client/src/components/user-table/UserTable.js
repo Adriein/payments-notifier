@@ -137,8 +137,6 @@ export const UserTable = () => {
     });
   };
 
-  console.log(filters);
-
   return (
     <div className="users__widget">
       <Animate play={modal.state} start={{ opacity: 0 }} end={{ opacity: 1 }}>
