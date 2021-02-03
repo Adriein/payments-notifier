@@ -32,7 +32,6 @@ export const UserTable = () => {
     changeNotifications,
     registerPayment,
     resetToastState,
-    filterReport,
   } = useContext(UsersContext);
 
   const { addToast } = useToasts();
@@ -110,7 +109,7 @@ export const UserTable = () => {
     });
     setModal({
       state: true,
-      callback: [() => save(updatedUser), () => edit({}), () => reset()],
+      callback: [() => save(updatedUser), () => edit(), () => reset()],
       type: 'save',
     });
   };
@@ -126,40 +125,19 @@ export const UserTable = () => {
   const selectFilter = (type) => (event) => {
     setFilter((prevState) => {
       const state = [...prevState.filter((filter) => filter.field !== type)];
+
+      if (event.currentTarget.dataset.value === 'default') {
+        return state;
+      }
+
       return [
         ...state,
         { field: type, value: event.currentTarget.dataset.value },
       ];
     });
-    // if (filters.length) {
-    //   const nonRepeatedFilters = filters.filter(
-    //     (filter) => filter.field !== type
-    //   );
-    //   if (
-    //     event.currentTarget.dataset.value === 'all' &&
-    //     nonRepeatedFilters.length
-    //   ) {
-    //     setFilter([...nonRepeatedFilters]);
-    //     return;
-    //   }
-    //   if (event.currentTarget.dataset.value === 'all') {
-    //     setFilter([]);
-    //     buildReport();
-    //     return;
-    //   }
-    //   setFilter([
-    //     ...nonRepeatedFilters,
-    //     { field: type, value: event.currentTarget.dataset.value },
-    //   ]);
-    //   return;
-    // }
-
-    // if (event.currentTarget.dataset.value === 'all') {
-    //   buildReport();
-    // }
-
-    // setFilter([{ field: type, value: event.currentTarget.dataset.value }]);
   };
+
+  console.log(filters);
 
   return (
     <div className="users__widget">
