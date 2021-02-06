@@ -19,13 +19,6 @@
     }
     .user-table__config {
       margin: auto;
-      svg {
-        cursor: pointer;
-        transition: transform 0.5s;
-        // &:hover {
-        //   transform: rotateZ(70deg) translateZ(0);
-        // }
-      }
     }
   }
   .user-table__container {
@@ -69,6 +62,26 @@
         }
         .user-table__actions {
           display: flex;
+        }
+        .user-table__payment-row {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          border-radius: 50px;
+          height: 30px;
+          width: 30px;
+          transition: all 0.3s ease-out;
+          svg {
+            transition: all 0.3s ease-out;
+            &:hover {
+              height: 30px;
+              width: 30px;
+            }
+          }
+          &:hover {
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+          }
         }
         .user-table__delete-row {
           color: var(--time-button);

@@ -32,6 +32,8 @@ const usersReducer = (state, action) => {
       };
     case 'start_edit_action':
       return { ...state, editingUser: action.payload };
+    case 'start_create_action':
+      return { ...state, createUser: action.payload };
     case 'add_success':
       return { ...state, success: action.payload };
     case 'add_error':
@@ -46,7 +48,6 @@ const usersReducer = (state, action) => {
 const buildReport = (dispatch) => {
   return async (filters = []) => {
     let url = '/calculatedReport';
-
     if (filters.length) {
       url = url.concat(buildFilters(filters));
     }
@@ -79,6 +80,12 @@ const changeNotifications = (dispatch) => {
 const edit = (dispatch) => {
   return (user = {}) => {
     dispatch({ type: 'start_edit_action', payload: user });
+  };
+};
+
+const create = (dispatch) => {
+  return (user = { status: true }) => {
+    dispatch({ type: 'start_create_action', payload: user });
   };
 };
 
@@ -155,6 +162,7 @@ const resetToastState = (dispatch) => {
 export const { Provider, Context } = createDataContext(
   usersReducer,
   {
+    create,
     buildReport,
     edit,
     changeNotifications,
@@ -168,5 +176,6 @@ export const { Provider, Context } = createDataContext(
     error: undefined,
     success: undefined,
     editingUser: {},
+    createUser: {},
   }
 );

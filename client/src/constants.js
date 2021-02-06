@@ -8,3 +8,5 @@ export const DEFAULT = '';
 export const DEFAULTERS_SELECT = 'defaulter';
 
 export const PRICING_SELECT = 'pricing'
+
+export const LOCALSTORAGE_USERNAME = 'username'

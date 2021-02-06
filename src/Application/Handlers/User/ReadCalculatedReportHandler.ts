@@ -17,7 +17,7 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
     if (command.criteria) {
       let filteredUsers: User[] = [];
       const [filters, postprocessFilters] = this.buildFilters(command);
-      
+
       if (filters.length) {
         const criteria = new Criteria(filters);
 
@@ -31,10 +31,16 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
       }
 
       if (postprocessFilters.length) {
+        if (!filteredUsers.length) {
+          const users = (await this.finder.find()) as User[];
+          filteredUsers.push(...users);
+        }
+
         const postFilteredUsers = this.postFiltering(
           postprocessFilters,
           filteredUsers
         );
+
         filteredUsers = [...postFilteredUsers];
       }
 

@@ -3,7 +3,11 @@ import {
   FiAlertCircle,
   FiCreditCard,
   FiXCircle,
+  FiDatabase,
+  FiHeart,
 } from 'react-icons/fi';
+
+import { IoFastFoodOutline } from 'react-icons/io5';
 
 export const selectData = {
   defaulters: [
@@ -44,3 +48,9 @@ export const modalData = {
     colors: 'success',
   },
 };
+
+export const userFormTabs = [
+  { title: '1. Datos generales', icon: <FiDatabase size="20px" /> },
+  { title: '2. Nutrición', icon: <IoFastFoodOutline size="20px" /> },
+  { title: '3. Ejercicio', icon: <FiHeart size="20px" /> },
+];

@@ -1,5 +1,6 @@
 import createDataContext from './createDataContext';
 import server from '../api/server';
+import { LOCALSTORAGE_USERNAME } from '../constants';
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -24,7 +25,8 @@ const signin = (dispatch) => {
         })
       ).data;
 
-      console.log('aclaret.dev');
+      console.log(response);
+      localStorage.setItem(LOCALSTORAGE_USERNAME, 'aaa');
 
       dispatch({ type: 'signin' });
     } catch (error) {

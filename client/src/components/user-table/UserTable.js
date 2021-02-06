@@ -24,6 +24,7 @@ import { DEFAULTERS_SELECT, PRICING_SELECT } from '../../constants';
 
 export const UserTable = () => {
   const {
+    create,
     edit,
     save,
     del,
@@ -101,6 +102,10 @@ export const UserTable = () => {
     });
   };
 
+  const handleCreateUser = () => {
+    create();
+  }
+
   const handleSaveUser = () => {
     const updatedUser = Object.assign({}, state.editingUser, {
       username: form.username,
@@ -165,8 +170,8 @@ export const UserTable = () => {
           />
         </div>
         <div className="user-table__config">
-          <ActionButton>
-            <FiUserPlus />
+          <ActionButton >
+            <FiUserPlus size="25px" onClick={handleCreateUser}/>
           </ActionButton>
         </div>
       </div>
@@ -238,10 +243,9 @@ export const UserTable = () => {
                     />
                   </td>
                   <td>
-                    <ActionButton>
+                    <ActionButton className="user-table__payment-row">
                       <FcMoneyTransfer
                         size="24px"
-                        className="user-table__svg"
                         onClick={handleRegisterPayment(user.email)}
                       />
                     </ActionButton>
