@@ -8,7 +8,7 @@ import { FiCheckCircle, FiHome } from 'react-icons/fi';
 import { Context as UsersContext } from '../../context/UsersContext';
 
 export default function UserForm() {
-  const { state, create } = useContext(UsersContext);
+  const { create } = useContext(UsersContext);
   const [active, setActive] = useState(0);
   const [form, handleChange, reset] = useInputState({
     username: '',

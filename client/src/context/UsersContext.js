@@ -84,7 +84,7 @@ const edit = (dispatch) => {
 };
 
 const create = (dispatch) => {
-  return (user = { status: 'create' }) => {
+  return async (user = { status: 'create' }) => {
     if (user.status === 'create') {
       dispatch({ type: 'start_create_action', payload: user });
     }
@@ -92,8 +92,25 @@ const create = (dispatch) => {
       dispatch({ type: 'start_create_action', payload: { status: 'cancel' } });
     }
     if (user.status === 'save') {
-      console.log(user.data);
-      // dispatch({ type: 'start_create_action', payload: { status: '' } });
+      try {
+        await server.post('/users', {
+          username: user.data.username,
+          email: user.data.email,
+          pricing: user.data.pricing,
+          lastPaymentDate: user.data.lastPaymentDate,
+        });
+        const response = (await server.get('/calculatedReport')).data;
+        dispatch({ type: 'fetch_action', payload: response });
+        dispatch({
+          type: 'add_success',
+          payload: `El usuario ${user.username} ha sido actualizado correctamente`,
+        });
+      } catch (error) {
+        dispatch({
+          type: 'add_error',
+          payload: `El usuario ${user.username} no ha podido ser actualizado compruebe que los campos son correctos`,
+        });
+      }
     }
   };
 };

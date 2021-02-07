@@ -45,14 +45,8 @@ router.post(
         new CreateUserCommand(
           req.body.username,
           req.body.email,
-          req.body.weight,
-          req.body.height,
-          req.body.kcal,
-          req.body.allergies,
-          req.body.favourites,
-          req.body.hated,
-          req.body.age,
-          req.body.activity
+          req.body.pricing,
+          req.body.lastPaymentDate
         )
       );
 

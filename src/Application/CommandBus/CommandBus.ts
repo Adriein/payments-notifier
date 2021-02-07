@@ -80,7 +80,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof CreateUserCommand) {
-      return new CreateUserHandler(this.userFinder, this.usersRepository);
+      return new CreateUserHandler(this.usersRepository);
     }
 
     if(command instanceof DeleteUserCommand) {
