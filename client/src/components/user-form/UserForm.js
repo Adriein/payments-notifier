@@ -106,7 +106,7 @@ export default function UserForm() {
                 <FiCheckCircle size="24px" />
               </div>
               <div className="user-form__button" onClick={handleBack}>
-                <span>Atras</span>
+                <span>Atrás</span>
                 <FiHome size="24px" />
               </div>
             </div>

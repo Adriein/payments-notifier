@@ -93,6 +93,10 @@ const create = (dispatch) => {
     }
     if (user.status === 'save') {
       try {
+        dispatch({
+          type: 'start_create_action',
+          payload: { status: 'cancel' },
+        });
         await server.post('/users', {
           username: user.data.username,
           email: user.data.email,
@@ -100,15 +104,16 @@ const create = (dispatch) => {
           lastPaymentDate: user.data.lastPaymentDate,
         });
         const response = (await server.get('/calculatedReport')).data;
+
         dispatch({ type: 'fetch_action', payload: response });
         dispatch({
           type: 'add_success',
-          payload: `El usuario ${user.username} ha sido actualizado correctamente`,
+          payload: `El usuario ${user.data.username} ha sido actualizado correctamente`,
         });
       } catch (error) {
         dispatch({
           type: 'add_error',
-          payload: `El usuario ${user.username} no ha podido ser actualizado compruebe que los campos son correctos`,
+          payload: `El usuario ${user.data.username} no ha podido ser actualizado compruebe que los campos son correctos`,
         });
       }
     }

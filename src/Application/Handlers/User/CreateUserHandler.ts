@@ -10,9 +10,7 @@ import { Pricing } from '../../../Domain/VO/Pricing.vo';
 import { LANG_ES, USER_ROLE } from '../../../Domain/constants';
 
 export class CreateUserHandler implements IHandler<void> {
-  constructor(
-    private userRepository: IUserRepository
-  ) {}
+  constructor(private userRepository: IUserRepository) {}
   async handle(command: ICommand): Promise<void> {
     const comm = command as CreateUserCommand;
 
@@ -20,7 +18,7 @@ export class CreateUserHandler implements IHandler<void> {
     const pricing = new Pricing(comm.pricing);
     const lastPaymentDate = new LastPaymentDate(comm.lastPaymentDate);
 
-    const userOnDb = this.userRepository.findByEmail(email);
+    const userOnDb = await this.userRepository.findByEmail(email);
 
     if (userOnDb) {
       throw new UserAlreadyExistsError();
@@ -32,6 +30,6 @@ export class CreateUserHandler implements IHandler<void> {
 
     user.createSubscription(pricing, lastPaymentDate);
 
-    this.userRepository.save(user);
+    await this.userRepository.save(user);
   }
 }

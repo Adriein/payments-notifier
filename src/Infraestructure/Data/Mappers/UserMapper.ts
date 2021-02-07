@@ -47,7 +47,7 @@ export class UserMapper implements IMapper<User> {
     );
     user.setPassword(new Password(userDatamodel.password));
 
-    if (userDatamodel.subscriptions_id !== null) {
+    if (userDatamodel.subscriptions_id !== null) {      
       user.setSubscription(
         userDatamodel.subscriptions_id,
         new Pricing(userDatamodel.pricing),
