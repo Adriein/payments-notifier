@@ -84,8 +84,17 @@ const edit = (dispatch) => {
 };
 
 const create = (dispatch) => {
-  return (user = { status: true }) => {
-    dispatch({ type: 'start_create_action', payload: user });
+  return (user = { status: 'create' }) => {
+    if (user.status === 'create') {
+      dispatch({ type: 'start_create_action', payload: user });
+    }
+    if (user.status === 'cancel') {
+      dispatch({ type: 'start_create_action', payload: { status: 'cancel' } });
+    }
+    if (user.status === 'save') {
+      console.log(user.data);
+      // dispatch({ type: 'start_create_action', payload: { status: '' } });
+    }
   };
 };
 

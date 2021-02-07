@@ -81,7 +81,7 @@
         &:valid ~ label {
           transform: translateY(-20px);
           font-size: 15px;
-          color: #4158d0;
+          color: var(--active-color-alternative);
         }
       }
       .user-form__input__underline {
@@ -100,6 +100,33 @@
         transition: all 0.3s ease;
       }
     }
+    .user-form__action-buttons {
+      display: flex;
+      .user-form__button {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        border-radius: 5px;
+        width: 150px;
+        transition: all 0.3s ease-out;
+        color: var(--active-color);
+        border: 1px solid var(--active-color);
+        &:hover {
+          transform: scale(0.95);
+          background: var(--active-color);
+          color: var(--button-color);
+        }
+
+        span {
+          margin-right: 5px;
+        }
+        &:first-child {
+          margin-right: 5px;
+        }
+      }
+    }
   }
 }
 
@@ -108,7 +135,7 @@
   content: '';
   height: 100%;
   width: 100%;
-  background: #4158d0;
+  background: var(--active-color-alternative);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.3s ease;

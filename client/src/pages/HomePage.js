@@ -9,13 +9,12 @@ import UserForm from '../components/user-form/UserForm';
 
 export default function HomePage() {
   const { state } = useContext(UsersContext);
-  console.log(state.createUser);
   return (
     <div className="page__container--main">
       <NavBar />
       <div className="wrapper">
         {/* <Uploader /> */}
-        {state.createUser.status ? <UserForm /> : <UserTable />}
+        {state.createUser.status === 'create' ? <UserForm /> : <UserTable />}
         {/* <Copyright /> */}
       </div>
     </div>
