@@ -149,6 +149,13 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
+  public get isOneDayOldDefaulter(): () => boolean {
+    if (this.subscription) {
+      return this.subscription.isOneDayOldDefaulter;
+    }
+    throw new SubscriptionError();
+  }
+
   public get isConfiguredDaysBeforeExpiration(): () => boolean {
     if (this.subscription) {
       return this.subscription.isConfiguredDaysBeforeExpiration;
