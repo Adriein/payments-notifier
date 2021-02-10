@@ -11,7 +11,7 @@ import { ReadUserCommand } from "../../Domain/Commands/User/ReadUserCommand";
 import { RegisterUserPaymentCommand } from "../../Domain/Commands/User/RegisterUserPaymentCommand";
 import { UpdateUserCommand } from "../../Domain/Commands/User/UpdateUserCommand";
 import { UpdateUserNotificationsCommand } from "../../Domain/Commands/User/UpdateUserNotificationsCommand";
-import { ICommand } from "../../domain/interfaces/ICommand";
+import { ICommand } from "../../Domain/Interfaces/ICommand";
 import { ICommandBus } from "../../Domain/Interfaces/ICommandBus";
 import { UserFinder } from "../../Domain/Services/UserFinder";
 import { UserMapper } from "../../Infraestructure/Data/Mappers/UserMapper";

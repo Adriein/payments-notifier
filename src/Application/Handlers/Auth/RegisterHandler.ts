@@ -3,7 +3,7 @@ import { LANG_ES, USER_ROLE } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
-import { UserAlreadyExistsError } from '../../../Domain/errors/UserAlreadyExistsError';
+import { UserAlreadyExistsError } from '../../../Domain/Errors/UserAlreadyExistsError';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { Email } from '../../../Domain/VO/Email.vo';
