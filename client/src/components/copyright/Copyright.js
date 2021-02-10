@@ -1,6 +1,6 @@
 import React from 'react';
 import {version} from '../../../package.json';
-import './Copyright.css';
+import './Copyright.scss';
 
 export default function Copyright() {
   return (

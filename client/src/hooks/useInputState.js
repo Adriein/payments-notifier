@@ -15,7 +15,11 @@ const useInputState = (initialVal) => {
   const reset = () => {
     setValue(initialVal);
   };
-  return [value, handleChange, reset];
+
+  const setForm = (newValue) => {
+    setValue(Object.assign({}, value, newValue));
+  };
+  return [value, handleChange, reset, setForm];
 };
 
 export default useInputState;

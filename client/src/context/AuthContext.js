@@ -1,5 +1,6 @@
 import createDataContext from './createDataContext';
 import server from '../api/server';
+import { LOCALSTORAGE_USERNAME } from '../constants';
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -17,14 +18,14 @@ const authReducer = (state, action) => {
 const signin = (dispatch) => {
   return async ({ email, password }) => {
     try {
-      const [response] = (
+      const response = (
         await server.post('/signin', {
           email,
           password,
         })
       ).data;
 
-      console.log(response);
+      localStorage.setItem(LOCALSTORAGE_USERNAME, response.username);
 
       dispatch({ type: 'signin' });
     } catch (error) {
@@ -54,8 +55,14 @@ const getToken = () => {
   return undefined;
 };
 
+const getUsername = () => {
+  return () => {
+    return localStorage.getItem(LOCALSTORAGE_USERNAME);
+  };
+};
+
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, getToken, logout },
+  { signin, getToken, logout, getUsername },
   { isSignedIn: false, error: undefined }
 );

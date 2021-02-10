@@ -1,0 +1,157 @@
+.notifications__widget {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.users__widget {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .user-table__header {
+    display: flex;
+    width: 100%;
+    padding: 0px 0px 20px 0px;
+    .user-table__filters {
+      padding: 10px 0px 10px 0px;
+      display: flex;
+      flex-grow: 1;
+    }
+    .user-table__config {
+      margin: auto;
+    }
+  }
+  .user-table__container {
+    background-color: var(--header-bg-color);
+    scroll-behavior: smooth;
+    overflow: auto;
+    min-height: 150px;
+    .user-table__table {
+      border-collapse: collapse;
+      width: 100%;
+      .user-table__table__header {
+        position: relative;
+        text-align: left;
+        z-index: 1;
+        tr th:nth-child(1) {
+          padding-left: 20px;
+        }
+        th {
+          background: var(--header-bg-color);
+          color: var(--subtitle-color);
+          position: sticky;
+          top: 0;
+          padding: 20px 8px 20px 8px;
+        }
+      }
+      tr td:nth-child(1) {
+        padding-left: 20px;
+      }
+      tr {
+        padding: 8px;
+        td {
+          padding: 8px;
+          .user-table__table__input {
+            padding: 5px;
+            display: block;
+            border-radius: 6px;
+            background-color: var(--body-bg-color);
+            border: none;
+            font: inherit;
+          }
+        }
+        .user-table__actions {
+          display: flex;
+        }
+        .user-table__payment-row {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          border-radius: 50px;
+          height: 30px;
+          width: 30px;
+          transition: all 0.3s ease-out;
+          svg {
+            transition: all 0.3s ease-out;
+            &:hover {
+              height: 30px;
+              width: 30px;
+            }
+          }
+          &:hover {
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+          }
+        }
+        .user-table__delete-row {
+          color: var(--time-button);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          border-radius: 50px;
+          height: 30px;
+          width: 30px;
+          transition: all 0.3s ease-out;
+          svg {
+            transition: all 0.3s ease-out;
+            &:hover {
+              color: red;
+              height: 30px;
+              width: 30px;
+            }
+          }
+          &:hover {
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+          }
+        }
+        .user-table__save-row {
+          color: var(--success-color);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          border-radius: 50px;
+          height: 30px;
+          width: 30px;
+          margin-right: 10px;
+          transition: all 0.3s ease-out;
+          svg {
+            transition: all 0.3s ease-out;
+            &:hover {
+              color: green;
+              height: 30px;
+              width: 30px;
+            }
+          }
+          &:hover {
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+          }
+        }
+        .user-table__edit-row {
+          color: var(--level-button);
+          margin-right: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          border-radius: 50px;
+          height: 30px;
+          width: 30px;
+          transition: all 0.3s ease-out;
+          svg {
+            transition: all 0.3s ease-out;
+            &:hover {
+              color: var(--level-button);
+              height: 30px;
+              width: 30px;
+            }
+          }
+          &:hover {
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+          }
+        }
+      }
+    }
+  }
+}

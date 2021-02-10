@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import './Login.css';
+import './Login.scss';
 
 import signinImg from '../../img/log.svg';
 import registerImg from '../../img/register.svg';
