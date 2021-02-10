@@ -6,12 +6,28 @@ import { Email } from '../../../Domain/VO/Email.vo';
 import { UserMapper } from '../Mappers/UserMapper';
 import { GenericRepository } from './GenericRepository';
 import { v4 as uuidv4 } from 'uuid';
+import { Criteria } from '../../../Domain/Entities/Criteria.entity';
+import { Filter } from '../../../Domain/Entities/Filter.entity';
 
 export class UserRepository
   extends GenericRepository<User>
   implements IUserRepository {
   constructor(protected entity: string, protected mapper: UserMapper) {
     super(entity, mapper);
+  }
+
+  @Log(process.env.LOG_LEVEL)
+  async find(criteria: Criteria): Promise<User[]> {
+    const where = this.criteriaToSQL(criteria);
+    const query = `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${
+      this.entity
+    } LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='user' ${where.join(
+      ' '
+    )};`;
+    
+    const { rows } = await this.db.query(query);
+
+    return rows.map((row) => this.mapper.domain(row));
   }
 
   @Log(process.env.LOG_LEVEL)
@@ -102,6 +118,15 @@ export class UserRepository
   ): Promise<void> {
     await this.db.query(
       `UPDATE ${CONFIG_TABLE} SET send_warnings=${sendWarnings} WHERE id='${configId}';`
+    );
+  }
+
+  private criteriaToSQL(criteria: Criteria) {
+    return criteria.filters.map(
+      (filter: Filter) =>
+        `AND ${
+          filter.field === 'pricing' ? 'subscriptions.pricing' : ''
+        }${filter.operator}'${filter.value}'`
     );
   }
 }

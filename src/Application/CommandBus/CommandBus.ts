@@ -14,7 +14,7 @@ import { UpdateUserNotificationsCommand } from "../../Domain/Commands/User/Updat
 import { ICommand } from "../../domain/interfaces/ICommand";
 import { ICommandBus } from "../../Domain/Interfaces/ICommandBus";
 import { UserFinder } from "../../Domain/Services/UserFinder";
-import { UserMapper } from "../../infraestructure/Data/Mappers/UserMapper";
+import { UserMapper } from "../../Infraestructure/Data/Mappers/UserMapper";
 import { UserRepository } from "../../Infraestructure/Data/Repositories/UserRepository";
 import { EmailNotifier } from "../../Infraestructure/Notifiers/EmailNotifier";
 import { RegisterHandler } from "../Handlers/Auth/RegisterHandler";
@@ -80,7 +80,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof CreateUserCommand) {
-      return new CreateUserHandler(this.userFinder, this.usersRepository);
+      return new CreateUserHandler(this.usersRepository);
     }
 
     if(command instanceof DeleteUserCommand) {

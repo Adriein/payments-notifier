@@ -1,1 +1,3 @@
-export class ReadCalculatedReportCommand {}
+export class ReadCalculatedReportCommand {
+  constructor(public criteria?: any) {}
+}

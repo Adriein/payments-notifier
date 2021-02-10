@@ -1,20 +1,21 @@
 .button--action {
+  padding: 5px;
+  color: var(--level-button);
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50px;
-  height: 30px;
-  width: 30px;
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
   transition: all 0.3s ease-out;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
   svg {
     transition: all 0.3s ease-out;
-    &:hover {
-      height: 30px;
-      width: 30px;
-    }
   }
   &:hover {
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    background: var(--level-button);
+    color: var(--active-light-color);
+    transform: scale(0.95);
   }
 }

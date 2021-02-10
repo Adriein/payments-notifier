@@ -43,6 +43,21 @@ export class Subscription implements ISerializable {
     return false;
   };
 
+  public isOneDayOldDefaulter = (): boolean => {
+    const today = dayjs(new Date());
+
+    const maxDate = dayjs(this._lastPayment.date()).add(
+      this.pricingToMonths(this._pricing.pricingType),
+      'month'
+    );
+
+    if (today.diff(maxDate, 'day') >= 1) {
+      return true;
+    }
+
+    return false;
+  };
+
   public isConfiguredDaysBeforeExpiration = (): boolean => {
     const today = dayjs(new Date());
     const maxDate = dayjs(this._lastPayment.date())

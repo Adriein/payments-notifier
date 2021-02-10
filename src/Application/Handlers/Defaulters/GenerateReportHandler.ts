@@ -20,7 +20,7 @@ export class GenerateReportHandler implements IHandler<void> {
     };
 
     for (const user of usersOnDb) {
-      if (user.isDefaulter()) {
+      if (user.isDefaulter() && !user.isOneDayOldDefaulter()) {
         report['summary']['defaulters'] = report['summary']['defaulters'] + 1;
         report['defaulters'] = [...report['defaulters'], user];
         continue;

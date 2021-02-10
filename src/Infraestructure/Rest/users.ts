@@ -17,6 +17,14 @@ router.get(
   requireAuth,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (Object.keys(req.query).length) {
+        const users = (await commandBus.execute(
+          new ReadCalculatedReportCommand(req.query)
+        )) as User[];
+        res.status(200).send(users.map((user) => user.serialize()));
+        return;
+      }
+
       const users = (await commandBus.execute(
         new ReadCalculatedReportCommand()
       )) as User[];
@@ -37,14 +45,8 @@ router.post(
         new CreateUserCommand(
           req.body.username,
           req.body.email,
-          req.body.weight,
-          req.body.height,
-          req.body.kcal,
-          req.body.allergies,
-          req.body.favourites,
-          req.body.hated,
-          req.body.age,
-          req.body.activity
+          req.body.pricing,
+          req.body.lastPaymentDate
         )
       );
 
@@ -80,7 +82,7 @@ router.delete(
   '/users/:email',
   requireAuth,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {     
+    try {
       await commandBus.execute(new DeleteUserCommand(req.params.email));
       res.status(200).send();
     } catch (error) {
