@@ -1,4 +1,4 @@
-import { requireAuth } from '../../middlewares/auth';
+import { currentUser, requireAuth } from '../../middlewares/auth';
 import express, { Router, Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../Application/CommandBus/CommandBus';
 import { User } from '../../Domain/Entities/User.entity';
@@ -15,18 +15,24 @@ const commandBus = new CommandBus();
 router.get(
   '/calculatedReport',
   requireAuth,
+  currentUser,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (Object.keys(req.query).length) {
         const users = (await commandBus.execute(
-          new ReadCalculatedReportCommand(req.query)
+          new ReadCalculatedReportCommand({
+            ...req.query,
+            owner_id: req.currentUser!.id,
+          })
         )) as User[];
         res.status(200).send(users.map((user) => user.serialize()));
         return;
       }
 
       const users = (await commandBus.execute(
-        new ReadCalculatedReportCommand()
+        new ReadCalculatedReportCommand({
+          owner_id: req.currentUser!.id,
+        })
       )) as User[];
 
       res.status(200).send(users.map((user) => user.serialize()));
@@ -39,6 +45,7 @@ router.get(
 router.post(
   '/users',
   requireAuth,
+  currentUser,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await commandBus.execute(
@@ -46,7 +53,8 @@ router.post(
           req.body.username,
           req.body.email,
           req.body.pricing,
-          req.body.lastPaymentDate
+          req.body.lastPaymentDate,
+          req.currentUser!.id!
         )
       );
 

@@ -1,3 +1,5 @@
+import { Criteria } from '../../../Domain/Entities/Criteria.entity';
+import { Filter } from '../../../Domain/Entities/Filter.entity';
 import { IMapper } from '../../../Domain/Interfaces';
 import { IRepository } from '../../../Domain/Interfaces/IRepository';
 import Database from '../Database';
@@ -50,5 +52,14 @@ export abstract class GenericRepository<T> implements IRepository<T> {
         }`;
       })
       .join(',')};`;
+  }
+
+  protected criteriaToSQL(criteria: Criteria) {
+    return criteria.filters.map(
+      (filter: Filter) =>
+        `AND ${filter.field}${
+          filter.operator
+        }'${filter.value}'`
+    );
   }
 }

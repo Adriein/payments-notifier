@@ -58,11 +58,13 @@ export class Subscription implements ISerializable {
     return false;
   };
 
-  public isConfiguredDaysBeforeExpiration = (): boolean => {
+  public isConfiguredDaysBeforeExpiration = (
+    daysBeforeExpiration: number | undefined = 5
+  ): boolean => {
     const today = dayjs(new Date());
     const maxDate = dayjs(this._lastPayment.date())
       .add(this.pricingToMonths(this._pricing.pricingType), 'month')
-      .subtract(Number.parseInt(process.env.DAYS_BEFORE_EXPIRATION!), 'day');
+      .subtract(daysBeforeExpiration, 'day');
 
     if (maxDate.isSame(today, 'day')) {
       return true;

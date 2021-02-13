@@ -26,7 +26,7 @@ export class CreateUserHandler implements IHandler<void> {
 
     const config = new UserConfig(LANG_ES, USER_ROLE);
 
-    const user = User.build(comm.username, email, config);
+    const user = User.build(comm.username, email, config, comm.ownerId);
 
     user.createSubscription(pricing, lastPaymentDate);
 

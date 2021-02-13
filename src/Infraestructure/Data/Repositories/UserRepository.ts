@@ -19,12 +19,12 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async find(criteria: Criteria): Promise<User[]> {
     const where = this.criteriaToSQL(criteria);
-    const query = `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${
+    const query = `SELECT users.id, users.username, users.email, users.password, users.owner_id, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${
       this.entity
     } LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='user' ${where.join(
       ' '
     )};`;
-    
+
     const { rows } = await this.db.query(query);
 
     return rows.map((row) => this.mapper.domain(row));
@@ -33,7 +33,7 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async findById(id: string): Promise<User | undefined> {
     const { rows } = await this.db.query(
-      `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE users.id='${id}';`
+      `SELECT users.id, users.username, users.email, users.password, users.owner_id, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE users.id='${id}';`
     );
 
     if (rows.length < 1) {
@@ -46,7 +46,7 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async findByEmail(email: Email): Promise<User | undefined> {
     const { rows } = await this.db.query(
-      `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE email='${email.email}';`
+      `SELECT users.id, users.username, users.email, users.password, users.owner_id, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE email='${email.email}';`
     );
 
     if (rows.length < 1) {
@@ -59,7 +59,7 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async findAll(): Promise<User[]> {
     const { rows } = await this.db.query(
-      `SELECT users.id, users.username, users.email, users.password, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='user';`
+      `SELECT users.id, users.username, users.email, users.password, users.owner_id, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='user';`
     );
 
     return rows.map((row) => this.mapper.domain(row));
@@ -101,7 +101,9 @@ export class UserRepository
 
     await this.db.query(
       `UPDATE ${this.entity}
-       SET username='${user.getName()}', email='${user.getEmail()}', password='${user.getPassword()}'
+       SET username='${user.getName()}', email='${user.getEmail()}', password='${user.getPassword()}, owner_id='${
+        user.ownerId
+      }'
        WHERE id='${user.getId()}';`
     );
   }
@@ -121,11 +123,11 @@ export class UserRepository
     );
   }
 
-  private criteriaToSQL(criteria: Criteria) {
+  protected criteriaToSQL(criteria: Criteria) {
     return criteria.filters.map(
       (filter: Filter) =>
         `AND ${
-          filter.field === 'pricing' ? 'subscriptions.pricing' : ''
+          filter.field === 'pricing' ? 'subscriptions.pricing' : filter.field
         }${filter.operator}'${filter.value}'`
     );
   }

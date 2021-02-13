@@ -1,4 +1,3 @@
-import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { IMapper } from '../../../Domain/Interfaces';
@@ -12,6 +11,8 @@ type UsersTableJoined = {
   username: string;
   email: string;
   password: string;
+  createdAt: string;
+  ownerId: string | null;
   subscriptions_id: string;
   pricing: string;
   payment_date: string;
@@ -29,10 +30,12 @@ type UsersTable = {
   username: string;
   email: string;
   password: string;
+  createdAt: string | null;
+  ownerId: string | null;
 };
 
 export class UserMapper implements IMapper<User> {
-  public domain(userDatamodel: UsersTableJoined): User {  
+  public domain(userDatamodel: UsersTableJoined): User {
     const user = new User(
       userDatamodel.id,
       userDatamodel.username,
@@ -43,11 +46,12 @@ export class UserMapper implements IMapper<User> {
         userDatamodel.send_notifications,
         userDatamodel.send_warnings,
         userDatamodel.config_id
-      )
+      ),
+      userDatamodel.ownerId ? userDatamodel.ownerId : undefined
     );
     user.setPassword(new Password(userDatamodel.password));
 
-    if (userDatamodel.subscriptions_id !== null) {      
+    if (userDatamodel.subscriptions_id !== null) {
       user.setSubscription(
         userDatamodel.subscriptions_id,
         new Pricing(userDatamodel.pricing),
@@ -65,6 +69,8 @@ export class UserMapper implements IMapper<User> {
       username: domain.getName(),
       email: domain.getEmail(),
       password: domain.getPassword()!,
+      createdAt: 'now()',
+      ownerId: domain.ownerId || null,
     };
   }
 }

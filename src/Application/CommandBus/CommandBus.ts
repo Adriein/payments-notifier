@@ -14,7 +14,9 @@ import { UpdateUserNotificationsCommand } from "../../Domain/Commands/User/Updat
 import { ICommand } from "../../Domain/Interfaces/ICommand";
 import { ICommandBus } from "../../Domain/Interfaces/ICommandBus";
 import { UserFinder } from "../../Domain/Services/UserFinder";
+import { AppConfigMapper } from "../../Infraestructure/Data/Mappers/AppConfigMapper";
 import { UserMapper } from "../../Infraestructure/Data/Mappers/UserMapper";
+import { AppConfigRepository } from "../../Infraestructure/Data/Repositories/AppConfigRepository";
 import { UserRepository } from "../../Infraestructure/Data/Repositories/UserRepository";
 import { EmailNotifier } from "../../Infraestructure/Notifiers/EmailNotifier";
 import { RegisterHandler } from "../Handlers/Auth/RegisterHandler";
@@ -33,9 +35,14 @@ import { UpdateUserNotificationsHandler } from "../Handlers/User/UpdateUserNotif
 
 
 export class CommandBus implements ICommandBus {
-  private notifier = new EmailNotifier();
+  //repos
   private usersRepository = new UserRepository('users', new UserMapper());
+  private appConfigRepository = new AppConfigRepository('app_config', new AppConfigMapper());
+
+  //services
+  private notifier = new EmailNotifier();
   private userFinder = new UserFinder(this.usersRepository);
+  
   constructor() {}
 
   public async execute(command: ICommand): Promise<any> {
@@ -44,7 +51,7 @@ export class CommandBus implements ICommandBus {
 
   private resolveHandler(command: ICommand) {
     if (command instanceof CheckForDefaultersCommand) {
-      return new CheckForDefaultersHandler(this.notifier, this.usersRepository);
+      return new CheckForDefaultersHandler(this.notifier, this.usersRepository, this.appConfigRepository);
     }
 
     if (command instanceof IngestDefaultersCommand) {

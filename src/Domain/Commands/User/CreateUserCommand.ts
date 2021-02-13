@@ -4,6 +4,7 @@ export class CreateUserCommand {
     public email: string,
     public pricing: string,
     public lastPaymentDate: string,
+    public ownerId: string,
     public weight?: number,
     public height?: number,
     public kcal?: number,

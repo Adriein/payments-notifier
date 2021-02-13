@@ -12,14 +12,20 @@ import { Subscription } from './Subscription.entity';
 import { UserConfig } from './UserConfig.entity';
 
 export class User implements ISerializable {
-  public static build(name: string, email: Email, config: UserConfig): User {
-    return new User(uuidv4(), name, email, config);
+  public static build(
+    name: string,
+    email: Email,
+    config: UserConfig,
+    ownerId?: string
+  ): User {
+    return new User(uuidv4(), name, email, config, ownerId);
   }
   constructor(
     private id: string,
     private name: string,
     private email: Email,
-    private config: UserConfig
+    private config: UserConfig,
+    private _ownerId?: string
   ) {}
 
   private subscription?: Subscription;
@@ -36,6 +42,10 @@ export class User implements ISerializable {
 
   public getEmail(): string {
     return this.email.email;
+  }
+
+  public get ownerId(): string | undefined {
+    return this._ownerId;
   }
 
   public async createPassword(password: Password): Promise<void> {
@@ -156,7 +166,9 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
-  public get isConfiguredDaysBeforeExpiration(): () => boolean {
+  public get isConfiguredDaysBeforeExpiration(): (
+    daysBeforeExpiration: number | undefined
+  ) => boolean {
     if (this.subscription) {
       return this.subscription.isConfiguredDaysBeforeExpiration;
     }
