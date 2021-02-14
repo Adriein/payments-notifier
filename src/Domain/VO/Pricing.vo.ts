@@ -4,7 +4,10 @@ import { PricingObject } from '../types';
 
 export class Pricing {
   constructor(public pricingType: PricingObject) {
-    if (typeof pricingType !== 'object' || !this.evaluateKeys(pricingType)) {
+    if (
+      typeof pricingType !== 'object' ||
+      !this.evaluateKeys(pricingType[Object.keys(pricingType)[0]])
+    ) {
       throw new PricingError();
     }
   }

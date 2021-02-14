@@ -33,11 +33,11 @@ router.post(
     try {
       await commandBus.execute(
         new CreateAppConfigCommand(
-            req.body.pricing,
-            req.body.warningDelay,
-            req.body.defaulterDelay,
-            req.body.emailContent,
-            req.body.currentUser!.id
+          req.body.pricing,
+          req.body.warningDelay,
+          req.body.defaulterDelay,
+          req.body.emailContent,
+          req.body.currentUser!.id
         )
       );
 

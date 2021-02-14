@@ -103,6 +103,7 @@ export const UserTable = () => {
   };
 
   const handleCreateUser = () => {
+    edit();
     create();
   }
 
@@ -160,12 +161,11 @@ export const UserTable = () => {
         <div className="user-table__filters">
           <Select
             className="user-table__select"
-            options={selectData.defaulters}
+            data={selectData.defaulters}
             handleChange={selectFilter(DEFAULTERS_SELECT)}
           />
           <Select
             className="user-table__select"
-            options={selectData.pricings}
             handleChange={selectFilter(PRICING_SELECT)}
           />
         </div>
@@ -231,7 +231,7 @@ export const UserTable = () => {
                         onChange={handleChange}
                       />
                     ) : (
-                      user.subscription.pricing
+                      Object.keys(user.subscription.pricing)[0]
                     )}
                   </td>
                   <td>{user.defaulter}</td>

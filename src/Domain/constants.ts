@@ -18,6 +18,7 @@ export enum OPERATORS {
   ne = '!=',
   and = 'AND',
   or = 'OR',
+  like = 'LIKE'
 }
 
 export const FILES_PATH = `${process.cwd()}/dist/upload`;
@@ -37,6 +38,6 @@ export const DEFAULT_DELAY_DAYS = 2;
 export const DEFAULT_EMAIL_CONTENT = '';
 
 export const DEFAULT_PRICING = {
-  monthly: { duration: 30, price: 50 },
-  quarterly: { duration: 90, price: 150 },
+  mensual: { duration: 30, price: 50 },
+  trimestral: { duration: 90, price: 150 },
 };

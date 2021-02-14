@@ -24,7 +24,7 @@ export class UserRepository
     } LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='user' ${where.join(
       ' '
     )};`;
-
+     
     const { rows } = await this.db.query(query);
 
     return rows.map((row) => this.mapper.domain(row));
@@ -85,7 +85,9 @@ export class UserRepository
 
     if (user.hasSubscription()) {
       await this.db.query(
-        `INSERT INTO ${SUBSCRIPTIONS_TABLE} VALUES ('${user.subscriptionId()}', '${user.pricing()}', '${user.paymentDate()}', '${user.isWarned()}', '${user.isNotified()}', '${user.getId()}');`
+        `INSERT INTO ${SUBSCRIPTIONS_TABLE} VALUES ('${user.subscriptionId()}', '${JSON.stringify(
+          user.pricing().pricingType
+        )}', '${user.paymentDate()}', '${user.isWarned()}', '${user.isNotified()}', '${user.getId()}');`
       );
     }
   }
@@ -95,7 +97,9 @@ export class UserRepository
     if (user.hasSubscription()) {
       await this.db.query(
         `UPDATE ${SUBSCRIPTIONS_TABLE}
-         SET pricing='${user.pricing()}', payment_date='${user.paymentDate()}', warned=${user.isWarned()}, notified=${user.isNotified()}, user_id='${user.getId()}' WHERE id='${user.subscriptionId()}';`
+         SET pricing='${JSON.stringify(
+           user.pricing().pricingType
+         )}', payment_date='${user.paymentDate()}', warned=${user.isWarned()}, notified=${user.isNotified()}, user_id='${user.getId()}' WHERE id='${user.subscriptionId()}';`
       );
     }
 
@@ -128,7 +132,7 @@ export class UserRepository
       (filter: Filter) =>
         `AND ${
           filter.field === 'pricing' ? 'subscriptions.pricing' : filter.field
-        }${filter.operator}'${filter.value}'`
+        } ${filter.operator} '${filter.value}'`
     );
   }
 }

@@ -55,7 +55,7 @@ export class AppConfig implements ISerializable {
   public serialize(): Object {
     return {
       id: this._id,
-      pricing: JSON.stringify(this._pricing.pricingType),
+      pricing: this._pricing.pricingType,
       warningDelay: this._warningDelay,
       defaulterDelay: this._defaulterDelay,
       emailContent: this._emailContent,

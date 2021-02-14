@@ -129,7 +129,7 @@ export class Subscription implements ISerializable {
       this.paymentDate()
     );
     return {
-      pricing: JSON.stringify(this._pricing.pricingType),
+      pricing: this._pricing.pricingType,
       lastPayment: `${da}/${mo}/${ye}`,
       isWarned: this.isWarned() ? 'Si' : 'No',
       isNotified: this.isNotified() ? 'Si' : 'No',
