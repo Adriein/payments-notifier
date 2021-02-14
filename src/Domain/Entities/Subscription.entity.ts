@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
 import { Pricing } from '../VO/Pricing.vo';
 import dayjs from 'dayjs';
-import { PricingType } from '../constants';
 import { ISerializable } from '../Interfaces/ISerializable';
 
 export class Subscription implements ISerializable {
@@ -26,14 +25,18 @@ export class Subscription implements ISerializable {
     private _lastPayment: LastPaymentDate,
     private _isWarned: boolean,
     private _isNotified: boolean
-  ) {}
+  ) {
+    this.priceName = Object.keys(this._pricing.pricingType)[0];
+  }
+
+  private priceName: string;
 
   public isDefaulter = (): boolean => {
     const today = dayjs(new Date());
 
     const maxDate = dayjs(this._lastPayment.date()).add(
-      this.pricingToMonths(this._pricing.pricingType),
-      'month'
+      this._pricing.pricingType[this.priceName].duration,
+      'day'
     );
 
     if (maxDate.isBefore(today)) {
@@ -47,8 +50,8 @@ export class Subscription implements ISerializable {
     const today = dayjs(new Date());
 
     const maxDate = dayjs(this._lastPayment.date()).add(
-      this.pricingToMonths(this._pricing.pricingType),
-      'month'
+      this._pricing.pricingType[this.priceName].duration,
+      'day'
     );
 
     if (today.diff(maxDate, 'day') >= 1) {
@@ -63,7 +66,7 @@ export class Subscription implements ISerializable {
   ): boolean => {
     const today = dayjs(new Date());
     const maxDate = dayjs(this._lastPayment.date())
-      .add(this.pricingToMonths(this._pricing.pricingType), 'month')
+      .add(this._pricing.pricingType[this.priceName].duration, 'day')
       .subtract(daysBeforeExpiration, 'day');
 
     if (maxDate.isSame(today, 'day')) {
@@ -87,32 +90,12 @@ export class Subscription implements ISerializable {
     this._lastPayment = new LastPaymentDate(new Date().toString());
   };
 
-  private pricingToMonths(pricing: string) {
-    switch (pricing) {
-      case PricingType.monthly:
-        return 1;
-      case PricingType.quarterly:
-        return 3;
-      default:
-        return 0;
-    }
-  }
-
-  private pricingBeautifier(pricing: string) {
-    switch (pricing) {
-      case PricingType.monthly:
-        return 'mensual';
-      case PricingType.quarterly:
-        return 'trimestral';
-    }
-  }
-
   public id = (): string => {
     return this._id;
   };
 
-  public pricing = (): string => {
-    return this._pricing.pricingType;
+  public pricing = (): Pricing => {
+    return this._pricing;
   };
 
   public paymentDate = (): Date => {
@@ -146,7 +129,7 @@ export class Subscription implements ISerializable {
       this.paymentDate()
     );
     return {
-      pricing: this.pricingBeautifier(this.pricing()),
+      pricing: JSON.stringify(this._pricing.pricingType),
       lastPayment: `${da}/${mo}/${ye}`,
       isWarned: this.isWarned() ? 'Si' : 'No',
       isNotified: this.isNotified() ? 'Si' : 'No',

@@ -1,7 +1,7 @@
 import { Log } from '../Decorators/Log';
 import { Criteria } from '../Entities/Criteria.entity';
 import { User } from '../Entities/User.entity';
-import { UserNotExistError } from '../Errors/UserNotExistError';
+import { UserNotExistError } from '../Errors';
 import { IUserRepository } from '../Interfaces/IUserRepository';
 import { Email } from '../VO/Email.vo';
 

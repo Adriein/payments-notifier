@@ -43,9 +43,9 @@ export class CheckForDefaultersHandler implements IHandler<void> {
         continue;
       }
 
-      const template = new Expired(user).generate();
+      //const template = new Expired(user).generate();
 
-      await this.notifier.notify(user.getEmail(), template);
+      //await this.notifier.notify(user.getEmail(), template);
 
       user.setIsNotified();
 

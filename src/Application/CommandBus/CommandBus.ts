@@ -1,3 +1,5 @@
+import { CreateAppConfigCommand } from "../../Domain/Commands/AppConfig/CreateAppConfigCommand";
+import { ReadAppConfigCommand } from "../../Domain/Commands/AppConfig/ReadAppConfigCommand";
 import { RegisterCommand } from "../../Domain/Commands/Auth/RegisterCommand";
 import { SignInCommand } from "../../Domain/Commands/Auth/SignInCommand";
 import { CheckForDefaultersCommand } from "../../Domain/Commands/Defaulters/CheckForDefaultersCommand";
@@ -19,6 +21,8 @@ import { UserMapper } from "../../Infraestructure/Data/Mappers/UserMapper";
 import { AppConfigRepository } from "../../Infraestructure/Data/Repositories/AppConfigRepository";
 import { UserRepository } from "../../Infraestructure/Data/Repositories/UserRepository";
 import { EmailNotifier } from "../../Infraestructure/Notifiers/EmailNotifier";
+import { CreateAppConfigHandler } from "../Handlers/AppConfig/CreateAppConfigHandler";
+import { ReadAppConfigHandler } from "../Handlers/AppConfig/ReadAppConfigHandler";
 import { RegisterHandler } from "../Handlers/Auth/RegisterHandler";
 import { SignInHandler } from "../Handlers/Auth/SignInHandler";
 import { CheckForDefaultersHandler } from "../Handlers/Defaulters/CheckForDefaultersHandler";
@@ -67,7 +71,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof RegisterCommand) {
-      return new RegisterHandler(this.usersRepository);
+      return new RegisterHandler(this.usersRepository, this);
     }
 
     if (command instanceof SignInCommand) {
@@ -100,6 +104,14 @@ export class CommandBus implements ICommandBus {
 
     if(command instanceof UpdateUserCommand) {
       return new UpdateUserHandler(this.userFinder, this.usersRepository);
+    }
+
+    if(command instanceof CreateAppConfigCommand) {
+      return new CreateAppConfigHandler(this.appConfigRepository);
+    }
+
+    if(command instanceof ReadAppConfigCommand) {
+      return new ReadAppConfigHandler(this.appConfigRepository);
     }
 
     throw new Error();

@@ -1,9 +1,10 @@
+import { PricingObject } from "../../types";
+
 export class IngestDefaultersCommand {
-    constructor(
-      public name: string,
-      public email: string,
-      public pricing: string,
-      public lastPayment: string
-    ) {}
-  }
-  
+  constructor(
+    public name: string,
+    public email: string,
+    public pricing: PricingObject,
+    public lastPayment: string
+  ) {}
+}

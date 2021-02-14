@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from 'util';
 import { UpdateUserCommand } from '../../../Domain/Commands/User/UpdateUserCommand';
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
@@ -36,7 +37,7 @@ export class UpdateUserHandler {
 
     const pricingVO = new Pricing(comm.pricing);
 
-    if (user.pricing() !== pricingVO.pricingType) {
+    if (isDeepStrictEqual(user.pricing(), pricingVO.pricingType)) {
       updatedUser.setSubscription(
         user.subscriptionId()!,
         pricingVO,

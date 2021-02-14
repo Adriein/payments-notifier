@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { SubscriptionError } from '../Errors/SubscriptionError';
+import { SubscriptionError } from '../Errors/Users/SubscriptionError';
 import { ISerializable } from '../Interfaces/ISerializable';
 import { Activity } from '../VO/Activity.vo';
 import { Age } from '../VO/Age.vo';
@@ -183,7 +183,7 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
-  public get pricing(): () => string {
+  public get pricing(): () => Pricing {
     if (this.subscription) {
       return this.subscription.pricing;
     }

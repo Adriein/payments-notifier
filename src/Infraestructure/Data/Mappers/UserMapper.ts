@@ -54,7 +54,7 @@ export class UserMapper implements IMapper<User> {
     if (userDatamodel.subscriptions_id !== null) {
       user.setSubscription(
         userDatamodel.subscriptions_id,
-        new Pricing(userDatamodel.pricing),
+        new Pricing(JSON.parse(userDatamodel.pricing)),
         new LastPaymentDate(userDatamodel.payment_date),
         userDatamodel.warned,
         userDatamodel.notified
