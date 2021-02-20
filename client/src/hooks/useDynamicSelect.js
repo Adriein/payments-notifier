@@ -1,28 +1,39 @@
 import { useState, useEffect } from 'react';
 import server from '../api/server';
 
-const useDynamicSelect = (initialVal) => {
-  const [data, setData] = useState(initialVal);
+const fetch = async (url) => {
+  const response = (await server.get(url)).data;
+  return Object.keys(response.pricing).map((pricing) => {
+    return {
+      value: pricing,
+      label: pricing.charAt(0).toUpperCase() + pricing.slice(1),
+    };
+  });
+};
 
+const useDynamicSelect = (
+  initialVal,
+  url = undefined,
+  defaultOption = undefined
+) => {
+  const [data, setData] = useState(initialVal);
   useEffect(() => {
     if (initialVal.length > 1) {
+      if (defaultOption) {
+        setData([defaultOption, ...initialVal]);
+        return;
+      }
       setData(initialVal);
       return;
     }
-    (async () => {
-      const response = (await server.get('/appConfig')).data;
-      const formatedResponse = Object.keys(response.pricing).map((pricing) => {
-        return {
-          value: pricing,
-          label: pricing.charAt(0).toUpperCase() + pricing.slice(1),
-        };
-      });
+    fetch(url).then((response) => {
+      if (defaultOption) {
+        setData([defaultOption, ...response]);
+        return;
+      }
 
-      setData([
-        { value: 'default', label: 'Todas las tarifas' },
-        ...formatedResponse,
-      ]);
-    })();
+      setData(response);
+    });
   }, []);
 
   return data;
