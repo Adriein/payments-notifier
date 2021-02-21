@@ -71,6 +71,7 @@ export default function UserForm() {
                   type="text"
                   required
                   name="username"
+                  autocomplete="off"
                   onChange={handleChange}
                   value={form.username}
                 />
@@ -82,6 +83,7 @@ export default function UserForm() {
                   type="text"
                   required
                   name="email"
+                  autocomplete="off"
                   onChange={handleChange}
                   value={form.email}
                 />
@@ -102,6 +104,7 @@ export default function UserForm() {
                   type="text"
                   required
                   name="lastPaymentDate"
+                  autocomplete="off"
                   onChange={handleChange}
                   value={form.lastPaymentDate}
                 />

@@ -62,8 +62,23 @@ const getUsername = () => {
   };
 };
 
+const createAvatar = () => {
+  return () => {
+    const username = localStorage.getItem(LOCALSTORAGE_USERNAME);
+    const [name, surname] = username.split(' ');
+
+    if (surname) {
+      return `${name.charAt(0).toUpperCase()}${surname
+        .charAt(0)
+        .toUpperCase()}`;
+    }
+
+    return `${name.charAt(0).toUpperCase()}`;
+  };
+};
+
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, getToken, logout, getUsername },
+  { signin, getToken, logout, getUsername, createAvatar },
   { isSignedIn: false, error: undefined }
 );
