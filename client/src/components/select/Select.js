@@ -6,9 +6,9 @@ import useDynamicSelect from '../../hooks/useDynamicSelect';
 export default function Select({
   data,
   handleChange,
+  style,
   defaultOption = undefined,
   url = undefined,
-  className = undefined,
 }) {
   const options = useDynamicSelect(data, url, defaultOption);
   const [selected, setSelected] = useState(options[0].label);
@@ -22,7 +22,7 @@ export default function Select({
   }, [options]);
 
   return (
-    <div className="dropdown">
+    <div className="dropdown" style={style}>
       <div className="dropdown-select">
         <span className="select">{selected.label}</span>
         <FiChevronDown className="dropdown-icon" />

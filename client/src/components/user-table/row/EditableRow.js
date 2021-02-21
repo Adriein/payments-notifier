@@ -1,7 +1,22 @@
 import React from 'react';
+import useInputState from '../../../hooks/useInputState';
+import Select from '../../select/Select';
 import { Actions } from '../actions/Actions';
 
-export const EditableRow = ({user}) => {
+export const EditableRow = ({ user }) => {
+  const [form, handleChange, reset, setForm] = useInputState({
+    username: user.username,
+    email: user.email,
+    pricing: user.pricing,
+  });
+
+  const handleEditPricing = (option) => {
+    setForm({
+      username: form.username,
+      email: form.email,
+      pricing: option.value,
+    });
+  };
   return (
     <tr key={user.id}>
       <td>
@@ -23,11 +38,17 @@ export const EditableRow = ({user}) => {
         />
       </td>
       <td>
-        <span>mensual</span>
+        <Select style={{ width: '160px' }} url="/appConfig" handleChange={handleEditPricing}/>
       </td>
       <td>{user.defaulter}</td>
       <td>{user.subscription.lastPayment}</td>
-      <Actions editing/>
+      <Actions
+        form={form}
+        reset={reset}
+        setForm={setForm}
+        user={user}
+        editing
+      />
     </tr>
   );
 };
