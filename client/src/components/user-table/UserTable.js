@@ -1,13 +1,10 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext} from 'react';
 import './UserTable.scss';
 import { Context as UsersContext } from '../../context/UsersContext';
 import { Context as ModalContext } from '../../context/ModalContext';
 import { useToasts } from 'react-toast-notifications';
-import { Animate } from 'react-simple-animate';
-
 import Modal from '../modal/Modal';
 
-import useInputState from '../../hooks/useInputState';
 import { modalData } from '../../data';
 import { TableHeaderFilters } from './header/TableHeaderFilters';
 import { TableRow } from './row/TableRow';

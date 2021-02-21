@@ -6,11 +6,12 @@ import { userFormTabs } from '../../data';
 import useInputState from '../../hooks/useInputState';
 import { FiCheckCircle, FiHome } from 'react-icons/fi';
 import { Context as UsersContext } from '../../context/UsersContext';
+import Select from '../select/Select';
 
 export default function UserForm() {
   const { create } = useContext(UsersContext);
   const [active, setActive] = useState(0);
-  const [form, handleChange, reset] = useInputState({
+  const [form, handleChange, reset, setForm] = useInputState({
     username: '',
     email: '',
     pricing: '',
@@ -29,6 +30,14 @@ export default function UserForm() {
   const handleBack = () => {
     reset();
     create({ status: 'cancel' });
+  };
+
+  const handleEditPricing = (option) => {
+    setForm({
+      username: form.username,
+      email: form.email,
+      pricing: option.value,
+    });
   };
 
   return (
@@ -56,50 +65,51 @@ export default function UserForm() {
       >
         {active === 0 && (
           <div className="user-form__tab">
-            <div className="user-form__input">
-              <input
-                type="text"
-                required
-                name="username"
-                onChange={handleChange}
-                value={form.username}
-              />
-              <div className="user-form__input__underline"></div>
-              <label>Nombre</label>
+            <div className="user-form__personal-data">
+              <div className="user-form__input">
+                <input
+                  type="text"
+                  required
+                  name="username"
+                  onChange={handleChange}
+                  value={form.username}
+                />
+                <div className="user-form__input__underline"></div>
+                <label>Nombre</label>
+              </div>
+              <div className="user-form__input">
+                <input
+                  type="text"
+                  required
+                  name="email"
+                  onChange={handleChange}
+                  value={form.email}
+                />
+                <div className="user-form__input__underline"></div>
+                <label>Email</label>
+              </div>
             </div>
-            <div className="user-form__input">
-              <input
-                type="text"
-                required
-                name="email"
-                onChange={handleChange}
-                value={form.email}
-              />
-              <div className="user-form__input__underline"></div>
-              <label>Email</label>
+            <div className="user-form__personal-data">
+              <div className="user-form__input">
+                <Select
+                  url="/appConfig"
+                  handleChange={handleEditPricing}
+                  style={{ width: '400px' }}
+                />
+              </div>
+              <div className="user-form__input">
+                <input
+                  type="text"
+                  required
+                  name="lastPaymentDate"
+                  onChange={handleChange}
+                  value={form.lastPaymentDate}
+                />
+                <div className="user-form__input__underline"></div>
+                <label>Fecha último pago (dd/mm/aaaa)</label>
+              </div>
             </div>
-            <div className="user-form__input">
-              <input
-                type="text"
-                required
-                name="pricing"
-                onChange={handleChange}
-                value={form.pricing}
-              />
-              <div className="user-form__input__underline"></div>
-              <label>Tarifa (mensual - trimestral)</label>
-            </div>
-            <div className="user-form__input">
-              <input
-                type="text"
-                required
-                name="lastPaymentDate"
-                onChange={handleChange}
-                value={form.lastPaymentDate}
-              />
-              <div className="user-form__input__underline"></div>
-              <label>Fecha último pago (dd/mm/aaaa)</label>
-            </div>
+
             <div className="user-form__action-buttons">
               <div className="user-form__button" onClick={handleCreate}>
                 <span>Crear</span>
