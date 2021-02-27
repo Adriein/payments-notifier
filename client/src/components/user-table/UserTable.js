@@ -71,9 +71,9 @@ export const UserTable = () => {
           <tbody>
             {state.users.map((user) => {
               return state.editingUser.id === user.id ? (
-                <EditableRow user={user} />
+                <EditableRow user={user} key={user.id}/>
               ) : (
-                <TableRow user={user} />
+                <TableRow user={user} key={user.id}/>
               );
             })}
           </tbody>

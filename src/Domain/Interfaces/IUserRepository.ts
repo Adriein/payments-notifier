@@ -12,4 +12,5 @@ export interface IUserRepository extends IRepository<User> {
     configId: string,
     sendWarnings: boolean
   ): Promise<void>;
+  insertNewSubscription(user: User): Promise<void>;
 }

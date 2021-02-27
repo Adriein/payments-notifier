@@ -54,7 +54,8 @@ export class IngestDefaultersHandler implements IHandler<void> {
         pricing,
         lastPaymentDate,
         userOnDb.isWarned(),
-        userOnDb.isNotified()
+        userOnDb.isNotified(),
+        userOnDb.isSubscriptionActive()
       );
 
       await this.repository.update(user);

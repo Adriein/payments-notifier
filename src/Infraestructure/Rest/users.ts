@@ -68,6 +68,7 @@ router.post(
 router.put(
   '/users',
   requireAuth,
+  currentUser,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await commandBus.execute(
@@ -75,7 +76,8 @@ router.put(
           req.body.id,
           req.body.username,
           req.body.email,
-          req.body.pricing
+          req.body.pricing,
+          req.currentUser!.id
         )
       );
 

@@ -13,3 +13,8 @@ UPDATE users SET owner_id='ba8740ef-c7eb-44cc-a114-77b17404ea34';
 
 UPDATE subscriptions SET pricing='{"mensual":{"duration":30,"price":50}}' WHERE pricing='mensual';
 UPDATE subscriptions SET pricing='{"trimestral":{"duration":90,"price":150}}' WHERE pricing='trimestral';
+
+
+ALTER TABLE subscriptions ADD COLUMN active BOOLEAN;
+
+UPDATE subscriptions SET active=true;

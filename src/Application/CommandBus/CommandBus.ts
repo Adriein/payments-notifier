@@ -16,6 +16,7 @@ import { UpdateUserNotificationsCommand } from "../../Domain/Commands/User/Updat
 import { ICommand } from "../../Domain/Interfaces/ICommand";
 import { ICommandBus } from "../../Domain/Interfaces/ICommandBus";
 import { UserFinder } from "../../Domain/Services/UserFinder";
+import { UserPriceBuilder } from "../../Domain/Services/UserPriceBuilder";
 import { AppConfigMapper } from "../../Infraestructure/Data/Mappers/AppConfigMapper";
 import { UserMapper } from "../../Infraestructure/Data/Mappers/UserMapper";
 import { AppConfigRepository } from "../../Infraestructure/Data/Repositories/AppConfigRepository";
@@ -46,6 +47,7 @@ export class CommandBus implements ICommandBus {
   //services
   private notifier = new EmailNotifier();
   private userFinder = new UserFinder(this.usersRepository);
+  private priceBuilder = new UserPriceBuilder(this.appConfigRepository);
   
   constructor() {}
 
@@ -91,7 +93,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof CreateUserCommand) {
-      return new CreateUserHandler(this.usersRepository);
+      return new CreateUserHandler(this.usersRepository, this.priceBuilder);
     }
 
     if(command instanceof DeleteUserCommand) {
@@ -103,7 +105,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if(command instanceof UpdateUserCommand) {
-      return new UpdateUserHandler(this.userFinder, this.usersRepository);
+      return new UpdateUserHandler(this.userFinder, this.usersRepository, this.priceBuilder);
     }
 
     if(command instanceof CreateAppConfigCommand) {

@@ -3,9 +3,10 @@ import { UpdateUserCommand } from '../../../Domain/Commands/User/UpdateUserComma
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
-import { ICommand } from '../../../Domain/Interfaces';
+import { ICommand, ICommandBus } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
+import { UserPriceBuilder } from '../../../Domain/Services/UserPriceBuilder';
 import { Email } from '../../../Domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
@@ -13,7 +14,8 @@ import { Pricing } from '../../../Domain/VO/Pricing.vo';
 export class UpdateUserHandler {
   constructor(
     private finder: UserFinder,
-    private userRepository: IUserRepository
+    private userRepository: IUserRepository,
+    private priceBuilder: UserPriceBuilder
   ) {}
 
   @Log(process.env.LOG_LEVEL)
@@ -21,7 +23,7 @@ export class UpdateUserHandler {
     const comm = command as UpdateUserCommand;
 
     const user = (await this.finder.find(undefined, comm.id)) as User;
-        
+
     const updatedUser = new User(
       user.getId(),
       comm.username,
@@ -32,18 +34,20 @@ export class UpdateUserHandler {
         user.sendNotifications(),
         user.sendWarnings(),
         user.configId()
-      )
+      ),
+      comm.adminId
     );
 
-    const pricingVO = new Pricing(comm.pricing);
+    const pricing = await this.priceBuilder.build(comm.adminId, comm.pricing);
 
-    if (isDeepStrictEqual(user.pricing(), pricingVO.pricingType)) {
+    if (!isDeepStrictEqual(user.pricing(), pricing)) {
       updatedUser.setSubscription(
         user.subscriptionId()!,
-        pricingVO,
+        new Pricing(pricing),
         new LastPaymentDate(user.paymentDate()!.toString()),
         user.isWarned(),
-        user.isNotified()
+        user.isNotified(),
+        user.isSubscriptionActive()
       );
     }
 

@@ -79,14 +79,16 @@ export class User implements ISerializable {
     pricing: Pricing,
     lastPayment: LastPaymentDate,
     isWarned: boolean,
-    isNotified: boolean
+    isNotified: boolean,
+    isActive: boolean
   ): void {
     this.subscription = new Subscription(
       id,
       pricing,
       lastPayment,
       isWarned,
-      isNotified
+      isNotified,
+      isActive
     );
   }
 
@@ -151,6 +153,13 @@ export class User implements ISerializable {
 
     return false;
   };
+
+  public get isSubscriptionActive(): () => boolean {
+    if (this.subscription) {
+      return this.subscription.isActive;
+    }
+    throw new SubscriptionError();
+  }
 
   public get isDefaulter(): () => boolean {
     if (this.subscription) {
@@ -229,9 +238,9 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
-  public get renewSubscription(): () => void {
+  public get desactivateExpiredSubscription(): () => void {
     if (this.subscription) {
-      return this.subscription.renewSubscription;
+      return this.subscription.desactivateExpiredSubscription;
     }
 
     throw new SubscriptionError();

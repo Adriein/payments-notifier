@@ -12,12 +12,13 @@ type UsersTableJoined = {
   email: string;
   password: string;
   createdAt: string;
-  ownerId: string | null;
+  owner_id: string | null;
   subscriptions_id: string;
   pricing: string;
   payment_date: string;
   warned: boolean;
   notified: boolean;
+  active: boolean;
   config_id: string;
   language: string;
   role: string;
@@ -31,7 +32,7 @@ type UsersTable = {
   email: string;
   password: string;
   createdAt: string | null;
-  ownerId: string | null;
+  owner_id: string | null;
 };
 
 export class UserMapper implements IMapper<User> {
@@ -47,7 +48,7 @@ export class UserMapper implements IMapper<User> {
         userDatamodel.send_warnings,
         userDatamodel.config_id
       ),
-      userDatamodel.ownerId ? userDatamodel.ownerId : undefined
+      userDatamodel.owner_id ? userDatamodel.owner_id : undefined
     );
     user.setPassword(new Password(userDatamodel.password));
 
@@ -57,7 +58,8 @@ export class UserMapper implements IMapper<User> {
         new Pricing(JSON.parse(userDatamodel.pricing)),
         new LastPaymentDate(userDatamodel.payment_date),
         userDatamodel.warned,
-        userDatamodel.notified
+        userDatamodel.notified,
+        userDatamodel.active
       );
     }
 
@@ -70,7 +72,7 @@ export class UserMapper implements IMapper<User> {
       email: domain.getEmail(),
       password: domain.getPassword()!,
       createdAt: 'now()',
-      ownerId: domain.ownerId || null,
+      owner_id: domain.ownerId || null,
     };
   }
 }

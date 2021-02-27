@@ -9,14 +9,16 @@ export class Subscription implements ISerializable {
     pricing: Pricing,
     lastPayment: LastPaymentDate,
     isWarned: boolean,
-    isNotified: boolean
+    isNotified: boolean,
+    isActive: boolean = true
   ): Subscription {
     return new Subscription(
       uuidv4(),
       pricing,
       lastPayment,
       isWarned,
-      isNotified
+      isNotified,
+      isActive
     );
   }
   constructor(
@@ -24,7 +26,8 @@ export class Subscription implements ISerializable {
     private _pricing: Pricing,
     private _lastPayment: LastPaymentDate,
     private _isWarned: boolean,
-    private _isNotified: boolean
+    private _isNotified: boolean,
+    private _isActive: boolean
   ) {
     this.priceName = Object.keys(this._pricing.pricingType)[0];
   }
@@ -85,9 +88,8 @@ export class Subscription implements ISerializable {
     }
   };
 
-  public renewSubscription = (): void => {
-    this.resetNotificationState();
-    this._lastPayment = new LastPaymentDate(new Date().toString());
+  public desactivateExpiredSubscription = (): void => {
+    this._isActive = false;
   };
 
   public id = (): string => {
@@ -118,6 +120,14 @@ export class Subscription implements ISerializable {
     this._isWarned = !this._isWarned;
   };
 
+  public isActive = (): boolean => {
+    return this._isActive;
+  };
+
+  public setIsActive = (): void => {
+    this._isActive = !this._isActive;
+  };
+
   public serialize = (): Object => {
     const ye = new Intl.DateTimeFormat('es', { year: 'numeric' }).format(
       this.paymentDate()
@@ -133,6 +143,7 @@ export class Subscription implements ISerializable {
       lastPayment: `${da}/${mo}/${ye}`,
       isWarned: this.isWarned() ? 'Si' : 'No',
       isNotified: this.isNotified() ? 'Si' : 'No',
+      isActive: this.isActive() ? 'Si' : 'No',
     };
   };
 }

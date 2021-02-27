@@ -5,6 +5,7 @@ export class UpdateUserCommand {
     public id: string,
     public username: string,
     public email: string,
-    public pricing: PricingObject
+    public pricing: string,
+    public adminId: string,
   ) {}
 }

@@ -9,16 +9,22 @@ import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
 import { LANG_ES, USER_ROLE } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
+import { UserPriceBuilder } from '../../../Domain/Services/UserPriceBuilder';
 
 export class CreateUserHandler implements IHandler<void> {
-  constructor(private userRepository: IUserRepository) {}
-  
+  constructor(
+    private userRepository: IUserRepository,
+    private priceBuilder: UserPriceBuilder
+  ) {}
+
   @Log(process.env.LOG_LEVEL)
   async handle(command: ICommand): Promise<void> {
     const comm = command as CreateUserCommand;
 
+    const price = await this.priceBuilder.build(comm.adminId, comm.pricing);
+
     const email = new Email(comm.email);
-    const pricing = new Pricing(comm.pricing);
+    const pricing = new Pricing(price);
     const lastPaymentDate = new LastPaymentDate(comm.lastPaymentDate);
 
     const userOnDb = await this.userRepository.findByEmail(email);
@@ -29,7 +35,7 @@ export class CreateUserHandler implements IHandler<void> {
 
     const config = new UserConfig(LANG_ES, USER_ROLE);
 
-    const user = User.build(comm.username, email, config, comm.ownerId);
+    const user = User.build(comm.username, email, config, comm.adminId);
 
     user.createSubscription(pricing, lastPaymentDate);
 

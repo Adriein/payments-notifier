@@ -5,6 +5,7 @@ import { ICommand } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Email } from '../../../Domain/VO/Email.vo';
+import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 
 export class RegisterUserPaymentHandler {
   constructor(
@@ -20,8 +21,19 @@ export class RegisterUserPaymentHandler {
 
     const user = (await this.finder.find(emailVo.email)) as User;
 
-    user.renewSubscription();
+    await this.renewSubscription(user);
+  }
 
+  private async renewSubscription(user: User): Promise<void> {
+    user.desactivateExpiredSubscription();
+    
     await this.userRepository.update(user);
+
+    user.createSubscription(
+      user.pricing(),
+      new LastPaymentDate(new Date().toString())
+    );
+
+    await this.userRepository.insertNewSubscription(user);
   }
 }

@@ -63,12 +63,12 @@
     padding: 40px;
     background: var(--theme-bg-color);
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     .user-form__personal-data {
       display: flex;
       flex-direction: column;
       padding: 20px;
-      width: 50%;
       justify-content: center;
       align-items: center;
     }
