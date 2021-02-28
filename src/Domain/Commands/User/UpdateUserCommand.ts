@@ -6,6 +6,7 @@ export class UpdateUserCommand {
     public username: string,
     public email: string,
     public pricing: string,
+    public lastPaymentDate: string,
     public adminId: string,
   ) {}
 }

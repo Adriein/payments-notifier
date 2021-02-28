@@ -77,6 +77,7 @@ router.put(
           req.body.username,
           req.body.email,
           req.body.pricing,
+          req.body.lastPaymentDate,
           req.currentUser!.id
         )
       );

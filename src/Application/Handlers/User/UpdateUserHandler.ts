@@ -1,15 +1,13 @@
-import { isDeepStrictEqual } from 'util';
 import { UpdateUserCommand } from '../../../Domain/Commands/User/UpdateUserCommand';
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
-import { ICommand, ICommandBus } from '../../../Domain/Interfaces';
+import { ICommand } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { UserPriceBuilder } from '../../../Domain/Services/UserPriceBuilder';
 import { Email } from '../../../Domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
-import { Pricing } from '../../../Domain/VO/Pricing.vo';
 
 export class UpdateUserHandler {
   constructor(
@@ -24,10 +22,14 @@ export class UpdateUserHandler {
 
     const user = (await this.finder.find(undefined, comm.id)) as User;
 
+    const email = new Email(comm.email);
+    const pricing = await this.priceBuilder.build(comm.adminId, comm.pricing);
+    const lastPaymentDate = new LastPaymentDate(comm.lastPaymentDate);
+
     const updatedUser = new User(
       user.getId(),
       comm.username,
-      new Email(comm.email),
+      email,
       new UserConfig(
         user.lang(),
         user.role(),
@@ -38,18 +40,14 @@ export class UpdateUserHandler {
       comm.adminId
     );
 
-    const pricing = await this.priceBuilder.build(comm.adminId, comm.pricing);
-
-    if (!isDeepStrictEqual(user.pricing(), pricing)) {
-      updatedUser.setSubscription(
-        user.subscriptionId()!,
-        new Pricing(pricing),
-        new LastPaymentDate(user.paymentDate()!.toString()),
-        user.isWarned(),
-        user.isNotified(),
-        user.isSubscriptionActive()
-      );
-    }
+    updatedUser.setSubscription(
+      user.subscriptionId()!,
+      pricing,
+      lastPaymentDate,
+      user.isWarned(),
+      user.isNotified(),
+      user.isSubscriptionActive()
+    );
 
     await this.userRepository.update(updatedUser);
   }

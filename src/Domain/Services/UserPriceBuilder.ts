@@ -1,5 +1,6 @@
 import { AppConfig } from '../Entities/AppConfig.entity';
 import { IConfigRepository } from '../Interfaces/IConfigRepository';
+import { Pricing } from '../VO/Pricing.vo';
 
 export class UserPriceBuilder {
   constructor(private appConfigRepository: IConfigRepository) {}
@@ -9,8 +10,8 @@ export class UserPriceBuilder {
       adminId
     )) as AppConfig;
 
-    return {
+    return new Pricing({
       [pricing]: config.pricing.pricingType[pricing],
-    };
+    });
   }
 }

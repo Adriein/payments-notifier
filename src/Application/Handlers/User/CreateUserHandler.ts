@@ -21,10 +21,8 @@ export class CreateUserHandler implements IHandler<void> {
   async handle(command: ICommand): Promise<void> {
     const comm = command as CreateUserCommand;
 
-    const price = await this.priceBuilder.build(comm.adminId, comm.pricing);
-
     const email = new Email(comm.email);
-    const pricing = new Pricing(price);
+    const pricing =  await this.priceBuilder.build(comm.adminId, comm.pricing);
     const lastPaymentDate = new LastPaymentDate(comm.lastPaymentDate);
 
     const userOnDb = await this.userRepository.findByEmail(email);

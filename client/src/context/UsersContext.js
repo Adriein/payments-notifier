@@ -128,6 +128,7 @@ const save = (dispatch) => {
         username: user.username,
         email: user.email,
         pricing: user.subscription.pricing,
+        lastPaymentDate: user.subscription.lastPaymentDate
       });
       const response = (await server.get('/calculatedReport')).data;
       dispatch({ type: 'fetch_action', payload: response });
