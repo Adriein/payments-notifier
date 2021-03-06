@@ -1,6 +1,7 @@
 import { CreateAppConfigCommand } from '../../../Domain/Commands/AppConfig/CreateAppConfigCommand';
 import { RegisterCommand } from '../../../Domain/Commands/Auth/RegisterCommand';
 import {
+  DEFAULT_ADMIN_PRICING,
   DEFAULT_DELAY_DAYS,
   DEFAULT_EMAIL_CONTENT,
   DEFAULT_PRICING,
@@ -15,7 +16,9 @@ import { UserAlreadyExistsError } from '../../../Domain/Errors/Users/UserAlready
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { Email } from '../../../Domain/VO/Email.vo';
+import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Password } from '../../../Domain/VO/Password.vo';
+import { Pricing } from '../../../Domain/VO/Pricing.vo';
 import { CommandBus } from '../../CommandBus/CommandBus';
 
 export class RegisterHandler implements IHandler<void> {
@@ -38,6 +41,11 @@ export class RegisterHandler implements IHandler<void> {
       command.username,
       new Email(command.email),
       new UserConfig(LANG_ES, USER_ROLE)
+    );
+
+    user.createSubscription(
+      new Pricing(DEFAULT_ADMIN_PRICING),
+      new LastPaymentDate(new Date().toString())
     );
 
     await user.createPassword(new Password(command.password));

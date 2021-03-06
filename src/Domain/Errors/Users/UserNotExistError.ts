@@ -4,7 +4,7 @@ export class UserNotExistError extends CustomError {
   statusCode = 400;
 
   constructor(username: string = 'usuario buscado por id') {
-    super(username);
+    super(`Usuario no encontrado: ${username}`);
 
     Object.setPrototypeOf(this, UserNotExistError.prototype);
   }

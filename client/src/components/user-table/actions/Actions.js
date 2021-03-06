@@ -41,19 +41,16 @@ export const Actions = ({ user, form, setForm, reset, editing = false }) => {
 
   const handleEditUser = (user) => () => {
     edit(user);
-    
-    // setForm({
-    //   username: user.username,
-    //   email: user.email,
-    //   pricing: user.subscription.pricing,
-    // });
   };
 
   const handleSaveUser = () => {
     const updatedUser = Object.assign({}, state.editingUser, {
       username: form.username,
       email: form.email,
-      subscription: { pricing: form.pricing },
+      subscription: {
+        pricing: form.pricing,
+        lastPaymentDate: form.lastPaymentDate,
+      },
     });
 
     saveModal([() => save(updatedUser), () => edit(), () => reset()]);

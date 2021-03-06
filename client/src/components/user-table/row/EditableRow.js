@@ -7,7 +7,8 @@ export const EditableRow = ({ user }) => {
   const [form, handleChange, reset, setForm] = useInputState({
     username: user.username,
     email: user.email,
-    pricing: user.pricing,
+    pricing: Object.keys(user.subscription.pricing)[0],
+    lastPaymentDate: user.subscription.lastPayment,
   });
 
   const handleEditPricing = (option) => {
@@ -15,6 +16,7 @@ export const EditableRow = ({ user }) => {
       username: form.username,
       email: form.email,
       pricing: option.value,
+      lastPaymentDate: form.lastPaymentDate,
     });
   };
   return (
@@ -38,10 +40,22 @@ export const EditableRow = ({ user }) => {
         />
       </td>
       <td>
-        <Select style={{ width: '160px' }} url="/appConfig" handleChange={handleEditPricing}/>
+        <Select
+          style={{ width: '160px' }}
+          url="/appConfig"
+          handleChange={handleEditPricing}
+        />
       </td>
       <td>{user.defaulter}</td>
-      <td>{user.subscription.lastPayment}</td>
+      <td>
+        <input
+          className="user-table__table__input"
+          name="lastPaymentDate"
+          type="text"
+          value={form.lastPaymentDate}
+          onChange={handleChange}
+        />
+      </td>
       <Actions
         form={form}
         reset={reset}
