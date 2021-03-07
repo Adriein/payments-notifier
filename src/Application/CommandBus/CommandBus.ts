@@ -1,3 +1,5 @@
+import { CreateAppConfigCommand } from "../../Domain/Commands/AppConfig/CreateAppConfigCommand";
+import { ReadAppConfigCommand } from "../../Domain/Commands/AppConfig/ReadAppConfigCommand";
 import { RegisterCommand } from "../../Domain/Commands/Auth/RegisterCommand";
 import { SignInCommand } from "../../Domain/Commands/Auth/SignInCommand";
 import { CheckForDefaultersCommand } from "../../Domain/Commands/Defaulters/CheckForDefaultersCommand";
@@ -14,9 +16,14 @@ import { UpdateUserNotificationsCommand } from "../../Domain/Commands/User/Updat
 import { ICommand } from "../../Domain/Interfaces/ICommand";
 import { ICommandBus } from "../../Domain/Interfaces/ICommandBus";
 import { UserFinder } from "../../Domain/Services/UserFinder";
+import { UserPriceBuilder } from "../../Domain/Services/UserPriceBuilder";
+import { AppConfigMapper } from "../../Infraestructure/Data/Mappers/AppConfigMapper";
 import { UserMapper } from "../../Infraestructure/Data/Mappers/UserMapper";
+import { AppConfigRepository } from "../../Infraestructure/Data/Repositories/AppConfigRepository";
 import { UserRepository } from "../../Infraestructure/Data/Repositories/UserRepository";
 import { EmailNotifier } from "../../Infraestructure/Notifiers/EmailNotifier";
+import { CreateAppConfigHandler } from "../Handlers/AppConfig/CreateAppConfigHandler";
+import { ReadAppConfigHandler } from "../Handlers/AppConfig/ReadAppConfigHandler";
 import { RegisterHandler } from "../Handlers/Auth/RegisterHandler";
 import { SignInHandler } from "../Handlers/Auth/SignInHandler";
 import { CheckForDefaultersHandler } from "../Handlers/Defaulters/CheckForDefaultersHandler";
@@ -33,9 +40,15 @@ import { UpdateUserNotificationsHandler } from "../Handlers/User/UpdateUserNotif
 
 
 export class CommandBus implements ICommandBus {
-  private notifier = new EmailNotifier();
+  //repos
   private usersRepository = new UserRepository('users', new UserMapper());
+  private appConfigRepository = new AppConfigRepository('app_config', new AppConfigMapper());
+
+  //services
+  private notifier = new EmailNotifier();
   private userFinder = new UserFinder(this.usersRepository);
+  private priceBuilder = new UserPriceBuilder(this.appConfigRepository);
+  
   constructor() {}
 
   public async execute(command: ICommand): Promise<any> {
@@ -44,7 +57,7 @@ export class CommandBus implements ICommandBus {
 
   private resolveHandler(command: ICommand) {
     if (command instanceof CheckForDefaultersCommand) {
-      return new CheckForDefaultersHandler(this.notifier, this.usersRepository);
+      return new CheckForDefaultersHandler(this.notifier, this.usersRepository, this.appConfigRepository);
     }
 
     if (command instanceof IngestDefaultersCommand) {
@@ -60,7 +73,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof RegisterCommand) {
-      return new RegisterHandler(this.usersRepository);
+      return new RegisterHandler(this.usersRepository, this);
     }
 
     if (command instanceof SignInCommand) {
@@ -80,7 +93,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof CreateUserCommand) {
-      return new CreateUserHandler(this.usersRepository);
+      return new CreateUserHandler(this.usersRepository, this.priceBuilder);
     }
 
     if(command instanceof DeleteUserCommand) {
@@ -92,7 +105,15 @@ export class CommandBus implements ICommandBus {
     }
 
     if(command instanceof UpdateUserCommand) {
-      return new UpdateUserHandler(this.userFinder, this.usersRepository);
+      return new UpdateUserHandler(this.userFinder, this.usersRepository, this.priceBuilder);
+    }
+
+    if(command instanceof CreateAppConfigCommand) {
+      return new CreateAppConfigHandler(this.appConfigRepository);
+    }
+
+    if(command instanceof ReadAppConfigCommand) {
+      return new ReadAppConfigHandler(this.appConfigRepository);
     }
 
     throw new Error();

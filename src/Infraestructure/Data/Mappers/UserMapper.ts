@@ -1,4 +1,3 @@
-import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { IMapper } from '../../../Domain/Interfaces';
@@ -12,11 +11,14 @@ type UsersTableJoined = {
   username: string;
   email: string;
   password: string;
+  createdAt: string;
+  owner_id: string | null;
   subscriptions_id: string;
   pricing: string;
   payment_date: string;
   warned: boolean;
   notified: boolean;
+  active: boolean;
   config_id: string;
   language: string;
   role: string;
@@ -29,10 +31,12 @@ type UsersTable = {
   username: string;
   email: string;
   password: string;
+  createdAt: string | null;
+  owner_id: string | null;
 };
 
 export class UserMapper implements IMapper<User> {
-  public domain(userDatamodel: UsersTableJoined): User {  
+  public domain(userDatamodel: UsersTableJoined): User {
     const user = new User(
       userDatamodel.id,
       userDatamodel.username,
@@ -43,17 +47,19 @@ export class UserMapper implements IMapper<User> {
         userDatamodel.send_notifications,
         userDatamodel.send_warnings,
         userDatamodel.config_id
-      )
+      ),
+      userDatamodel.owner_id ? userDatamodel.owner_id : undefined
     );
     user.setPassword(new Password(userDatamodel.password));
 
-    if (userDatamodel.subscriptions_id !== null) {      
+    if (userDatamodel.subscriptions_id !== null) {
       user.setSubscription(
         userDatamodel.subscriptions_id,
-        new Pricing(userDatamodel.pricing),
+        new Pricing(JSON.parse(userDatamodel.pricing)),
         new LastPaymentDate(userDatamodel.payment_date),
         userDatamodel.warned,
-        userDatamodel.notified
+        userDatamodel.notified,
+        userDatamodel.active
       );
     }
 
@@ -65,6 +71,8 @@ export class UserMapper implements IMapper<User> {
       username: domain.getName(),
       email: domain.getEmail(),
       password: domain.getPassword()!,
+      createdAt: 'now()',
+      owner_id: domain.ownerId || null,
     };
   }
 }

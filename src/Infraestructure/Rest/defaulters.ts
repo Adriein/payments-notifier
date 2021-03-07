@@ -43,16 +43,16 @@ router.post(
 
       await commandBus.execute(new EnsureUsersConsistencyCommand(excel));
 
-      for (const row of excel) {
-        await commandBus.execute(
-          new IngestDefaultersCommand(
-            row.nombre,
-            row.email,
-            row.tipo_de_cuota,
-            row.fecha_de_pago
-          )
-        );
-      }
+      // for (const row of excel) {
+      //   await commandBus.execute(
+      //     new IngestDefaultersCommand(
+      //       row.nombre,
+      //       row.email,
+      //       row.tipo_de_cuota,
+      //       row.fecha_de_pago
+      //     )
+      //   );
+      // }
 
       res.status(200).send();
     } catch (error) {

@@ -1,0 +1,1 @@
+export type PricingObject = { [key: string]: { duration: number; price: number } };

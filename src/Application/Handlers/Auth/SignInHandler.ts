@@ -2,7 +2,7 @@ import { SignInCommand } from '../../../Domain/Commands/Auth/SignInCommand';
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { NotAuthorizedError } from '../../../Domain/Errors/NotAuthorizedError';
-import { UserNotExistError } from '../../../Domain/Errors/UserNotExistError';
+import { UserNotExistError } from '../../../Domain/Errors';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { CryptoService } from '../../../Domain/Services/CryptoService';
 import { UserFinder } from '../../../Domain/Services/UserFinder';

@@ -1,6 +1,6 @@
 import createDataContext from './createDataContext';
 import server from '../api/server';
-import { LOCALSTORAGE_USERNAME } from '../constants';
+import { LOCALSTORAGE_USERNAME, LOCALSTORAGE_USER_ID } from '../constants';
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -25,6 +25,7 @@ const signin = (dispatch) => {
         })
       ).data;
 
+      localStorage.setItem(LOCALSTORAGE_USER_ID, response.id);
       localStorage.setItem(LOCALSTORAGE_USERNAME, response.username);
 
       dispatch({ type: 'signin' });
@@ -61,8 +62,23 @@ const getUsername = () => {
   };
 };
 
+const createAvatar = () => {
+  return () => {
+    const username = localStorage.getItem(LOCALSTORAGE_USERNAME);
+    const [name, surname] = username.split(' ');
+
+    if (surname) {
+      return `${name.charAt(0).toUpperCase()}${surname
+        .charAt(0)
+        .toUpperCase()}`;
+    }
+
+    return `${name.charAt(0).toUpperCase()}`;
+  };
+};
+
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, getToken, logout, getUsername },
+  { signin, getToken, logout, getUsername, createAvatar },
   { isSignedIn: false, error: undefined }
 );

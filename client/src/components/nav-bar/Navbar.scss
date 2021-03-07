@@ -30,7 +30,6 @@
   width: 100%;
   font-size: 14px;
   justify-content: space-between;
-  overflow: hidden;
   &-menu span {
     cursor: pointer;
     text-decoration: none;
@@ -75,7 +74,16 @@
     background-color: var(--active-color);
   }
 }
+
 .user-profile {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.avatar{
   display:flex;
   justify-content: center;
   align-items: center;
@@ -95,4 +103,37 @@
   margin-right: 8px;
   padding-right: 8px;
   border-right: 2px solid #d6d6db;
+}
+
+.triangle {
+  position: absolute;
+  right: 88px;
+  bottom: -35px;
+  height: 15px;
+  width: 15px;
+  background: var(--header-bg-color);
+  transform: rotate(45deg);
+
+}
+
+.menu {
+  position: absolute;
+  border-radius: 5px;
+  margin-top: 180px;
+  background: var(--header-bg-color);
+  padding: 15px;
+  width: 170px;
+  z-index: 3;
+  cursor: initial;
+  ul {
+    list-style: none;
+    li {
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 5px;
+      &:hover {
+        background-color: var(--body-bg-color);
+      }
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Context as AuthContext } from '../../context/AuthContext';
 import './Navbar.scss';
 import { FiMoon, FiSquare } from 'react-icons/fi';
@@ -6,7 +6,8 @@ import logo from '../../img/cover.png';
 import { version } from '../../../package.json';
 
 export default function NavBar() {
-  const { getUsername } = useContext(AuthContext);
+  const { getUsername, createAvatar } = useContext(AuthContext);
+  const [isOpen, setOpen] = useState(false);
 
   return (
     <div className="header">
@@ -26,8 +27,21 @@ export default function NavBar() {
           <FiSquare size="24px" />
         </div> */}
         <span className="header__app-version">{`v${version}`}</span>
-        <div className="user-profile">IM</div>
-        <span> {getUsername()}</span>
+        <div className="user-profile" onClick={() => setOpen(!isOpen)}>
+          <div className="avatar">{createAvatar()}</div>
+          <span>{getUsername()}</span>
+          {isOpen && (
+            <>
+              <div className="triangle"></div>
+              <div className="menu">
+                <ul>
+                  <li>Configuración</li>
+                  <li>Salir</li>
+                </ul>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

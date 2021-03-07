@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { SubscriptionError } from '../Errors/SubscriptionError';
+import { SubscriptionError } from '../Errors/Users/SubscriptionError';
 import { ISerializable } from '../Interfaces/ISerializable';
 import { Activity } from '../VO/Activity.vo';
 import { Age } from '../VO/Age.vo';
@@ -12,14 +12,20 @@ import { Subscription } from './Subscription.entity';
 import { UserConfig } from './UserConfig.entity';
 
 export class User implements ISerializable {
-  public static build(name: string, email: Email, config: UserConfig): User {
-    return new User(uuidv4(), name, email, config);
+  public static build(
+    name: string,
+    email: Email,
+    config: UserConfig,
+    ownerId?: string
+  ): User {
+    return new User(uuidv4(), name, email, config, ownerId);
   }
   constructor(
     private id: string,
     private name: string,
     private email: Email,
-    private config: UserConfig
+    private config: UserConfig,
+    private _ownerId?: string
   ) {}
 
   private subscription?: Subscription;
@@ -36,6 +42,10 @@ export class User implements ISerializable {
 
   public getEmail(): string {
     return this.email.email;
+  }
+
+  public get ownerId(): string | undefined {
+    return this._ownerId;
   }
 
   public async createPassword(password: Password): Promise<void> {
@@ -69,14 +79,16 @@ export class User implements ISerializable {
     pricing: Pricing,
     lastPayment: LastPaymentDate,
     isWarned: boolean,
-    isNotified: boolean
+    isNotified: boolean,
+    isActive: boolean
   ): void {
     this.subscription = new Subscription(
       id,
       pricing,
       lastPayment,
       isWarned,
-      isNotified
+      isNotified,
+      isActive
     );
   }
 
@@ -142,6 +154,13 @@ export class User implements ISerializable {
     return false;
   };
 
+  public get isSubscriptionActive(): () => boolean {
+    if (this.subscription) {
+      return this.subscription.isActive;
+    }
+    throw new SubscriptionError();
+  }
+
   public get isDefaulter(): () => boolean {
     if (this.subscription) {
       return this.subscription.isDefaulter;
@@ -156,7 +175,9 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
-  public get isConfiguredDaysBeforeExpiration(): () => boolean {
+  public get isConfiguredDaysBeforeExpiration(): (
+    daysBeforeExpiration: number | undefined
+  ) => boolean {
     if (this.subscription) {
       return this.subscription.isConfiguredDaysBeforeExpiration;
     }
@@ -171,7 +192,7 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
-  public get pricing(): () => string {
+  public get pricing(): () => Pricing {
     if (this.subscription) {
       return this.subscription.pricing;
     }
@@ -217,9 +238,9 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
-  public get renewSubscription(): () => void {
+  public get desactivateExpiredSubscription(): () => void {
     if (this.subscription) {
-      return this.subscription.renewSubscription;
+      return this.subscription.desactivateExpiredSubscription;
     }
 
     throw new SubscriptionError();

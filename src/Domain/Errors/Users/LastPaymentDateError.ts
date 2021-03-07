@@ -1,4 +1,4 @@
-import { CustomError } from './CustomError';
+import { CustomError } from '../CustomError';
 
 export class LastPaymentDateError extends CustomError {
   statusCode = 400;

@@ -8,24 +8,10 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  .user-table__header {
-    display: flex;
-    width: 100%;
-    padding: 0px 0px 20px 0px;
-    .user-table__filters {
-      padding: 10px 0px 10px 0px;
-      display: flex;
-      flex-grow: 1;
-    }
-    .user-table__config {
-      margin: auto;
-    }
-  }
   .user-table__container {
     background-color: var(--header-bg-color);
     scroll-behavior: smooth;
     overflow: auto;
-    min-height: 150px;
     .user-table__table {
       border-collapse: collapse;
       width: 100%;
@@ -51,13 +37,29 @@
         padding: 8px;
         td {
           padding: 8px;
+          height: 73px;
           .user-table__table__input {
             padding: 5px;
-            display: block;
+            width: 100%;
+            height: 100%;
             border-radius: 6px;
             background-color: var(--body-bg-color);
             border: none;
             font: inherit;
+          }
+          .user-table__edit-pricing-select {
+            margin-right: 10px;
+            width: 100px;
+            position: relative;
+            border: 1.5px solid var(--subtitle-color);
+            border-radius: 6px;
+            background: var(--header-bg-color);
+            z-index: 2;
+            &:hover {
+              .dropdown-icon {
+                transform: rotateZ(180deg);
+              }
+            }
           }
         }
         .user-table__actions {

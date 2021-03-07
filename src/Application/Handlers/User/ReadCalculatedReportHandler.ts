@@ -56,16 +56,16 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
     const postprocessFilters: Filter[] = [];
 
     for (let key of Object.keys(criteriaObj)) {
+      if (key === 'pricing') {
+        filters.push(new Filter(key, `%${criteriaObj[key]}%`, OPERATORS.like));
+        continue;
+      }
       if (key !== 'defaulter') {
-        filters.push(
-          ...filters,
-          new Filter(key, criteriaObj[key], OPERATORS.equal)
-        );
+        filters.push(new Filter(key, criteriaObj[key], OPERATORS.equal));
         continue;
       }
 
       postprocessFilters.push(
-        ...postprocessFilters,
         new Filter(key, criteriaObj[key], OPERATORS.equal)
       );
     }
@@ -78,7 +78,6 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
       switch (filter.field) {
         case 'defaulter':
           postFilteredUsers.push(
-            ...postFilteredUsers,
             ...users.filter(
               (user) =>
                 user.isDefaulter() === (filter.value === 'true' ? true : false)

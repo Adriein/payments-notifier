@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
 import { Pricing } from '../VO/Pricing.vo';
 import dayjs from 'dayjs';
-import { PricingType } from '../constants';
 import { ISerializable } from '../Interfaces/ISerializable';
 
 export class Subscription implements ISerializable {
@@ -10,14 +9,16 @@ export class Subscription implements ISerializable {
     pricing: Pricing,
     lastPayment: LastPaymentDate,
     isWarned: boolean,
-    isNotified: boolean
+    isNotified: boolean,
+    isActive: boolean = true
   ): Subscription {
     return new Subscription(
       uuidv4(),
       pricing,
       lastPayment,
       isWarned,
-      isNotified
+      isNotified,
+      isActive
     );
   }
   constructor(
@@ -25,15 +26,20 @@ export class Subscription implements ISerializable {
     private _pricing: Pricing,
     private _lastPayment: LastPaymentDate,
     private _isWarned: boolean,
-    private _isNotified: boolean
-  ) {}
+    private _isNotified: boolean,
+    private _isActive: boolean
+  ) {
+    this.priceName = Object.keys(this._pricing.pricingType)[0];
+  }
+
+  private priceName: string;
 
   public isDefaulter = (): boolean => {
     const today = dayjs(new Date());
 
     const maxDate = dayjs(this._lastPayment.date()).add(
-      this.pricingToMonths(this._pricing.pricingType),
-      'month'
+      this._pricing.pricingType[this.priceName].duration,
+      'day'
     );
 
     if (maxDate.isBefore(today)) {
@@ -47,8 +53,8 @@ export class Subscription implements ISerializable {
     const today = dayjs(new Date());
 
     const maxDate = dayjs(this._lastPayment.date()).add(
-      this.pricingToMonths(this._pricing.pricingType),
-      'month'
+      this._pricing.pricingType[this.priceName].duration,
+      'day'
     );
 
     if (today.diff(maxDate, 'day') >= 1) {
@@ -58,11 +64,13 @@ export class Subscription implements ISerializable {
     return false;
   };
 
-  public isConfiguredDaysBeforeExpiration = (): boolean => {
+  public isConfiguredDaysBeforeExpiration = (
+    daysBeforeExpiration: number | undefined = 5
+  ): boolean => {
     const today = dayjs(new Date());
     const maxDate = dayjs(this._lastPayment.date())
-      .add(this.pricingToMonths(this._pricing.pricingType), 'month')
-      .subtract(Number.parseInt(process.env.DAYS_BEFORE_EXPIRATION!), 'day');
+      .add(this._pricing.pricingType[this.priceName].duration, 'day')
+      .subtract(daysBeforeExpiration, 'day');
 
     if (maxDate.isSame(today, 'day')) {
       return true;
@@ -80,37 +88,16 @@ export class Subscription implements ISerializable {
     }
   };
 
-  public renewSubscription = (): void => {
-    this.resetNotificationState();
-    this._lastPayment = new LastPaymentDate(new Date().toString());
+  public desactivateExpiredSubscription = (): void => {
+    this._isActive = false;
   };
-
-  private pricingToMonths(pricing: string) {
-    switch (pricing) {
-      case PricingType.monthly:
-        return 1;
-      case PricingType.quarterly:
-        return 3;
-      default:
-        return 0;
-    }
-  }
-
-  private pricingBeautifier(pricing: string) {
-    switch (pricing) {
-      case PricingType.monthly:
-        return 'mensual';
-      case PricingType.quarterly:
-        return 'trimestral';
-    }
-  }
 
   public id = (): string => {
     return this._id;
   };
 
-  public pricing = (): string => {
-    return this._pricing.pricingType;
+  public pricing = (): Pricing => {
+    return this._pricing;
   };
 
   public paymentDate = (): Date => {
@@ -133,6 +120,14 @@ export class Subscription implements ISerializable {
     this._isWarned = !this._isWarned;
   };
 
+  public isActive = (): boolean => {
+    return this._isActive;
+  };
+
+  public setIsActive = (): void => {
+    this._isActive = !this._isActive;
+  };
+
   public serialize = (): Object => {
     const ye = new Intl.DateTimeFormat('es', { year: 'numeric' }).format(
       this.paymentDate()
@@ -144,10 +139,11 @@ export class Subscription implements ISerializable {
       this.paymentDate()
     );
     return {
-      pricing: this.pricingBeautifier(this.pricing()),
+      pricing: this._pricing.pricingType,
       lastPayment: `${da}/${mo}/${ye}`,
       isWarned: this.isWarned() ? 'Si' : 'No',
       isNotified: this.isNotified() ? 'Si' : 'No',
+      isActive: this.isActive() ? 'Si' : 'No',
     };
   };
 }

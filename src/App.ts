@@ -13,6 +13,7 @@ import Database from './Infraestructure/Data/Database';
 import { FILES_PATH } from './Domain/constants';
 import { auth } from './Infraestructure/Rest/auth';
 import { users } from './Infraestructure/Rest/users';
+import { appConfig } from './Infraestructure/Rest/appConfig';
 
 export default class App {
   public init() {
@@ -60,6 +61,7 @@ export default class App {
     app.use('/api/v1', auth);
     app.use('/api/v1', users);
     app.use('/api/v1', defaulters);
+    app.use('/api/v1', appConfig);
     app.use(errorHandler);
 
     if (process.env.NODE_ENV === 'PRO') {
