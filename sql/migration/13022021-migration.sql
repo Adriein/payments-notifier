@@ -19,6 +19,6 @@ UPDATE subscriptions SET pricing='{"trimestral":{"duration":90,"price":150}}' WH
 
 ALTER TABLE subscriptions ADD COLUMN active BOOLEAN;
 
-INSERT INTO subscriptions (id, pricing, payment_date, warned, notified, user_id) VALUES ('55bfc474-8c4b-474a-8ff3-b23433a40a64', '{"anual":{"duration":365,"price":1000}}', 'Sat Feb 27 2021 15:51:21 GMT+0100 (hora estándar de Europa central)', false, false, 'ba8740ef-c7eb-44cc-a114-77b17404ea34', true);
-
 UPDATE subscriptions SET active=true;
+
+INSERT INTO subscriptions (id, pricing, payment_date, warned, notified, user_id, active) VALUES ('55bfc474-8c4b-474a-8ff3-b23433a40a64', '{"anual":{"duration":365,"price":1000}}', 'Sat Feb 27 2021 15:51:21 GMT+0100 (hora estándar de Europa central)', false, false, 'ba8740ef-c7eb-44cc-a114-77b17404ea34', true);
