@@ -20,9 +20,9 @@ export class LastPaymentDate {
     this._date = new Date(formatedDate);
   }
 
-  public date = (): Date => {
+  public get value(): Date {
     return this._date;
-  };
+  }
 
   private formatStringDate = (date: string): string => {
     const [day, month, year]: string[] = date.split('/');

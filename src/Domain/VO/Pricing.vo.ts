@@ -3,13 +3,15 @@ import { PricingError } from '../Errors';
 import { PricingObject } from '../types';
 
 export class Pricing {
-  constructor(public pricingType: PricingObject) {
+  private pricing: PricingObject;
+  constructor(pricing: PricingObject) {
     if (
-      typeof pricingType !== 'object' ||
-      !this.evaluateKeys(pricingType[Object.keys(pricingType)[0]])
+      typeof pricing !== 'object' ||
+      !this.evaluateKeys(pricing[Object.keys(pricing)[0]])
     ) {
       throw new PricingError();
     }
+    this.pricing = pricing;
   }
 
   private evaluateKeys(object: Object): boolean {
@@ -22,5 +24,9 @@ export class Pricing {
     }
 
     return false;
+  }
+
+  public get value(): PricingObject {
+    return this.pricing;
   }
 }

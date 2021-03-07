@@ -46,7 +46,7 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async findByEmail(email: Email): Promise<User | undefined> {
     const { rows } = await this.db.query(
-      `SELECT users.id, users.username, users.email, users.password, users.owner_id, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE email='${email.email}' AND subscriptions.active=true;`
+      `SELECT users.id, users.username, users.email, users.password, users.owner_id, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE email='${email.value}' AND subscriptions.active=true;`
     );
 
     if (rows.length < 1) {
@@ -86,7 +86,7 @@ export class UserRepository
     if (user.hasSubscription()) {
       await this.db.query(
         `INSERT INTO ${SUBSCRIPTIONS_TABLE} VALUES ('${user.subscriptionId()}', '${JSON.stringify(
-          user.pricing().pricingType
+          user.pricing().value
         )}', '${user.paymentDate()}', '${user.isWarned()}', '${user.isNotified()}', '${user.getId()}', '${user.isSubscriptionActive()}');`
       );
     }
@@ -98,7 +98,7 @@ export class UserRepository
       await this.db.query(
         `UPDATE ${SUBSCRIPTIONS_TABLE}
          SET pricing='${JSON.stringify(
-           user.pricing().pricingType
+           user.pricing().value
          )}', payment_date='${user.paymentDate()}', warned=${user.isWarned()}, notified=${user.isNotified()}, user_id='${user.getId()}', active=${user.isSubscriptionActive()} WHERE id='${user.subscriptionId()}';`
       );
     }
@@ -133,7 +133,7 @@ export class UserRepository
       await this.db.query(
         `INSERT INTO ${SUBSCRIPTIONS_TABLE}
         VALUES ('${user.subscriptionId()}', '${JSON.stringify(
-          user.pricing().pricingType
+          user.pricing().value
         )}', '${user.paymentDate()}', ${user.isWarned()}, ${user.isNotified()}, '${user.getId()}', ${user.isSubscriptionActive()});`
       );
     }

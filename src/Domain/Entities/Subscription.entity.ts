@@ -29,7 +29,7 @@ export class Subscription implements ISerializable {
     private _isNotified: boolean,
     private _isActive: boolean
   ) {
-    this.priceName = Object.keys(this._pricing.pricingType)[0];
+    this.priceName = Object.keys(this._pricing.value)[0];
   }
 
   private priceName: string;
@@ -37,8 +37,8 @@ export class Subscription implements ISerializable {
   public isDefaulter = (): boolean => {
     const today = dayjs(new Date());
 
-    const maxDate = dayjs(this._lastPayment.date()).add(
-      this._pricing.pricingType[this.priceName].duration,
+    const maxDate = dayjs(this._lastPayment.value).add(
+      this._pricing.value[this.priceName].duration,
       'day'
     );
 
@@ -52,8 +52,8 @@ export class Subscription implements ISerializable {
   public isOneDayOldDefaulter = (): boolean => {
     const today = dayjs(new Date());
 
-    const maxDate = dayjs(this._lastPayment.date()).add(
-      this._pricing.pricingType[this.priceName].duration,
+    const maxDate = dayjs(this._lastPayment.value).add(
+      this._pricing.value[this.priceName].duration,
       'day'
     );
 
@@ -68,8 +68,8 @@ export class Subscription implements ISerializable {
     daysBeforeExpiration: number | undefined = 5
   ): boolean => {
     const today = dayjs(new Date());
-    const maxDate = dayjs(this._lastPayment.date())
-      .add(this._pricing.pricingType[this.priceName].duration, 'day')
+    const maxDate = dayjs(this._lastPayment.value)
+      .add(this._pricing.value[this.priceName].duration, 'day')
       .subtract(daysBeforeExpiration, 'day');
 
     if (maxDate.isSame(today, 'day')) {
@@ -101,7 +101,7 @@ export class Subscription implements ISerializable {
   };
 
   public paymentDate = (): Date => {
-    return this._lastPayment.date();
+    return this._lastPayment.value;
   };
 
   public isNotified = (): boolean => {
@@ -139,7 +139,7 @@ export class Subscription implements ISerializable {
       this.paymentDate()
     );
     return {
-      pricing: this._pricing.pricingType,
+      pricing: this._pricing.value,
       lastPayment: `${da}/${mo}/${ye}`,
       isWarned: this.isWarned() ? 'Si' : 'No',
       isNotified: this.isNotified() ? 'Si' : 'No',

@@ -68,11 +68,11 @@ export class Nutrition implements ISerializable {
   };
 
   public getAge = (): number => {
-    return this.age.age;
+    return this.age.value;
   };
 
   public getActivity = (): string => {
-    return this.activity.activity;
+    return this.activity.value;
   };
 
   public serialize(): Object {

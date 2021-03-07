@@ -11,7 +11,7 @@ export class UserPriceBuilder {
     )) as AppConfig;
 
     return new Pricing({
-      [pricing]: config.pricing.pricingType[pricing],
+      [pricing]: config.pricing.value[pricing],
     });
   }
 }
