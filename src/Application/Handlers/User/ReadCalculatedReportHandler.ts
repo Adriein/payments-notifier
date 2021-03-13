@@ -6,6 +6,7 @@ import { Log } from '../../../Domain/Decorators/Log';
 import { ReadCalculatedReportCommand } from '../../../Domain/Commands/User/ReadCalculatedReportCommand';
 import { Criteria } from '../../../Domain/Entities/Criteria.entity';
 import { Filter } from '../../../Domain/Entities/Filter.entity';
+import { CriteriaObject } from '../../../Domain/types';
 
 export class ReadCalculatedReportHandler implements IHandler<User[]> {
   constructor(private finder: UserFinder) {}
@@ -51,22 +52,22 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
   }
 
   private buildFilters(command: ReadCalculatedReportCommand): Filter[][] {
-    const criteriaObj: { [key: string]: string } = command.criteria;
+    const criteriaObj: CriteriaObject = command.criteria!;
     const filters: Filter[] = [];
     const postprocessFilters: Filter[] = [];
-
+    
     for (let key of Object.keys(criteriaObj)) {
       if (key === 'pricing') {
-        filters.push(new Filter(key, `%${criteriaObj[key]}%`, OPERATORS.like));
+        filters.push(new Filter(key, `%${criteriaObj[key].value}%`, OPERATORS.like));
         continue;
       }
       if (key !== 'defaulter') {
-        filters.push(new Filter(key, criteriaObj[key], OPERATORS.equal));
+        filters.push(new Filter(key, criteriaObj[key].value, criteriaObj[key].operation));
         continue;
       }
 
       postprocessFilters.push(
-        new Filter(key, criteriaObj[key], OPERATORS.equal)
+        new Filter(key, criteriaObj[key].value, criteriaObj[key].operation)
       );
     }
     return [filters, postprocessFilters];

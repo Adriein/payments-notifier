@@ -8,17 +8,25 @@ import { GenericRepository } from './GenericRepository';
 import { v4 as uuidv4 } from 'uuid';
 import { Criteria } from '../../../Domain/Entities/Criteria.entity';
 import { Filter } from '../../../Domain/Entities/Filter.entity';
+import { CriteriaMapper } from '../Mappers/CriteriaMapper';
 
 export class UserRepository
   extends GenericRepository<User>
   implements IUserRepository {
-  constructor(protected entity: string, protected mapper: UserMapper) {
-    super(entity, mapper);
+  constructor(
+    protected entity: string,
+    protected mapper: UserMapper,
+    protected criteriaMapper: CriteriaMapper
+  ) {
+    super(entity, mapper, criteriaMapper);
   }
 
   @Log(process.env.LOG_LEVEL)
   async find(criteria: Criteria): Promise<User[]> {
-    const where = this.criteriaToSQL(criteria);
+    const where = await this.criteriaMapper.sql(criteria, [
+      'subscriptions',
+      'config',
+    ]);
     const query = `SELECT users.id, users.username, users.email, users.password, users.owner_id, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${
       this.entity
     } LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='user' AND subscriptions.active=true ${where.join(
@@ -137,14 +145,5 @@ export class UserRepository
         )}', '${user.paymentDate()}', ${user.isWarned()}, ${user.isNotified()}, '${user.getId()}', ${user.isSubscriptionActive()});`
       );
     }
-  }
-
-  protected criteriaToSQL(criteria: Criteria) {
-    return criteria.filters.map(
-      (filter: Filter) =>
-        `AND ${
-          filter.field === 'pricing' ? 'subscriptions.pricing' : filter.field
-        } ${filter.operator} '${filter.value}'`
-    );
   }
 }

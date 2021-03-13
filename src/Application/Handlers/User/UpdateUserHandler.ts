@@ -5,7 +5,7 @@ import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { ICommand } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
-import { UserPriceBuilder } from '../../../Domain/Services/UserPriceBuilder';
+import { PriceBuilder } from '../../../Domain/Services/PriceBuilder';
 import { Email } from '../../../Domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 
@@ -13,7 +13,7 @@ export class UpdateUserHandler {
   constructor(
     private finder: UserFinder,
     private userRepository: IUserRepository,
-    private priceBuilder: UserPriceBuilder
+    private priceBuilder: PriceBuilder
   ) {}
 
   @Log(process.env.LOG_LEVEL)

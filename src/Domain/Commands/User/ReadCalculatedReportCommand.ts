@@ -1,3 +1,5 @@
+import { CriteriaObject } from "../../types";
+
 export class ReadCalculatedReportCommand {
-  constructor(public criteria?: any) {}
+  constructor(public criteria?: CriteriaObject) {}
 }

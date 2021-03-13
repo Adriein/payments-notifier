@@ -8,6 +8,7 @@ import { CreateUserCommand } from '../../Domain/Commands/User/CreateUserCommand'
 import { DeleteUserCommand } from '../../Domain/Commands/User/DeleteUserCommand';
 import { RegisterUserPaymentCommand } from '../../Domain/Commands/User/RegisterUserPaymentCommand';
 import { UpdateUserCommand } from '../../Domain/Commands/User/UpdateUserCommand';
+import { OPERATORS } from '../../Domain/constants';
 
 const router: Router = express.Router();
 const commandBus = new CommandBus();
@@ -18,11 +19,21 @@ router.get(
   currentUser,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const criteria = Object.keys(req.query).reduce((acc, key) => {
+        return {
+          ...acc,
+          [key]: { value: req.query[key], operation: OPERATORS.equal },
+        };
+      }, {});
+
       if (Object.keys(req.query).length) {
         const users = (await commandBus.execute(
           new ReadCalculatedReportCommand({
-            ...req.query,
-            owner_id: req.currentUser!.id,
+            ...criteria,
+            owner_id: {
+              value: req.currentUser!.id,
+              operation: OPERATORS.equal,
+            },
           })
         )) as User[];
         res.status(200).send(users.map((user) => user.serialize()));
@@ -31,7 +42,7 @@ router.get(
 
       const users = (await commandBus.execute(
         new ReadCalculatedReportCommand({
-          owner_id: req.currentUser!.id,
+          owner_id: { value: req.currentUser!.id, operation: OPERATORS.equal },
         })
       )) as User[];
 

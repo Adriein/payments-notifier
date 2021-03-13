@@ -2,7 +2,7 @@ import { AppConfig } from '../Entities/AppConfig.entity';
 import { IConfigRepository } from '../Interfaces/IConfigRepository';
 import { Pricing } from '../VO/Pricing.vo';
 
-export class UserPriceBuilder {
+export class PriceBuilder {
   constructor(private appConfigRepository: IConfigRepository) {}
 
   public async build(adminId: string, pricing: string) {

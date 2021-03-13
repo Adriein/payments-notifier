@@ -3,12 +3,13 @@ import { GenericRepository } from './GenericRepository';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { AppConfigMapper } from '../Mappers/AppConfigMapper';
 import { AppConfig } from '../../../Domain/Entities/AppConfig.entity';
+import { CriteriaMapper } from '../Mappers/CriteriaMapper';
 
 export class AppConfigRepository
   extends GenericRepository<AppConfig>
   implements IConfigRepository {
-  constructor(protected entity: string, protected mapper: AppConfigMapper) {
-    super(entity, mapper);
+  constructor(protected entity: string, protected mapper: AppConfigMapper, protected criteriaMapper: CriteriaMapper) {
+    super(entity, mapper, criteriaMapper);
   }
 
   @Log(process.env.LOG_LEVEL)

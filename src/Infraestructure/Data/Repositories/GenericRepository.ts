@@ -4,11 +4,12 @@ import { Filter } from '../../../Domain/Entities/Filter.entity';
 import { IMapper } from '../../../Domain/Interfaces';
 import { IRepository } from '../../../Domain/Interfaces/IRepository';
 import Database from '../Database';
+import { CriteriaMapper } from '../Mappers/CriteriaMapper';
 
 export abstract class GenericRepository<T> implements IRepository<T> {
   protected db = Database.getInstance().getConnection();
 
-  constructor(protected entity: string, protected mapper: IMapper<T>) {}
+  constructor(protected entity: string, protected mapper: IMapper<T>, protected criteriaMapper: CriteriaMapper) {}
 
   @Log(process.env.LOG_LEVEL)
   async findOne(id: string): Promise<T | undefined> {
@@ -61,12 +62,5 @@ export abstract class GenericRepository<T> implements IRepository<T> {
         }`;
       })
       .join(',')};`;
-  }
-
-  protected criteriaToSQL(criteria: Criteria) {
-    return criteria.filters.map(
-      (filter: Filter) =>
-        `AND ${filter.field}${filter.operator}'${filter.value}'`
-    );
   }
 }

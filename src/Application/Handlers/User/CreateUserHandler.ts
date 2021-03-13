@@ -9,12 +9,12 @@ import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
 import { LANG_ES, USER_ROLE } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
-import { UserPriceBuilder } from '../../../Domain/Services/UserPriceBuilder';
+import { PriceBuilder } from '../../../Domain/Services/PriceBuilder';
 
 export class CreateUserHandler implements IHandler<void> {
   constructor(
     private userRepository: IUserRepository,
-    private priceBuilder: UserPriceBuilder
+    private priceBuilder: PriceBuilder
   ) {}
 
   @Log(process.env.LOG_LEVEL)
