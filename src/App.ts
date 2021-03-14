@@ -14,6 +14,7 @@ import { FILES_PATH } from './Domain/constants';
 import { auth } from './Infraestructure/Rest/auth';
 import { users } from './Infraestructure/Rest/users';
 import { appConfig } from './Infraestructure/Rest/appConfig';
+import { charts } from './Infraestructure/Rest/charts';
 
 export default class App {
   public init() {
@@ -62,6 +63,7 @@ export default class App {
     app.use('/api/v1', users);
     app.use('/api/v1', defaulters);
     app.use('/api/v1', appConfig);
+    app.use('/api/v1', charts);
     app.use(errorHandler);
 
     if (process.env.NODE_ENV === 'PRO') {

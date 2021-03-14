@@ -30,6 +30,7 @@ export class User implements ISerializable {
 
   private subscription?: Subscription;
   private password?: string;
+  private _createdAt?: Date;
   private nutrition?: Nutrition;
 
   public getId(): string {
@@ -46,6 +47,14 @@ export class User implements ISerializable {
 
   public get ownerId(): string | undefined {
     return this._ownerId;
+  }
+
+  public get createdAt(): Date {
+    return this._createdAt!;
+  }
+
+  public setCreatedAt(date: Date) {
+    this._createdAt = date;
   }
 
   public async createPassword(password: Password): Promise<void> {
