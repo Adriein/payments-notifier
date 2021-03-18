@@ -9,9 +9,9 @@ export class UserPriceBuilder {
     const config = (await this.appConfigRepository.findByAdminId(
       adminId
     )) as AppConfig;
-
+       
     return new Pricing({
-      [pricing]: config.pricing.pricingType[pricing],
+      [pricing]: config.pricing.pricingType[pricing? pricing : Object.keys(config.pricing.pricingType)[0]],
     });
   }
 }
