@@ -10,7 +10,7 @@ export default class Database {
 
     (async () => {
       try {
-        const ssl = process.env.NODE_ENV === 'pro'? {ssl: {rejectUnauthorized: false}} : {};
+        const ssl = process.env.NODE_ENV === 'PRO'? {ssl: {rejectUnauthorized: false}} : {};
         this.pool = new pg.Pool({
           host: process.env.DATABASE_HOST!,
           port: parseInt(process.env.DATABASE_PORT!),
