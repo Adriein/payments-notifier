@@ -5,3 +5,5 @@ export type PricingObject = {
 export type CriteriaObject = {
   [key: string]: { value: string; operation: string; };
 };
+
+export type Counter = { [key: string]: number };

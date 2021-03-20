@@ -29,7 +29,7 @@ import { CreateAppConfigHandler } from "../Handlers/AppConfig/CreateAppConfigHan
 import { ReadAppConfigHandler } from "../Handlers/AppConfig/ReadAppConfigHandler";
 import { RegisterHandler } from "../Handlers/Auth/RegisterHandler";
 import { SignInHandler } from "../Handlers/Auth/SignInHandler";
-import { CreateUserChartHandler } from "../Handlers/Chart/CreateChartHandler";
+import { CreateUsersChartHandler } from "../Handlers/Chart/CreateUsersChartHandler";
 import { CheckForDefaultersHandler } from "../Handlers/Defaulters/CheckForDefaultersHandler";
 import { EnsureUsersConsistencyHandler } from "../Handlers/Defaulters/EnsureUsersConsistencyHandler";
 import { GenerateReportHandler } from "../Handlers/Defaulters/GenerateReportHandler";
@@ -43,11 +43,12 @@ import { UpdateUserHandler } from "../Handlers/User/UpdateUserHandler";
 import { UpdateUserNotificationsHandler } from "../Handlers/User/UpdateUserNotificationsHandler";
 import { CriteriaBuilder } from "../../Domain/Services/CriteriaBuilder";
 import { CriteriaMapper } from "../../Infraestructure/Data/Mappers/CriteriaMapper";
+import { SubscriptionMapper } from "../../Infraestructure/Data/Mappers/SubscriptionMapper";
 
 
 export class CommandBus implements ICommandBus {
   //repos
-  private usersRepository = new UserRepository('users', new UserMapper(), new CriteriaMapper());
+  private usersRepository = new UserRepository('users', new UserMapper(), new CriteriaMapper(), new SubscriptionMapper());
   private appConfigRepository = new AppConfigRepository('app_config', new AppConfigMapper(), new CriteriaMapper());
 
   //services
@@ -131,7 +132,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof UserChartCommand) {
-      return new CreateUserChartHandler(this.usersRepository, this.criteriaBuilder);
+      return new CreateUsersChartHandler(this.usersRepository);
     }
 
     throw new Error();

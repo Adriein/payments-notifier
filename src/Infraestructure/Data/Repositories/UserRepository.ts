@@ -7,8 +7,9 @@ import { UserMapper } from '../Mappers/UserMapper';
 import { GenericRepository } from './GenericRepository';
 import { v4 as uuidv4 } from 'uuid';
 import { Criteria } from '../../../Domain/Entities/Criteria.entity';
-import { Filter } from '../../../Domain/Entities/Filter.entity';
 import { CriteriaMapper } from '../Mappers/CriteriaMapper';
+import { Subscription } from '../../../Domain/Entities/Subscription.entity';
+import { SubscriptionMapper } from '../Mappers/SubscriptionMapper';
 
 export class UserRepository
   extends GenericRepository<User>
@@ -16,7 +17,8 @@ export class UserRepository
   constructor(
     protected entity: string,
     protected mapper: UserMapper,
-    protected criteriaMapper: CriteriaMapper
+    protected criteriaMapper: CriteriaMapper,
+    protected subscriptionMapper: SubscriptionMapper
   ) {
     super(entity, mapper, criteriaMapper);
   }
@@ -145,5 +147,14 @@ export class UserRepository
         )}', '${user.paymentDate()}', ${user.isWarned()}, ${user.isNotified()}, '${user.getId()}', ${user.isSubscriptionActive()});`
       );
     }
+  }
+
+  @Log(process.env.LOG_LEVEL)
+  async getAllSubscriptionsByUser(id: string): Promise<Subscription[]> {
+    const { rows } = await this.db.query(
+      `SELECT * FROM ${SUBSCRIPTIONS_TABLE} WHERE user_id = '${id}'`
+    );
+
+    return rows.map((row) => this.subscriptionMapper.domain(row));
   }
 }
