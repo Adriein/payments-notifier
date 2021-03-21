@@ -13,61 +13,6 @@ import { OPERATORS } from '../../Domain/constants';
 const router: Router = express.Router();
 const commandBus = new CommandBus();
 
-router.get(
-  '/calculatedReport',
-  requireAuth,
-  currentUser,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const criteria = Object.keys(req.query).reduce((acc, key) => {
-        return {
-          ...acc,
-          [key]: { value: req.query[key], operation: OPERATORS.equal },
-        };
-      }, {});
-
-      if (Object.keys(req.query).length) {
-        const users = (await commandBus.execute(
-          new ReadCalculatedReportCommand(req.currentUser!.id, criteria)
-        )) as User[];
-        res.status(200).send(users.map((user) => user.serialize()));
-        return;
-      }
-
-      const users = (await commandBus.execute(
-        new ReadCalculatedReportCommand(req.currentUser!.id)
-      )) as User[];
-
-      res.status(200).send(users.map((user) => user.serialize()));
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-router.post(
-  '/users',
-  requireAuth,
-  currentUser,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      await commandBus.execute(
-        new CreateUserCommand(
-          req.body.username,
-          req.body.email,
-          req.body.pricing,
-          req.body.lastPaymentDate,
-          req.currentUser!.id!
-        )
-      );
-
-      res.status(200).send();
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
 router.put(
   '/users',
   requireAuth,

@@ -11,10 +11,15 @@ import { errorHandler } from './middlewares';
 import { defaulters } from './Infraestructure/Rest/defaulters';
 import Database from './Infraestructure/Data/Database';
 import { FILES_PATH } from './Domain/constants';
-import { auth } from './Infraestructure/Rest/auth';
 import { users } from './Infraestructure/Rest/users';
 import { appConfig } from './Infraestructure/Rest/appConfig';
 import { charts } from './Infraestructure/Rest/charts';
+import { AppRouter } from './Infraestructure/Rest/AppRouter';
+import './Infraestructure/Rest/Controllers/Auth/SignInController';
+import './Infraestructure/Rest/Controllers/Auth/RegisterController';
+import './Infraestructure/Rest/Controllers/Auth/SignOutController';
+import './Infraestructure/Rest/Controllers/Users/CalculateReportController';
+
 
 export default class App {
   public init() {
@@ -59,11 +64,7 @@ export default class App {
       })
     );
     app.use(fileUpload());
-    app.use('/api/v1', auth);
-    app.use('/api/v1', users);
-    app.use('/api/v1', defaulters);
-    app.use('/api/v1', appConfig);
-    app.use('/api/v1', charts);
+    app.use('/api/v1', AppRouter.getInstance());
     app.use(errorHandler);
 
     if (process.env.NODE_ENV === 'PRO') {
