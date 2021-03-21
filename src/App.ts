@@ -1,24 +1,20 @@
 require('dotenv').config();
 import 'reflect-metadata';
 import express from 'express';
-import bodyParser from 'body-parser';
 import cookieSession from 'cookie-session';
 import chalk from 'chalk';
 import fileUpload from 'express-fileupload';
 import path from 'path';
 import fs from 'fs';
 import { errorHandler } from './middlewares';
-import { defaulters } from './Infraestructure/Rest/defaulters';
 import Database from './Infraestructure/Data/Database';
 import { FILES_PATH } from './Domain/constants';
-import { users } from './Infraestructure/Rest/users';
-import { appConfig } from './Infraestructure/Rest/appConfig';
-import { charts } from './Infraestructure/Rest/charts';
 import { AppRouter } from './Infraestructure/Rest/AppRouter';
 import './Infraestructure/Rest/Controllers/Auth/SignInController';
 import './Infraestructure/Rest/Controllers/Auth/RegisterController';
 import './Infraestructure/Rest/Controllers/Auth/SignOutController';
 import './Infraestructure/Rest/Controllers/Users/CalculateReportController';
+import './Infraestructure/Rest/Controllers/Users/CreateUserController';
 
 
 export default class App {
@@ -54,7 +50,7 @@ export default class App {
       )
     );
 
-    app.use(bodyParser.json());
+    app.use(express.json());
     app.use(
       cookieSession({
         signed: false,
