@@ -3,18 +3,18 @@ import { Log } from '../../../Domain/Decorators/Log';
 import { Chart } from '../../../Domain/Entities/Chart.entity';
 import { User } from '../../../Domain/Entities/User.entity';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
-import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
+import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Counter } from '../../../Domain/types';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
 
 export class CreateUsersChartHandler implements IHandler<Chart> {
-  constructor(private userRepository: IUserRepository) {}
+  constructor(private finder: UserFinder) {}
 
   @Log(process.env.LOG_LEVEL)
   async handle(comm: ICommand): Promise<Chart> {
     const command = comm as UserChartCommand;
-    const users = await this.userRepository.findAll();
+    const users = await this.finder.adminId(command.adminId).find();
 
     const from = new LastPaymentDate(command.criteria.from.value).value;
     const to = new LastPaymentDate(command.criteria.to.value).value;

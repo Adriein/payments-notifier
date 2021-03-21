@@ -1,6 +1,5 @@
 import { DeleteUserCommand } from '../../../Domain/Commands/User/DeleteUserCommand';
 import { Log } from '../../../Domain/Decorators/Log';
-import { User } from '../../../Domain/Entities/User.entity';
 import { ICommand } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
@@ -18,7 +17,7 @@ export class DeleteUserHandler {
     
     const emailVo = new Email(comm.email);
 
-    const user = (await this.finder.find(emailVo.value)) as User;
+    const user = await this.finder.findByEmail(emailVo.value);
 
     await this.userRepository.delete(user.getId());
   }

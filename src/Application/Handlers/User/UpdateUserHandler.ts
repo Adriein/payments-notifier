@@ -20,7 +20,7 @@ export class UpdateUserHandler {
   async handle(command: ICommand): Promise<void> {
     const comm = command as UpdateUserCommand;
 
-    const user = (await this.finder.find(undefined, comm.id)) as User;
+    const user = await this.finder.findById(comm.id);
 
     const email = new Email(comm.email);
     const pricing = await this.priceBuilder.build(comm.adminId, comm.pricing);

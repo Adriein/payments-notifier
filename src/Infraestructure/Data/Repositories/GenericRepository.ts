@@ -24,7 +24,7 @@ export abstract class GenericRepository<T> implements IRepository<T> {
   }
 
   @Log(process.env.LOG_LEVEL)
-  async find(searchObj: any): Promise<T[]> {
+  async find(adminId: string, searchObj: any): Promise<T[]> {
     throw new Error();
   }
 

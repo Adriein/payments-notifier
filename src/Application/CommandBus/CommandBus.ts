@@ -65,7 +65,7 @@ export class CommandBus implements ICommandBus {
 
   private resolveHandler(command: ICommand) {
     if (command instanceof CheckForDefaultersCommand) {
-      return new CheckForDefaultersHandler(this.notifier, this.usersRepository, this.appConfigRepository);
+      return new CheckForDefaultersHandler(this.notifier, this.usersRepository, this.appConfigRepository, this.userFinder);
     }
 
     if (command instanceof IngestDefaultersCommand) {
@@ -73,11 +73,11 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof GenerateReportCommand) {
-      return new GenerateReportHandler(this.notifier, this.usersRepository);
+      return new GenerateReportHandler(this.notifier, this.userFinder);
     }
 
     if (command instanceof EnsureUsersConsistencyCommand) {
-      return new EnsureUsersConsistencyHandler(this.usersRepository);
+      return new EnsureUsersConsistencyHandler(this.usersRepository, this.userFinder);
     }
 
     if (command instanceof RegisterCommand) {
@@ -132,7 +132,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof UserChartCommand) {
-      return new CreateUsersChartHandler(this.usersRepository);
+      return new CreateUsersChartHandler(this.userFinder);
     }
 
     throw new Error();

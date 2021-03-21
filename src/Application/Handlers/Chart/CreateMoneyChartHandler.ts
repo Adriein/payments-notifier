@@ -5,23 +5,24 @@ import { Subscription } from '../../../Domain/Entities/Subscription.entity';
 import { User } from '../../../Domain/Entities/User.entity';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
+import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Counter } from '../../../Domain/types';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
 
 export class CreateMoneyChartHandler implements IHandler<Chart> {
-  constructor(private userRepository: IUserRepository) {}
+  constructor(private repository: IUserRepository, private finder: UserFinder) {}
 
   @Log(process.env.LOG_LEVEL)
   async handle(comm: ICommand): Promise<Chart> {
     const command = comm as EarningsChartCommand;
-    const users = await this.userRepository.findAll();
+    const users = await this.finder.adminId(command.adminId).find();
 
     const subscriptions = await users.reduce(
       async (subscriptions, user: User) => {
         return [
           ...(await subscriptions),
-          ...(await this.userRepository.getAllSubscriptionsByUser(
+          ...(await this.repository.getAllSubscriptionsByUser(
             user.getId()
           )),
         ];

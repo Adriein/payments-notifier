@@ -1,7 +1,7 @@
 import { User } from '../../../Domain/Entities/User.entity';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
-import { OPERATORS, USER_ROLE } from '../../../Domain/constants';
+import { OPERATORS} from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
 import { ReadCalculatedReportCommand } from '../../../Domain/Commands/User/ReadCalculatedReportCommand';
 import { Criteria } from '../../../Domain/Entities/Criteria.entity';
@@ -22,18 +22,14 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
       if (filters.length) {
         const criteria = new Criteria(filters);
 
-        const users = (await this.finder.find(
-          undefined,
-          undefined,
-          criteria
-        )) as User[];
+        const users = await this.finder.adminId(command.adminId).find(criteria);
 
         filteredUsers.push(...users);
       }
 
       if (postprocessFilters.length) {
         if (!filteredUsers.length) {
-          const users = (await this.finder.find()) as User[];
+          const users = await this.finder.adminId(command.adminId).find();
           filteredUsers.push(...users);
         }
 
@@ -48,21 +44,25 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
       return filteredUsers;
     }
 
-    return (await this.finder.find()) as User[];
+    return await this.finder.adminId(command.adminId).find();
   }
 
   private buildFilters(command: ReadCalculatedReportCommand): Filter[][] {
     const criteriaObj: CriteriaObject = command.criteria!;
     const filters: Filter[] = [];
     const postprocessFilters: Filter[] = [];
-    
+
     for (let key of Object.keys(criteriaObj)) {
       if (key === 'pricing') {
-        filters.push(new Filter(key, `%${criteriaObj[key].value}%`, OPERATORS.like));
+        filters.push(
+          new Filter(key, `%${criteriaObj[key].value}%`, OPERATORS.like)
+        );
         continue;
       }
       if (key !== 'defaulter') {
-        filters.push(new Filter(key, criteriaObj[key].value, criteriaObj[key].operation));
+        filters.push(
+          new Filter(key, criteriaObj[key].value, criteriaObj[key].operation)
+        );
         continue;
       }
 

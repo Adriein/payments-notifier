@@ -28,22 +28,14 @@ router.get(
 
       if (Object.keys(req.query).length) {
         const users = (await commandBus.execute(
-          new ReadCalculatedReportCommand({
-            ...criteria,
-            owner_id: {
-              value: req.currentUser!.id,
-              operation: OPERATORS.equal,
-            },
-          })
+          new ReadCalculatedReportCommand(req.currentUser!.id, criteria)
         )) as User[];
         res.status(200).send(users.map((user) => user.serialize()));
         return;
       }
 
       const users = (await commandBus.execute(
-        new ReadCalculatedReportCommand({
-          owner_id: { value: req.currentUser!.id, operation: OPERATORS.equal },
-        })
+        new ReadCalculatedReportCommand(req.currentUser!.id)
       )) as User[];
 
       res.status(200).send(users.map((user) => user.serialize()));

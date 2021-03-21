@@ -19,7 +19,7 @@ export class RegisterUserPaymentHandler {
 
     const emailVo = new Email(comm.email);
 
-    const user = (await this.finder.find(emailVo.value)) as User;
+    const user = await this.finder.findByEmail(emailVo.value);
 
     await this.renewSubscription(user);
   }

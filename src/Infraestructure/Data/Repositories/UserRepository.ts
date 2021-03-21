@@ -24,16 +24,16 @@ export class UserRepository
   }
 
   @Log(process.env.LOG_LEVEL)
-  async find(criteria: Criteria): Promise<User[]> {
-    const where = await this.criteriaMapper.sql(criteria, [
-      'subscriptions',
-      'config',
-    ]);
+  async find(adminId: string, criteria?: Criteria): Promise<User[]> {
+    const where = criteria
+      ? await this.criteriaMapper.sql(criteria, ['subscriptions', 'config'])
+      : undefined;
+
     const query = `SELECT users.id, users.username, users.email, users.password, users.owner_id, users.created_at, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${
       this.entity
-    } LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='user' AND subscriptions.active=true ${where.join(
-      ' '
-    )};`;
+    } LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='user' AND users.owner_id='${adminId}' AND subscriptions.active=true ${
+      where ? where.join(' ') : ''
+    };`;
 
     const { rows } = await this.db.query(query);
 
@@ -67,9 +67,9 @@ export class UserRepository
   }
 
   @Log(process.env.LOG_LEVEL)
-  async findAll(): Promise<User[]> {
+  async findAll(onlyAdmins: boolean): Promise<User[]> {
     const { rows } = await this.db.query(
-      `SELECT users.id, users.username, users.email, users.password, users.owner_id, users.created_at, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='user' AND subscriptions.active=true;`
+      `SELECT users.id, users.username, users.email, users.password, users.owner_id, users.created_at, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='${onlyAdmins? 'admin' : 'user'}' AND subscriptions.active=true;`
     );
 
     return rows.map((row) => this.mapper.domain(row));
