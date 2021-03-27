@@ -4,9 +4,11 @@ import { UserChartCommand } from '../../../../Domain/Commands/Chart/UserChartCom
 import { OPERATORS } from '../../../../Domain/constants';
 import { Chart } from '../../../../Domain/Entities/Chart.entity';
 import { currentUser, requireAuth } from '../../../../middlewares/auth';
+import { Controller } from '../../Decorators/controller';
 import { get } from '../../Decorators/routes';
 import { use } from '../../Decorators/use';
 
+@Controller()
 export class GetUserChartController {
   @get('/user-chart')
   @use(requireAuth)

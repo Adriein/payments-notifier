@@ -2,9 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { CreateUserCommand } from '../../../../Domain/Commands/User/CreateUserCommand';
 import { currentUser, requireAuth } from '../../../../middlewares/auth';
+import { Controller } from '../../Decorators/controller';
 import { post } from '../../Decorators/routes';
 import { use } from '../../Decorators/use';
 
+@Controller()
 export class CreateUserController {
   @post('/users')
   @use(requireAuth)

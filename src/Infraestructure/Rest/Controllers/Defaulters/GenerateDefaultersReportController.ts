@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { GenerateReportCommand } from '../../../../Domain/Commands/Defaulters/GenerateReportCommand';
+import { Controller } from '../../Decorators/controller';
 import { get } from '../../Decorators/routes';
 
+@Controller()
 export class GenerateDefaultersReportController {
   @get('/report')
   public async generateDefaultersReport(

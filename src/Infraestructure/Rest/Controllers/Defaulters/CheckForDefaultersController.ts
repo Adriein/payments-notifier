@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { CheckForDefaultersCommand } from '../../../../Domain/Commands/Defaulters/CheckForDefaultersCommand';
+import { Controller } from '../../Decorators/controller';
 import { get } from '../../Decorators/routes';
 
+@Controller()
 export class CheckForDefaultersController {
   @get('/defaulters')
   public async checkForDefaulters(

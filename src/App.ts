@@ -21,7 +21,6 @@ import './Infraestructure/Rest/Controllers/Users/UpdateUserController';
 import './Infraestructure/Rest/Controllers/Users/UpdateUserNotificationController';
 import './Infraestructure/Rest/Controllers/Defaulters/CheckForDefaultersController';
 import './Infraestructure/Rest/Controllers/Defaulters/GenerateDefaultersReportController';
-import './Infraestructure/Rest/Controllers/Defaulters/UploadDefaultersController';
 import './Infraestructure/Rest/Controllers/Config/CreateConfigController';
 import './Infraestructure/Rest/Controllers/Config/GetConfigController';
 import './Infraestructure/Rest/Controllers/Charts/GetMoneyChartController';

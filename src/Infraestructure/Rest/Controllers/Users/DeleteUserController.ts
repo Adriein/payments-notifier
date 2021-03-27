@@ -2,9 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { DeleteUserCommand } from '../../../../Domain/Commands/User/DeleteUserCommand';
 import { currentUser, requireAuth } from '../../../../middlewares/auth';
+import { Controller } from '../../Decorators/controller';
 import { del } from '../../Decorators/routes';
 import { use } from '../../Decorators/use';
 
+@Controller()
 export class CreateUserController {
   @del('/users/:email')
   @use(requireAuth)
