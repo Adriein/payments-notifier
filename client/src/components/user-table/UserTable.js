@@ -5,7 +5,7 @@ import { Context as ModalContext } from '../../context/ModalContext';
 import { useToasts } from 'react-toast-notifications';
 import Modal from '../modal/Modal';
 
-import { modalData } from '../../data';
+import { modalData } from '../../shared/utils/data';
 import { TableHeaderFilters } from './header/TableHeaderFilters';
 import { TableRow } from './row/TableRow';
 import { EditableRow } from './row/EditableRow';

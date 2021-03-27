@@ -1,6 +1,6 @@
 import createDataContext from './createDataContext';
 import server from '../api/server';
-import { LOCALSTORAGE_USERNAME, LOCALSTORAGE_USER_ID } from '../constants';
+import { LOCALSTORAGE_USERNAME, LOCALSTORAGE_USER_ID } from '../shared/utils/constants';
 
 const authReducer = (state, action) => {
   switch (action.type) {

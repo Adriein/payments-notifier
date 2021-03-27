@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import './UserForm.scss';
 import { Animate } from 'react-simple-animate';
 
-import { userFormTabs } from '../../data';
+import { userFormTabs } from '../../shared/utils/data';
 import useInputState from '../../hooks/useInputState';
 import { FiCheckCircle, FiHome } from 'react-icons/fi';
 import { Context as UsersContext } from '../../context/UsersContext';

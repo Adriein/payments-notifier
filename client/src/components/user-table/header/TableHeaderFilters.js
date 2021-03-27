@@ -4,8 +4,8 @@ import { Context as UsersContext } from '../../../context/UsersContext';
 
 import Select from '../../select/Select';
 import ActionButton from '../../action-button/ActionButton';
-import { selectData } from '../../../data';
-import { DEFAULTERS_SELECT, PRICING_SELECT } from '../../../constants';
+import { selectData } from '../../../shared/utils/data';
+import { DEFAULTERS_SELECT, PRICING_SELECT } from '../../../shared/utils/constants';
 
 import { FiUserPlus } from 'react-icons/fi';
 
