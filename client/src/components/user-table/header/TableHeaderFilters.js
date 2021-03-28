@@ -8,10 +8,12 @@ import { selectData } from '../../../shared/utils/data';
 import { DEFAULTERS_SELECT, PRICING_SELECT } from '../../../shared/utils/constants';
 
 import { FiUserPlus } from 'react-icons/fi';
+import useQueryParamModal from '../../../hooks/useQueryParamModal';
 
 export const TableHeaderFilters = () => {
   const { create, edit, buildReport } = useContext(UsersContext);
   const [filters, setFilter] = useState([]);
+  const userCreateModalHelpers = useQueryParamModal();
   useEffect(() => {
     if (filters.length) {
       buildReport(filters);
@@ -22,7 +24,7 @@ export const TableHeaderFilters = () => {
 
   const handleCreateUser = () => {
     edit();
-    create();
+    userCreateModalHelpers.open('user-create');
   };
   const selectFilter = (type) => (option) => {
     setFilter((prevState) => {

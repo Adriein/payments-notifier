@@ -1,17 +1,22 @@
-import React, { Fragment, useState, useRef, useEffect, useCallback } from 'react';
+import React, {
+  Fragment,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
-// import useOnOutsideClick from 'shared/hooks/onOutsideClick';
-// import useOnEscapeKeyDown from 'shared/hooks/onEscapeKeyDown';
 
 import { ScrollOverlay, ClickableOverlay, StyledModal } from './Styles';
 
-import { FiX } from "react-icons/fi";
+import { FiX } from 'react-icons/fi';
+import useOnOutsideClick from '../../../hooks/useOnOutsideClick';
+import useOnEscapeKeyDown from '../../../hooks/useOnEscapeKeyDown';
 
 const propTypes = {
   className: PropTypes.string,
-  testid: PropTypes.string,
   variant: PropTypes.oneOf(['center', 'aside']),
   width: PropTypes.number,
   withCloseIcon: PropTypes.bool,
@@ -23,7 +28,6 @@ const propTypes = {
 
 const defaultProps = {
   className: undefined,
-  testid: 'modal',
   variant: 'center',
   width: 600,
   withCloseIcon: true,
@@ -34,7 +38,6 @@ const defaultProps = {
 
 const Modal = ({
   className,
-  testid,
   variant,
   width,
   withCloseIcon,
@@ -47,8 +50,8 @@ const Modal = ({
   const isControlled = typeof propsIsOpen === 'boolean';
   const isOpen = isControlled ? propsIsOpen : stateIsOpen;
 
-  const $modalRef = useRef();
-  const $clickableOverlayRef = useRef();
+  const modalRef = useRef();
+  const clickableOverlayRef = useRef();
 
   const closeModal = useCallback(() => {
     if (!isControlled) {
@@ -58,8 +61,8 @@ const Modal = ({
     }
   }, [isControlled, tellParentToClose]);
 
-//   useOnOutsideClick($modalRef, isOpen, closeModal, $clickableOverlayRef);
-//   useOnEscapeKeyDown(isOpen, closeModal);
+  useOnOutsideClick(modalRef, isOpen, closeModal, clickableOverlayRef);
+  useOnEscapeKeyDown(isOpen, closeModal);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -76,20 +79,19 @@ const Modal = ({
       {isOpen &&
         ReactDOM.createPortal(
           <ScrollOverlay>
-            <ClickableOverlay variant={variant} ref={$clickableOverlayRef}>
+            <ClickableOverlay variant={variant} ref={clickableOverlayRef}>
               <StyledModal
                 className={className}
                 variant={variant}
                 width={width}
-                data-testid={testid}
-                ref={$modalRef}
+                ref={modalRef}
               >
                 {withCloseIcon && <FiX onClick={closeModal} />}
                 {renderContent({ close: closeModal })}
               </StyledModal>
             </ClickableOverlay>
           </ScrollOverlay>,
-          $root,
+          $root
         )}
     </Fragment>
   );
