@@ -108,12 +108,12 @@ const create = (dispatch) => {
         dispatch({ type: 'fetch_action', payload: response });
         dispatch({
           type: 'add_success',
-          payload: `El usuario ${user.data.username} ha sido actualizado correctamente`,
+          payload: `El usuario ${user.data.username} ha sido creado correctamente`,
         });
       } catch (error) {
         dispatch({
           type: 'add_error',
-          payload: `El usuario ${user.data.username} no ha podido ser actualizado compruebe que los campos son correctos`,
+          payload: `El usuario ${user.data.username} no ha podido ser creado compruebe que los campos son correctos`,
         });
       }
     }

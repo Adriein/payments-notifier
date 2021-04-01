@@ -55,7 +55,7 @@ const CreateUser = ({ modalClose, onCreate }) => {
       }}
       onSubmit={async (values, form) => {
         try {
-          create({ status: 'create', data: values });
+          create({ status: 'save', data: values });
           onCreate();
         } catch (error) {
           Form.handleAPIError(error, form);
@@ -88,10 +88,10 @@ const CreateUser = ({ modalClose, onCreate }) => {
         />
         <Actions>
           <ActionButton type="submit" variant="primary" loading={false}>
-            Create Issue
+            Crear Usuario
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>
-            Cancel
+            Cancelar
           </ActionButton>
         </Actions>
       </FormElement>
