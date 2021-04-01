@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components';
-
 import { COLORS } from '../../utils/colors';
 import { MIXIN } from '../../utils/mixin';
+
+
 
 export const StyledSelect = styled.div`
   position: relative;
@@ -89,4 +90,54 @@ export const Option = styled.div`
 export const OptionsNoResults = styled.div`
   padding: 5px 15px 15px;
   color: ${COLORS.textLight};
+`;
+
+export const AddMore = styled.div`
+  display: inline-block;
+  margin-bottom: 3px;
+  padding: 3px 0;
+  i {
+    margin-right: 3px;
+    vertical-align: middle;
+    font-size: 14px;
+  }
+`;
+
+export const ValueMulti = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  ${props => props.variant === 'normal' && `padding-top: 5px;`}
+`;
+
+export const ValueMultiItem = styled.div`
+  margin: 0 5px 5px 0;
+  ${MIXIN.tag()}
+`;
+
+export const ClearIcon = styled.div`
+  position: absolute;
+  top: 4px;
+  right: 7px;
+  padding: 5px;
+  font-size: 16px;
+  color: ${COLORS.textMedium};
+  ${MIXIN.clickable}
+`;
+
+export const DropdownInput = styled.input`
+  padding: 10px 14px 8px;
+  width: 100%;
+  border: none;
+  color: ${COLORS.textDarkest};
+  background: none;
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const ChevronIcon = styled.div`
+  margin-left: auto;
+  font-size: 18px;
+  color: ${COLORS.textMedium};
 `;

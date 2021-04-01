@@ -55,7 +55,7 @@ export default function Login() {
     <div className="container">
       <div className="forms-container">
         <div className="signin-signup">
-          <form action="#" className="sign-in-form">
+          <form action="#" className="sign-in-form custom-form">
             <h2 className="title">Entrar</h2>
             <div className="input-field">
               <FaUser />
@@ -95,7 +95,7 @@ export default function Login() {
               </div>
             </div>
           </form>
-          <form action="#" className="sign-up-form">
+          <form action="#" className="sign-up-form custom-form">
             <h2 className="title">Registrarse</h2>
             <div className="input-field">
               <FaUser />

@@ -20,7 +20,7 @@ export default function HomePage() {
             width={800}
             withCloseIcon={false}
             onClose={() => userCreateModalHelpers.close(USER_CREATE)}
-            renderContent={() => <CreateUser />}
+            renderContent={(modal) => <CreateUser modalClose={modal.close} onCreate={() => userCreateModalHelpers.close(USER_CREATE)}/>}
           />
         )}
         <UserTable />

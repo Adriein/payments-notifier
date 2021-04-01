@@ -1,12 +1,20 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-//import useOnOutsideClick from 'shared/hooks/onOutsideClick';
-import { KeyCodes } from '../../utils/keyCodes';
+import useOnOutsideClick from '../../../hooks/useOnOutsideClick';
+import { KEYCODES } from '../../utils/keyCodes';
+import { FiChevronDown, FiPlus } from 'react-icons/fi';
 
 import Dropdown from './Dropdown';
-import { FiChevronDown } from "react-icons/fi";
-import { StyledSelect, ValueContainer, Placeholder } from './Styles';
+import {
+  StyledSelect,
+  ValueContainer,
+  ChevronIcon,
+  Placeholder,
+  ValueMulti,
+  ValueMultiItem,
+  AddMore,
+} from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
@@ -23,6 +31,9 @@ const propTypes = {
   invalid: PropTypes.bool,
   options: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
+  onCreate: PropTypes.func,
+  isMulti: PropTypes.bool,
+  withClearValue: PropTypes.bool,
   renderValue: PropTypes.func,
   renderOption: PropTypes.func,
 };
@@ -36,6 +47,9 @@ const defaultProps = {
   defaultValue: undefined,
   placeholder: 'Select',
   invalid: false,
+  onCreate: undefined,
+  isMulti: false,
+  withClearValue: true,
   renderValue: undefined,
   renderOption: undefined,
 };
@@ -51,10 +65,15 @@ const Select = ({
   invalid,
   options,
   onChange,
+  onCreate,
+  isMulti,
+  withClearValue,
   renderValue: propsRenderValue,
   renderOption: propsRenderOption,
 }) => {
-  const [stateValue, setStateValue] = useState(defaultValue || null);
+  const [stateValue, setStateValue] = useState(
+    defaultValue || (isMulti ? [] : null)
+  );
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
@@ -67,9 +86,9 @@ const Select = ({
   const activateDropdown = () => {
     if (isDropdownOpen) {
       inputRef.current.focus();
-      return;
+    } else {
+      setDropdownOpen(true);
     }
-    setDropdownOpen(true);
   };
 
   const deactivateDropdown = () => {
@@ -78,7 +97,7 @@ const Select = ({
     selectRef.current.focus();
   };
 
-  //useOnOutsideClick($selectRef, isDropdownOpen, deactivateDropdown);
+  useOnOutsideClick(selectRef, isDropdownOpen, deactivateDropdown);
 
   const preserveValueType = (newValue) => {
     const areOptionValuesNumbers = options.some(
@@ -86,6 +105,9 @@ const Select = ({
     );
 
     if (areOptionValuesNumbers) {
+      if (isMulti) {
+        return newValue.map(Number);
+      }
       if (newValue) {
         return Number(newValue);
       }
@@ -107,12 +129,12 @@ const Select = ({
   const handleFocusedSelectKeydown = (event) => {
     if (isDropdownOpen) return;
 
-    if (event.keyCode === KeyCodes.ENTER) {
+    if (event.keyCode === KEYCODES.ENTER) {
       event.preventDefault();
     }
     if (
-      event.keyCode !== KeyCodes.ESCAPE &&
-      event.keyCode !== KeyCodes.TAB &&
+      event.keyCode !== KEYCODES.ESCAPE &&
+      event.keyCode !== KEYCODES.TAB &&
       !event.shiftKey
     ) {
       setDropdownOpen(true);
@@ -124,7 +146,7 @@ const Select = ({
   const getOptionLabel = (optionValue) =>
     (getOption(optionValue) || { label: '' }).label;
 
-  const isValueEmpty = !getOption(value);
+  const isValueEmpty = isMulti ? !value.length : !getOption(value);
 
   return (
     <StyledSelect
@@ -146,8 +168,34 @@ const Select = ({
           ? propsRenderValue({ value })
           : getOptionLabel(value)}
 
-        {isValueEmpty && variant !== 'empty' && (
-          <FiChevronDown />
+        {!isValueEmpty && isMulti && (
+          <ValueMulti variant={variant}>
+            {value.map((optionValue) =>
+              propsRenderValue ? (
+                propsRenderValue({
+                  value: optionValue,
+                  removeOptionValue: () => removeOptionValue(optionValue),
+                })
+              ) : (
+                <ValueMultiItem
+                  key={optionValue}
+                  onClick={() => removeOptionValue(optionValue)}
+                >
+                  {getOptionLabel(optionValue)}
+                </ValueMultiItem>
+              )
+            )}
+            <AddMore>
+              <FiPlus />
+              Add more
+            </AddMore>
+          </ValueMulti>
+        )}
+
+        {(!isMulti || isValueEmpty) && variant !== 'empty' && (
+          <ChevronIcon>
+            <FiChevronDown />
+          </ChevronIcon>
         )}
       </ValueContainer>
 
@@ -158,11 +206,14 @@ const Select = ({
           isValueEmpty={isValueEmpty}
           searchValue={searchValue}
           setSearchValue={setSearchValue}
-          selectRef={selectRef}
-          inputRef={inputRef}
+          $selectRef={selectRef}
+          $inputRef={inputRef}
           deactivateDropdown={deactivateDropdown}
           options={options}
           onChange={handleChange}
+          onCreate={onCreate}
+          isMulti={isMulti}
+          withClearValue={withClearValue}
           propsRenderOption={propsRenderOption}
         />
       )}

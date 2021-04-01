@@ -1,6 +1,10 @@
 import { css } from 'styled-components';
+import Color from 'color';
 import { COLORS } from './colors';
 export const MIXIN = {
+  darken: (colorValue, amount) => Color(colorValue).darken(amount).string(),
+  lighten: (colorValue, amount) => Color(colorValue).lighten(amount).string(),
+  rgba: (colorValue, opacity) => Color(colorValue).alpha(opacity).string(),
   boxShadowMedium: css`
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
   `,
@@ -72,7 +76,7 @@ export const MIXIN = {
     background-size: cover;
     background-color: ${COLORS.backgroundLight};
   `,
-  link: (colorValue = COLORS.danger) => css`
+  link: (colorValue = COLORS.textLink) => css`
     cursor: pointer;
     color: ${colorValue};
     &:hover, &:visited, &:active {
@@ -95,6 +99,7 @@ export const MIXIN = {
     user-select: none;
     color: ${colorValue};
     background: ${background};
+    font-size: 12px;
     i {
       margin-left: 4px;
     }

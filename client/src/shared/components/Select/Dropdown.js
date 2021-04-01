@@ -1,9 +1,18 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
+import { uniq } from 'lodash';
 
 import { KEYCODES } from '../../utils/keyCodes';
+import { FiX } from 'react-icons/fi';
 
-import { Dropdown, Options, Option, OptionsNoResults } from './Styles';
+import {
+  ClearIcon,
+  Dropdown,
+  DropdownInput,
+  Options,
+  Option,
+  OptionsNoResults,
+} from './Styles';
 
 const propTypes = {
   dropdownWidth: PropTypes.number,
@@ -11,10 +20,13 @@ const propTypes = {
   isValueEmpty: PropTypes.bool.isRequired,
   searchValue: PropTypes.string.isRequired,
   setSearchValue: PropTypes.func.isRequired,
-  inputRef: PropTypes.object.isRequired,
+  $inputRef: PropTypes.object.isRequired,
   deactivateDropdown: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
+  onCreate: PropTypes.func,
+  isMulti: PropTypes.bool.isRequired,
+  withClearValue: PropTypes.bool.isRequired,
   propsRenderOption: PropTypes.func,
 };
 
@@ -29,20 +41,24 @@ const SelectDropdown = ({
   dropdownWidth,
   value,
   isValueEmpty,
-  inputRef,
-  deactivateDropdown,
   searchValue,
   setSearchValue,
+  $inputRef,
+  deactivateDropdown,
   options,
   onChange,
+  onCreate,
+  isMulti,
+  withClearValue,
   propsRenderOption,
 }) => {
-  const optionsRef = useRef();
+  const [isCreatingOption, setCreatingOption] = useState(false);
 
+  const optionsRef = useRef();
   useLayoutEffect(() => {
     const setFirstOptionAsActive = () => {
-      const active = getActiveOptionNode();
-      if (active) active.classList.remove(activeOptionClass);
+      const $active = getActiveOptionNode();
+      if ($active) $active.classList.remove(activeOptionClass);
 
       if (optionsRef.current.firstElementChild) {
         optionsRef.current.firstElementChild.classList.add(activeOptionClass);
@@ -53,25 +69,35 @@ const SelectDropdown = ({
 
   const selectOptionValue = (optionValue) => {
     deactivateDropdown();
-
-    onChange(optionValue);
+    if (isMulti) {
+      onChange(uniq([...value, optionValue]));
+    } else {
+      onChange(optionValue);
+    }
   };
 
+  const createOption = (newOptionLabel) => {
+    setCreatingOption(true);
+    onCreate(newOptionLabel, (createdOptionValue) => {
+      setCreatingOption(false);
+      selectOptionValue(createdOptionValue);
+    });
+  };
 
   const clearOptionValues = () => {
-    inputRef.current.value = '';
-    inputRef.current.focus();
-    onChange(null);
+    $inputRef.current.value = '';
+    $inputRef.current.focus();
+    onChange(isMulti ? [] : null);
   };
 
   const handleInputKeyDown = (event) => {
-    if (event.keyCode === KeyCodes.ESCAPE) {
+    if (event.keyCode === KEYCODES.ESCAPE) {
       handleInputEscapeKeyDown(event);
-    } else if (event.keyCode === KeyCodes.ENTER) {
+    } else if (event.keyCode === KEYCODES.ENTER) {
       handleInputEnterKeyDown(event);
     } else if (
-      event.keyCode === KeyCodes.ARROW_DOWN ||
-      event.keyCode === KeyCodes.ARROW_UP
+      event.keyCode === KEYCODES.ARROW_DOWN ||
+      event.keyCode === KEYCODES.ARROW_UP
     ) {
       handleInputArrowUpOrDownKeyDown(event);
     }
@@ -88,80 +114,93 @@ const SelectDropdown = ({
     const active = getActiveOptionNode();
     if (!active) return;
 
-    const optionValueToSelect = active.getAttribute(
-      'data-select-option-value'
-    );
-    const optionLabelToCreate = active.getAttribute(
-      'data-create-option-label'
-    );
+    const optionValueToSelect = active.getAttribute('data-select-option-value');
+    const optionLabelToCreate = active.getAttribute('data-create-option-label');
 
     if (optionValueToSelect) {
       selectOptionValue(optionValueToSelect);
+    } else if (optionLabelToCreate) {
+      createOption(optionLabelToCreate);
     }
   };
 
   const handleInputArrowUpOrDownKeyDown = (event) => {
-    const active = getActiveOptionNode();
-    if (!active) return;
+    const $active = getActiveOptionNode();
+    if (!$active) return;
 
-    const options = optionsRef.current;
-    const optionsHeight = options.getBoundingClientRect().height;
-    const activeHeight = active.getBoundingClientRect().height;
+    const $options = optionsRef.current;
+    const $optionsHeight = $options.getBoundingClientRect().height;
+    const $activeHeight = $active.getBoundingClientRect().height;
 
-    if (event.keyCode === KeyCodes.ARROW_DOWN) {
-      if (options.lastElementChild === active) {
-        active.classList.remove(activeOptionClass);
-        options.firstElementChild.classList.add(activeOptionClass);
-        options.scrollTop = 0;
+    if (event.keyCode === KEYCODES.ARROW_DOWN) {
+      if ($options.lastElementChild === $active) {
+        $active.classList.remove(activeOptionClass);
+        $options.firstElementChild.classList.add(activeOptionClass);
+        $options.scrollTop = 0;
       } else {
-        active.classList.remove(activeOptionClass);
-        active.nextElementSibling.classList.add(activeOptionClass);
-        if (active.offsetTop > options.scrollTop + optionsHeight / 1.4) {
-          options.scrollTop += activeHeight;
+        $active.classList.remove(activeOptionClass);
+        $active.nextElementSibling.classList.add(activeOptionClass);
+        if ($active.offsetTop > $options.scrollTop + $optionsHeight / 1.4) {
+          $options.scrollTop += $activeHeight;
         }
       }
-    } else if (event.keyCode === KeyCodes.ARROW_UP) {
-      if (options.firstElementChild === active) {
-        active.classList.remove(activeOptionClass);
-        options.lastElementChild.classList.add(activeOptionClass);
-        options.scrollTop = options.scrollHeight;
+    } else if (event.keyCode === KEYCODES.ARROW_UP) {
+      if ($options.firstElementChild === $active) {
+        $active.classList.remove(activeOptionClass);
+        $options.lastElementChild.classList.add(activeOptionClass);
+        $options.scrollTop = $options.scrollHeight;
       } else {
-        active.classList.remove(activeOptionClass);
-        active.previousElementSibling.classList.add(activeOptionClass);
-        if (active.offsetTop < options.scrollTop + optionsHeight / 2.4) {
-          options.scrollTop -= activeHeight;
+        $active.classList.remove(activeOptionClass);
+        $active.previousElementSibling.classList.add(activeOptionClass);
+        if ($active.offsetTop < $options.scrollTop + $optionsHeight / 2.4) {
+          $options.scrollTop -= $activeHeight;
         }
       }
     }
   };
 
   const handleOptionMouseEnter = (event) => {
-    const active = getActiveOptionNode();
-    if (active) active.classList.remove(activeOptionClass);
+    const $active = getActiveOptionNode();
+    if ($active) $active.classList.remove(activeOptionClass);
     event.currentTarget.classList.add(activeOptionClass);
   };
 
   const getActiveOptionNode = () =>
     optionsRef.current.querySelector(`.${activeOptionClass}`);
 
+  const optionsFilteredBySearchValue = options.filter((option) =>
+    option.label.toString().toLowerCase().includes(searchValue.toLowerCase())
+  );
+
+  const removeSelectedOptionsMulti = (opts) =>
+    opts.filter((option) => !value.includes(option.value));
   const removeSelectedOptionsSingle = (opts) =>
     opts.filter((option) => value !== option.value);
 
-  const filteredOptions = removeSelectedOptionsSingle(optionsFilteredBySearchValue);
+  const filteredOptions = isMulti
+    ? removeSelectedOptionsMulti(optionsFilteredBySearchValue)
+    : removeSelectedOptionsSingle(optionsFilteredBySearchValue);
+
+  const isSearchValueInOptions = options
+    .map((option) => option.label)
+    .includes(searchValue);
+  const isOptionCreatable = onCreate && searchValue && !isSearchValueInOptions;
 
   return (
     <Dropdown width={dropdownWidth}>
       <DropdownInput
         type="text"
         placeholder="Search"
-        ref={inputRef}
+        ref={$inputRef}
         autoFocus
         onKeyDown={handleInputKeyDown}
         onChange={(event) => setSearchValue(event.target.value)}
       />
 
       {!isValueEmpty && withClearValue && (
-        <ClearIcon type="close" onClick={clearOptionValues} />
+        <ClearIcon onClick={clearOptionValues}>
+          <FiX />
+        </ClearIcon>
       )}
 
       <Options ref={optionsRef}>

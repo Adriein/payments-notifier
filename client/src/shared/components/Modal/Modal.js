@@ -91,13 +91,13 @@ const Modal = ({
               </StyledModal>
             </ClickableOverlay>
           </ScrollOverlay>,
-          $root
+          root
         )}
     </Fragment>
   );
 };
 
-const $root = document.getElementById('root');
+const root = document.getElementById('root');
 
 Modal.propTypes = propTypes;
 Modal.defaultProps = defaultProps;
