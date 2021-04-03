@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import server from '../api/server';
 
 const fetch = async (url) => {
-  const response = (await server.get(url)).data;
+  const response = await server.get(url);
   return Object.keys(response.pricing).map((pricing) => {
     return {
       value: pricing,

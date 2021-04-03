@@ -53,7 +53,7 @@ const buildReport = (dispatch) => {
     }
 
     try {
-      const response = (await server.get(url)).data;
+      const response = await server.get(url);
       dispatch({ type: 'fetch_action', payload: response });
     } catch (error) {
       dispatch({ type: 'add_error', payload: 'Error fetching report' });
@@ -65,7 +65,7 @@ const changeNotifications = (dispatch) => {
   return async (user) => {
     try {
       await server.post('/users/config/notifications', user);
-      const response = (await server.get('/calculatedReport')).data;
+      const response = await server.get('/calculatedReport');
       dispatch({ type: 'fetch_action', payload: response });
       dispatch({
         type: 'add_success',
@@ -103,7 +103,7 @@ const create = (dispatch) => {
           pricing: user.data.pricing,
           lastPaymentDate: user.data.lastPaymentDate,
         });
-        const response = (await server.get('/calculatedReport')).data;
+        const response = await server.get('/calculatedReport');
 
         dispatch({ type: 'fetch_action', payload: response });
         dispatch({
@@ -130,7 +130,7 @@ const save = (dispatch) => {
         pricing: user.subscription.pricing,
         lastPaymentDate: user.subscription.lastPaymentDate
       });
-      const response = (await server.get('/calculatedReport')).data;
+      const response = await server.get('/calculatedReport');
       dispatch({ type: 'fetch_action', payload: response });
       dispatch({
         type: 'add_success',
@@ -149,7 +149,7 @@ const del = (dispatch) => {
   return async (email) => {
     try {
       await server.delete(`/users/${email}`);
-      const response = (await server.get('/calculatedReport')).data;
+      const response = await server.get('/calculatedReport');
       dispatch({ type: 'fetch_action', payload: response });
       dispatch({
         type: 'add_success',
@@ -168,7 +168,7 @@ const registerPayment = (dispatch) => {
   return async (email) => {
     try {
       await server.post('/users/subscription/payment', { email });
-      const response = (await server.get('/calculatedReport')).data;
+      const response = await server.get('/calculatedReport');
       dispatch({ type: 'fetch_action', payload: response });
       dispatch({
         type: 'add_success',

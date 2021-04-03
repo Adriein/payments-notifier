@@ -3,33 +3,38 @@ import PropTypes from 'prop-types';
 
 import {
   NavLeft,
-  LogoLink,
   Bottom,
   Item,
   ItemText,
   StyledLogo,
 } from './Styles';
-import { FiPlus, FiSettings, FiHelpCircle } from 'react-icons/fi';
+import { FiPlus, FiSettings, FiHelpCircle, FiTrello } from 'react-icons/fi';
 import AboutTooltip from '../../shared/components/AboutTooltip/AboutTooltip';
 
 const propTypes = {
-  issueSearchModalOpen: PropTypes.func.isRequired,
-  issueCreateModalOpen: PropTypes.func.isRequired,
+  configAppModalOpen: PropTypes.func.isRequired,
+  userCreateModalOpen: PropTypes.func.isRequired,
 };
 
-const LeftMenu = ({ issueSearchModalOpen, issueCreateModalOpen }) => (
+const LeftMenu = ({ configAppModalOpen, userCreateModalOpen }) => (
   <NavLeft>
-    <Item onClick={issueSearchModalOpen}>
+    <Item onClick={userCreateModalOpen}>
       <StyledLogo>
         <FiPlus />
       </StyledLogo>
       <ItemText>Crear usuario</ItemText>
     </Item>
-    <Item onClick={issueCreateModalOpen}>
+    <Item onClick={configAppModalOpen}>
       <StyledLogo>
         <FiSettings />
       </StyledLogo>
       <ItemText>Configuración</ItemText>
+    </Item>
+    <Item onClick={configAppModalOpen}>
+      <StyledLogo>
+        <FiTrello />
+      </StyledLogo>
+      <ItemText>Crear tarifa</ItemText>
     </Item>
     <Bottom>
       <AboutTooltip

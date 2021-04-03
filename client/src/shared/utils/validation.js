@@ -24,6 +24,8 @@ export const is = {
     !/.+@.+\..+/.test(value) &&
     'Tiene que ser un email válido',
 
+  number: () => (value) => !!value && isNaN(value) && 'Tiene que ser un número',
+
   date: () => (value) =>
     !!value &&
     // eslint-disable-next-line no-useless-escape

@@ -21,9 +21,9 @@ const defaultProps = {
   modalClose: undefined,
 };
 
-const CreateUser = ({ modalClose, onCreate }) => {
+const AppConfig = ({ modalClose, onCreate }) => {
   const { state, getAppConfig } = useContext(AppConfigContext);
-  const { create } = useContext(UsersContext);
+
   useEffect(() => {
     (async () => {
       await getAppConfig();
@@ -42,53 +42,54 @@ const CreateUser = ({ modalClose, onCreate }) => {
     <Form
       enableReinitialize
       initialValues={{
-        username: '',
-        email: '',
-        pricing: '',
-        lastPaymentDate: '',
+        pricingName: '',
+        pricingDuration: '',
+        pricingPrice: '',
+        warningDelay: '',
+        defaulterDelay: '',
+        emailContent: '',
       }}
       validations={{
-        username: Form.is.required(),
-        email: [Form.is.email(), Form.is.required()],
-        pricing: Form.is.required(),
-        lastPaymentDate: [Form.is.date(), Form.is.required()],
+        pricingDuration: Form.is.number(),
+        pricingPrice: Form.is.number(),
+        warningDelay: [Form.is.number(), Form.is.required()],
+        defaulterDelay: [Form.is.number(), Form.is.required()],
+        emailContent: Form.is.required(),
       }}
       onSubmit={async (values, form) => {
         try {
-          create({ status: 'save', data: values });
-          onCreate();
+          console.log(values);
         } catch (error) {
           Form.handleAPIError(error, form);
         }
       }}
     >
       <FormElement>
-        <FormHeading>Crear usuario</FormHeading>
+        <FormHeading>Configuración de la aplicación</FormHeading>
         <Form.Field.Input
-          name="username"
-          label="Nombre"
-          tip="Nombre y apellido del usuario."
+          name="pricingName"
+          label="Nombre de la tarifa"
+          tip="Nombre de la tarifa que aparecerá en los seleccionables."
+        />
+        <Form.Field.Input
+          name="pricingDuration"
+          label="Duración de la tarifa"
+          tip="Duración que tiene la tarifa en días."
+        />
+        <Form.Field.Input
+          name="pricingPrice"
+          label="Precio de la tarifa"
+          tip="Precio que tendrá la tarifa."
         />
         <Divider />
         <Form.Field.Input
-          name="email"
-          label="Email"
-          tip="Email del usuario, no pueden repetirse emails."
-        />
-        <Form.Field.Select
-          name="pricing"
-          label="Tarifa"
-          placeholder="Selecciona una tarifa"
-          options={createPricings()}
-        />
-        <Form.Field.Input
-          name="lastPaymentDate"
-          label="Fecha del último pago"
-          tip="La fecha tiene que ser en formato dd/mm/aaaa."
+          name="warningDelay"
+          label="Días de preaviso"
+          tip="Determina el número de días para mandar el preaviso de caducidad de tarifa al cliente."
         />
         <Actions>
           <ActionButton type="submit" variant="primary" loading={false}>
-            Crear Usuario
+            Actualizar configuración
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>
             Cancelar
@@ -99,7 +100,7 @@ const CreateUser = ({ modalClose, onCreate }) => {
   );
 };
 
-CreateUser.propTypes = propTypes;
-CreateUser.defaultProps = defaultProps;
+AppConfig.propTypes = propTypes;
+AppConfig.defaultProps = defaultProps;
 
-export default CreateUser;
+export default AppConfig;

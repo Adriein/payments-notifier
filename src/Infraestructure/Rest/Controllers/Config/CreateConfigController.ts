@@ -11,7 +11,7 @@ export class CreateConfigController {
   @post('/appConfig')
   @use(requireAuth)
   @use(currentUser)
-  public async createUser(req: Request, res: Response, next: NextFunction) {
+  public async createConfig(req: Request, res: Response, next: NextFunction) {
     try {
       const commandBus = new CommandBus();
       await commandBus.execute(
