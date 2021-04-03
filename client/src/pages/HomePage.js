@@ -9,14 +9,14 @@ import LeftMenu from '../project/LeftMenu/LeftMenu';
 
 export default function HomePage() {
   const USER_CREATE = 'user-create';
-  const userCreateModalHelpers = useQueryParamModal();
+  const userCreateModalHelpers = useQueryParamModal(USER_CREATE);
 
   return (
     <div className="page__container--main">
       <Header />
       <LeftMenu
-        issueSearchModalOpen={() => userCreateModalHelpers.open(USER_CREATE)}
-        issueCreateModalOpen={() => userCreateModalHelpers.open(USER_CREATE)}
+        issueSearchModalOpen={userCreateModalHelpers.open}
+        issueCreateModalOpen={userCreateModalHelpers.open}
       />
       <div className="wrapper">
         {userCreateModalHelpers.isOpen(USER_CREATE) && (
@@ -24,11 +24,11 @@ export default function HomePage() {
             isOpen
             width={800}
             withCloseIcon={false}
-            onClose={() => userCreateModalHelpers.close(USER_CREATE)}
+            onClose={userCreateModalHelpers.close}
             renderContent={(modal) => (
               <CreateUser
                 modalClose={modal.close}
-                onCreate={() => userCreateModalHelpers.close(USER_CREATE)}
+                onCreate={userCreateModalHelpers.close}
               />
             )}
           />

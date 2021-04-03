@@ -5,7 +5,7 @@ import {
   omitFromQueryString,
 } from '../shared/utils/url';
 
-const useQueryParamModal = () => {
+const useQueryParamModal = (param) => {
   const history = useHistory();
   const open = (param) =>
     history.push({
@@ -25,9 +25,9 @@ const useQueryParamModal = () => {
     !!queryStringToObject(history.location.search)[`modal-${param}`];
 
   return {
-    open: (param) => open(param),
-    close: (param) => close(param),
-    isOpen: (param) => isOpen(param),
+    open: () => open(param),
+    close: () => close(param),
+    isOpen: () => isOpen(param),
   };
 };
 

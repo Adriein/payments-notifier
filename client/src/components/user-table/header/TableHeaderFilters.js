@@ -49,11 +49,6 @@ export const TableHeaderFilters = () => {
           defaultOption={{ label: 'Todas las tarifas', value: 'default' }}
         />
       </div>
-      <div className="user-table__config">
-        <ActionButton>
-          <FiUserPlus size="25px" onClick={handleCreateUser} />
-        </ActionButton>
-      </div>
     </div>
   );
 };

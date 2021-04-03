@@ -1,7 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { NavLeft, LogoLink, Bottom, Item, ItemText } from './Styles';
+import {
+  NavLeft,
+  LogoLink,
+  Bottom,
+  Item,
+  ItemText,
+  StyledLogo,
+} from './Styles';
+import { FiPlus, FiSettings, FiHelpCircle } from 'react-icons/fi';
+import AboutTooltip from '../../shared/components/AboutTooltip/AboutTooltip';
 
 const propTypes = {
   issueSearchModalOpen: PropTypes.func.isRequired,
@@ -11,25 +20,31 @@ const propTypes = {
 const LeftMenu = ({ issueSearchModalOpen, issueCreateModalOpen }) => (
   <NavLeft>
     <Item onClick={issueSearchModalOpen}>
+      <StyledLogo>
+        <FiPlus />
+      </StyledLogo>
       <ItemText>Crear usuario</ItemText>
     </Item>
-
     <Item onClick={issueCreateModalOpen}>
+      <StyledLogo>
+        <FiSettings />
+      </StyledLogo>
       <ItemText>Configuración</ItemText>
     </Item>
-
-    {/* <Bottom>
+    <Bottom>
       <AboutTooltip
         placement="right"
         offset={{ top: -218 }}
-        renderLink={linkProps => (
+        renderLink={(linkProps) => (
           <Item {...linkProps}>
-            <Icon type="help" size={25} />
-            <ItemText>About</ItemText>
+            <StyledLogo>
+              <FiHelpCircle />
+            </StyledLogo>
+            <ItemText>Ayuda</ItemText>
           </Item>
         )}
       />
-    </Bottom> */}
+    </Bottom>
   </NavLeft>
 );
 

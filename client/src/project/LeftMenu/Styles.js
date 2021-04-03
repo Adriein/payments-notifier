@@ -5,7 +5,7 @@ import { MIXIN } from '../../shared/utils/mixin';
 import { COLORS } from '../../shared/utils/colors';
 
 export const NavLeft = styled.aside`
-  z-index: 100;
+  z-index: 10;
   position: fixed;
   top: 0;
   left: 0;
@@ -29,12 +29,13 @@ export const LogoLink = styled(NavLink)`
   transition: left 0.1s;
 `;
 
-// export const StyledLogo = styled(Logo)`
-//   display: inline-block;
-//   margin-left: 8px;
-//   padding: 10px;
-//   ${MIXIN.clickable}
-// `;
+export const StyledLogo = styled.div`
+  position: absolute;
+  top: 2px;
+  left: 20px;
+  font-size: 20px;
+  ${MIXIN.clickable}
+`;
 
 export const Bottom = styled.div`
   position: absolute;
