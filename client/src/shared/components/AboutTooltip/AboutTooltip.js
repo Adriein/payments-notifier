@@ -21,10 +21,6 @@ const AboutTooltip = tooltipProps => (
             <strong>adria.claret@gmail.com</strong>
           </a>
         </FeedbackParagraph>
-
-        <a href="https://getivor.com/" target="_blank" rel="noreferrer noopener">
-          <Button variant="primary">Visit Website</Button>
-        </a>
       </FeedbackDropdown>
     )}
   />

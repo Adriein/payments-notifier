@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import Form from '../../shared/components/Form/Form';
 
 import { Context as AppConfigContext } from '../../context/AppConfigContext';
-import { Context as UsersContext } from '../../context/UsersContext';
 
 import {
   FormHeading,
   FormElement,
-  Divider,
   Actions,
   ActionButton,
+  Divider
 } from './Styles';
 
 const propTypes = {
@@ -21,7 +20,7 @@ const defaultProps = {
   modalClose: undefined,
 };
 
-const AppConfig = ({ modalClose, onCreate }) => {
+const CreatePricing = ({ modalClose, onCreate }) => {
   const { state, getAppConfig } = useContext(AppConfigContext);
 
   useEffect(() => {
@@ -34,21 +33,21 @@ const AppConfig = ({ modalClose, onCreate }) => {
     const pricingObject = state.config.pricing ?? {};
 
     return Object.keys(pricingObject).reduce((acc, pricing) => {
-      return [...acc, { value: pricing, label: pricing }];
+      return [...acc, { value: pricing, label: `${pricing}, ${pricingObject[pricing].duration} días, ${pricingObject[pricing].price} euros` }];
     }, []);
   };
-  console.log(state.config);
+
   return (
     <Form
       enableReinitialize
       initialValues={{
-        warningDelay: state.config.warningDelay,
-        defaulterDelay: state.config.defaulterDelay,
-        emailContent: state.config.emailContent,
+        pricingName: '',
+        pricingDuration: '',
+        pricingPrice: '',
       }}
       validations={{
-        warningDelay: [Form.is.number(), Form.is.required()],
-        defaulterDelay: [Form.is.number(), Form.is.required()],
+        pricingDuration: Form.is.number(),
+        pricingPrice: Form.is.number(),
       }}
       onSubmit={async (values, form) => {
         try {
@@ -59,20 +58,31 @@ const AppConfig = ({ modalClose, onCreate }) => {
       }}
     >
       <FormElement>
-        <FormHeading>Configuración de la aplicación</FormHeading>
+        <FormHeading>Crear tarifa</FormHeading>
         <Form.Field.Input
-          name="warningDelay"
-          label="Días de preaviso"
-          tip="Determina el número de días para mandar el preaviso de caducidad de tarifa al cliente."
+          name="pricingName"
+          label="Nombre de la tarifa"
+          tip="Nombre de la tarifa que aparecerá en los seleccionables. ej: trimestral"
         />
-        <Form.Field.Textarea
-          name="emailContent"
-          label="Email de preaviso"
-          tip="Contenido del email que se envía para el preaviso."
+        <Form.Field.Input
+          name="pricingDuration"
+          label="Duración de la tarifa"
+          tip="Duración que tiene la tarifa en días. ej: 90"
+        />
+        <Form.Field.Input
+          name="pricingPrice"
+          label="Precio de la tarifa"
+          tip="Precio que tendrá la tarifa en euros. ej: 150"
+        />
+        <Divider/>
+        <Form.Field.Select
+          label="Tarifas existentes"
+          tip="Lista de las tarifas existentes"
+          options={createPricings()}
         />
         <Actions>
           <ActionButton type="submit" variant="primary" loading={false}>
-            Actualizar configuración
+            Crear tarifa
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>
             Cancelar
@@ -83,7 +93,7 @@ const AppConfig = ({ modalClose, onCreate }) => {
   );
 };
 
-AppConfig.propTypes = propTypes;
-AppConfig.defaultProps = defaultProps;
+CreatePricing.propTypes = propTypes;
+CreatePricing.defaultProps = defaultProps;
 
-export default AppConfig;
+export default CreatePricing;

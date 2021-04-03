@@ -14,9 +14,10 @@ import AboutTooltip from '../../shared/components/AboutTooltip/AboutTooltip';
 const propTypes = {
   configAppModalOpen: PropTypes.func.isRequired,
   userCreateModalOpen: PropTypes.func.isRequired,
+  pricingCreateModalOpen: PropTypes.func.isRequired,
 };
 
-const LeftMenu = ({ configAppModalOpen, userCreateModalOpen }) => (
+const LeftMenu = ({ configAppModalOpen, userCreateModalOpen, pricingCreateModalOpen }) => (
   <NavLeft>
     <Item onClick={userCreateModalOpen}>
       <StyledLogo>
@@ -30,7 +31,7 @@ const LeftMenu = ({ configAppModalOpen, userCreateModalOpen }) => (
       </StyledLogo>
       <ItemText>Configuración</ItemText>
     </Item>
-    <Item onClick={configAppModalOpen}>
+    <Item onClick={pricingCreateModalOpen}>
       <StyledLogo>
         <FiTrello />
       </StyledLogo>

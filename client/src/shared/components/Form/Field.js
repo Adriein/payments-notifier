@@ -4,6 +4,7 @@ import { uniqueId } from 'lodash';
 
 import Input from '../Input/Input';
 import Select from '../Select/Select';
+import Textarea from '../Textarea/Textarea';
 
 import { StyledField, FieldLabel, FieldTip, FieldError } from './Styles';
 
@@ -58,4 +59,5 @@ const buildField = (FormComponent) => {
 export default {
   Input: buildField(Input),
   Select: buildField(Select),
+  Textarea: buildField(Textarea),
 };
