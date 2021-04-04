@@ -55,7 +55,7 @@ const CreateUser = ({ modalClose, onCreate }) => {
       }}
       onSubmit={async (values, form) => {
         try {
-          create({ status: 'save', data: values });
+          await create({ status: 'save', data: values });
           onCreate();
         } catch (error) {
           Form.handleAPIError(error, form);
@@ -87,7 +87,7 @@ const CreateUser = ({ modalClose, onCreate }) => {
           tip="La fecha tiene que ser en formato dd/mm/aaaa."
         />
         <Actions>
-          <ActionButton type="submit" variant="primary" loading={false}>
+          <ActionButton type="submit" variant="primary">
             Crear Usuario
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>

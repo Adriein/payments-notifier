@@ -9,7 +9,11 @@ import { CriteriaMapper } from '../Mappers/CriteriaMapper';
 export abstract class GenericRepository<T> implements IRepository<T> {
   protected db = Database.getInstance().getConnection();
 
-  constructor(protected entity: string, protected mapper: IMapper<T>, protected criteriaMapper: CriteriaMapper) {}
+  constructor(
+    protected entity: string,
+    protected mapper: IMapper<T>,
+    protected criteriaMapper: CriteriaMapper
+  ) {}
 
   @Log(process.env.LOG_LEVEL)
   async findOne(id: string): Promise<T | undefined> {
@@ -53,14 +57,19 @@ export abstract class GenericRepository<T> implements IRepository<T> {
   }
 
   protected buildUpdateQuery(datamodel: any): string {
-    return `UPDATE ${this.entity} SET ${Object.keys(datamodel)
-      .map((key) => {
-        return `${key}=${
+    const query = [];
+    for (const key of Object.keys(datamodel)) {
+      if (key.toLowerCase() === 'id') continue;
+
+      query.push(
+        `${key}=${
           datamodel[key] === null || datamodel[key] === undefined
             ? null
             : `'${datamodel[key]}'`
-        }`;
-      })
-      .join(',')};`;
+        }`
+      );
+    }
+
+    return `UPDATE ${this.entity} SET ${query.join(',')}`;
   }
 }

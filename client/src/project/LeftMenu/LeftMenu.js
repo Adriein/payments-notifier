@@ -35,7 +35,7 @@ const LeftMenu = ({ configAppModalOpen, userCreateModalOpen, pricingCreateModalO
       <StyledLogo>
         <FiTrello />
       </StyledLogo>
-      <ItemText>Crear tarifa</ItemText>
+      <ItemText>Mis tarifas</ItemText>
     </Item>
     <Bottom>
       <AboutTooltip

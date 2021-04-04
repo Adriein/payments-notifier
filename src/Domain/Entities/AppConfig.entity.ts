@@ -1,10 +1,11 @@
 import { ISerializable } from '../Interfaces/ISerializable';
 import { v4 as uuidv4 } from 'uuid';
 import { Pricing } from '../VO/Pricing.vo';
+import { PricingObject } from '../types';
 
 export class AppConfig implements ISerializable {
   public static build(
-    pricing: Pricing,
+    pricing: any,
     warningDelay: number,
     defaulterDelay: number,
     emailContent: string,
@@ -12,27 +13,31 @@ export class AppConfig implements ISerializable {
   ) {
     return new AppConfig(
       uuidv4(),
-      pricing,
       warningDelay,
       defaulterDelay,
       emailContent,
-      adminId
+      adminId,
+      new Pricing(pricing)
     );
   }
   constructor(
     private _id: string,
-    private _pricing: Pricing,
     private _warningDelay: number,
     private _defaulterDelay: number,
     private _emailContent: string,
-    private _adminId?: string
+    private _adminId?: string,
+    private _pricing?: Pricing
   ) {}
+
+  public createPricing(pricing: PricingObject) {
+    this._pricing = new Pricing(pricing);
+  }
 
   public get id(): string {
     return this._id;
   }
 
-  public get pricing(): Pricing {
+  public get pricing(): Pricing | undefined {
     return this._pricing;
   }
 
@@ -55,7 +60,7 @@ export class AppConfig implements ISerializable {
   public serialize(): Object {
     return {
       id: this._id,
-      pricing: this._pricing.value,
+      pricing: this._pricing?.value ?? '',
       warningDelay: this._warningDelay,
       defaulterDelay: this._defaulterDelay,
       emailContent: this._emailContent,

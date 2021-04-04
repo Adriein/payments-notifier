@@ -21,22 +21,33 @@ const getAppConfig = (dispatch) => {
       const config = await server.get('/appConfig');
       dispatch({ type: FETCH_CONFIG_ACTION, payload: config });
     } catch (error) {
-      addError(dispatch);
+      addError(dispatch)('Error cargando la configuración');
+    }
+  };
+};
+
+const createPricing = (dispatch) => {
+  return async (name, duration, price) => {
+    try {
+      await server.post('/appConfig/pricing', { name, duration, price });
+      getAppConfig(dispatch)();
+    } catch (error) {
+      addError(dispatch)('Error creando la tarifa');
     }
   };
 };
 
 const addError = (dispatch) => {
-  return () => {
+  return (msg) => {
     dispatch({
       type: ADD_ERROR_ACTION,
-      payload: 'Error cargando la configuración',
+      payload: msg,
     });
   };
 };
 
 export const { Provider, Context } = createDataContext(
   appConfigReducer,
-  { getAppConfig },
+  { getAppConfig, createPricing },
   { error: undefined, config: {} }
 );

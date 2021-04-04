@@ -7,13 +7,15 @@ export class PriceBuilder {
   constructor(private appConfigRepository: IConfigRepository) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async build(adminId: string, pricing: string) {
+  public async build(adminId: string, pricing: string): Promise<Pricing> {
     const config = (await this.appConfigRepository.findByAdminId(
       adminId
     )) as AppConfig;
-       
+
     return new Pricing({
-      [pricing]: config.pricing.value[pricing? pricing : Object.keys(config.pricing.value)[0]],
+      [pricing]: config.pricing!.value[
+        pricing ? pricing : Object.keys(config.pricing!.value)[0]
+      ],
     });
   }
 }

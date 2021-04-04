@@ -21,7 +21,7 @@ const defaultProps = {
 };
 
 const CreatePricing = ({ modalClose, onCreate }) => {
-  const { state, getAppConfig } = useContext(AppConfigContext);
+  const { state, getAppConfig, createPricing } = useContext(AppConfigContext);
 
   useEffect(() => {
     (async () => {
@@ -36,22 +36,22 @@ const CreatePricing = ({ modalClose, onCreate }) => {
       return [...acc, { value: pricing, label: `${pricing}, ${pricingObject[pricing].duration} días, ${pricingObject[pricing].price} euros` }];
     }, []);
   };
-
   return (
     <Form
       enableReinitialize
       initialValues={{
-        pricingName: '',
-        pricingDuration: '',
-        pricingPrice: '',
+        name: '',
+        duration: '',
+        pricing: '',
       }}
       validations={{
-        pricingDuration: Form.is.number(),
-        pricingPrice: Form.is.number(),
+        name: Form.is.required(),
+        duration: [Form.is.number(), Form.is.required()],
+        pricing: [Form.is.number(), Form.is.required()],
       }}
       onSubmit={async (values, form) => {
         try {
-          console.log(values);
+          await createPricing(values.name, values.duration, values.pricing);
         } catch (error) {
           Form.handleAPIError(error, form);
         }
@@ -60,17 +60,17 @@ const CreatePricing = ({ modalClose, onCreate }) => {
       <FormElement>
         <FormHeading>Crear tarifa</FormHeading>
         <Form.Field.Input
-          name="pricingName"
+          name="name"
           label="Nombre de la tarifa"
           tip="Nombre de la tarifa que aparecerá en los seleccionables. ej: trimestral"
         />
         <Form.Field.Input
-          name="pricingDuration"
+          name="duration"
           label="Duración de la tarifa"
           tip="Duración que tiene la tarifa en días. ej: 90"
         />
         <Form.Field.Input
-          name="pricingPrice"
+          name="pricing"
           label="Precio de la tarifa"
           tip="Precio que tendrá la tarifa en euros. ej: 150"
         />
@@ -81,7 +81,7 @@ const CreatePricing = ({ modalClose, onCreate }) => {
           options={createPricings()}
         />
         <Actions>
-          <ActionButton type="submit" variant="primary" loading={false}>
+          <ActionButton type="submit" variant="primary">
             Crear tarifa
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>

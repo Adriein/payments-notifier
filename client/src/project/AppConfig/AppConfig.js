@@ -71,7 +71,7 @@ const AppConfig = ({ modalClose, onCreate }) => {
           tip="Contenido del email que se envía para el preaviso."
         />
         <Actions>
-          <ActionButton type="submit" variant="primary" loading={false}>
+          <ActionButton type="submit" variant="primary">
             Actualizar configuración
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>

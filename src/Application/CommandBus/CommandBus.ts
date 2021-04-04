@@ -44,6 +44,8 @@ import { UpdateUserNotificationsHandler } from "../Handlers/User/UpdateUserNotif
 import { CriteriaBuilder } from "../../Domain/Services/CriteriaBuilder";
 import { CriteriaMapper } from "../../Infraestructure/Data/Mappers/CriteriaMapper";
 import { SubscriptionMapper } from "../../Infraestructure/Data/Mappers/SubscriptionMapper";
+import { CreatePricingCommand } from "../../Domain/Commands/AppConfig/CreatePricingCommand";
+import { CreatePricingHandler } from "../Handlers/AppConfig/CreatePricingHandler";
 
 
 export class CommandBus implements ICommandBus {
@@ -123,6 +125,11 @@ export class CommandBus implements ICommandBus {
     if(command instanceof ReadAppConfigCommand) {
       return new ReadAppConfigHandler(this.appConfigRepository);
     }
+
+    if(command instanceof CreatePricingCommand) {
+      return new CreatePricingHandler(this.appConfigRepository);
+    }
+
     if (command instanceof EarningsChartCommand) {
       throw new Error();
     }
