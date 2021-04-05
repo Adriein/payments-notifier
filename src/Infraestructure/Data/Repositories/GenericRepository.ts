@@ -1,6 +1,4 @@
 import { Log } from '../../../Domain/Decorators/Log';
-import { Criteria } from '../../../Domain/Entities/Criteria.entity';
-import { Filter } from '../../../Domain/Entities/Filter.entity';
 import { IMapper } from '../../../Domain/Interfaces';
 import { IRepository } from '../../../Domain/Interfaces/IRepository';
 import Database from '../Database';
@@ -40,7 +38,8 @@ export abstract class GenericRepository<T> implements IRepository<T> {
 
   @Log(process.env.LOG_LEVEL)
   async update(entity: T): Promise<void> {
-    throw new Error();
+    const datamodel = this.mapper.datamodel(entity);
+    await this.db.query(this.buildUpdateQuery(datamodel));
   }
 
   @Log(process.env.LOG_LEVEL)

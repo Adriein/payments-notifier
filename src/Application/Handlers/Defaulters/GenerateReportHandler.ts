@@ -1,10 +1,11 @@
 import { Log } from '../../../Domain/Decorators/Log';
 import { ICommand, IHandler, INotifier } from '../../../Domain/Interfaces';
+import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Report, ReportType } from '../../../Domain/Templates/Report.template';
 
 export class GenerateReportHandler implements IHandler<void> {
-  constructor(private notifier: INotifier, private finder: UserFinder) {}
+  constructor(private notifier: INotifier, private finder: UserFinder, private configRepository: IConfigRepository) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: ICommand): Promise<void> {
@@ -34,7 +35,9 @@ export class GenerateReportHandler implements IHandler<void> {
         return;
       }
 
-      const template = new Report(report).generate();
+      const config = await this.configRepository.findByAdminId(admin.getId());
+
+      const template = await new Report(report, config!).generate();
 
       await this.notifier.notify(
         process.env.NODE_ENV! === 'PRO'

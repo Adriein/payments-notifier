@@ -1,0 +1,1 @@
+UPDATE app_config SET email_content="Hola, {{usuario}}. Este es un correo automático de {{alias:@IvanMFit}} para informarte de que en {{preaviso}} días vence tu asesoría {{tarifa}} contratada y es hora de renovar para seguir disfrutando de los servicios.";

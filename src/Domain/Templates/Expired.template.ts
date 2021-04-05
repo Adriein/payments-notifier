@@ -1,12 +1,13 @@
+import { AppConfig } from '../Entities/AppConfig.entity';
 import { User } from '../Entities/User.entity';
 import { Template } from './Template';
 
 export class Expired extends Template {
-  constructor(protected user: User) {
+  constructor(protected user: User, protected config: AppConfig) {
     super();
   }
 
-  public generate(): string {
+  public async generate(): Promise<string> {
     return `
      <html>
      <body style="font-family: Arial; background-color: #f6f6f6;">

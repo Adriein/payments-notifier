@@ -2,7 +2,7 @@ import createDataContext from './createDataContext';
 import server from '../api/server';
 
 const FETCH_CONFIG_ACTION = 'fetch_config_action';
-const CREATE_PRICING_ACTION = 'create_pricing_action';
+const REQUEST_ACTION = 'request_action';
 
 const ADD_ERROR_ACTION = 'add_error_action';
 const FINISH_LOADING_ACTION = 'finish_loading_action';
@@ -11,7 +11,7 @@ const appConfigReducer = (state, action) => {
   switch (action.type) {
     case FETCH_CONFIG_ACTION:
       return { ...state, config: action.payload };
-    case CREATE_PRICING_ACTION:
+    case REQUEST_ACTION:
       return { ...state, loading: true };
     case FINISH_LOADING_ACTION:
       return { ...state, loading: false };
@@ -36,12 +36,25 @@ const getAppConfig = (dispatch) => {
 const createPricing = (dispatch) => {
   return async ({ name, duration, price }) => {
     try {
-      dispatch({ type: CREATE_PRICING_ACTION });
+      dispatch({ type: REQUEST_ACTION });
       await server.post('/appConfig/pricing', { name, duration, price });
       dispatch({ type: FINISH_LOADING_ACTION });
       getAppConfig(dispatch)();
     } catch (error) {
       addError(dispatch)('Error creando la tarifa');
+    }
+  };
+};
+
+const updateAppConfig = (dispatch) => {
+  return async ({ warningDelay, emailContent }) => {
+    try {
+      dispatch({ type: REQUEST_ACTION });
+      await server.put('/appConfig', { warningDelay, emailContent });
+      dispatch({ type: FINISH_LOADING_ACTION });
+      getAppConfig(dispatch)();
+    } catch (error) {
+      addError(dispatch)('Error actualizando la configuración');
     }
   };
 };
@@ -57,6 +70,6 @@ const addError = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   appConfigReducer,
-  { getAppConfig, createPricing },
+  { getAppConfig, createPricing, updateAppConfig },
   { error: undefined, config: {}, loading: false }
 );

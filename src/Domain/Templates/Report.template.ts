@@ -1,3 +1,4 @@
+import { AppConfig } from '../Entities/AppConfig.entity';
 import { User } from '../Entities/User.entity';
 import { Template } from './Template';
 
@@ -9,12 +10,12 @@ export type ReportType = {
 
 export class Report extends Template {
   protected user: User;
-  constructor(private report: ReportType) {
+  constructor(private report: ReportType, protected config: AppConfig) {
     super();
     this.user = report.defaulters[0];
   }
 
-  public generate(): string {
+  public async generate(): Promise<string> {
     return `
     <html>
      <body style="font-family: Arial; background-color: #f6f6f6;">

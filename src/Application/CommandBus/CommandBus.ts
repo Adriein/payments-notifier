@@ -46,6 +46,8 @@ import { CriteriaMapper } from "../../Infraestructure/Data/Mappers/CriteriaMappe
 import { SubscriptionMapper } from "../../Infraestructure/Data/Mappers/SubscriptionMapper";
 import { CreatePricingCommand } from "../../Domain/Commands/AppConfig/CreatePricingCommand";
 import { CreatePricingHandler } from "../Handlers/AppConfig/CreatePricingHandler";
+import { ModifyAppConfigCommand } from "../../Domain/Commands/AppConfig/ModifyAppConfigCommand";
+import { ModifyAppConfigHandler } from "../Handlers/AppConfig/ModifyAppConfigHandler";
 
 
 export class CommandBus implements ICommandBus {
@@ -75,7 +77,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof GenerateReportCommand) {
-      return new GenerateReportHandler(this.notifier, this.userFinder);
+      return new GenerateReportHandler(this.notifier, this.userFinder, this.appConfigRepository);
     }
 
     if (command instanceof EnsureUsersConsistencyCommand) {
@@ -120,6 +122,10 @@ export class CommandBus implements ICommandBus {
 
     if(command instanceof CreateAppConfigCommand) {
       return new CreateAppConfigHandler(this.appConfigRepository);
+    }
+
+    if(command instanceof ModifyAppConfigCommand) {
+      return new ModifyAppConfigHandler(this.appConfigRepository);
     }
 
     if(command instanceof ReadAppConfigCommand) {

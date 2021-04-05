@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Form from '../../shared/components/Form/Form';
+import { useToasts } from 'react-toast-notifications';
 
 import { Context as AppConfigContext } from '../../context/AppConfigContext';
-import { Context as UsersContext } from '../../context/UsersContext';
 
 import {
   FormHeading,
@@ -22,7 +22,8 @@ const defaultProps = {
 };
 
 const AppConfig = ({ modalClose, onCreate }) => {
-  const { state, getAppConfig } = useContext(AppConfigContext);
+  const { state, getAppConfig, updateAppConfig } = useContext(AppConfigContext);
+  const { addToast } = useToasts();
 
   useEffect(() => {
     (async () => {
@@ -30,13 +31,6 @@ const AppConfig = ({ modalClose, onCreate }) => {
     })();
   }, []);
 
-  const createPricings = () => {
-    const pricingObject = state.config.pricing ?? {};
-
-    return Object.keys(pricingObject).reduce((acc, pricing) => {
-      return [...acc, { value: pricing, label: pricing }];
-    }, []);
-  };
   console.log(state.config);
   return (
     <Form
@@ -52,8 +46,11 @@ const AppConfig = ({ modalClose, onCreate }) => {
       }}
       onSubmit={async (values, form) => {
         try {
-          console.log(values);
+          await updateAppConfig(values);
+          addToast('Configuración actualizada correctamente', { appearance: 'success' });
+          onCreate();
         } catch (error) {
+          addToast('Error actualizando la configuración', { appearance: 'error' });
           Form.handleAPIError(error, form);
         }
       }}
@@ -71,7 +68,7 @@ const AppConfig = ({ modalClose, onCreate }) => {
           tip="Contenido del email que se envía para el preaviso."
         />
         <Actions>
-          <ActionButton type="submit" variant="primary">
+          <ActionButton type="submit" variant="primary" loading={state.loading}>
             Actualizar configuración
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>
