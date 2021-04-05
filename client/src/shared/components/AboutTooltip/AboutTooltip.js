@@ -16,7 +16,7 @@ const AboutTooltip = tooltipProps => (
           <FeedbackImage src={feedbackImage} alt="Give feedback" />
         </FeedbackImageCont>
         <FeedbackParagraph>
-          {'Para recibir ayuda o reportar algun mal funcionamiento de la aplicación puedes contactarnos en '}
+          {'Para recibir ayuda o reportar algun mal funcionamiento de la aplicación puedes contactarme en '}
           <a href="mailto:adria.claret@gmail.com">
             <strong>adria.claret@gmail.com</strong>
           </a>

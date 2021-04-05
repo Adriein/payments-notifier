@@ -1,14 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  NavLeft,
-  Bottom,
-  Item,
-  ItemText,
-  StyledLogo,
-} from './Styles';
-import { FiPlus, FiSettings, FiHelpCircle, FiTrello } from 'react-icons/fi';
+import { NavLeft, Bottom, Item, ItemText, StyledLogo } from './Styles';
+import { FiPlus, FiSettings, FiHelpCircle, FiTrello, FiLogOut } from 'react-icons/fi';
 import AboutTooltip from '../../shared/components/AboutTooltip/AboutTooltip';
 
 const propTypes = {
@@ -17,7 +11,12 @@ const propTypes = {
   pricingCreateModalOpen: PropTypes.func.isRequired,
 };
 
-const LeftMenu = ({ configAppModalOpen, userCreateModalOpen, pricingCreateModalOpen }) => (
+const LeftMenu = ({
+  configAppModalOpen,
+  userCreateModalOpen,
+  pricingCreateModalOpen,
+  logout
+}) => (
   <NavLeft>
     <Item onClick={userCreateModalOpen}>
       <StyledLogo>
@@ -38,6 +37,12 @@ const LeftMenu = ({ configAppModalOpen, userCreateModalOpen, pricingCreateModalO
       <ItemText>Mis tarifas</ItemText>
     </Item>
     <Bottom>
+      <Item onClick={logout}>
+        <StyledLogo>
+          <FiLogOut />
+        </StyledLogo>
+        <ItemText>Salir</ItemText>
+      </Item>
       <AboutTooltip
         placement="right"
         offset={{ top: -218 }}

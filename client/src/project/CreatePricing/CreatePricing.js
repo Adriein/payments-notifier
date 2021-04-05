@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Form from '../../shared/components/Form/Form';
+import { useToasts } from 'react-toast-notifications';
 
 import { Context as AppConfigContext } from '../../context/AppConfigContext';
 
@@ -9,7 +10,7 @@ import {
   FormElement,
   Actions,
   ActionButton,
-  Divider
+  Divider,
 } from './Styles';
 
 const propTypes = {
@@ -22,6 +23,7 @@ const defaultProps = {
 
 const CreatePricing = ({ modalClose, onCreate }) => {
   const { state, getAppConfig, createPricing } = useContext(AppConfigContext);
+  const { addToast } = useToasts();
 
   useEffect(() => {
     (async () => {
@@ -29,11 +31,17 @@ const CreatePricing = ({ modalClose, onCreate }) => {
     })();
   }, []);
 
-  const createPricings = () => {
+  const formatPricing = () => {
     const pricingObject = state.config.pricing ?? {};
 
     return Object.keys(pricingObject).reduce((acc, pricing) => {
-      return [...acc, { value: pricing, label: `${pricing}, ${pricingObject[pricing].duration} días, ${pricingObject[pricing].price} euros` }];
+      return [
+        ...acc,
+        {
+          value: pricing,
+          label: `${pricing}, ${pricingObject[pricing].duration} días, ${pricingObject[pricing].price} euros`,
+        },
+      ];
     }, []);
   };
   return (
@@ -51,8 +59,11 @@ const CreatePricing = ({ modalClose, onCreate }) => {
       }}
       onSubmit={async (values, form) => {
         try {
-          await createPricing(values.name, values.duration, values.pricing);
+          await createPricing(values);
+          addToast('Tarifa creada correctamente', { appearance: 'success' });
+          onCreate();
         } catch (error) {
+          addToast('Error creando la tarifa', { appearance: 'error' });
           Form.handleAPIError(error, form);
         }
       }}
@@ -74,14 +85,14 @@ const CreatePricing = ({ modalClose, onCreate }) => {
           label="Precio de la tarifa"
           tip="Precio que tendrá la tarifa en euros. ej: 150"
         />
-        <Divider/>
+        <Divider />
         <Form.Field.Select
           label="Tarifas existentes"
           tip="Lista de las tarifas existentes"
-          options={createPricings()}
+          options={formatPricing()}
         />
         <Actions>
-          <ActionButton type="submit" variant="primary">
+          <ActionButton type="submit" variant="primary" loading={state.loading}>
             Crear tarifa
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>

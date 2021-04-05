@@ -1,14 +1,14 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import server from '../api/server';
 
-const useApi = (method, url, payload) => {
+const useApi = (method, url) => {
   const [state, setState] = useState({
     error: undefined,
     data: undefined,
     loading: false,
   });
 
-  const request = useCallback(() => {
+  const request = useCallback((payload) => {
     return new Promise((resolve, reject) => {
       setState({ error: undefined, data: undefined, loading: true });
       server[method](url, payload ?? undefined).then(
@@ -22,7 +22,9 @@ const useApi = (method, url, payload) => {
         }
       );
     });
-  }, [method, url, payload]);
+  }, [method, url]);
 
   return [state, request];
 };
+
+export default useApi;

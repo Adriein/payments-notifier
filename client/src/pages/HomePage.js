@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './HomePage.scss';
 import UserTable from '../components/user-table/UserTable';
 import Modal from '../shared/components/Modal/Modal';
@@ -8,8 +8,11 @@ import Header from '../project/Header/Header';
 import LeftMenu from '../project/LeftMenu/LeftMenu';
 import AppConfig from '../project/AppConfig/AppConfig';
 import CreatePricing from '../project/CreatePricing/CreatePricing';
+import { Context as AuthContext } from '../context/AuthContext';
 
 export default function HomePage() {
+  const { logout } = useContext(AuthContext);
+
   const USER_CREATE = 'user-create';
   const CONFIG_APP = 'app-config';
   const PRICING_CREATE = 'pricing-create';
@@ -25,6 +28,7 @@ export default function HomePage() {
         configAppModalOpen={configAppModalHelpers.open}
         userCreateModalOpen={userCreateModalHelpers.open}
         pricingCreateModalOpen={pricingCreateAppModalHelpers.open}
+        logout={logout}
       />
       <div className="wrapper">
         {userCreateModalHelpers.isOpen() && (
