@@ -8,7 +8,6 @@ import { Context as AppConfigContext } from '../../context/AppConfigContext';
 import {
   FormHeading,
   FormElement,
-  Divider,
   Actions,
   ActionButton,
 } from './Styles';
@@ -31,7 +30,6 @@ const AppConfig = ({ modalClose, onCreate }) => {
     })();
   }, []);
 
-  console.log(state.config);
   return (
     <Form
       enableReinitialize
@@ -65,7 +63,7 @@ const AppConfig = ({ modalClose, onCreate }) => {
         <Form.Field.Textarea
           name="emailContent"
           label="Email de preaviso"
-          tip="Contenido del email que se envía para el preaviso."
+          tip="Tip: puedes usar las palabras reservadas: {{usuario}} (colocará el nombre del usuario al que se envia el mail) y {{tarifa}} (colocará la tarifa que tiene asignada)."
         />
         <Actions>
           <ActionButton type="submit" variant="primary" loading={state.loading}>

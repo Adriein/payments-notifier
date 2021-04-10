@@ -22,6 +22,22 @@ const appConfigReducer = (state, action) => {
   }
 };
 
+const formatPricing = () => {
+  return (state) => {
+    const pricingObject = state.config.pricing ?? {};
+
+    return Object.keys(pricingObject).reduce((acc, pricing) => {
+      return [
+        ...acc,
+        {
+          value: pricing,
+          label: `${pricing}, ${pricingObject[pricing].duration} días, ${pricingObject[pricing].price} euros`,
+        },
+      ];
+    }, []);
+  };
+};
+
 const getAppConfig = (dispatch) => {
   return async () => {
     try {
@@ -70,6 +86,6 @@ const addError = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   appConfigReducer,
-  { getAppConfig, createPricing, updateAppConfig },
+  { getAppConfig, createPricing, updateAppConfig, formatPricing },
   { error: undefined, config: {}, loading: false }
 );

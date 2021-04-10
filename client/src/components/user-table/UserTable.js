@@ -9,6 +9,7 @@ import { modalData } from '../../shared/utils/data';
 import { TableHeaderFilters } from './header/TableHeaderFilters';
 import { TableRow } from './row/TableRow';
 import { EditableRow } from './row/EditableRow';
+import Filters from '../../project/Filters/Filters';
 
 export const UserTable = () => {
   const { state, resetToastState } = useContext(UsersContext);
@@ -53,7 +54,8 @@ export const UserTable = () => {
           />
         )}
       {/* </Animate> */}
-      <TableHeaderFilters />
+      {/* <TableHeaderFilters /> */}
+      <Filters/>
       <div className="user-table__container">
         <table className="user-table__table">
           <thead className="user-table__table__header">

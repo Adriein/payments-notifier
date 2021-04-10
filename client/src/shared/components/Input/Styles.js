@@ -17,6 +17,7 @@ export const InputElement = styled.input`
   border: 1px solid ${COLORS.borderLightest};
   background: ${COLORS.backgroundLightest};
   transition: background 0.1s;
+  ${props => props.hasIcon && 'padding-left: 32px;'};
   &:hover {
     background: ${COLORS.backgroundLight};
   }
@@ -25,7 +26,7 @@ export const InputElement = styled.input`
     border: 1px solid ${COLORS.borderInputFocus};
     box-shadow: 0 0 0 1px ${COLORS.borderInputFocus};
   }
-  ${props =>
+  ${(props) =>
     props.invalid &&
     css`
       &,
@@ -34,4 +35,12 @@ export const InputElement = styled.input`
         box-shadow: none;
       }
     `}
+`;
+
+export const StyledIcon = styled.div`
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  pointer-events: none;
+  color: ${COLORS.textMedium};
 `;

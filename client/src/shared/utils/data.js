@@ -11,9 +11,8 @@ import { IoFastFoodOutline } from 'react-icons/io5';
 
 export const selectData = {
   defaulters: [
-    { value: 'default', label: 'Todos los usuarios' },
-    { value: 'true', label: 'Usuarios con tarifa expirada' },
-    { value: 'false', label: 'Usuarios sin tarifa expirada' },
+    { value: 'true', label: 'usuarios con tarifa expirada' },
+    { value: 'false', label: 'usuarios sin tarifa expirada' },
   ],
   pricings: [
     { value: 'default', label: 'Todas las tarifas' },

@@ -73,17 +73,17 @@ const CreatePricing = ({ modalClose, onCreate }) => {
         <Form.Field.Input
           name="name"
           label="Nombre de la tarifa"
-          tip="Nombre de la tarifa que aparecerá en los seleccionables. ej: trimestral"
+          tip="Nombre de la tarifa que aparecerá en los seleccionables. e.g: trimestral"
         />
         <Form.Field.Input
           name="duration"
           label="Duración de la tarifa"
-          tip="Duración que tiene la tarifa en días. ej: 90"
+          tip="Duración que tiene la tarifa en días. e.g: 90"
         />
         <Form.Field.Input
           name="pricing"
           label="Precio de la tarifa"
-          tip="Precio que tendrá la tarifa en euros. ej: 150"
+          tip="Precio que tendrá la tarifa en euros. e.g: 150"
         />
         <Divider />
         <Form.Field.Select
