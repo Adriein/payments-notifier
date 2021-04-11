@@ -1,7 +1,7 @@
 import { User } from '../../../Domain/Entities/User.entity';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
-import { OPERATORS} from '../../../Domain/constants';
+import { OPERATORS } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
 import { ReadCalculatedReportCommand } from '../../../Domain/Commands/User/ReadCalculatedReportCommand';
 import { Criteria } from '../../../Domain/Entities/Criteria.entity';
@@ -59,6 +59,14 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
         );
         continue;
       }
+
+      if (key === 'username') {
+        filters.push(
+          new Filter(key, `%${criteriaObj[key].value}%`, OPERATORS.ilike)
+        );
+        continue;
+      }
+
       if (key !== 'defaulter') {
         filters.push(
           new Filter(key, criteriaObj[key].value, criteriaObj[key].operation)

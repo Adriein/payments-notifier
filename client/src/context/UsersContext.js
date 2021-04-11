@@ -15,14 +15,6 @@ const orderByExpiredSubscription = (users) => {
   });
 };
 
-const buildFilters = (filters) => {
-  return `?${filters
-    .map(
-      (filter) => `${filter.field.toLowerCase()}=${filter.value.toLowerCase()}`
-    )
-    .join('&')}`;
-};
-
 const usersReducer = (state, action) => {
   switch (action.type) {
     case 'fetch_action':
@@ -46,10 +38,10 @@ const usersReducer = (state, action) => {
 };
 
 const buildReport = (dispatch) => {
-  return async (filters = []) => {
+  return async (query) => {
     let url = '/calculatedReport';
-    if (filters.length) {
-      url = url.concat(buildFilters(filters));
+    if (query) {
+      url = url.concat(query);
     }
 
     try {

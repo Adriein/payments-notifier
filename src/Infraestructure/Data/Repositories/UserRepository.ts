@@ -26,7 +26,11 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async find(adminId: string, criteria?: Criteria): Promise<User[]> {
     const where = criteria
-      ? await this.criteriaMapper.sql(criteria, ['subscriptions', 'config'])
+      ? await this.criteriaMapper.sql(criteria, [
+          'users',
+          'subscriptions',
+          'config',
+        ])
       : undefined;
 
     const query = `SELECT users.id, users.username, users.email, users.password, users.owner_id, users.created_at, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${
@@ -69,7 +73,11 @@ export class UserRepository
   @Log(process.env.LOG_LEVEL)
   async findAll(onlyAdmins: boolean): Promise<User[]> {
     const { rows } = await this.db.query(
-      `SELECT users.id, users.username, users.email, users.password, users.owner_id, users.created_at, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='${onlyAdmins? 'admin' : 'user'}' AND subscriptions.active=true;`
+      `SELECT users.id, users.username, users.email, users.password, users.owner_id, users.created_at, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${
+        this.entity
+      } LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='${
+        onlyAdmins ? 'admin' : 'user'
+      }' AND subscriptions.active=true;`
     );
 
     return rows.map((row) => this.mapper.domain(row));

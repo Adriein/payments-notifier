@@ -6,10 +6,9 @@ import { useToasts } from 'react-toast-notifications';
 import Modal from '../modal/Modal';
 
 import { modalData } from '../../shared/utils/data';
-import { TableHeaderFilters } from './header/TableHeaderFilters';
 import { TableRow } from './row/TableRow';
 import { EditableRow } from './row/EditableRow';
-import Filters from '../../project/Filters/Filters';
+import Filters from '../../project/UserManagementBoard/Filters/Filters';
 
 export const UserTable = () => {
   const { state, resetToastState } = useContext(UsersContext);
@@ -54,7 +53,6 @@ export const UserTable = () => {
           />
         )}
       {/* </Animate> */}
-      {/* <TableHeaderFilters /> */}
       <Filters/>
       <div className="user-table__container">
         <table className="user-table__table">

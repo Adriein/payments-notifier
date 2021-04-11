@@ -19,6 +19,7 @@ export enum OPERATORS {
   and = 'AND',
   or = 'OR',
   like = 'LIKE',
+  ilike = 'ILIKE',
 }
 
 export const FILES_PATH = `${process.cwd()}/dist/upload`;

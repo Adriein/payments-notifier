@@ -1,24 +1,17 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef } from 'react';
 
-
-const useDebounce = (wait, initialState = '') => {
-  const [debouncedValue, setDebouncedValue] = useState(initialState);
-
-  const debounce = useCallback((fn, wait) => {
-    let timerId;
-    return (...args) => {
+const useDebounce = (fn, wait = 1000) => {
+  let debounce = useRef(null);
+  return useCallback(
+    (...args) => {
       const context = this;
-      if (timerId) {
-        clearTimeout(timerId);
-      }
-      timerId = setTimeout(() => {
-        timerId = null;
+      clearTimeout(debounce.current);
+      debounce.current = setTimeout(() => {
         fn.apply(context, args);
       }, wait);
-    };
-  }, []);
-
-  return [debouncedValue, debounce(setDebouncedValue, wait)];
+    },
+    [fn, wait]
+  );
 };
 
 export default useDebounce;
