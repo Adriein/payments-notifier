@@ -9,6 +9,7 @@ import { Context as UsersContext } from '../../context/UsersContext';
 
 import { FiSearch } from 'react-icons/fi';
 import { selectData as data } from '../../shared/utils/data';
+import useDebounce from '../../hooks/useDebounce';
 
 const Filters = () => {
   const { state, getAppConfig, formatPricing } = useContext(AppConfigContext);
@@ -16,9 +17,9 @@ const Filters = () => {
   const [filters, setFilter] = useState([]);
   const [pricing, setPricing] = useState(null);
   const [defaulters, setDefaulters] = useState(null);
-
-  console.log(pricing);
-  console.log(defaulters);
+  const [search, setSearch] = useState('');
+  
+  console.log(filters);
 
   useEffect(() => {
     getAppConfig();
@@ -51,7 +52,7 @@ const Filters = () => {
         />
       </FilterStyledSelect>
       <StyledSearch>
-        <Input icon={<FiSearch />} />
+        <Input icon={<FiSearch />} value={search} onChange={(value) => setSearch(value)}/>
       </StyledSearch>
     </FilterElements>
   );
