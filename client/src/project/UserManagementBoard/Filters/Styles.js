@@ -1,21 +1,19 @@
 import styled from 'styled-components';
-import {
-  StyledInput,
-  InputElement,
-} from '../../../shared/components/Input/Styles';
-import { StyledSelect } from '../../../shared/components/Select/Styles';
+import Input from '../../../shared/components/Input/Input';
+import { InputElement } from '../../../shared/components/Input/Styles';
+import Select from '../../../shared/components/Select/Select';
 
 export const FilterElements = styled.div`
   display: flex;
   padding: 10px 2px;
 `;
 
-export const FilterStyledSelect = styled(StyledSelect)`
+export const FilterSelect = styled(Select)`
   margin-right: 10px;
   width: 100%;
 `;
 
-export const StyledSearch = styled(StyledInput)`
+export const StyledSearch = styled(Input)`
   ${InputElement} {
     padding: 18px 7px 18px 32px;
   }

@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Select from '../../../shared/components/Select/Select';
-import Input from '../../../shared/components/Input/Input';
 
-import { FilterElements, FilterStyledSelect, StyledSearch } from './Styles';
+import { FilterElements, FilterSelect, StyledSearch } from './Styles';
 
 import { Context as AppConfigContext } from '../../../context/AppConfigContext';
 import { Context as UsersContext } from '../../../context/UsersContext';
@@ -57,29 +55,25 @@ const Filters = () => {
 
   return (
     <FilterElements>
-      <FilterStyledSelect>
-        <Select
-          placeholder={'Todas las tarifas'}
-          options={formatPricing(state)}
-          onChange={onFilterChange(PRICING_SELECT)}
-          value={pricing}
-        />
-      </FilterStyledSelect>
-      <FilterStyledSelect>
-        <Select
-          placeholder={'Todos los usuarios'}
-          options={data.defaulters}
-          onChange={onFilterChange(DEFAULTERS_SELECT)}
-          value={defaulters}
-        />
-      </FilterStyledSelect>
-      <StyledSearch>
-        <Input
-          icon={<FiSearch />}
-          value={search}
-          onChange={onFilterChange(SEARCH)}
-        />
-      </StyledSearch>
+      <FilterSelect
+        placeholder={'Todas las tarifas'}
+        options={formatPricing(state)}
+        onChange={onFilterChange(PRICING_SELECT)}
+        value={pricing}
+      />
+
+      <FilterSelect
+        placeholder={'Todos los usuarios'}
+        options={data.defaulters}
+        onChange={onFilterChange(DEFAULTERS_SELECT)}
+        value={defaulters}
+      />
+
+      <StyledSearch
+        icon={<FiSearch />}
+        value={search}
+        onChange={onFilterChange(SEARCH)}
+      />
     </FilterElements>
   );
 };
