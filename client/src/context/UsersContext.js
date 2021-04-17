@@ -4,11 +4,11 @@ import server from '../api/server';
 const orderByExpiredSubscription = (users) => {
   return users.sort((a, b) => {
     if (a.defaulter < b.defaulter) {
-      return -1;
+      return 1;
     }
 
     if (a.defaulter > b.defaulter) {
-      return 1;
+      return -1;
     }
 
     return 0;
