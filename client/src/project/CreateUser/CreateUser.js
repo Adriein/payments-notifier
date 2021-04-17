@@ -22,21 +22,13 @@ const defaultProps = {
 };
 
 const CreateUser = ({ modalClose, onCreate }) => {
-  const { state, getAppConfig } = useContext(AppConfigContext);
+  const { state, getAppConfig, formatPricing } = useContext(AppConfigContext);
   const { create } = useContext(UsersContext);
   useEffect(() => {
     (async () => {
       await getAppConfig();
     })();
   }, []);
-
-  const createPricings = () => {
-    const pricingObject = state.config.pricing ?? {};
-
-    return Object.keys(pricingObject).reduce((acc, pricing) => {
-      return [...acc, { value: pricing, label: pricing }];
-    }, []);
-  };
 
   return (
     <Form
@@ -79,7 +71,7 @@ const CreateUser = ({ modalClose, onCreate }) => {
           name="pricing"
           label="Tarifa"
           placeholder="Selecciona una tarifa"
-          options={createPricings()}
+          options={formatPricing(state)}
         />
         <Form.Field.Input
           name="lastPaymentDate"

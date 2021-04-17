@@ -31,7 +31,7 @@ const formatPricing = () => {
         ...acc,
         {
           value: pricing,
-          label: `${pricing}, ${pricingObject[pricing].duration} días, ${pricingObject[pricing].price} euros`,
+          label: `${pricing}, ${pricingObject[pricing].duration} días, ${pricingObject[pricing].price}€`,
         },
       ];
     }, []);

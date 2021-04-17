@@ -22,7 +22,7 @@ const defaultProps = {
 };
 
 const CreatePricing = ({ modalClose, onCreate }) => {
-  const { state, getAppConfig, createPricing } = useContext(AppConfigContext);
+  const { state, getAppConfig, createPricing, formatPricing } = useContext(AppConfigContext);
   const { addToast } = useToasts();
 
   useEffect(() => {
@@ -30,20 +30,6 @@ const CreatePricing = ({ modalClose, onCreate }) => {
       await getAppConfig();
     })();
   }, []);
-
-  const formatPricing = () => {
-    const pricingObject = state.config.pricing ?? {};
-
-    return Object.keys(pricingObject).reduce((acc, pricing) => {
-      return [
-        ...acc,
-        {
-          value: pricing,
-          label: `${pricing}, ${pricingObject[pricing].duration} días, ${pricingObject[pricing].price} euros`,
-        },
-      ];
-    }, []);
-  };
   return (
     <Form
       enableReinitialize
@@ -89,7 +75,7 @@ const CreatePricing = ({ modalClose, onCreate }) => {
         <Form.Field.Select
           label="Tarifas existentes"
           tip="Lista de las tarifas existentes"
-          options={formatPricing()}
+          options={formatPricing(state)}
         />
         <Actions>
           <ActionButton type="submit" variant="primary" loading={state.loading}>

@@ -29,7 +29,6 @@ const Filters = () => {
   }, []);
 
   useEffect(() => {
-    console.log(query);
     if (query.length) {
       buildReport(parseQuery());
       return;
