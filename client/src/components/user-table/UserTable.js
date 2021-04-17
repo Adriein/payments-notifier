@@ -1,4 +1,4 @@
-import React, { useEffect, useContext} from 'react';
+import React, { useEffect, useContext } from 'react';
 import './UserTable.scss';
 import { Context as UsersContext } from '../../context/UsersContext';
 import { Context as ModalContext } from '../../context/ModalContext';
@@ -7,10 +7,9 @@ import Modal from '../modal/Modal';
 
 import { modalData } from '../../shared/utils/data';
 import { TableRow } from './row/TableRow';
-import { EditableRow } from './row/EditableRow';
 import Filters from '../../project/UserManagementBoard/Filters/Filters';
 
-export const UserTable = () => {
+export const UserTable = ({ edit }) => {
   const { state, resetToastState } = useContext(UsersContext);
   const { state: modalState, closeModal } = useContext(ModalContext);
 
@@ -27,33 +26,20 @@ export const UserTable = () => {
     }
   }, [state.success, state.error]);
 
-  // const handleEditPricing = (option) => {
-  //   setForm({
-  //     username: form.username,
-  //     email: form.email,
-  //     pricing: option.value,
-  //   });
-  // };
-
   return (
     <div className="users__widget">
-      {/* <Animate
-        play={modalState.visible}
-        start={{ opacity: 0 }}
-        end={{ opacity: 1 }}
-      > */}
-        {modalState.visible && (
-          <Modal
-            title={modalData[modalState.type].title}
-            type={modalData[modalState.type].colors}
-            message={modalData[modalState.type].message}
-            icon={modalData[modalState.type].icon}
-            handleClose={closeModal}
-            callback={modalState.callback}
-          />
-        )}
-      {/* </Animate> */}
-      <Filters/>
+      {modalState.visible && (
+        <Modal
+          title={modalData[modalState.type].title}
+          type={modalData[modalState.type].colors}
+          message={modalData[modalState.type].message}
+          icon={modalData[modalState.type].icon}
+          handleClose={closeModal}
+          callback={modalState.callback}
+        />
+      )}
+
+      <Filters />
       <div className="user-table__container">
         <table className="user-table__table">
           <thead className="user-table__table__header">
@@ -70,10 +56,8 @@ export const UserTable = () => {
           </thead>
           <tbody>
             {state.users.map((user) => {
-              return state.editingUser.id === user.id ? (
-                <EditableRow user={user} key={user.id}/>
-              ) : (
-                <TableRow user={user} key={user.id}/>
+              return (
+                <TableRow user={user} key={user.id} openEditmodal={edit} />
               );
             })}
           </tbody>

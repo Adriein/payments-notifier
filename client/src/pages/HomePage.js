@@ -3,6 +3,7 @@ import './HomePage.scss';
 import UserTable from '../components/user-table/UserTable';
 import Modal from '../shared/components/Modal/Modal';
 import CreateUser from '../project/CreateUser/CreateUser';
+import EditUser from '../project/EditUser/EditUser';
 import useQueryParamModal from '../hooks/useQueryParamModal';
 import Header from '../project/Header/Header';
 import LeftMenu from '../project/LeftMenu/LeftMenu';
@@ -14,10 +15,12 @@ export default function HomePage() {
   const { logout } = useContext(AuthContext);
 
   const USER_CREATE = 'user-create';
+  const USER_EDIT = 'user-edit';
   const CONFIG_APP = 'app-config';
   const PRICING_CREATE = 'pricing-create';
 
   const userCreateModalHelpers = useQueryParamModal(USER_CREATE);
+  const userEditModalHelpers = useQueryParamModal(USER_EDIT);
   const configAppModalHelpers = useQueryParamModal(CONFIG_APP);
   const pricingCreateAppModalHelpers = useQueryParamModal(PRICING_CREATE);
 
@@ -41,6 +44,20 @@ export default function HomePage() {
               <CreateUser
                 modalClose={modal.close}
                 onCreate={userCreateModalHelpers.close}
+              />
+            )}
+          />
+        )}
+        {userEditModalHelpers.isOpen() && (
+          <Modal
+            isOpen
+            width={800}
+            withCloseIcon={false}
+            onClose={userEditModalHelpers.close}
+            renderContent={(modal) => (
+              <EditUser
+                modalClose={modal.close}
+                onCreate={userEditModalHelpers.close}
               />
             )}
           />
@@ -73,7 +90,7 @@ export default function HomePage() {
             )}
           />
         )}
-        <UserTable />
+        <UserTable edit={userEditModalHelpers.open}/>
       </div>
     </div>
   );

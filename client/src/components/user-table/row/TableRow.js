@@ -1,7 +1,7 @@
 import React from 'react';
 import { Actions } from '../actions/Actions';
 
-export const TableRow = ({user}) => {
+export const TableRow = ({user, openEditmodal}) => {
   return (
     <tr key={user.id}>
       <td>{user.username}</td>
@@ -9,7 +9,7 @@ export const TableRow = ({user}) => {
       <td>{Object.keys(user.subscription.pricing)[0]}</td>
       <td>{user.defaulter}</td>
       <td>{user.subscription.lastPayment}</td>
-      <Actions user={user}/>
+      <Actions user={user} openEditmodal={openEditmodal}/>
     </tr>
   );
 };
