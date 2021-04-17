@@ -25,7 +25,7 @@ const EditUser = ({ modalClose, onCreate }) => {
   const { state, getAppConfig, formatPricing } = useContext(AppConfigContext);
   const {
     state: { editingUser },
-    save,
+    update,
   } = useContext(UsersContext);
 
   useEffect(() => {
@@ -38,6 +38,7 @@ const EditUser = ({ modalClose, onCreate }) => {
     <Form
       enableReinitialize
       initialValues={{
+        id: editingUser.id,
         username: editingUser.username,
         email: editingUser.email,
         pricing: Object.keys(editingUser.subscription.pricing)[0],
@@ -51,8 +52,7 @@ const EditUser = ({ modalClose, onCreate }) => {
       }}
       onSubmit={async (values, form) => {
         try {
-          console.log(values);
-          await save();
+          await update(values);
           onCreate();
         } catch (error) {
           Form.handleAPIError(error, form);

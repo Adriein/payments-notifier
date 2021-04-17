@@ -47,7 +47,7 @@ const CreateUser = ({ modalClose, onCreate }) => {
       }}
       onSubmit={async (values, form) => {
         try {
-          await create({ status: 'save', data: values });
+          await create(values );
           onCreate();
         } catch (error) {
           Form.handleAPIError(error, form);

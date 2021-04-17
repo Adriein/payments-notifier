@@ -48,7 +48,7 @@ const buildReport = (dispatch) => {
       const response = await server.get(url);
       dispatch({ type: 'fetch_action', payload: response });
     } catch (error) {
-      dispatch({ type: 'add_error', payload: 'Error fetching report' });
+      dispatch({ type: 'add_error', payload: 'Ha ocurrido un error inesperado' });
     }
   };
 };
@@ -61,10 +61,10 @@ const changeNotifications = (dispatch) => {
       dispatch({ type: 'fetch_action', payload: response });
       dispatch({
         type: 'add_success',
-        payload: `Se ha actualizado correctamente la notificación para el usuario ${user.username}`,
+        payload: `Ahora el usuario ${user.username} recibirá notificaciones`,
       });
     } catch (error) {
-      dispatch({ type: 'add_error', payload: 'Error fetching report' });
+      dispatch({ type: 'add_error', payload: 'Las notificaciones no han podido ser actualizadas correctamente' });
     }
   };
 };
@@ -76,51 +76,43 @@ const edit = (dispatch) => {
 };
 
 const create = (dispatch) => {
-  return async (user = { status: 'create' }) => {
-    if (user.status === 'create') {
-      dispatch({ type: 'start_create_action', payload: user });
-    }
-    if (user.status === 'cancel') {
-      dispatch({ type: 'start_create_action', payload: { status: 'cancel' } });
-    }
-    if (user.status === 'save') {
-      try {
-        dispatch({
-          type: 'start_create_action',
-          payload: { status: 'cancel' },
-        });
-        await server.post('/users', {
-          username: user.data.username,
-          email: user.data.email,
-          pricing: user.data.pricing,
-          lastPaymentDate: user.data.lastPaymentDate,
-        });
-        const response = await server.get('/calculatedReport');
+  return async (user) => {
+    try {
+      dispatch({
+        type: 'start_create_action',
+        payload: { status: 'cancel' },
+      });
+      await server.post('/users', {
+        username: user.username,
+        email: user.email,
+        pricing: user.pricing,
+        lastPaymentDate: user.lastPaymentDate,
+      });
+      const response = await server.get('/calculatedReport');
 
-        dispatch({ type: 'fetch_action', payload: response });
-        dispatch({
-          type: 'add_success',
-          payload: `El usuario ${user.data.username} ha sido creado correctamente`,
-        });
-      } catch (error) {
-        dispatch({
-          type: 'add_error',
-          payload: `El usuario ${user.data.username} no ha podido ser creado compruebe que los campos son correctos`,
-        });
-      }
+      dispatch({ type: 'fetch_action', payload: response });
+      dispatch({
+        type: 'add_success',
+        payload: `El usuario ${user.username} ha sido creado correctamente`,
+      });
+    } catch (error) {
+      dispatch({
+        type: 'add_error',
+        payload: `El usuario ${user.username} no ha podido ser creado compruebe que los campos son correctos`,
+      });
     }
   };
 };
 
-const save = (dispatch) => {
+const update = (dispatch) => {
   return async (user) => {
     try {
       await server.put('/users', {
         id: user.id,
         username: user.username,
         email: user.email,
-        pricing: user.subscription.pricing,
-        lastPaymentDate: user.subscription.lastPaymentDate
+        pricing: user.pricing,
+        lastPaymentDate: user.lastPaymentDate,
       });
       const response = await server.get('/calculatedReport');
       dispatch({ type: 'fetch_action', payload: response });
@@ -190,7 +182,7 @@ export const { Provider, Context } = createDataContext(
     buildReport,
     edit,
     changeNotifications,
-    save,
+    update,
     del,
     registerPayment,
     resetToastState,
