@@ -10,6 +10,7 @@ export const StyledInput = styled.div`
 `;
 
 export const InputElement = styled.input`
+  font: inherit;
   height: 100%;
   width: 100%;
   padding: 0 7px;

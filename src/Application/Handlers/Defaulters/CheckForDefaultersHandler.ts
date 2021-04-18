@@ -27,7 +27,7 @@ export class CheckForDefaultersHandler implements IHandler<void> {
       ) {
         const template = await new AboutToExpire(user, config!).generate();
 
-        await this.notifier.notify(user.getEmail(), template);
+        await this.notifier.notify(user.email(), template);
 
         user.setIsWarned();
 

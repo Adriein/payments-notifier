@@ -19,6 +19,6 @@ export class DeleteUserHandler {
 
     const user = await this.finder.findByEmail(emailVo.value);
 
-    await this.userRepository.delete(user.getId());
+    await this.userRepository.delete(user.id());
   }
 }

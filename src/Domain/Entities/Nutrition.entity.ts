@@ -2,89 +2,65 @@ import { ISerializable } from '../Interfaces/ISerializable';
 import { Activity } from '../VO/Activity.vo';
 import { Age } from '../VO/Age.vo';
 import { v4 as uuidv4 } from 'uuid';
+import { NutritionObjective } from '../VO/NutritionObjective.vo';
 
 export class Nutrition implements ISerializable {
   public static build(
     weight: number,
     height: number,
-    kcal: number,
-    allergies: string[],
-    favourites: string[],
-    hated: string[],
+    objective: NutritionObjective,
     age: Age,
-    activity: Activity
+    activity: Activity,
+    gender: 
   ): Nutrition {
-    return new Nutrition(
-      uuidv4(),
-      weight,
-      height,
-      kcal,
-      allergies,
-      favourites,
-      hated,
-      age,
-      activity
-    );
+    return new Nutrition(uuidv4(), weight, height, objective, age, activity);
   }
 
   constructor(
-    private id: string,
-    private weight: number,
-    private height: number,
-    private kcal: number,
-    private allergies: string[],
-    private favourites: string[],
-    private hated: string[],
-    private age: Age,
-    private activity: Activity
-  ) {}
+    private _id: string,
+    private _weight: number,
+    private _height: number,
+    private _objective: NutritionObjective,
+    private _age: Age,
+    private _activity: Activity,
+  ) {
+  }
 
-  public getId = (): string => {
-    return this.id;
+  private calculateKcal(): number {
+    return 2000;
+  }
+
+  public id = (): string => {
+    return this._id;
   };
 
-  public getWeight = (): number => {
-    return this.weight;
+  public weight = (): number => {
+    return this._weight;
   };
 
-  public getHeight = (): number => {
-    return this.height;
+  public height = (): number => {
+    return this._height;
   };
 
-  public getKcal = (): number => {
-    return this.kcal;
+  public objective = (): string => {
+    return this._objective.value;
   };
 
-  public getAllergies = (): string[] => {
-    return this.allergies;
+  public age = (): number => {
+    return this._age.value;
   };
 
-  public getFavourites = (): string[] => {
-    return this.favourites;
-  };
-
-  public getHated = (): string[] => {
-    return this.hated;
-  };
-
-  public getAge = (): number => {
-    return this.age.value;
-  };
-
-  public getActivity = (): string => {
-    return this.activity.value;
+  public activity = (): string => {
+    return this._activity.value;
   };
 
   public serialize(): Object {
     return {
-      weight: this.weight,
-      height: this.height,
-      kcal: this.kcal,
-      allergies: this.allergies,
-      favourites: this.favourites,
-      hated: this.hated,
-      age: this.getAge(),
-      activity: this.getActivity(),
+      weight: this._weight,
+      height: this._height,
+      objective: this.objective(),
+      age: this.age(),
+      activity: this.activity(),
     };
   }
 }

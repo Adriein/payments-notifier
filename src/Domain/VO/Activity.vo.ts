@@ -1,5 +1,5 @@
 import { ActivityType } from '../constants';
-import { ActivityError } from '../Errors/ActivityError';
+import { ActivityError } from '../Errors/Nutrition/ActivityError';
 
 export class Activity {
   private activity: string;

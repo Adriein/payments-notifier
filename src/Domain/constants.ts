@@ -9,6 +9,17 @@ export enum ActivityType {
   high = 'high',
 }
 
+export enum NutritionalObjectiveType {
+  lose_fat = 'lose',
+  maintenance = 'maintenance',
+  muscle_gain = 'gain',
+}
+
+export enum GenderType {
+  male = 'male',
+  female = 'female',
+}
+
 export enum OPERATORS {
   equal = '=',
   gt = '>',

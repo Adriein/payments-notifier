@@ -1,10 +1,10 @@
-import { CustomError } from './CustomError';
+import { CustomError } from '../CustomError';
 
 export class AgeError extends CustomError {
   statusCode = 400;
 
   constructor() {
-    super('Email must have the correct format');
+    super('Age must be a value between 18 and 99 years old');
 
     Object.setPrototypeOf(this, AgeError.prototype);
   }

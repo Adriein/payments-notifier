@@ -27,7 +27,7 @@ export class UpdateUserHandler {
     const lastPaymentDate = new LastPaymentDate(comm.lastPaymentDate);
 
     const updatedUser = new User(
-      user.getId(),
+      user.id(),
       comm.username,
       email,
       new UserConfig(

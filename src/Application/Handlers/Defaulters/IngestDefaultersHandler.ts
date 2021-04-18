@@ -38,7 +38,7 @@ export class IngestDefaultersHandler implements IHandler<void> {
       }
 
       const user = new User(
-        userOnDb.getId(),
+        userOnDb.id(),
         command.name,
         new Email(email),
         new UserConfig(

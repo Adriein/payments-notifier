@@ -39,7 +39,7 @@ export class Report extends Template {
                     this.report.defaulters.length > 0
                       ? this.report.defaulters.map(
                           (defaulter) =>
-                            `<p>${defaulter.getName()} - ${defaulter.getEmail()}</p>`
+                            `<p>${defaulter.name()} - ${defaulter.email()}</p>`
                         )
                       : 'Hoy no hay usuarios con la tarifa caducada'
                   }

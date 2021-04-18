@@ -68,9 +68,9 @@ export class UserMapper implements IMapper<User> {
   }
   public datamodel(domain: User): UsersTable {
     return {
-      id: domain.getId(),
-      username: domain.getName(),
-      email: domain.getEmail(),
+      id: domain.id(),
+      username: domain.name(),
+      email: domain.email(),
       password: domain.getPassword()!,
       created_at: 'now()',
       owner_id: domain.ownerId || null,

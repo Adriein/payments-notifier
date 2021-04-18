@@ -12,7 +12,7 @@ export class GenerateReportHandler implements IHandler<void> {
     const adminsOnDb = await this.finder.onlyAdmins().find();
 
     for (const admin of adminsOnDb) {
-      const usersOnDb = await this.finder.adminId(admin.getId()).find();
+      const usersOnDb = await this.finder.adminId(admin.id()).find();
       let report: ReportType = {
         summary: { defaulters: 0, notifieds: 0, total: usersOnDb.length },
         defaulters: [],
@@ -35,7 +35,7 @@ export class GenerateReportHandler implements IHandler<void> {
         return;
       }
 
-      const config = await this.configRepository.findByAdminId(admin.getId());
+      const config = await this.configRepository.findByAdminId(admin.id());
 
       const template = await new Report(report, config!).generate();
 

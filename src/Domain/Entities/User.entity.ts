@@ -1,13 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { SubscriptionError } from '../Errors/Users/SubscriptionError';
 import { ISerializable } from '../Interfaces/ISerializable';
-import { Activity } from '../VO/Activity.vo';
-import { Age } from '../VO/Age.vo';
 import { Email } from '../VO/Email.vo';
 import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
 import { Password } from '../VO/Password.vo';
 import { Pricing } from '../VO/Pricing.vo';
-import { Nutrition } from './Nutrition.entity';
 import { Subscription } from './Subscription.entity';
 import { UserConfig } from './UserConfig.entity';
 
@@ -21,28 +18,28 @@ export class User implements ISerializable {
     return new User(uuidv4(), name, email, config, ownerId);
   }
   constructor(
-    private id: string,
-    private name: string,
-    private email: Email,
-    private config: UserConfig,
+    private _id: string,
+    private _name: string,
+    private _email: Email,
+    private _config: UserConfig,
     private _ownerId?: string
   ) {}
 
-  private subscription?: Subscription;
-  private password?: string;
+  private _subscription?: Subscription;
+  private _password?: string;
   private _createdAt?: Date;
-  private nutrition?: Nutrition;
+  private _nutritionId?: string;
 
-  public getId(): string {
-    return this.id;
+  public id(): string {
+    return this._id;
   }
 
-  public getName(): string {
-    return this.name;
+  public name(): string {
+    return this._name;
   }
 
-  public getEmail(): string {
-    return this.email.value;
+  public email(): string {
+    return this._email.value;
   }
 
   public get ownerId(): string | undefined {
@@ -58,15 +55,15 @@ export class User implements ISerializable {
   }
 
   public async createPassword(password: Password): Promise<void> {
-    this.password = await password.getHashedPassword();
+    this._password = await password.getHashedPassword();
   }
 
   public getPassword(): string | undefined {
-    return this.password;
+    return this._password;
   }
 
   public setPassword(password: Password): void {
-    this.password = password.value;
+    this._password = password.value;
   }
 
   public createSubscription(
@@ -75,7 +72,7 @@ export class User implements ISerializable {
     isWarned: boolean = false,
     isNotified: boolean = false
   ): void {
-    this.subscription = Subscription.build(
+    this._subscription = Subscription.build(
       pricing,
       lastPayment,
       isWarned,
@@ -91,7 +88,7 @@ export class User implements ISerializable {
     isNotified: boolean,
     isActive: boolean
   ): void {
-    this.subscription = new Subscription(
+    this._subscription = new Subscription(
       id,
       pricing,
       lastPayment,
@@ -101,62 +98,8 @@ export class User implements ISerializable {
     );
   }
 
-  public createNutrition(
-    weight: number,
-    height: number,
-    kcal: number,
-    allergies: string[],
-    favourites: string[],
-    hated: string[],
-    age: Age,
-    activity: Activity
-  ) {
-    this.nutrition = Nutrition.build(
-      weight,
-      height,
-      kcal,
-      allergies,
-      favourites,
-      hated,
-      age,
-      activity
-    );
-  }
-
-  public setNutrition(
-    id: string,
-    weight: number,
-    height: number,
-    kcal: number,
-    allergies: string[],
-    favourites: string[],
-    hated: string[],
-    age: Age,
-    activity: Activity
-  ) {
-    this.nutrition = new Nutrition(
-      id,
-      weight,
-      height,
-      kcal,
-      allergies,
-      favourites,
-      hated,
-      age,
-      activity
-    );
-  }
-
-  public hasNutrition = (): boolean => {
-    if (this.nutrition) {
-      return true;
-    }
-
-    return false;
-  };
-
   public hasSubscription = (): boolean => {
-    if (this.subscription) {
+    if (this._subscription) {
       return true;
     }
 
@@ -164,22 +107,22 @@ export class User implements ISerializable {
   };
 
   public get isSubscriptionActive(): () => boolean {
-    if (this.subscription) {
-      return this.subscription.isActive;
+    if (this._subscription) {
+      return this._subscription.isActive;
     }
     throw new SubscriptionError();
   }
 
   public get isDefaulter(): () => boolean {
-    if (this.subscription) {
-      return this.subscription.isDefaulter;
+    if (this._subscription) {
+      return this._subscription.isDefaulter;
     }
     throw new SubscriptionError();
   }
 
   public get isOneDayOldDefaulter(): () => boolean {
-    if (this.subscription) {
-      return this.subscription.isOneDayOldDefaulter;
+    if (this._subscription) {
+      return this._subscription.isOneDayOldDefaulter;
     }
     throw new SubscriptionError();
   }
@@ -187,182 +130,110 @@ export class User implements ISerializable {
   public get isConfiguredDaysBeforeExpiration(): (
     daysBeforeExpiration: number | undefined
   ) => boolean {
-    if (this.subscription) {
-      return this.subscription.isConfiguredDaysBeforeExpiration;
+    if (this._subscription) {
+      return this._subscription.isConfiguredDaysBeforeExpiration;
     }
     throw new SubscriptionError();
   }
 
   public get resetNotificationState(): () => void {
-    if (this.subscription) {
-      return this.subscription.resetNotificationState;
+    if (this._subscription) {
+      return this._subscription.resetNotificationState;
     }
 
     throw new SubscriptionError();
   }
 
   public get pricing(): () => Pricing {
-    if (this.subscription) {
-      return this.subscription.pricing;
+    if (this._subscription) {
+      return this._subscription.pricing;
     }
 
     throw new SubscriptionError();
   }
 
   public get paymentDate(): () => Date {
-    if (this.subscription) {
-      return this.subscription.paymentDate;
+    if (this._subscription) {
+      return this._subscription.paymentDate;
     }
     throw new SubscriptionError();
   }
 
   public get isNotified(): () => boolean {
-    if (this.subscription) {
-      return this.subscription.isNotified;
+    if (this._subscription) {
+      return this._subscription.isNotified;
     }
     throw new SubscriptionError();
   }
 
   public get isWarned(): () => boolean {
-    if (this.subscription) {
-      return this.subscription.isWarned;
+    if (this._subscription) {
+      return this._subscription.isWarned;
     }
 
     throw new SubscriptionError();
   }
 
   public get setIsNotified(): () => void {
-    if (this.subscription) {
-      return this.subscription.setIsNotified;
+    if (this._subscription) {
+      return this._subscription.setIsNotified;
     }
 
     throw new SubscriptionError();
   }
 
   public get setIsWarned(): () => void {
-    if (this.subscription) {
-      return this.subscription.setIsWarned;
+    if (this._subscription) {
+      return this._subscription.setIsWarned;
     }
 
     throw new SubscriptionError();
   }
 
   public get desactivateExpiredSubscription(): () => void {
-    if (this.subscription) {
-      return this.subscription.desactivateExpiredSubscription;
+    if (this._subscription) {
+      return this._subscription.desactivateExpiredSubscription;
     }
 
     throw new SubscriptionError();
   }
 
   public get subscriptionId(): () => string | null {
-    if (!this.subscription) {
+    if (!this._subscription) {
       return () => null;
     }
-    return this.subscription!.id;
+    return this._subscription!.id;
   }
 
   public get sendNotifications(): () => boolean {
-    return this.config.getSendNotifications;
+    return this._config.getSendNotifications;
   }
 
   public get sendWarnings(): () => boolean {
-    return this.config.getSendWarnings;
+    return this._config.getSendWarnings;
   }
 
   public get lang(): () => string {
-    return this.config.getLang;
+    return this._config.getLang;
   }
 
   public get role(): () => string {
-    return this.config.getRole;
+    return this._config.getRole;
   }
 
   public get configId(): () => string | undefined {
-    return this.config.getId;
+    return this._config.getId;
   }
 
-  public get nutritionId(): () => string {
-    if (this.nutrition) {
-      return this.nutrition.getId;
-    }
-
-    throw new Error();
-  }
-
-  public get weight(): () => number {
-    if (this.nutrition) {
-      return this.nutrition.getWeight;
-    }
-
-    throw new Error();
-  }
-
-  public get height(): () => number {
-    if (this.nutrition) {
-      return this.nutrition.getHeight;
-    }
-
-    throw new Error();
-  }
-
-  public get kcal(): () => number {
-    if (this.nutrition) {
-      return this.nutrition.getKcal;
-    }
-
-    throw new Error();
-  }
-
-  public get allergies(): () => string[] {
-    if (this.nutrition) {
-      return this.nutrition.getAllergies;
-    }
-
-    throw new Error();
-  }
-
-  public get favourites(): () => string[] {
-    if (this.nutrition) {
-      return this.nutrition.getFavourites;
-    }
-
-    throw new Error();
-  }
-
-  public get hated(): () => string[] {
-    if (this.nutrition) {
-      return this.nutrition.getHated;
-    }
-
-    throw new Error();
-  }
-
-  public get age(): () => number {
-    if (this.nutrition) {
-      return this.nutrition.getAge;
-    }
-
-    throw new Error();
-  }
-
-  public get activity(): () => string {
-    if (this.nutrition) {
-      return this.nutrition.getActivity;
-    }
-
-    throw new Error();
-  }
 
   public serialize(): Object {
     return {
-      id: this.id,
-      username: this.name,
-      email: this.email.value,
-      defaulter: this.subscription ? (this.isDefaulter() ? 'Si' : 'No') : null,
-      subscription: this.subscription ? this.subscription.serialize() : null,
-      config: this.config.serialize(),
-      nutrition: this.nutrition ? this.nutrition.serialize() : null,
+      id: this._id,
+      username: this._name,
+      email: this._email.value,
+      defaulter: this._subscription ? (this.isDefaulter() ? 'Si' : 'No') : null,
+      subscription: this._subscription ? this._subscription.serialize() : null,
+      config: this._config.serialize(),
     };
   }
 }

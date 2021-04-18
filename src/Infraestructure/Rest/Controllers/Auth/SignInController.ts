@@ -28,8 +28,8 @@ export class SignInController {
       // Generate JWT
       const userJwt = jwt.sign(
         {
-          id: user.getId(),
-          username: user.getName(),
+          id: user.id(),
+          username: user.name(),
         },
         process.env.JWT_KEY!
       );

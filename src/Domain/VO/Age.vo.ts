@@ -1,4 +1,4 @@
-import { AgeError } from '../Errors/AgeError';
+import { AgeError } from '../Errors/Nutrition/AgeError';
 
 export class Age {
   private age: number;
