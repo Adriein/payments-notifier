@@ -3,15 +3,16 @@ import { USER_ROLE } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
 import { ICommand } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
+import { UserFinder } from '../../../Domain/Services/UserFinder';
 
 export class EnsureUsersConsistencyHandler {
-  constructor(private repository: IUserRepository) {}
+  constructor(private repository: IUserRepository, private finder: UserFinder) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(comm: ICommand): Promise<void> {
     const command = comm as EnsureUsersConsistencyCommand;
 
-    const users = await this.repository.findAll();
+    const users = await this.finder.find();
 
     const emails = command.rows.map((row) => row.email);
 

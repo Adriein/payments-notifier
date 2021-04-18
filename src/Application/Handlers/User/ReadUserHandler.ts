@@ -11,6 +11,6 @@ export class ReadUserHandler implements IHandler<User> {
   public async handle(comm: ICommand): Promise<User> {
     const command = comm as ReadUserCommand;
 
-    return (await this.finder.find(command.email)) as User;
+    return await this.finder.findByEmail(command.email);
   }
 }

@@ -8,29 +8,29 @@ type AppConfigTable = {
   warning_delay: number;
   defaulter_delay: number;
   email_content: string;
-  adminId: string;
+  user_id: string;
 };
 
 export class AppConfigMapper implements IMapper<AppConfig> {
   public domain(appConfigDatamodel: AppConfigTable): AppConfig {
     return new AppConfig(
       appConfigDatamodel.id,
-      new Pricing(JSON.parse(appConfigDatamodel.pricing)),
       appConfigDatamodel.warning_delay,
       appConfigDatamodel.defaulter_delay,
       appConfigDatamodel.email_content,
-      appConfigDatamodel.adminId
+      appConfigDatamodel.user_id,
+      new Pricing(JSON.parse(appConfigDatamodel.pricing))
     );
   }
 
   public datamodel(domain: AppConfig): AppConfigTable {
     return {
       id: domain.id,
-      pricing: JSON.stringify(domain.pricing),
+      pricing: JSON.stringify(domain.pricing!.value),
       warning_delay: domain.warningDelay,
       defaulter_delay: domain.defaulterDelay,
       email_content: domain.emailContent,
-      adminId: domain.adminId!,
+      user_id: domain.adminId!,
     };
   }
 }

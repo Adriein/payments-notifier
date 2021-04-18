@@ -1,6 +1,9 @@
 import createDataContext from './createDataContext';
 import server from '../api/server';
-import { LOCALSTORAGE_USERNAME, LOCALSTORAGE_USER_ID } from '../constants';
+import {
+  LOCALSTORAGE_USERNAME,
+  LOCALSTORAGE_USER_ID,
+} from '../shared/utils/constants';
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -10,6 +13,8 @@ const authReducer = (state, action) => {
       return { ...state, isSignedIn: false };
     case 'add_error':
       return { ...state, error: action.payload };
+    case 'config':
+      return { ...state, config: action.payload };
     default:
       return state;
   }
@@ -18,12 +23,10 @@ const authReducer = (state, action) => {
 const signin = (dispatch) => {
   return async ({ email, password }) => {
     try {
-      const response = (
-        await server.post('/signin', {
-          email,
-          password,
-        })
-      ).data;
+      const response = await server.post('/signin', {
+        email,
+        password,
+      });
 
       localStorage.setItem(LOCALSTORAGE_USER_ID, response.id);
       localStorage.setItem(LOCALSTORAGE_USERNAME, response.username);
@@ -79,6 +82,6 @@ const createAvatar = () => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, getToken, logout, getUsername, createAvatar },
-  { isSignedIn: false, error: undefined }
+  { signin, getToken, logout, getUsername, createAvatar},
+  { isSignedIn: false, error: undefined, config: {} }
 );

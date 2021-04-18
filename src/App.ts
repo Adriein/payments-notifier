@@ -1,19 +1,31 @@
 require('dotenv').config();
 import 'reflect-metadata';
 import express from 'express';
-import bodyParser from 'body-parser';
 import cookieSession from 'cookie-session';
 import chalk from 'chalk';
 import fileUpload from 'express-fileupload';
 import path from 'path';
 import fs from 'fs';
 import { errorHandler } from './middlewares';
-import { defaulters } from './Infraestructure/Rest/defaulters';
 import Database from './Infraestructure/Data/Database';
 import { FILES_PATH } from './Domain/constants';
-import { auth } from './Infraestructure/Rest/auth';
-import { users } from './Infraestructure/Rest/users';
-import { appConfig } from './Infraestructure/Rest/appConfig';
+import { AppRouter } from './Infraestructure/Rest/AppRouter';
+import './Infraestructure/Rest/Controllers/Auth/SignInController';
+import './Infraestructure/Rest/Controllers/Auth/RegisterController';
+import './Infraestructure/Rest/Controllers/Auth/SignOutController';
+import './Infraestructure/Rest/Controllers/Users/CalculateReportController';
+import './Infraestructure/Rest/Controllers/Users/CreateUserController';
+import './Infraestructure/Rest/Controllers/Users/DeleteUserController';
+import './Infraestructure/Rest/Controllers/Users/RegisterUserPaymentController';
+import './Infraestructure/Rest/Controllers/Users/UpdateUserController';
+import './Infraestructure/Rest/Controllers/Users/UpdateUserNotificationController';
+import './Infraestructure/Rest/Controllers/Defaulters/CheckForDefaultersController';
+import './Infraestructure/Rest/Controllers/Defaulters/GenerateDefaultersReportController';
+import './Infraestructure/Rest/Controllers/Config/CreatePricingController';
+import './Infraestructure/Rest/Controllers/Config/ModifyAppConfigController';
+import './Infraestructure/Rest/Controllers/Config/GetConfigController';
+import './Infraestructure/Rest/Controllers/Charts/GetMoneyChartController';
+import './Infraestructure/Rest/Controllers/Charts/GetUserChartController';
 
 export default class App {
   public init() {
@@ -48,7 +60,7 @@ export default class App {
       )
     );
 
-    app.use(bodyParser.json());
+    app.use(express.json());
     app.use(
       cookieSession({
         signed: false,
@@ -58,10 +70,7 @@ export default class App {
       })
     );
     app.use(fileUpload());
-    app.use('/api/v1', auth);
-    app.use('/api/v1', users);
-    app.use('/api/v1', defaulters);
-    app.use('/api/v1', appConfig);
+    app.use('/api/v1', AppRouter.getInstance());
     app.use(errorHandler);
 
     if (process.env.NODE_ENV === 'PRO') {

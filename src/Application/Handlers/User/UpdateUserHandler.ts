@@ -5,7 +5,7 @@ import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { ICommand } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
-import { UserPriceBuilder } from '../../../Domain/Services/UserPriceBuilder';
+import { PriceBuilder } from '../../../Domain/Services/PriceBuilder';
 import { Email } from '../../../Domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 
@@ -13,14 +13,14 @@ export class UpdateUserHandler {
   constructor(
     private finder: UserFinder,
     private userRepository: IUserRepository,
-    private priceBuilder: UserPriceBuilder
+    private priceBuilder: PriceBuilder
   ) {}
 
   @Log(process.env.LOG_LEVEL)
   async handle(command: ICommand): Promise<void> {
     const comm = command as UpdateUserCommand;
 
-    const user = (await this.finder.find(undefined, comm.id)) as User;
+    const user = await this.finder.findById(comm.id);
 
     const email = new Email(comm.email);
     const pricing = await this.priceBuilder.build(comm.adminId, comm.pricing);

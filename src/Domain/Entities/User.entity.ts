@@ -30,6 +30,7 @@ export class User implements ISerializable {
 
   private subscription?: Subscription;
   private password?: string;
+  private _createdAt?: Date;
   private nutrition?: Nutrition;
 
   public getId(): string {
@@ -41,11 +42,19 @@ export class User implements ISerializable {
   }
 
   public getEmail(): string {
-    return this.email.email;
+    return this.email.value;
   }
 
   public get ownerId(): string | undefined {
     return this._ownerId;
+  }
+
+  public get createdAt(): Date {
+    return this._createdAt!;
+  }
+
+  public setCreatedAt(date: Date) {
+    this._createdAt = date;
   }
 
   public async createPassword(password: Password): Promise<void> {
@@ -57,7 +66,7 @@ export class User implements ISerializable {
   }
 
   public setPassword(password: Password): void {
-    this.password = password.password;
+    this.password = password.value;
   }
 
   public createSubscription(
@@ -349,7 +358,7 @@ export class User implements ISerializable {
     return {
       id: this.id,
       username: this.name,
-      email: this.email.email,
+      email: this.email.value,
       defaulter: this.subscription ? (this.isDefaulter() ? 'Si' : 'No') : null,
       subscription: this.subscription ? this.subscription.serialize() : null,
       config: this.config.serialize(),

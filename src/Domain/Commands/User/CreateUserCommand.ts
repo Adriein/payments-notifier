@@ -1,5 +1,3 @@
-import { PricingObject } from "../../types";
-
 export class CreateUserCommand {
   constructor(
     public username: string,

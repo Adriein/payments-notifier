@@ -21,7 +21,7 @@ export class IngestDefaultersHandler implements IHandler<void> {
     );
 
     if (userOnDb) {
-      const email = new Email(command.email).email;
+      const email = new Email(command.email).value;
       const pricing = new Pricing(command.pricing);
       const lastPaymentDate = new LastPaymentDate(command.lastPayment);
 
@@ -30,7 +30,7 @@ export class IngestDefaultersHandler implements IHandler<void> {
 
       const dateUptaded = this.paymentDateUpdated(
         userOnDb.paymentDate(),
-        lastPaymentDate.date()
+        lastPaymentDate.value
       );
 
       if (dateUptaded) {

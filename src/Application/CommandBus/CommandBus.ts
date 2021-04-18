@@ -2,6 +2,9 @@ import { CreateAppConfigCommand } from "../../Domain/Commands/AppConfig/CreateAp
 import { ReadAppConfigCommand } from "../../Domain/Commands/AppConfig/ReadAppConfigCommand";
 import { RegisterCommand } from "../../Domain/Commands/Auth/RegisterCommand";
 import { SignInCommand } from "../../Domain/Commands/Auth/SignInCommand";
+import { EarningsChartCommand } from "../../Domain/Commands/Chart/EarningsChartCommand";
+import { PricingChartCommand } from "../../Domain/Commands/Chart/PricingChartCommand";
+import { UserChartCommand } from "../../Domain/Commands/Chart/UserChartCommand";
 import { CheckForDefaultersCommand } from "../../Domain/Commands/Defaulters/CheckForDefaultersCommand";
 import { EnsureUsersConsistencyCommand } from "../../Domain/Commands/Defaulters/EnsureUsersConsistencyCommand";
 import { GenerateReportCommand } from "../../Domain/Commands/Defaulters/GenerateReportCommand";
@@ -16,7 +19,7 @@ import { UpdateUserNotificationsCommand } from "../../Domain/Commands/User/Updat
 import { ICommand } from "../../Domain/Interfaces/ICommand";
 import { ICommandBus } from "../../Domain/Interfaces/ICommandBus";
 import { UserFinder } from "../../Domain/Services/UserFinder";
-import { UserPriceBuilder } from "../../Domain/Services/UserPriceBuilder";
+import { PriceBuilder } from "../../Domain/Services/PriceBuilder";
 import { AppConfigMapper } from "../../Infraestructure/Data/Mappers/AppConfigMapper";
 import { UserMapper } from "../../Infraestructure/Data/Mappers/UserMapper";
 import { AppConfigRepository } from "../../Infraestructure/Data/Repositories/AppConfigRepository";
@@ -26,6 +29,7 @@ import { CreateAppConfigHandler } from "../Handlers/AppConfig/CreateAppConfigHan
 import { ReadAppConfigHandler } from "../Handlers/AppConfig/ReadAppConfigHandler";
 import { RegisterHandler } from "../Handlers/Auth/RegisterHandler";
 import { SignInHandler } from "../Handlers/Auth/SignInHandler";
+import { CreateUsersChartHandler } from "../Handlers/Chart/CreateUsersChartHandler";
 import { CheckForDefaultersHandler } from "../Handlers/Defaulters/CheckForDefaultersHandler";
 import { EnsureUsersConsistencyHandler } from "../Handlers/Defaulters/EnsureUsersConsistencyHandler";
 import { GenerateReportHandler } from "../Handlers/Defaulters/GenerateReportHandler";
@@ -37,17 +41,25 @@ import { ReadUserHandler } from "../Handlers/User/ReadUserHandler";
 import { RegisterUserPaymentHandler } from "../Handlers/User/RegisterUserPaymentHandler";
 import { UpdateUserHandler } from "../Handlers/User/UpdateUserHandler";
 import { UpdateUserNotificationsHandler } from "../Handlers/User/UpdateUserNotificationsHandler";
+import { CriteriaBuilder } from "../../Domain/Services/CriteriaBuilder";
+import { CriteriaMapper } from "../../Infraestructure/Data/Mappers/CriteriaMapper";
+import { SubscriptionMapper } from "../../Infraestructure/Data/Mappers/SubscriptionMapper";
+import { CreatePricingCommand } from "../../Domain/Commands/AppConfig/CreatePricingCommand";
+import { CreatePricingHandler } from "../Handlers/AppConfig/CreatePricingHandler";
+import { ModifyAppConfigCommand } from "../../Domain/Commands/AppConfig/ModifyAppConfigCommand";
+import { ModifyAppConfigHandler } from "../Handlers/AppConfig/ModifyAppConfigHandler";
 
 
 export class CommandBus implements ICommandBus {
   //repos
-  private usersRepository = new UserRepository('users', new UserMapper());
-  private appConfigRepository = new AppConfigRepository('app_config', new AppConfigMapper());
+  private usersRepository = new UserRepository('users', new UserMapper(), new CriteriaMapper(), new SubscriptionMapper());
+  private appConfigRepository = new AppConfigRepository('app_config', new AppConfigMapper(), new CriteriaMapper());
 
   //services
   private notifier = new EmailNotifier();
   private userFinder = new UserFinder(this.usersRepository);
-  private priceBuilder = new UserPriceBuilder(this.appConfigRepository);
+  private priceBuilder = new PriceBuilder(this.appConfigRepository);
+  private criteriaBuilder = new CriteriaBuilder();
   
   constructor() {}
 
@@ -57,7 +69,7 @@ export class CommandBus implements ICommandBus {
 
   private resolveHandler(command: ICommand) {
     if (command instanceof CheckForDefaultersCommand) {
-      return new CheckForDefaultersHandler(this.notifier, this.usersRepository, this.appConfigRepository);
+      return new CheckForDefaultersHandler(this.notifier, this.usersRepository, this.appConfigRepository, this.userFinder);
     }
 
     if (command instanceof IngestDefaultersCommand) {
@@ -65,11 +77,11 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof GenerateReportCommand) {
-      return new GenerateReportHandler(this.notifier, this.usersRepository);
+      return new GenerateReportHandler(this.notifier, this.userFinder, this.appConfigRepository);
     }
 
     if (command instanceof EnsureUsersConsistencyCommand) {
-      return new EnsureUsersConsistencyHandler(this.usersRepository);
+      return new EnsureUsersConsistencyHandler(this.usersRepository, this.userFinder);
     }
 
     if (command instanceof RegisterCommand) {
@@ -112,8 +124,28 @@ export class CommandBus implements ICommandBus {
       return new CreateAppConfigHandler(this.appConfigRepository);
     }
 
+    if(command instanceof ModifyAppConfigCommand) {
+      return new ModifyAppConfigHandler(this.appConfigRepository);
+    }
+
     if(command instanceof ReadAppConfigCommand) {
       return new ReadAppConfigHandler(this.appConfigRepository);
+    }
+
+    if(command instanceof CreatePricingCommand) {
+      return new CreatePricingHandler(this.appConfigRepository);
+    }
+
+    if (command instanceof EarningsChartCommand) {
+      throw new Error();
+    }
+
+    if (command instanceof PricingChartCommand) {
+      throw new Error();
+    }
+
+    if (command instanceof UserChartCommand) {
+      return new CreateUsersChartHandler(this.userFinder);
     }
 
     throw new Error();

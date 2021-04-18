@@ -2,7 +2,8 @@ import { ActivityType } from '../constants';
 import { ActivityError } from '../Errors/ActivityError';
 
 export class Activity {
-  constructor(public activity: string) {
+  private activity: string;
+  constructor(activity: string) {
     if (
       typeof activity !== 'string' ||
       (activity !== ActivityType.low &&
@@ -11,5 +12,11 @@ export class Activity {
     ) {
       throw new ActivityError();
     }
+
+    this.activity = activity;
+  }
+
+  public get value(): string {
+    return this.activity;
   }
 }

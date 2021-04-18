@@ -11,7 +11,7 @@ type UsersTableJoined = {
   username: string;
   email: string;
   password: string;
-  createdAt: string;
+  created_at: string;
   owner_id: string | null;
   subscriptions_id: string;
   pricing: string;
@@ -31,7 +31,7 @@ type UsersTable = {
   username: string;
   email: string;
   password: string;
-  createdAt: string | null;
+  created_at: string | null;
   owner_id: string | null;
 };
 
@@ -50,7 +50,8 @@ export class UserMapper implements IMapper<User> {
       ),
       userDatamodel.owner_id ? userDatamodel.owner_id : undefined
     );
-    user.setPassword(new Password(userDatamodel.password));
+    user.setPassword(new Password(userDatamodel.password));   
+    user.setCreatedAt(new Date(userDatamodel.created_at));
 
     if (userDatamodel.subscriptions_id !== null) {
       user.setSubscription(
@@ -71,7 +72,7 @@ export class UserMapper implements IMapper<User> {
       username: domain.getName(),
       email: domain.getEmail(),
       password: domain.getPassword()!,
-      createdAt: 'now()',
+      created_at: 'now()',
       owner_id: domain.ownerId || null,
     };
   }

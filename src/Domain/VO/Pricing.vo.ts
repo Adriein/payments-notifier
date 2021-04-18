@@ -3,24 +3,28 @@ import { PricingError } from '../Errors';
 import { PricingObject } from '../types';
 
 export class Pricing {
-  constructor(public pricingType: PricingObject) {
-    if (
-      typeof pricingType !== 'object' ||
-      !this.evaluateKeys(pricingType[Object.keys(pricingType)[0]])
-    ) {
+  private pricing: PricingObject;
+  constructor(pricing: PricingObject) {
+    if (typeof pricing !== 'object' || !this.evaluateKeys(pricing)) {
       throw new PricingError();
     }
+    this.pricing = pricing;
   }
 
   private evaluateKeys(object: Object): boolean {
-    if (PricingType.DURATION in object) {
-      return true;
-    }
+    Object.keys(object).map((key) => {
+      if (!(PricingType.DURATION in object)) {
+        return false;
+      }
 
-    if (PricingType.PRICE in object) {
-      return true;
-    }
+      if (!(PricingType.PRICE in object)) {
+        return false;
+      }
+    });
+    return true;
+  }
 
-    return false;
+  public get value(): PricingObject {
+    return this.pricing;
   }
 }
