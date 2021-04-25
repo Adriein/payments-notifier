@@ -42,14 +42,14 @@ export abstract class Template {
       const alias = this.assignAlias(substring);
 
       return email
-        .replace('{{usuario}}', this.user.getName())
+        .replace('{{usuario}}', this.user.name())
         .replace('{{tarifa}}', this.getUserPricing())
         .replace('{{preaviso}}', this.config.warningDelay.toString())
         .replace(aliasTemplate, alias);
     }
 
     return email
-      .replace('{{usuario}}', this.user.getName())
+      .replace('{{usuario}}', this.user.name())
       .replace('{{preaviso}}', this.config.warningDelay.toString())
       .replace('{{tarifa}}', this.getUserPricing());
   }
