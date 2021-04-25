@@ -1,4 +1,5 @@
 import { GenderType } from '../constants';
+import { NutritionObjectiveError } from '../Errors/Nutrition/NutritionObjectiveError';
 
 export class Gender {
   private gender: string;

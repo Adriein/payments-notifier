@@ -20,7 +20,8 @@ export class CreateUserNutritionController {
           req.body.height,
           req.body.objective,
           req.body.age,
-          req.body.activity
+          req.body.activity,
+          req.body.gender,
         )
       );
 

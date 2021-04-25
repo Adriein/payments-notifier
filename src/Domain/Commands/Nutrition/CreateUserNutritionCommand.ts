@@ -4,6 +4,7 @@ export class CreateUserNutritionCommand {
     public height: number,
     public objective: string,
     public age: number,
-    public activity: string
+    public activity: string,
+    public gender: string
   ) {}
 }

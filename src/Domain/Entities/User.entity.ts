@@ -42,6 +42,14 @@ export class User implements ISerializable {
     return this._email.value;
   }
 
+  public nutritionId(): string | undefined {
+    return this._nutritionId;
+  }
+
+  public setNutritionId(id: string): void {
+    this._nutritionId = id;
+  }
+
   public get ownerId(): string | undefined {
     return this._ownerId;
   }
@@ -224,7 +232,6 @@ export class User implements ISerializable {
   public get configId(): () => string | undefined {
     return this._config.getId;
   }
-
 
   public serialize(): Object {
     return {
