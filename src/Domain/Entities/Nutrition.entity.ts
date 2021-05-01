@@ -41,7 +41,7 @@ export class Nutrition implements ISerializable {
     private _userId: string
   ) {}
 
-  public kcal(): number {
+  public mantinenceKcal(): number {
     return this.calculator
       .gender(this.gender())
       .calculate(this._weight, this._height, this.age());

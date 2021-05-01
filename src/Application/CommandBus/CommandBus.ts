@@ -48,12 +48,18 @@ import { CreatePricingCommand } from "../../Domain/Commands/AppConfig/CreatePric
 import { CreatePricingHandler } from "../Handlers/AppConfig/CreatePricingHandler";
 import { ModifyAppConfigCommand } from "../../Domain/Commands/AppConfig/ModifyAppConfigCommand";
 import { ModifyAppConfigHandler } from "../Handlers/AppConfig/ModifyAppConfigHandler";
-
+import { CreateUserNutritionCommand } from "../../Domain/Commands/Nutrition/CreateUserNutritionCommand";
+import { UpdateUserNutritionCommand } from "../../Domain/Commands/Nutrition/UpdateUserNutritionCommand";
+import { CreateUserNutritionHandler } from "../Handlers/Nutrition/CreateUserNutritionHandler";
+import { UpdateUserNutritionHandler } from "../Handlers/Nutrition/UpdateUserNutritionHandler";
+import { NutritionRepository } from '../../Infraestructure/Data/Repositories/NutritionRepository';
+import { NutritionMapper } from "../../Infraestructure/Data/Mappers/NutritionMapper";
 
 export class CommandBus implements ICommandBus {
   //repos
   private usersRepository = new UserRepository('users', new UserMapper(), new CriteriaMapper(), new SubscriptionMapper());
   private appConfigRepository = new AppConfigRepository('app_config', new AppConfigMapper(), new CriteriaMapper());
+  private nutritionRepositroy = new NutritionRepository('nutrition', new NutritionMapper(), new CriteriaMapper());
 
   //services
   private notifier = new EmailNotifier();
@@ -146,6 +152,14 @@ export class CommandBus implements ICommandBus {
 
     if (command instanceof UserChartCommand) {
       return new CreateUsersChartHandler(this.userFinder);
+    }
+
+    if(command instanceof CreateUserNutritionCommand) {
+      return new CreateUserNutritionHandler(this.nutritionRepositroy);
+    }
+
+    if(command instanceof UpdateUserNutritionCommand) {
+      return new UpdateUserNutritionHandler(this.nutritionRepositroy);
     }
 
     throw new Error();
