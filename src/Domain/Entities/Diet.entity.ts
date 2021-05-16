@@ -1,17 +1,19 @@
 import { Food } from '../VO/Food.vo';
 import { v4 as uuidv4 } from 'uuid';
 import { FoodNotFitsError } from '../Errors/Nutrition/FoodNotFitsError';
+import { DietCustomitzation } from './DietCustomitzation.entity';
 
 export class Diet {
   public static build(foods: Food[], kcal: number, userId: string): Diet {
-    return new Diet(uuidv4(), foods, kcal, userId);
+    return new Diet(uuidv4(), foods, kcal, userId, new DietCustomitzation());
   }
 
   constructor(
     private _id: string,
     private _foods: Food[],
     private _kcal: number,
-    private _userId: string
+    private _userId: string,
+    private _dietCustomitzation: DietCustomitzation
   ) {}
 
   public add(food: Food): void {
@@ -44,4 +46,12 @@ export class Diet {
   public userId(): string {
     return this._userId;
   }
+
+  public isWeeklyOrganized = (): boolean => {
+    return this._dietCustomitzation.isWeeklyOrganized;
+  };
+
+  public isMealOrganized = (): boolean => {
+    return this._dietCustomitzation.isMealOrganized;
+  };
 }
