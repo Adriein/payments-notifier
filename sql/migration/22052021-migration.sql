@@ -25,6 +25,6 @@ CREATE TABLE IF NOT EXISTS food (
 
 CREATE TABLE IF NOT EXISTS meal_food (
     id VARCHAR(50) PRIMARY KEY,
-    food_id VARCHAR,
-    meal_id VARCHAR
+    food_id VARCHAR REFERENCES food(id) ON DELETE CASCADE,
+    meal_id VARCHAR REFERENCES diet_meal(id) ON DELETE CASCADE
 );
