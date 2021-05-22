@@ -86,6 +86,7 @@ export class Nutrition implements ISerializable {
       objective: this.objective(),
       age: this.age(),
       activity: this.activity(),
+      mantinenceKcal: this.mantinenceKcal(),
       gender: this.gender(),
       userId: this._userId,
     };
