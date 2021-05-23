@@ -1,5 +1,7 @@
 export class DietCustomitzation {
   constructor(
+    private _id: string,
+    private _dietId: string,
     private _weeklyOrganized: boolean = false,
     private _mealOrganized: boolean = true
   ) {}
@@ -20,5 +22,13 @@ export class DietCustomitzation {
 
   public get isMealOrganized(): boolean {
     return this._mealOrganized;
+  }
+
+  public get id(): string {
+    return this._id;
+  }
+
+  public get dietId(): string {
+    return this.dietId;
   }
 }

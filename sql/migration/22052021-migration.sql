@@ -2,7 +2,6 @@ CREATE TABLE IF NOT EXISTS diet (
     id VARCHAR(50) PRIMARY KEY,
     maxKcal SMALLINT,
     user_id VARCHAR REFERENCES users(id) ON DELETE CASCADE
-    admin_id VARCHAR REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS diet_customitzation (
@@ -21,6 +20,12 @@ CREATE TABLE IF NOT EXISTS diet_meal (
 CREATE TABLE IF NOT EXISTS food (
     id VARCHAR(50) PRIMARY KEY,
     name VARCHAR,
+    quantity SMALLINT,
+    ch SMALLINT,
+    fat SMALLINT,
+    protein SMALLINT,
+    fiber SMALLINT,
+    kcal SMALLINT
 );
 
 CREATE TABLE IF NOT EXISTS meal_food (
