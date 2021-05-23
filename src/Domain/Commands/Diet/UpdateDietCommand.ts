@@ -1,10 +1,9 @@
 export class UpdateDietCommand {
-    constructor(
-      public userId: string,
-      public adminId: string,
-      public name: string,
-      public objective: string,
-      public mantinenceKcal: string
-    ) {}
-  }
-  
+  constructor(
+    public dietId: string,
+    public userId: string,
+    public name: string,
+    public kcal: string,
+    public meals: []
+  ) {}
+}

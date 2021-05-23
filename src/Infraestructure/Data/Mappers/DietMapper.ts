@@ -12,10 +12,8 @@ export class DietMapper implements IMapper<Diet> {
   public domain(datamodel: DietTable): Diet {
     return new Diet(
       datamodel.id,
-      [],
       datamodel.max_kcal,
       datamodel.user_id,
-      '',
       new DietCustomitzation('', '')
     );
   }

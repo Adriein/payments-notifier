@@ -54,12 +54,17 @@ import { CreateUserNutritionHandler } from "../Handlers/Nutrition/CreateUserNutr
 import { UpdateUserNutritionHandler } from "../Handlers/Nutrition/UpdateUserNutritionHandler";
 import { NutritionRepository } from '../../Infraestructure/Data/Repositories/NutritionRepository';
 import { NutritionMapper } from "../../Infraestructure/Data/Mappers/NutritionMapper";
+import { CreateDietCommand } from "../../Domain/Commands/Diet/CreateDietCommand";
+import { CreateDietHandler } from "../Handlers/Diet/CreateDietHandler";
+import { DietRepository } from "../../Infraestructure/Data/Repositories/DietRepository";
+import { DietMapper } from "../../Infraestructure/Data/Mappers/DietMapper";
 
 export class CommandBus implements ICommandBus {
   //repos
   private usersRepository = new UserRepository('users', new UserMapper(), new CriteriaMapper(), new SubscriptionMapper());
   private appConfigRepository = new AppConfigRepository('app_config', new AppConfigMapper(), new CriteriaMapper());
-  private nutritionRepositroy = new NutritionRepository('nutrition', new NutritionMapper(), new CriteriaMapper());
+  private nutritionRepository = new NutritionRepository('nutrition', new NutritionMapper(), new CriteriaMapper());
+  private dietRepository = new DietRepository('diet', new DietMapper(), new CriteriaMapper());
 
   //services
   private notifier = new EmailNotifier();
@@ -155,11 +160,15 @@ export class CommandBus implements ICommandBus {
     }
 
     if(command instanceof CreateUserNutritionCommand) {
-      return new CreateUserNutritionHandler(this.nutritionRepositroy);
+      return new CreateUserNutritionHandler(this.nutritionRepository);
     }
 
     if(command instanceof UpdateUserNutritionCommand) {
-      return new UpdateUserNutritionHandler(this.nutritionRepositroy);
+      return new UpdateUserNutritionHandler(this.nutritionRepository);
+    }
+
+    if(command instanceof CreateDietCommand) {
+      return new CreateDietHandler(this.dietRepository);
     }
 
     throw new Error();

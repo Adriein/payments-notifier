@@ -1,4 +1,9 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export class DietCustomitzation {
+  public static build(dietId: string): DietCustomitzation {
+    return new DietCustomitzation(uuidv4(), dietId);
+  }
   constructor(
     private _id: string,
     private _dietId: string,

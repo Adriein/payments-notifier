@@ -6,41 +6,37 @@ import { DietCustomitzation } from './DietCustomitzation.entity';
 import { Meal } from './Meal.entity';
 
 export class Diet implements ISerializable {
-  public static build(
-    meals: Meal[],
-    maxKcal: number,
-    userId: string,
-    adminId: string
-  ): Diet {
-    return new Diet(
-      uuidv4(),
-      meals,
-      maxKcal,
-      userId,
-      adminId,
-      new DietCustomitzation()
-    );
+  public static build(maxKcal: number, userId: string): Diet {
+    const uuid = uuidv4();
+    return new Diet(uuid, maxKcal, userId, DietCustomitzation.build(uuid));
   }
 
   private _kcalTracker: number = 0;
+  private _meals: Meal[] = Array<Meal>();
 
   constructor(
     private _id: string,
-    private _meals: Meal[],
     private _maxKcal: number,
     private _userId: string,
-    private _adminId: string,
     private _dietCustomitzation: DietCustomitzation
   ) {}
 
-  public add(mealId: string, food: Food): void {
+  public addMeal(meal: Meal): void {
+    this._meals.push(meal);
+  }
+
+  public removeMeal(mealId: string): void {
+    this._meals = this._meals.filter((meal) => meal.id !== mealId);
+  }
+
+  public addFood(mealId: string, food: Food): void {
     const meal = this.findMeal(mealId);
     this.doesFoodFit(food);
     meal.add(food);
     this._kcalTracker = this._kcalTracker + food.kcal();
   }
 
-  public remove(mealId: string, foodToRemove: Food): void {
+  public removeFood(mealId: string, foodToRemove: Food): void {
     const meal = this.findMeal(mealId);
     meal.remove(foodToRemove);
     this._kcalTracker = this._kcalTracker - foodToRemove.kcal();
@@ -72,10 +68,6 @@ export class Diet implements ISerializable {
     return this._userId;
   }
 
-  public adminId(): string {
-    return this._adminId;
-  }
-
   public kcalTracker(): number {
     return this._kcalTracker;
   }
@@ -91,10 +83,9 @@ export class Diet implements ISerializable {
   public serialize(): Object {
     return {
       id: this.id(),
-      meals: this.meals().map(meal => meal.serialize()),
+      meals: this.meals().map((meal) => meal.serialize()),
       maxKcal: this.maxKcal(),
       userId: this.userId(),
-      adminId: this.adminId(),
       kcalTracker: this.kcalTracker(),
       isWeeklyOrganized: this.isWeeklyOrganized(),
       isMealOrganized: this.isMealOrganized(),
