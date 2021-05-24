@@ -34,6 +34,6 @@ export class DietCustomitzation {
   }
 
   public get dietId(): string {
-    return this.dietId;
+    return this._dietId;
   }
 }

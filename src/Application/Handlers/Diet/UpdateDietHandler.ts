@@ -2,6 +2,7 @@ import { UpdateDietCommand } from '../../../Domain/Commands/Diet/UpdateDietComma
 import { Log } from '../../../Domain/Decorators/Log';
 import { Diet } from '../../../Domain/Entities/Diet.entity';
 import { DietCustomitzation } from '../../../Domain/Entities/DietCustomitzation.entity';
+import { EntityNotExistsError } from '../../../Domain/Errors/EntityNotExists';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { IDietRepository } from '../../../Domain/Interfaces/IDietRepository';
 
@@ -15,7 +16,9 @@ export class UpdateDietHandler implements IHandler<void> {
     const dietOnDb = await this.dietRepository.findOne(command.dietId);
 
     if (!dietOnDb) {
-      throw new Error();
+      throw new EntityNotExistsError(
+        `Diet entity with id: ${command.dietId} not exists on the database`
+      );
     }
 
     const diet = new Diet(
