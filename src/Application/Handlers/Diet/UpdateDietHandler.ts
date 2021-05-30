@@ -2,6 +2,7 @@ import { UpdateDietCommand } from '../../../Domain/Commands/Diet/UpdateDietComma
 import { Log } from '../../../Domain/Decorators/Log';
 import { Diet } from '../../../Domain/Entities/Diet.entity';
 import { DietCustomitzation } from '../../../Domain/Entities/DietCustomitzation.entity';
+import { Meal } from '../../../Domain/Entities/Meal.entity';
 import { EntityNotExistsError } from '../../../Domain/Errors/EntityNotExists';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { IDietRepository } from '../../../Domain/Interfaces/IDietRepository';
@@ -27,6 +28,12 @@ export class UpdateDietHandler implements IHandler<void> {
       dietOnDb.userId(),
       new DietCustomitzation('', dietOnDb.id())
     );
+
+    if (command.meals.length) {
+      command.meals.forEach((meal: any) => {
+        diet.addMeal(Meal.build(meal.name, diet.id(), meal.foods));
+      });
+    }
 
     await this.dietRepository.update(diet);
   }

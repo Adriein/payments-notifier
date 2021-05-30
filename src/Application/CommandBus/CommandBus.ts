@@ -58,6 +58,8 @@ import { CreateDietCommand } from "../../Domain/Commands/Diet/CreateDietCommand"
 import { CreateDietHandler } from "../Handlers/Diet/CreateDietHandler";
 import { DietRepository } from "../../Infraestructure/Data/Repositories/DietRepository";
 import { DietMapper } from "../../Infraestructure/Data/Mappers/DietMapper";
+import { UpdateDietCommand } from "../../Domain/Commands/Diet/UpdateDietCommand";
+import { UpdateDietHandler } from "../Handlers/Diet/UpdateDietHandler";
 
 export class CommandBus implements ICommandBus {
   //repos
@@ -169,6 +171,10 @@ export class CommandBus implements ICommandBus {
 
     if(command instanceof CreateDietCommand) {
       return new CreateDietHandler(this.dietRepository);
+    }
+
+    if(command instanceof UpdateDietCommand) {
+      return new UpdateDietHandler(this.dietRepository);
     }
 
     throw new Error();

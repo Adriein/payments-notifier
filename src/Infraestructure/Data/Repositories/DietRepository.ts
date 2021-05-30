@@ -18,11 +18,22 @@ export class DietRepository
   }
 
   @Log(process.env.LOG_LEVEL)
-  async find(userId: string): Promise<Diet[]> {
-    const query = `SELECT * FROM ${this.entity} LEFT JOIN diet_meal ON diet.id = diet_meal.diet_id WHERE diet.user_id = ${userId}`;
-    const { rows } = await this.db.query(query);
-    console.log(rows)
+  override async findOne(userId: string): Promise<Diet | undefined> {
+    const query = `
+      SELECT diet.id as diet_id, diet.maxkcal, diet.user_id, diet_meal.id as diet_meal_id, diet_meal.name as diet_meal_name, food.id as food_id, food.name as food_name, food.quantity, food.ch, food.protein, food.fat, food.fiber, food.kcal 
+      FROM ${this.entity} 
+      LEFT JOIN diet_meal 
+      ON diet.id = diet_meal.diet_id 
+      LEFT JOIN meal_food 
+      ON diet_meal.id = meal_food.meal_id
+      LEFT join food
+      ON meal_food.food_id = food.id
+      WHERE diet.id = '${userId}'
+    `;
 
-    return rows.map((row) => this.mapper.domain(row));
+    const { rows } = await this.db.query(query); 
+
+    return this.mapper.domain(rows);
   }
+
 }

@@ -1,12 +1,18 @@
 import { ISerializable } from '../Interfaces/ISerializable';
 import { Food } from '../VO/Food.vo';
+import { v4 as uuidv4 } from 'uuid';
 
 export class Meal implements ISerializable {
   constructor(
     private _id: string,
     private _name: string,
-    private _foods: Food[]
+    private _foods: Food[],
+    private _dietId: string
   ) {}
+
+  public static build(name: string, dietId: string, foods: Food[] = []) {
+    return new Meal(uuidv4(), name, foods, dietId);
+  }
 
   public add(food: Food): void {
     this._foods.push(food);
