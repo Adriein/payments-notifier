@@ -9,13 +9,14 @@ import { ToastProvider } from 'react-toast-notifications';
 import Login from './login/Login';
 import ProtectedRoute from './ProtectedRoute';
 import HomePage from '../pages/HomePage';
+import LandingPage from '../pages/Landing/LandingPage';
 
 function App() {
   return (
     <BrowserRouter>
       <ToastProvider autoDismiss={true} placement="bottom-right">
         <AuthProvider>
-          <Route path="/" exact component={Login} />
+          <Route path="/" exact component={LandingPage} />
           <AppConfigProvider>
             <UsersProvider>
               <ModalProvider>
