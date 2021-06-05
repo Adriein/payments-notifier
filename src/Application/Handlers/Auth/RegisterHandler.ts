@@ -1,13 +1,13 @@
 import { CreateAppConfigCommand } from '../../../Domain/Commands/AppConfig/CreateAppConfigCommand';
 import { RegisterCommand } from '../../../Domain/Commands/Auth/RegisterCommand';
 import {
+  ADMIN_ROLE,
   DEFAULT_ADMIN_PRICING,
   DEFAULT_DELAY_DAYS,
   DEFAULT_EMAIL_CONTENT,
   DEFAULT_PRICING,
   DEFAULT_WARNING_DAYS,
   LANG_ES,
-  USER_ROLE,
 } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
@@ -40,7 +40,7 @@ export class RegisterHandler implements IHandler<void> {
     const user = User.build(
       command.username,
       new Email(command.email),
-      new UserConfig(LANG_ES, USER_ROLE)
+      new UserConfig(LANG_ES, ADMIN_ROLE)
     );
 
     user.createSubscription(

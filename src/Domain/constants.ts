@@ -30,6 +30,8 @@ export const CONFIG_TABLE = 'config';
 
 export const USER_ROLE = 'user';
 
+export const ADMIN_ROLE = 'admin';
+
 export const LANG_ES = 'ES';
 
 export const DEFAULT_WARNING_DAYS = 5;
