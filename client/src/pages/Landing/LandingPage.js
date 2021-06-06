@@ -2,9 +2,9 @@ import React from 'react';
 import * as Styled from './Styles';
 import Button from '../../shared/components/Button/Button';
 
-import onlinePaymentsImg from '../../img/undraw_online_payments_luau.svg'
-import dietImg from '../../img/undraw_healthy_options_sdo3.svg'
-import exercicesImg from '../../img/undraw_fitness_stats_sht6.svg'
+import onlinePaymentsImg from '../../img/undraw_online_payments_luau.svg';
+import dietImg from '../../img/undraw_healthy_options_sdo3.svg';
+import exercicesImg from '../../img/undraw_fitness_stats_sht6.svg';
 
 const LandingPage = () => {
   return (
@@ -15,17 +15,17 @@ const LandingPage = () => {
             <Styled.HeroTitle>
               La solución integral para profesionales del
               <Styled.HeroTitleEmphasis>
-                deporte y la alimentación
+                deporte y la nutrición
               </Styled.HeroTitleEmphasis>
             </Styled.HeroTitle>
             <Styled.HeroSubtitle>
-              Gestiona todo lo relacionado con tu negocio de una forma comoda y
-              eficiente. Nutrilog es la manera mas rápida de poder llevar mas
-              clientes sin perder calidad en tus asesorias.
+              Gestiona todo lo relacionado con tu negocio de una forma cómoda y
+              eficiente. Nutrilog es la manera más rápida de poder llevar más
+              clientes sin perder calidad en tus asesorías.
             </Styled.HeroSubtitle>
             <Styled.HeroActionButtons>
               <Button type="submit" variant="primary">
-                Registrate
+                Regístrate
               </Button>
               <Button type="submit" variant="secondary">
                 Contacta con nostros
@@ -52,29 +52,29 @@ const LandingPage = () => {
             especial?
           </Styled.WhyTitle>
           <Styled.WhyCard>
-            <Styled.WhyCardMedia src={onlinePaymentsImg}/>
+            <Styled.WhyCardMedia src={onlinePaymentsImg} />
             <Styled.WhyCardTitle>PAGOS</Styled.WhyCardTitle>
             <Styled.WhyCardSubtitle success>ACTIVO</Styled.WhyCardSubtitle>
             <Styled.WhyCardContent>
               Nutrilog te ayuda a gestionar los pagos de tus clientes, controla
-              quien ha pagado y cuando. Cuando la suscripción de esa persona
-              haya caducado recibira un mail de pre aviso, tanto el contenido
-              del mail como el momento en el que se manda es 100% configurable
+              quién y cuándo ha pagado. Cuando la suscripción de esa persona
+              haya caducado recibirá un email de preaviso, tanto el contenido
+              del email como el momento en el que se manda es 100% configurable
             </Styled.WhyCardContent>
           </Styled.WhyCard>
           <Styled.WhyCard>
-          <Styled.WhyCardMedia src={dietImg}/>
+            <Styled.WhyCardMedia src={dietImg} />
             <Styled.WhyCardTitle>DIETAS </Styled.WhyCardTitle>
             <Styled.WhyCardSubtitle>EN DESARROLLO</Styled.WhyCardSubtitle>
             <Styled.WhyCardContent>
               Con Nutrilog puedes elaborar y gestionar las dietas de tus
-              clientes. Usa las guias interactivas y las herramientas que te
-              proporciona la aplicacion para elaborar dietas lo mas
-              eficientemente posible y mas adaptadas a tus clientes
+              clientes. Usa las guías interactivas y las herramientas que te
+              proporciona la aplicación para elaborar dietas lo más
+              eficientemente posible y mejor adaptadas a tus clientes
             </Styled.WhyCardContent>
           </Styled.WhyCard>
           <Styled.WhyCard>
-          <Styled.WhyCardMedia src={exercicesImg}/>
+            <Styled.WhyCardMedia src={exercicesImg} />
             <Styled.WhyCardTitle>EJERCICIOS</Styled.WhyCardTitle>
             <Styled.WhyCardSubtitle>EN DESARROLLO</Styled.WhyCardSubtitle>
             <Styled.WhyCardContent>
@@ -83,6 +83,11 @@ const LandingPage = () => {
               herramientas adecuadas para hacer progresar a tus clientes
             </Styled.WhyCardContent>
           </Styled.WhyCard>
+          <Styled.WhyActionButtons>
+            <Button type="submit" variant="primary">
+              ¡Quiero probarlo!
+            </Button>
+          </Styled.WhyActionButtons>
         </Styled.WhyHero>
       </Styled.WhyWrapper>
     </Styled.LandingPage>

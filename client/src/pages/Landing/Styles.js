@@ -95,3 +95,10 @@ export const WhyCardMedia = styled.img`
   height: 150px;
   margin-bottom: 20px;
 `;
+
+export const WhyActionButtons = styled.div`
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
