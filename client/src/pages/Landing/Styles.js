@@ -102,3 +102,14 @@ export const WhyActionButtons = styled.div`
   justify-content: center;
   width: 100%;
 `;
+
+export const WhoWrapper = styled.div`
+  background-color: ${COLORS.backgroundWhite};
+  padding: 20px 50px 20px 50px;
+  display: flex;
+  justify-content: center;
+`;
+
+export const WhoBodyText = styled.div`
+  
+`;

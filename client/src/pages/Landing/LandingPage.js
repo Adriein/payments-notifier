@@ -48,7 +48,7 @@ const LandingPage = () => {
       <Styled.WhyWrapper>
         <Styled.WhyHero>
           <Styled.WhyTitle>
-            ¿Qué hace Nutri<Styled.WhyTitleSpan>log</Styled.WhyTitleSpan>{' '}
+            ¿Qué hace Nutri<Styled.WhyTitleSpan>log</Styled.WhyTitleSpan>
             especial?
           </Styled.WhyTitle>
           <Styled.WhyCard>
@@ -90,6 +90,14 @@ const LandingPage = () => {
           </Styled.WhyActionButtons>
         </Styled.WhyHero>
       </Styled.WhyWrapper>
+      <Styled.WhoWrapper>
+        <Styled.WhyTitle>
+          ¿Quien somos?
+        </Styled.WhyTitle>
+        <Styled.WhoBodyText>
+          Los valores primordiales que sigue el desarrollo de Nutri<Styled.WhyTitleSpan>log</Styled.WhyTitleSpan> son la honestidad y la transparencia. El objetivo es llegar a ser la app de referencia en el sector. Actualmente la aplicación esta en una fase Beta lo que significa que cada mes a la app  se le incorporan mejoras. Nutri<Styled.WhyTitleSpan>log</Styled.WhyTitleSpan> está siendo desarrollada por un solo programador 
+        </Styled.WhoBodyText>
+      </Styled.WhoWrapper>
     </Styled.LandingPage>
   );
 };
