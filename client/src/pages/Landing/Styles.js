@@ -38,6 +38,8 @@ export const HeroTitleEmphasis = styled.p`
 
 export const HeroSubtitle = styled.p`
   color: ${COLORS.textLight};
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export const HeroActionButtons = styled.div`
@@ -48,7 +50,7 @@ export const HeroActionButtons = styled.div`
 `;
 
 export const WhyWrapper = styled.div`
-  padding: 20px 50px 20px 50px;
+  padding: 50px 50px 50px 50px;
   display: flex;
   justify-content: center;
   color: ${COLORS.textMedium};
@@ -107,17 +109,19 @@ export const WhyActionButtons = styled.div`
 
 export const WhoWrapper = styled.div`
   background-color: ${COLORS.backgroundWhite};
-  padding: 20px 50px 20px 50px;
+  padding: 50px 50px 50px 50px;
   display: flex;
   justify-content: center;
 `;
 
 export const WhoBodyText = styled.div`
+  margin-top: 10px;
   padding: 20px;
   max-width: 800px;
 `;
 
 export const WhoCard = styled.div`
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;

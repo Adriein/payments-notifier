@@ -94,7 +94,7 @@ const LandingPage = () => {
       <Styled.WhoWrapper>
         <Styled.WhyHero>
           <Styled.WhyTitle>
-            El equipo y la mision de Nutri<Styled.WhyTitleSpan>log</Styled.WhyTitleSpan>
+            El equipo y la misión de Nutri<Styled.WhyTitleSpan>log</Styled.WhyTitleSpan>
           </Styled.WhyTitle>
           <Styled.WhoTextWrapper>
             <Styled.WhoCard>
