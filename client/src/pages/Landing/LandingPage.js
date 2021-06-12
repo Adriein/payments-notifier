@@ -5,6 +5,7 @@ import Button from '../../shared/components/Button/Button';
 import onlinePaymentsImg from '../../img/undraw_online_payments_luau.svg';
 import dietImg from '../../img/undraw_healthy_options_sdo3.svg';
 import exercicesImg from '../../img/undraw_fitness_stats_sht6.svg';
+import developer from '../../img/curridefi.jpg';
 
 const LandingPage = () => {
   return (
@@ -91,12 +92,39 @@ const LandingPage = () => {
         </Styled.WhyHero>
       </Styled.WhyWrapper>
       <Styled.WhoWrapper>
-        <Styled.WhyTitle>
-          ¿Quien somos?
-        </Styled.WhyTitle>
-        <Styled.WhoBodyText>
-          Los valores primordiales que sigue el desarrollo de Nutri<Styled.WhyTitleSpan>log</Styled.WhyTitleSpan> son la honestidad y la transparencia. El objetivo es llegar a ser la app de referencia en el sector. Actualmente la aplicación esta en una fase Beta lo que significa que cada mes a la app  se le incorporan mejoras. Nutri<Styled.WhyTitleSpan>log</Styled.WhyTitleSpan> está siendo desarrollada por un solo programador 
-        </Styled.WhoBodyText>
+        <Styled.WhyHero>
+          <Styled.WhyTitle>
+            El equipo y la mision de Nutri<Styled.WhyTitleSpan>log</Styled.WhyTitleSpan>
+          </Styled.WhyTitle>
+          <Styled.WhoTextWrapper>
+            <Styled.WhoCard>
+              <Styled.WhoProfile src={developer} />
+              <Styled.WhyCardTitle>Adrià Claret</Styled.WhyCardTitle>
+              <Styled.WhyCardSubtitle>
+                Ingeniero programador full stack
+              </Styled.WhyCardSubtitle>
+              <Styled.LogoLink
+                href="https://www.linkedin.com/in/adria-claret-sanchez-b43167104/"
+                target="_blank"
+              >
+                <Styled.LinkedinIcon />
+              </Styled.LogoLink>
+            </Styled.WhoCard>
+            <Styled.WhoBodyText>
+              Los valores primordiales que sigue el desarrollo de Nutri
+              <Styled.WhyTitleSpan>log</Styled.WhyTitleSpan>son la honestidad y
+              la transparencia. La misión es llegar a ser la app de referencia
+              en el sector. Actualmente la aplicación está en una fase Beta lo
+              que significa que con frecuencia se lanzan actualizaciones pese
+              que la app es 100% funcional en los módulos ya lanzados.
+              <Styled.WhoActionButtons>
+                <Button type="submit" variant="primary">
+                  Contacta
+                </Button>
+              </Styled.WhoActionButtons>
+            </Styled.WhoBodyText>
+          </Styled.WhoTextWrapper>
+        </Styled.WhyHero>
       </Styled.WhoWrapper>
     </Styled.LandingPage>
   );

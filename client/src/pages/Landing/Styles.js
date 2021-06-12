@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from '../../shared/utils/colors';
+import { FaLinkedin } from 'react-icons/fa';
 
 export const LandingPage = styled.div`
   overflow-x: hidden;
@@ -71,6 +72,7 @@ export const WhyCard = styled.div`
   height: 500px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 export const WhyHero = styled(Hero)`
@@ -111,5 +113,43 @@ export const WhoWrapper = styled.div`
 `;
 
 export const WhoBodyText = styled.div`
-  
+  padding: 20px;
+  max-width: 800px;
+`;
+
+export const WhoCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 300px;
+  padding: 20px;
+`;
+
+export const WhoProfile = styled.img`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  object-fit: cover;
+  object-position: center right;
+`;
+
+export const LogoLink = styled.a`
+  text-decoration: none;
+  color: inherit;
+`;
+
+export const LinkedinIcon = styled(FaLinkedin)`
+  font-size: 30px;
+`;
+
+export const WhoTextWrapper = styled.div`
+  display: flex;
+`;
+
+export const WhoActionButtons = styled.div`
+  margin-top: 40px;
+  width: 100%;
 `;
