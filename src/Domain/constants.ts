@@ -46,3 +46,7 @@ export const DEFAULT_PRICING = {
 };
 
 export const DEFAULT_ADMIN_PRICING = { anual: { duration: 365, price: 1000 } };
+
+export const BACKOFFICE_EMAIL = 'adria.claret@gmail.com';
+
+export const CONTACT_DYNAMIC_TEMPLATE = 'Contact'

@@ -50,7 +50,8 @@ import { ModifyAppConfigCommand } from "../../Domain/Commands/AppConfig/ModifyAp
 import { ModifyAppConfigHandler } from "../Handlers/AppConfig/ModifyAppConfigHandler";
 import { ContactEmailCommand } from "../../Domain/Commands/Backoffice/ContactEmailCommand";
 import { SendContactEmailHandler } from "../Handlers/Backoffice/SendContactEmailHandler";
-
+import { Api } from "../../Infraestructure/Apis/Api";
+import { SendGridApi } from "../../Infraestructure/Apis/SendGrid/SendGrid.api";
 
 export class CommandBus implements ICommandBus {
   //repos
@@ -61,6 +62,7 @@ export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
   private userFinder = new UserFinder(this.usersRepository);
   private priceBuilder = new PriceBuilder(this.appConfigRepository);
+  private api = new SendGridApi(new Api());
   
   constructor() {}
 
@@ -150,7 +152,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if(command instanceof ContactEmailCommand) {
-      return new SendContactEmailHandler(this.notifier);
+      return new SendContactEmailHandler(this.notifier, this.api);
     }
 
     throw new Error();

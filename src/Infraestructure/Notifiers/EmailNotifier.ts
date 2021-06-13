@@ -1,6 +1,7 @@
 import { INotifier } from '../../Domain/Interfaces';
 import sgMail from '@sendgrid/mail';
 import { Log } from '../../Domain/Decorators/Log';
+import { BACKOFFICE_EMAIL } from '../../Domain/constants';
 
 type EmailConfig = {
   to: string;
@@ -15,15 +16,27 @@ export class EmailNotifier implements INotifier {
     sgMail.setApiKey(process.env.SEND_GRID_API_KEY!);
   }
   @Log(process.env.LOG_LEVEL)
-  public async notify(destination: string, payload: string): Promise<void> {
+  public async notify(
+    destination: string,
+    payload: string,
+    subject?: string
+  ): Promise<void> {
     let msg;
 
-    if(destination === process.env.ADMIN_EMAIL) {
+    if (destination === process.env.ADMIN_EMAIL) {
       msg = this.adminConfig(destination, payload);
-    }else {
-      msg = this.clientConfig(destination, payload);
+      await sgMail.send(msg);
+      return;
     }
-    
+
+    if (destination === BACKOFFICE_EMAIL) {
+      msg = this.backOfficeConfig(destination, payload, subject!);
+      await sgMail.send(msg);
+      return;
+    }
+
+    msg = this.clientConfig(destination, payload);
+
     await sgMail.send(msg);
   }
 
@@ -47,7 +60,17 @@ export class EmailNotifier implements INotifier {
     };
   }
 
-  private backOfficeConfig(destination: string, payload: string): EmailConfig {
-
+  private backOfficeConfig(
+    destination: string,
+    payload: string,
+    subject: string
+  ): EmailConfig {
+    return {
+      to: destination,
+      from: 'ivanmfit.notificaciones@gmail.com',
+      subject,
+      text: subject,
+      html: payload,
+    };
   }
 }
