@@ -1,5 +1,5 @@
 import { Log } from '../../../Domain/Decorators/Log';
-import { ICommand, IHandler, INotifier } from '../../../Domain/Interfaces';
+import { IHandler, INotifier } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Report, ReportType } from '../../../Domain/Templates/Report.template';
@@ -8,7 +8,7 @@ export class GenerateReportHandler implements IHandler<void> {
   constructor(private notifier: INotifier, private finder: UserFinder, private configRepository: IConfigRepository) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(command: ICommand): Promise<void> {
+  public async handle(): Promise<void> {
     const adminsOnDb = await this.finder.onlyAdmins().find();
 
     for (const admin of adminsOnDb) {

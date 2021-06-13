@@ -46,4 +46,8 @@ export class EmailNotifier implements INotifier {
       html: payload,
     };
   }
+
+  private backOfficeConfig(destination: string, payload: string): EmailConfig {
+
+  }
 }

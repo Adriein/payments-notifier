@@ -26,6 +26,7 @@ import './Infraestructure/Rest/Controllers/Config/ModifyAppConfigController';
 import './Infraestructure/Rest/Controllers/Config/GetConfigController';
 import './Infraestructure/Rest/Controllers/Charts/GetMoneyChartController';
 import './Infraestructure/Rest/Controllers/Charts/GetUserChartController';
+import './Infraestructure/Rest/Controllers/Backoffice/ContactEmailController';
 
 export default class App {
   public init() {

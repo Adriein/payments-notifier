@@ -48,6 +48,8 @@ import { CreatePricingCommand } from "../../Domain/Commands/AppConfig/CreatePric
 import { CreatePricingHandler } from "../Handlers/AppConfig/CreatePricingHandler";
 import { ModifyAppConfigCommand } from "../../Domain/Commands/AppConfig/ModifyAppConfigCommand";
 import { ModifyAppConfigHandler } from "../Handlers/AppConfig/ModifyAppConfigHandler";
+import { ContactEmailCommand } from "../../Domain/Commands/Backoffice/ContactEmailCommand";
+import { SendContactEmailHandler } from "../Handlers/Backoffice/SendContactEmailHandler";
 
 
 export class CommandBus implements ICommandBus {
@@ -59,7 +61,6 @@ export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
   private userFinder = new UserFinder(this.usersRepository);
   private priceBuilder = new PriceBuilder(this.appConfigRepository);
-  private criteriaBuilder = new CriteriaBuilder();
   
   constructor() {}
 
@@ -146,6 +147,10 @@ export class CommandBus implements ICommandBus {
 
     if (command instanceof UserChartCommand) {
       return new CreateUsersChartHandler(this.userFinder);
+    }
+
+    if(command instanceof ContactEmailCommand) {
+      return new SendContactEmailHandler(this.notifier);
     }
 
     throw new Error();
