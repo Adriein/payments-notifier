@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Form from '../../shared/components/Form/Form';
 
@@ -18,7 +18,7 @@ const defaultProps = {
   modalClose: undefined,
 };
 
-const Login = ({ modalClose, onCreate }) => {
+const Login = ({ modalClose, onCreate, signin }) => {
   return (
     <Form
       enableReinitialize
@@ -30,8 +30,10 @@ const Login = ({ modalClose, onCreate }) => {
         email: [Form.is.email(), Form.is.required()],
         password: Form.is.required(),
       }}
-      onSubmit={async (values, form) => {
+      onSubmit={async ({email, password}, form) => {
         try {
+          signin({ email, password });
+          onCreate();
         } catch (error) {
           Form.handleAPIError(error, form);
         }

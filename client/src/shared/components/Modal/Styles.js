@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import { COLORS } from '../../utils/colors';
 import { MIXIN } from '../../utils/mixin';
 
 export const ScrollOverlay = styled.div`
@@ -60,29 +59,29 @@ const modalStyles = {
 //   ${props => closeIconStyles[props.variant]}
 // `;
 
-const closeIconStyles = {
-  center: css`
-    top: 10px;
-    right: 12px;
-    padding: 3px 5px 0px 5px;
-    border-radius: 4px;
-    &:hover {
-      background: ${COLORS.backgroundLight};
-    }
-  `,
-  aside: css`
-    top: 10px;
-    right: -30px;
-    width: 50px;
-    height: 50px;
-    padding-top: 10px;
-    border-radius: 3px;
-    text-align: center;
-    background: #fff;
-    border: 1px solid ${COLORS.borderLightest};
-    ${MIXIN.boxShadowMedium};
-    &:hover {
-      color: ${COLORS.primary};
-    }
-  `,
-};
+// const closeIconStyles = {
+//   center: css`
+//     top: 10px;
+//     right: 12px;
+//     padding: 3px 5px 0px 5px;
+//     border-radius: 4px;
+//     &:hover {
+//       background: ${COLORS.backgroundLight};
+//     }
+//   `,
+//   aside: css`
+//     top: 10px;
+//     right: -30px;
+//     width: 50px;
+//     height: 50px;
+//     padding-top: 10px;
+//     border-radius: 3px;
+//     text-align: center;
+//     background: #fff;
+//     border: 1px solid ${COLORS.borderLightest};
+//     ${MIXIN.boxShadowMedium};
+//     &:hover {
+//       color: ${COLORS.primary};
+//     }
+//   `,
+// };

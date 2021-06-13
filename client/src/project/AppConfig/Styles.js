@@ -2,9 +2,6 @@ import styled from 'styled-components';
 import Button from '../../shared/components/Button/Button';
 import Form from '../../shared/components/Form/Form';
 
-
-import { COLORS } from '../../shared/utils/colors';
-
 export const FormElement = styled(Form.Element)`
   padding: 25px 40px 35px;
 `;
@@ -23,11 +20,6 @@ export const SelectItem = styled.div`
 
 export const SelectItemLabel = styled.div`
   padding: 0 3px 0 6px;
-`;
-
-export const Divider = styled.div`
-  margin-top: 22px;
-  border-top: 1px solid ${COLORS.borderLightest};
 `;
 
 export const Actions = styled.div`

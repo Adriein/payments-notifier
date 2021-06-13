@@ -15,6 +15,7 @@ import { Redirect } from 'react-router-dom';
 
 import useQueryParamModal from '../../hooks/useQueryParamModal';
 import Contact from '../../project/Contact/Contact';
+import Register from '../../project/Register/Register';
 
 const LandingPage = () => {
   const { signin, getToken } = useContext(AuthContext);
@@ -43,6 +44,7 @@ const LandingPage = () => {
             <Login
               modalClose={modal.close}
               onCreate={loginModalHelpers.close}
+              signin={signin}
             />
           )}
         />
@@ -54,7 +56,7 @@ const LandingPage = () => {
           withCloseIcon={false}
           onClose={registerModalHelpers.close}
           renderContent={(modal) => (
-            <Login
+            <Register
               modalClose={modal.close}
               onCreate={registerModalHelpers.close}
             />

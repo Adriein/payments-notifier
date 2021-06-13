@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Form from '../../shared/components/Form/Form';
 import { useToasts } from 'react-toast-notifications';
@@ -7,8 +7,7 @@ import {
   FormHeading,
   FormElement,
   Actions,
-  ActionButton,
-  Divider
+  ActionButton
 } from './Styles';
 
 const propTypes = {
@@ -19,7 +18,7 @@ const defaultProps = {
   modalClose: undefined,
 };
 
-const Contact = ({ modalClose, onCreate }) => {
+const Contact = ({ modalClose }) => {
   const { addToast } = useToasts();
 
   return (

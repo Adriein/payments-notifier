@@ -6,7 +6,6 @@ import { Provider as ModalProvider } from '../context/ModalContext';
 import { Provider as AppConfigProvider } from '../context/AppConfigContext';
 import { ToastProvider } from 'react-toast-notifications';
 
-import Login from './login/Login';
 import ProtectedRoute from './ProtectedRoute';
 import HomePage from '../pages/HomePage';
 import LandingPage from '../pages/Landing/LandingPage';
