@@ -1,15 +1,93 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import * as Styled from './Styles';
 import Button from '../../shared/components/Button/Button';
+import Modal from '../../shared/components/Modal/Modal';
+import Login from '../../project/Login/Login';
 
 import onlinePaymentsImg from '../../img/undraw_online_payments_luau.svg';
 import dietImg from '../../img/undraw_healthy_options_sdo3.svg';
 import exercicesImg from '../../img/undraw_fitness_stats_sht6.svg';
 import developer from '../../img/curridefi.jpg';
+import logo from '../../img/nutrilog-C3.png';
+
+import { Context as AuthContext } from '../../context/AuthContext';
+import { Redirect } from 'react-router-dom';
+
+import useQueryParamModal from '../../hooks/useQueryParamModal';
+import Contact from '../../project/Contact/Contact';
 
 const LandingPage = () => {
+  const { signin, getToken } = useContext(AuthContext);
+
+  const LOGIN = 'login';
+  const REGISTER = 'register';
+  const CONTACT = 'contact';
+
+  const loginModalHelpers = useQueryParamModal(LOGIN);
+  const registerModalHelpers = useQueryParamModal(REGISTER);
+  const contactModalHelpers = useQueryParamModal(CONTACT);
+
+  if (getToken) {
+    return <Redirect to="/home" />;
+  }
+
   return (
     <Styled.LandingPage>
+      {loginModalHelpers.isOpen() && (
+        <Modal
+          isOpen
+          width={500}
+          withCloseIcon={false}
+          onClose={loginModalHelpers.close}
+          renderContent={(modal) => (
+            <Login
+              modalClose={modal.close}
+              onCreate={loginModalHelpers.close}
+            />
+          )}
+        />
+      )}
+      {registerModalHelpers.isOpen() && (
+        <Modal
+          isOpen
+          width={500}
+          withCloseIcon={false}
+          onClose={registerModalHelpers.close}
+          renderContent={(modal) => (
+            <Login
+              modalClose={modal.close}
+              onCreate={registerModalHelpers.close}
+            />
+          )}
+        />
+      )}
+      {contactModalHelpers.isOpen() && (
+        <Modal
+          isOpen
+          width={800}
+          withCloseIcon={false}
+          onClose={contactModalHelpers.close}
+          renderContent={(modal) => (
+            <Contact
+              modalClose={modal.close}
+              onCreate={contactModalHelpers.close}
+            />
+          )}
+        />
+      )}
+      <Styled.Header>
+        <Styled.Logo src={logo} />
+        <Styled.Space />
+        <Styled.Signin>
+          <Button
+            type="submit"
+            variant="secondary"
+            onClick={loginModalHelpers.open}
+          >
+            Entrar
+          </Button>
+        </Styled.Signin>
+      </Styled.Header>
       <Styled.HeroWrapper>
         <Styled.Hero>
           <Styled.HeroDescription>
@@ -25,10 +103,10 @@ const LandingPage = () => {
               clientes sin perder calidad en tus asesorías.
             </Styled.HeroSubtitle>
             <Styled.HeroActionButtons>
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" onClick={registerModalHelpers.open}>
                 Regístrate
               </Button>
-              <Button type="submit" variant="secondary">
+              <Button type="submit" variant="secondary" onClick={contactModalHelpers.open}>
                 Contacta con nostros
               </Button>
             </Styled.HeroActionButtons>
@@ -85,7 +163,7 @@ const LandingPage = () => {
             </Styled.WhyCardContent>
           </Styled.WhyCard>
           <Styled.WhyActionButtons>
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" onClick={registerModalHelpers.open}>
               ¡Quiero probarlo!
             </Button>
           </Styled.WhyActionButtons>
@@ -93,9 +171,6 @@ const LandingPage = () => {
       </Styled.WhyWrapper>
       <Styled.WhoWrapper>
         <Styled.WhyHero>
-          <Styled.WhyTitle>
-            El equipo y la misión de Nutri<Styled.WhyTitleSpan>log</Styled.WhyTitleSpan>
-          </Styled.WhyTitle>
           <Styled.WhoTextWrapper>
             <Styled.WhoCard>
               <Styled.WhoProfile src={developer} />
@@ -111,6 +186,10 @@ const LandingPage = () => {
               </Styled.LogoLink>
             </Styled.WhoCard>
             <Styled.WhoBodyText>
+              <Styled.WhoTitle>
+                El equipo y la misión de Nutri
+                <Styled.WhoTitleSpan>log</Styled.WhoTitleSpan>
+              </Styled.WhoTitle>
               Los valores primordiales que sigue el desarrollo de Nutri
               <Styled.WhyTitleSpan>log</Styled.WhyTitleSpan>son la honestidad y
               la transparencia. La misión es llegar a ser la app de referencia
@@ -118,7 +197,7 @@ const LandingPage = () => {
               que significa que con frecuencia se lanzan actualizaciones pese
               que la app es 100% funcional en los módulos ya lanzados.
               <Styled.WhoActionButtons>
-                <Button type="submit" variant="primary">
+                <Button type="submit" variant="primary" onClick={contactModalHelpers.open}>
                   Contacta
                 </Button>
               </Styled.WhoActionButtons>

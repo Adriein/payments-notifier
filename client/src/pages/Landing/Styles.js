@@ -6,9 +6,37 @@ export const LandingPage = styled.div`
   overflow-x: hidden;
 `;
 
+export const Header = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100px;
+  background-color: black;
+`;
+
+export const Logo = styled.img`
+  margin-left: 205px;
+  width: 300px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center right;
+`;
+
+export const Space = styled.div`
+  flex-grow: 1;
+`;
+
+export const Signin = styled.div`
+  align-self: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin-right: 230px;
+`;
+
 export const HeroWrapper = styled.div`
   background-color: ${COLORS.backgroundWhite};
-  padding: 50px;
+  padding: 80px 0px;
 `;
 
 export const Hero = styled.div`
@@ -115,13 +143,11 @@ export const WhoWrapper = styled.div`
 `;
 
 export const WhoBodyText = styled.div`
-  margin-top: 10px;
   padding: 20px;
   max-width: 800px;
 `;
 
 export const WhoCard = styled.div`
-  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -156,4 +182,16 @@ export const WhoTextWrapper = styled.div`
 export const WhoActionButtons = styled.div`
   margin-top: 40px;
   width: 100%;
+`;
+
+export const WhoTitle = styled.h2`
+  padding-bottom: 10px;
+  width: 100%;
+  display: flex;
+  font-weight: 500;
+`;
+
+export const WhoTitleSpan = styled.span`
+  color: ${COLORS.primary};
+  margin-right: 6px;
 `;
