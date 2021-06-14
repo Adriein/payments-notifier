@@ -62,8 +62,7 @@ export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
   private userFinder = new UserFinder(this.usersRepository);
   private priceBuilder = new PriceBuilder(this.appConfigRepository);
-  private api = new SendGridApi(new Api());
-  
+ 
   constructor() {}
 
   public async execute(command: ICommand): Promise<any> {
@@ -152,7 +151,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if(command instanceof ContactEmailCommand) {
-      return new SendContactEmailHandler(this.notifier, this.api);
+      return new SendContactEmailHandler(this.notifier);
     }
 
     throw new Error();

@@ -11,6 +11,8 @@ type EmailConfig = {
   html: string;
 };
 
+type NotifyOptions = { subject?: string; templateId?: string, sender?: string };
+
 export class EmailNotifier implements INotifier {
   constructor() {
     sgMail.setApiKey(process.env.SEND_GRID_API_KEY!);
@@ -19,10 +21,10 @@ export class EmailNotifier implements INotifier {
   public async notify(
     destination: string,
     payload: string,
-    subject?: string
+    options?: NotifyOptions
   ): Promise<void> {
     let msg;
-
+    console.log(destination);
     if (destination === process.env.ADMIN_EMAIL) {
       msg = this.adminConfig(destination, payload);
       await sgMail.send(msg);
@@ -30,8 +32,14 @@ export class EmailNotifier implements INotifier {
     }
 
     if (destination === BACKOFFICE_EMAIL) {
-      msg = this.backOfficeConfig(destination, payload, subject!);
-      await sgMail.send(msg);
+      console.log(this.backOfficeConfig(destination, payload, options!));
+      
+      msg = this.backOfficeConfig(destination, payload, options!);
+      try {
+        await sgMail.send(msg);
+        
+      } catch(e){console.log(e); throw new Error()}
+      //await sgMail.send(msg);
       return;
     }
 
@@ -63,14 +71,22 @@ export class EmailNotifier implements INotifier {
   private backOfficeConfig(
     destination: string,
     payload: string,
-    subject: string
-  ): EmailConfig {
+    options: NotifyOptions
+  ): any {
     return {
       to: destination,
       from: 'ivanmfit.notificaciones@gmail.com',
-      subject,
-      text: subject,
-      html: payload,
+      templateId: 'd-1a4d9a0041254c23b307526a6bd603ef',
+      dynamicTemplateData: {
+        subject: options.subject!,
+        Sender_Name: 'Adrià Claret',
+        Sender_Address: BACKOFFICE_EMAIL,
+        Sender_City: 'Rubi',
+        Sender_State: 'Barcelona',
+        Sender_Zip: '08191',
+        emailContent: payload,
+        sender: options.sender!
+      },
     };
   }
 }

@@ -1,3 +1,3 @@
 export interface INotifier {
-  notify(destination: string, payload: string): Promise<void>;
+  notify(destination: string, payload: string, options?: Object): Promise<void>;
 }
