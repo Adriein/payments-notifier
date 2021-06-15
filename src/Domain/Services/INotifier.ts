@@ -1,3 +1,5 @@
+import { IEmailConfig } from '../Interfaces/IEmailConfig';
+
 export interface INotifier {
-  notify(destination: string, payload: string, options?: Object): Promise<void>;
+  notify(config: IEmailConfig): Promise<void>;
 }

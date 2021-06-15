@@ -49,4 +49,11 @@ export const DEFAULT_ADMIN_PRICING = { anual: { duration: 365, price: 1000 } };
 
 export const BACKOFFICE_EMAIL = 'adria.claret@gmail.com';
 
-export const CONTACT_DYNAMIC_TEMPLATE = 'Contact'
+export const CONTACT_DYNAMIC_TEMPLATE = 'd-1a4d9a0041254c23b307526a6bd603ef';
+
+export const CLIENT_EMAIL_CONFIG_SUBJECT = 'Información sobre pago';
+
+export const NOTIFICATIONS_EMAIL = 'ivanmfit.notificaciones@gmail.com';
+
+export const ADMIN_EMAIL_CONFIG_SUBJECT = 'Informe sobre impagos';
+

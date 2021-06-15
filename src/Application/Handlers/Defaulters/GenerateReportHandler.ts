@@ -1,11 +1,21 @@
+import {
+  ADMIN_EMAIL_CONFIG_SUBJECT,
+  BACKOFFICE_EMAIL,
+  NOTIFICATIONS_EMAIL,
+} from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
+import { EmailConfig } from '../../../Domain/Entities/Mail/EmailConfig.entity';
 import { IHandler, INotifier } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Report, ReportType } from '../../../Domain/Templates/Report.template';
 
 export class GenerateReportHandler implements IHandler<void> {
-  constructor(private notifier: INotifier, private finder: UserFinder, private configRepository: IConfigRepository) {}
+  constructor(
+    private notifier: INotifier,
+    private finder: UserFinder,
+    private configRepository: IConfigRepository
+  ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(): Promise<void> {
@@ -39,11 +49,19 @@ export class GenerateReportHandler implements IHandler<void> {
 
       const template = await new Report(report, config!).generate();
 
-      await this.notifier.notify(
+      const destinatary =
         process.env.NODE_ENV! === 'PRO'
           ? process.env.ADMIN_EMAIL!
-          : 'adria.claret@gmail.com',
-        template
+          : BACKOFFICE_EMAIL;
+
+      await this.notifier.notify(
+        new EmailConfig(
+          NOTIFICATIONS_EMAIL,
+          destinatary,
+          ADMIN_EMAIL_CONFIG_SUBJECT,
+          ADMIN_EMAIL_CONFIG_SUBJECT,
+          template
+        )
       );
     }
   }
