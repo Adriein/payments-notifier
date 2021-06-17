@@ -7,6 +7,7 @@ import { Log } from '../../../Domain/Decorators/Log';
 import { EmailConfig } from '../../../Domain/Entities/Mail/EmailConfig.entity';
 import { IHandler, INotifier } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
+import { IEmailApi } from '../../../Domain/Interfaces/IEmailApi';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Report, ReportType } from '../../../Domain/Templates/Report.template';
 
@@ -14,12 +15,17 @@ export class GenerateReportHandler implements IHandler<void> {
   constructor(
     private notifier: INotifier,
     private finder: UserFinder,
-    private configRepository: IConfigRepository
+    private configRepository: IConfigRepository,
+    private api: IEmailApi
   ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(): Promise<void> {
     const adminsOnDb = await this.finder.onlyAdmins().find();
+
+    const key = ''; //await this.apiKeyRepository.getSendGridApiKey();
+
+    const stats = await this.api.setKey(key).getEmailStats('', '');
 
     for (const admin of adminsOnDb) {
       const usersOnDb = await this.finder.adminId(admin.getId()).find();
@@ -66,3 +72,20 @@ export class GenerateReportHandler implements IHandler<void> {
     }
   }
 }
+
+// {
+//   "users": [
+//       {"name": "nombre 1", "email":"nombre1@gmail.com", "warningSend": "10/06/2021"},
+//       {"name": "nombre 1", "email":"nombre1@gmail.com", "warningSend": "10/06/2021"},
+//       {"name": "nombre 1", "email":"nombre1@gmail.com", "warningSend": "10/06/2021"},
+//       {"name": "nombre 1", "email":"nombre1@gmail.com", "warningSend": "10/06/2021"}
+//   ],
+//   "summary": {
+//       "totalDefaulters": "4",
+//       "lastReportDate": "10/06/2021",
+//       "reportDate": "17/06/2021",
+//       "totalWarningEmailsSent": "4",
+//       "totalEmailsRead": "4"
+      
+//   }
+// }
