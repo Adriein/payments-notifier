@@ -9,6 +9,7 @@ type AppConfigTable = {
   defaulter_delay: number;
   email_content: string;
   user_id: string;
+  last_sent_report: string;
 };
 
 export class AppConfigMapper implements IMapper<AppConfig> {
@@ -19,7 +20,8 @@ export class AppConfigMapper implements IMapper<AppConfig> {
       appConfigDatamodel.defaulter_delay,
       appConfigDatamodel.email_content,
       appConfigDatamodel.user_id,
-      new Pricing(JSON.parse(appConfigDatamodel.pricing))
+      new Pricing(JSON.parse(appConfigDatamodel.pricing)),
+      new Date(appConfigDatamodel.last_sent_report)
     );
   }
 
@@ -30,6 +32,7 @@ export class AppConfigMapper implements IMapper<AppConfig> {
       warning_delay: domain.warningDelay,
       defaulter_delay: domain.defaulterDelay,
       email_content: domain.emailContent,
+      last_sent_report: domain.lastSentReport?.toString() || 'now()',
       user_id: domain.adminId!,
     };
   }

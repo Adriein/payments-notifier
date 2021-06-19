@@ -4,12 +4,27 @@ import {
   NOTIFICATIONS_EMAIL,
 } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
-import { EmailConfig } from '../../../Domain/Entities/Mail/EmailConfig.entity';
+import { TemplateEmailConfig } from '../../../Domain/Entities/Mail/TemplateEmailConfig';
 import { IHandler, INotifier } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { IEmailApi } from '../../../Domain/Interfaces/IEmailApi';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Report, ReportType } from '../../../Domain/Templates/Report.template';
+import { Time } from '../../../Infraestructure/Helpers/Time.utils';
+
+type Summary = {
+  totalDefaulters: number;
+  newDefaulters: number;
+  lastReportDate: string;
+  reportDate: string;
+  totalWarningEmailsSent: number;
+  totalEmailsRead: number;
+};
+
+type Report = {
+  users: string[];
+  summary: Summary;
+};
 
 export class GenerateReportHandler implements IHandler<void> {
   constructor(
@@ -25,10 +40,30 @@ export class GenerateReportHandler implements IHandler<void> {
 
     const key = process.env.SEND_GRID_API_KEY!; //await this.apiKeyRepository.getSendGridApiKey();
 
-    const stats = await this.api.setKey(key).getEmailStats('2021-06-01', '2021-06-19');
+    const template: Report = {
+      users: [],
+      summary: {
+        totalDefaulters: 0,
+        newDefaulters: 0,
+        lastReportDate: '',
+        reportDate: Time.format(new Date(), Time.SEND_GRID_DATE_FORMAT),
+        totalWarningEmailsSent: 0,
+        totalEmailsRead: 0,
+      },
+    };
 
     for (const admin of admins) {
       const usersOnDb = await this.finder.adminId(admin.getId()).find();
+
+      const config = await this.configRepository.findByAdminId(admin.getId());
+
+      const stats = await this.api
+        .setKey(key)
+        .getEmailStats(
+          Time.format(config!.lastSentReport!, Time.SEND_GRID_DATE_FORMAT),
+          Time.format(new Date(), Time.SEND_GRID_DATE_FORMAT)
+        );
+
       let report: ReportType = {
         summary: { defaulters: 0, notifieds: 0, total: usersOnDb.length },
         defaulters: [],
@@ -36,9 +71,14 @@ export class GenerateReportHandler implements IHandler<void> {
       };
 
       for (const user of usersOnDb) {
+        if (user.isDefaulter()) {
+          template['summary']['totalDefaulters'] =
+            template['summary']['totalDefaulters'] + 1;
+        }
         if (user.isDefaulter() && !user.isOneDayOldDefaulter()) {
-          report['summary']['defaulters'] = report['summary']['defaulters'] + 1;
-          report['defaulters'] = [...report['defaulters'], user];
+          template['summary']['newDefaulters'] =
+            template['summary']['newDefaulters'] + 1;
+          template['users'] = [...template['users'], user.getName()];
           continue;
         }
         if (user.isWarned()) {
@@ -51,9 +91,7 @@ export class GenerateReportHandler implements IHandler<void> {
         return;
       }
 
-      const config = await this.configRepository.findByAdminId(admin.getId());
-
-      const template = await new Report(report, config!).generate();
+      // const template = await new Report(report, config!).generate();
 
       const destinatary =
         process.env.NODE_ENV! === 'PRO'
@@ -61,31 +99,8 @@ export class GenerateReportHandler implements IHandler<void> {
           : BACKOFFICE_EMAIL;
 
       await this.notifier.notify(
-        new EmailConfig(
-          NOTIFICATIONS_EMAIL,
-          destinatary,
-          ADMIN_EMAIL_CONFIG_SUBJECT,
-          ADMIN_EMAIL_CONFIG_SUBJECT,
-          template
-        )
+        new TemplateEmailConfig(NOTIFICATIONS_EMAIL, destinatary, '', template)
       );
     }
   }
 }
-
-// {
-//   "users": [
-//       {"name": "nombre 1", "email":"nombre1@gmail.com", "warningSend": "10/06/2021"},
-//       {"name": "nombre 1", "email":"nombre1@gmail.com", "warningSend": "10/06/2021"},
-//       {"name": "nombre 1", "email":"nombre1@gmail.com", "warningSend": "10/06/2021"},
-//       {"name": "nombre 1", "email":"nombre1@gmail.com", "warningSend": "10/06/2021"}
-//   ],
-//   "summary": {
-//       "totalDefaulters": "4",
-//       "lastReportDate": "10/06/2021",
-//       "reportDate": "17/06/2021",
-//       "totalWarningEmailsSent": "4",
-//       "totalEmailsRead": "4"
-      
-//   }
-// }

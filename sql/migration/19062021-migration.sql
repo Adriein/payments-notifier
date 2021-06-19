@@ -1,0 +1,1 @@
+ALTER TABLE app_config ADD COLUMN last_sent_report TIMESTAMP WITH TIME ZONE DEFAULT;

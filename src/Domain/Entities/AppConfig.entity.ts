@@ -9,7 +9,8 @@ export class AppConfig implements ISerializable {
     warningDelay: number,
     defaulterDelay: number,
     emailContent: string,
-    adminId: string
+    adminId: string,
+    lastSentReport?: Date
   ) {
     return new AppConfig(
       uuidv4(),
@@ -17,7 +18,8 @@ export class AppConfig implements ISerializable {
       defaulterDelay,
       emailContent,
       adminId,
-      new Pricing(pricing)
+      new Pricing(pricing),
+      lastSentReport
     );
   }
   constructor(
@@ -26,7 +28,8 @@ export class AppConfig implements ISerializable {
     private _defaulterDelay: number,
     private _emailContent: string,
     private _adminId?: string,
-    private _pricing?: Pricing
+    private _pricing?: Pricing,
+    private _last_sent_report?: Date
   ) {}
 
   public createPricing(pricing: PricingObject) {
@@ -57,6 +60,10 @@ export class AppConfig implements ISerializable {
     return this._adminId;
   }
 
+  public get lastSentReport(): Date | undefined {
+    return this._last_sent_report;
+  }
+
   public serialize(): Object {
     return {
       id: this._id,
@@ -64,6 +71,7 @@ export class AppConfig implements ISerializable {
       warningDelay: this._warningDelay,
       defaulterDelay: this._defaulterDelay,
       emailContent: this._emailContent,
+      lastSentReport: this._last_sent_report
     };
   }
 }

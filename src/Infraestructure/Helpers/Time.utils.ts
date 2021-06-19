@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
 export class Time implements ITimeUtils {
+  public static SEND_GRID_DATE_FORMAT = 'YYYY-MM-DD';
   public equal(date1: Date, date2: Date): boolean {
     return dayjs(date1).isSame(dayjs(date2));
   }
@@ -27,5 +28,9 @@ export class Time implements ITimeUtils {
     const date1 = dayjs(from);
     const date2 = dayjs(to);
     return dayjs(reference).isBetween(date1, date2, null, '[]');
+  }
+
+  public static format(date: Date, format: string): string {
+    return dayjs(date).format(format);
   }
 }
