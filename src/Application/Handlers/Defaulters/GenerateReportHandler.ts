@@ -4,12 +4,13 @@ import {
   NOTIFICATIONS_EMAIL,
 } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
+import { AppConfig } from '../../../Domain/Entities/AppConfig.entity';
 import { TemplateEmailConfig } from '../../../Domain/Entities/Mail/TemplateEmailConfig';
+import { User } from '../../../Domain/Entities/User.entity';
 import { IHandler, INotifier } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { IEmailApi } from '../../../Domain/Interfaces/IEmailApi';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
-import { Report, ReportType } from '../../../Domain/Templates/Report.template';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
 
 type Summary = {
@@ -22,7 +23,8 @@ type Summary = {
 };
 
 type Report = {
-  users: string[];
+  defaulters: string[];
+  oldDefaulters: string[];
   summary: Summary;
 };
 
@@ -40,52 +42,22 @@ export class GenerateReportHandler implements IHandler<void> {
 
     const key = process.env.SEND_GRID_API_KEY!; //await this.apiKeyRepository.getSendGridApiKey();
 
-    const template: Report = {
-      users: [],
-      summary: {
-        totalDefaulters: 0,
-        newDefaulters: 0,
-        lastReportDate: '',
-        reportDate: Time.format(new Date(), Time.SEND_GRID_DATE_FORMAT),
-        totalWarningEmailsSent: 0,
-        totalEmailsRead: 0,
-      },
-    };
-
     for (const admin of admins) {
-      const usersOnDb = await this.finder.adminId(admin.getId()).find();
+      const users = await this.finder.adminId(admin.getId()).find();
 
       const config = await this.configRepository.findByAdminId(admin.getId());
 
-      const stats = await this.api
-        .setKey(key)
-        .getEmailStats(
-          Time.format(config!.lastSentReport!, Time.SEND_GRID_DATE_FORMAT),
-          Time.format(new Date(), Time.SEND_GRID_DATE_FORMAT)
-        );
+      const stats = await this.getEmailStats(key, config!);
 
-      let report: ReportType = {
-        summary: { defaulters: 0, notifieds: 0, total: usersOnDb.length },
-        defaulters: [],
-        notifieds: [],
-      };
+      const template = users.reduce((template: Report, user: User) => {
+        return {...template, template: this.buildReport(user, template)}
+      }, this.getTemplate());
 
-      for (const user of usersOnDb) {
-        if (user.isDefaulter()) {
-          template['summary']['totalDefaulters'] =
-            template['summary']['totalDefaulters'] + 1;
-        }
-        if (user.isDefaulter() && !user.isOneDayOldDefaulter()) {
-          template['summary']['newDefaulters'] =
-            template['summary']['newDefaulters'] + 1;
-          template['users'] = [...template['users'], user.getName()];
-          continue;
-        }
-        if (user.isWarned()) {
-          report['summary']['notifieds'] = report['summary']['notifieds'] + 1;
-          report['notifieds'] = [...report['notifieds'], user];
-        }
-      }
+      template.summary.newDefaulters = template.defaulters.length;
+      template.summary.lastReportDate = Time.format(config!.lastSentReport!, Time.SEND_GRID_DATE_FORMAT);
+      
+      stats.reduce()
+          
 
       if (report.defaulters.length === 0) {
         return;
@@ -102,5 +74,42 @@ export class GenerateReportHandler implements IHandler<void> {
         new TemplateEmailConfig(NOTIFICATIONS_EMAIL, destinatary, '', template)
       );
     }
+  }
+
+  private async getEmailStats(key: string, config: AppConfig) {
+    return await this.api
+      .setKey(key)
+      .getEmailStats(
+        Time.format(config.lastSentReport!, Time.SEND_GRID_DATE_FORMAT),
+        Time.format(new Date(), Time.SEND_GRID_DATE_FORMAT)
+      );
+  }
+
+  private buildReport(user: User, template: Report): Report {
+    if (user.isDefaulter() && user.isOneDayOldDefaulter()) {
+      template['summary']['totalDefaulters'] = template['summary']['totalDefaulters'] + 1;
+      template['oldDefaulters'] = [...template['oldDefaulters'], user.getName()];
+    }
+    if (user.isDefaulter() && !user.isOneDayOldDefaulter()) {
+      template['defaulters'] = [...template['defaulters'], user.getName()];
+
+    }
+
+    return template;
+  }
+
+  private getTemplate(): Report {
+    return {
+      defaulters: [],
+      oldDefaulters: [],
+      summary: {
+        totalDefaulters: 0,
+        newDefaulters: 0,
+        lastReportDate: '',
+        reportDate: Time.format(new Date(), Time.SEND_GRID_DATE_FORMAT),
+        totalWarningEmailsSent: 0,
+        totalEmailsRead: 0,
+      },
+    };
   }
 }
