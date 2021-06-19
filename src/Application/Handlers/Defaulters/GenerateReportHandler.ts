@@ -21,13 +21,13 @@ export class GenerateReportHandler implements IHandler<void> {
 
   @Log(process.env.LOG_LEVEL)
   public async handle(): Promise<void> {
-    const adminsOnDb = await this.finder.onlyAdmins().find();
+    const admins = await this.finder.onlyAdmins().find();
 
-    const key = ''; //await this.apiKeyRepository.getSendGridApiKey();
+    const key = process.env.SEND_GRID_API_KEY!; //await this.apiKeyRepository.getSendGridApiKey();
 
-    const stats = await this.api.setKey(key).getEmailStats('', '');
+    const stats = await this.api.setKey(key).getEmailStats('2021-06-01', '2021-06-19');
 
-    for (const admin of adminsOnDb) {
+    for (const admin of admins) {
       const usersOnDb = await this.finder.adminId(admin.getId()).find();
       let report: ReportType = {
         summary: { defaulters: 0, notifieds: 0, total: usersOnDb.length },

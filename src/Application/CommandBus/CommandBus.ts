@@ -62,6 +62,7 @@ export class CommandBus implements ICommandBus {
   private notifier = new EmailNotifier();
   private userFinder = new UserFinder(this.usersRepository);
   private priceBuilder = new PriceBuilder(this.appConfigRepository);
+  private sendGridApi = new SendGridApi(new Api());
  
   constructor() {}
 
@@ -79,7 +80,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof GenerateReportCommand) {
-      return new GenerateReportHandler(this.notifier, this.userFinder, this.appConfigRepository);
+      return new GenerateReportHandler(this.notifier, this.userFinder, this.appConfigRepository, this.sendGridApi);
     }
 
     if (command instanceof EnsureUsersConsistencyCommand) {
