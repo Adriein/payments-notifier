@@ -26,7 +26,6 @@ export class SendGridApi implements IEmailApi {
 
   @Log(process.env.LOG_LEVEL)
   public async getEmailStats(from: string, to: string): Promise<EmailStats[]> {
-    debug(from, to);
     try {
       const results: SendGridStatsResponse = await this.api.get(
         this.STATS_ENDPOINT,
@@ -36,7 +35,7 @@ export class SendGridApi implements IEmailApi {
             'Content-Type': 'application/json',
           },
           params: {
-            start_date: '2021-06-15',
+            start_date: from,
             end_date: to,
           },
         }

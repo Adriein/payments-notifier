@@ -29,16 +29,16 @@ export class ReportSummary {
     return this._totalEmailsSent;
   }
 
-  public incrementTotalEmailsSent = (): void => {
-    this._totalEmailsSent = this._totalEmailsSent + 1;
+  public incrementTotalEmailsSent = (sent: number): void => {
+    this._totalEmailsSent = this._totalEmailsSent + sent;
   }
 
   public totalEmailsOpened = (): number => {
     return this._totalEmailsOpened;
   }
 
-  public incrementTotalEmailsOpened = (): void => {
-    this._totalEmailsOpened = this._totalEmailsOpened + 1;
+  public incrementTotalEmailsOpened = (open: number): void => {
+    this._totalEmailsOpened = this._totalEmailsOpened + open;
   }
 
   public lastReportDate = (): string => {

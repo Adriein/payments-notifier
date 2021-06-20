@@ -4,7 +4,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 
 export class Time implements ITimeUtils {
   public static SEND_GRID_DATE_FORMAT = 'YYYY-MM-DD';
-  public static EUROPEAN_DATE_FORMAT = 'DD-MM-YYYY';
+  public static EUROPEAN_DATE_FORMAT = 'DD/MM/YYYY';
   public equal(date1: Date, date2: Date): boolean {
     return dayjs(date1).isSame(dayjs(date2));
   }
