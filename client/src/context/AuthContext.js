@@ -50,6 +50,20 @@ const logout = (dispatch) => {
   };
 };
 
+const contact = (dispatch) => {
+  return async ({ email, emailContent, subject }) => {
+    try {
+      await server.post('/contact-email', {
+        email,
+        emailContent,
+        subject,
+      });
+    } catch (error) {
+      dispatch({ type: 'add_error', payload: 'Error sending email' });
+    }
+  };
+};
+
 const getToken = () => {
   const cookie = document.cookie
     .split('; ')
@@ -82,6 +96,6 @@ const createAvatar = () => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, getToken, logout, getUsername, createAvatar},
+  { signin, getToken, logout, getUsername, createAvatar, contact },
   { isSignedIn: false, error: undefined, config: {} }
 );

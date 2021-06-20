@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { COLORS } from '../../shared/utils/colors';
 import { MIXIN } from '../../shared/utils/mixin';
 
-export const StyledHeader = styled.div`
+export const Header = styled.div`
   display: flex;
   flex-shrink: 0;
   height: 60px;
@@ -52,4 +52,16 @@ export const UserProfile = styled.div`
 export const UserName = styled.span`
   font-weight: 500;
   margin-left: 10px;
+`;
+
+export const Logo = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center right;
+`;
+
+export const LogoContainer = styled.div`
+  width: 250px;
+  height: 60px;
 `;

@@ -18,7 +18,7 @@ import Contact from '../../project/Contact/Contact';
 import Register from '../../project/Register/Register';
 
 const LandingPage = () => {
-  const { signin, getToken } = useContext(AuthContext);
+  const { signin, getToken, contact } = useContext(AuthContext);
 
   const LOGIN = 'login';
   const REGISTER = 'register';
@@ -73,6 +73,7 @@ const LandingPage = () => {
             <Contact
               modalClose={modal.close}
               onCreate={contactModalHelpers.close}
+              send={contact}
             />
           )}
         />
