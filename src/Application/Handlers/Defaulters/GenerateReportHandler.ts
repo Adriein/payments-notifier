@@ -1,5 +1,4 @@
 import {
-  ADMIN_EMAIL_CONFIG_SUBJECT,
   BACKOFFICE_EMAIL,
   NOTIFICATIONS_EMAIL,
   REPORT_DYNAMIC_TEMPLATE,
@@ -14,23 +13,7 @@ import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository'
 import { IEmailApi } from '../../../Domain/Interfaces/IEmailApi';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Report } from '../../../Domain/Templates/Report.template';
-import { debug } from '../../../Infraestructure/Helpers/Debug.utils';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
-
-// type Summary = {
-//   totalDefaulters: number;
-//   newDefaulters: number;
-//   lastReportDate: string;
-//   reportDate: string;
-//   totalWarningEmailsSent: number;
-//   totalEmailsRead: number;
-// };
-
-// type Report = {
-//   defaulters: string[];
-//   oldDefaulters: string[];
-//   summary: Summary;
-// };
 
 export class GenerateReportHandler implements IHandler<void> {
   constructor(
@@ -64,8 +47,7 @@ export class GenerateReportHandler implements IHandler<void> {
       stats.forEach((stat: EmailStats) =>
         this.fillReportWithStats(stat, report)
       );
-      report.addDefaulter({name: 'invent', email: 'invent@gmail.com'});
-      debug(report);
+
       if (report.defaulters().length === 0) {
         return;
       }

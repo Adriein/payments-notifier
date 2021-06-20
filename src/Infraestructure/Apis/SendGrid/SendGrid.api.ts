@@ -2,7 +2,6 @@ import { Log } from '../../../Domain/Decorators/Log';
 import { EmailStats } from '../../../Domain/Entities/Mail/EmailStats.entity';
 import { IApi } from '../../../Domain/Interfaces/IApi';
 import { IEmailApi } from '../../../Domain/Interfaces/IEmailApi';
-import { debug } from '../../Helpers/Debug.utils';
 
 type SendGridStatsResponse = {
   date: string;
@@ -42,7 +41,6 @@ export class SendGridApi implements IEmailApi {
       );
       return results.map(this.buildStats);
     } catch (error) {
-      debug(error)
       throw new Error();
     }
   }
