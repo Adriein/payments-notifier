@@ -1,8 +1,8 @@
 import { ReportSummary } from './ReportSummary.template';
 
 export class Report {
-  private _defaulters: string[] = [];
-  private _oldDefaulters: string[] = [];
+  private _defaulters: { name: string; email: string }[] = [] as any;
+  private _oldDefaulters: { name: string; email: string }[] = [] as any;
 
   private _summary: ReportSummary;
 
@@ -10,59 +10,62 @@ export class Report {
     this._summary = new ReportSummary(lastReportDate);
   }
 
-  public addDefaulter = (defaulter: string): void => {
+  public addDefaulter = (defaulter: { name: string; email: string }): void => {
     this._defaulters.push(defaulter);
   };
 
-  public addOldDefaulter = (oldDefaulter: string): void => {
+  public addOldDefaulter = (oldDefaulter: {
+    name: string;
+    email: string;
+  }): void => {
     this._oldDefaulters.push(oldDefaulter);
   };
 
-  public defaulters = (): string[] => {
+  public defaulters = (): { name: string; email: string }[] => {
     return this._defaulters;
   };
 
-  public oldDefaulters = (): string[] => {
+  public oldDefaulters = (): { name: string; email: string }[] => {
     return this._oldDefaulters;
   };
 
-  public totalDefaulters = (): (() => number) => {
+  public totalDefaulters = (): number => {
     return this._summary.totalDefaulters;
   };
 
-  public totalNewDefaulters = (): (() => number) => {
+  public totalNewDefaulters = (): number => {
     return this._summary.totalNewDefaulters;
   };
 
-  public totalEmailsSent = (): (() => number) => {
+  public totalEmailsSent = (): number => {
     return this._summary.totalEmailsSent;
   };
 
-  public totalEmailsOpened = (): (() => number) => {
+  public totalEmailsOpened = (): number => {
     return this._summary.totalEmailsOpened;
   };
 
-  public lastReportDate = (): (() => string) => {
+  public lastReportDate = (): string => {
     return this._summary.lastReportDate;
   };
 
-  public reportDate = (): (() => string) => {
+  public reportDate = (): string => {
     return this._summary.reportDate;
   };
 
-  public incrementTotalDefaulters = (): (() => void) => {
-    return this._summary.incrementTotalDefaulters;
+  public incrementTotalDefaulters = (): void => {
+    return this._summary.incrementTotalDefaulters();
   };
 
-  public incrementTotalNewDefaulters = (): (() => void) => {
-    return this._summary.incrementTotalNewDefaulters;
+  public incrementTotalNewDefaulters = (): void => {
+    return this._summary.incrementTotalNewDefaulters();
   };
 
   public incrementTotalEmailsSent = (sent: number): void => {
-    return this._summary.incrementTotalEmailsSent.call(this, sent);
-  }
+    return this._summary.incrementTotalEmailsSent(sent);
+  };
 
   public incrementTotalEmailsOpened = (sent: number): void => {
-    return this._summary.incrementTotalEmailsOpened.call(this, sent);
-  }
+    return this._summary.incrementTotalEmailsOpened(sent);
+  };
 }

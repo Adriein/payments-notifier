@@ -64,7 +64,7 @@ export class GenerateReportHandler implements IHandler<void> {
       stats.forEach((stat: EmailStats) =>
         this.fillReportWithStats(stat, report)
       );
-
+      report.addDefaulter({name: 'invent', email: 'invent@gmail.com'});
       debug(report);
       if (report.defaulters().length === 0) {
         return;
@@ -80,7 +80,7 @@ export class GenerateReportHandler implements IHandler<void> {
           NOTIFICATIONS_EMAIL,
           destinatary,
           REPORT_DYNAMIC_TEMPLATE,
-          report
+          this.mapDomainReportToSendGridReport(report)
         )
       );
     }
@@ -101,10 +101,10 @@ export class GenerateReportHandler implements IHandler<void> {
   private buildReport(user: User, report: Report): Report {
     if (user.isDefaulter() && user.isOneDayOldDefaulter()) {
       report.incrementTotalDefaulters();
-      report.addOldDefaulter(user.getName());
+      report.addOldDefaulter({ name: user.getName(), email: user.getEmail() });
     }
     if (user.isDefaulter() && !user.isOneDayOldDefaulter()) {
-      report.addDefaulter(user.getName());
+      report.addDefaulter({ name: user.getName(), email: user.getEmail() });
     }
 
     return report;
@@ -114,9 +114,24 @@ export class GenerateReportHandler implements IHandler<void> {
     if (stat.opened != 0) {
       report.incrementTotalEmailsOpened(stat.opened);
     }
-    debug(stat.sent);
+
     if (stat.sent != 0) {
       report.incrementTotalEmailsSent(stat.sent);
     }
+  }
+
+  private mapDomainReportToSendGridReport(report: Report): any {
+    return {
+      summary: {
+        totalDefaulters: report.totalDefaulters(),
+        lastReportDate: report.lastReportDate(),
+        reportDate: report.reportDate(),
+        totalWarningEmailsSent: report.totalEmailsSent(),
+        totalEmailsRead: report.totalEmailsOpened(),
+      },
+      defaulters: report.defaulters(),
+      oldDefaulters: report.oldDefaulters(),
+      subject: 'Informe de clientes con tarifa caducada',
+    };
   }
 }
