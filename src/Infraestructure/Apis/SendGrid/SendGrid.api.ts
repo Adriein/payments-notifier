@@ -2,6 +2,7 @@ import { Log } from '../../../Domain/Decorators/Log';
 import { EmailStats } from '../../../Domain/Entities/Mail/EmailStats.entity';
 import { IApi } from '../../../Domain/Interfaces/IApi';
 import { IEmailApi } from '../../../Domain/Interfaces/IEmailApi';
+import { debug } from '../../Helpers/Debug.utils';
 
 type SendGridStatsResponse = {
   date: string;
@@ -25,21 +26,26 @@ export class SendGridApi implements IEmailApi {
 
   @Log(process.env.LOG_LEVEL)
   public async getEmailStats(from: string, to: string): Promise<EmailStats[]> {
-    const results: SendGridStatsResponse = await this.api.get(
-      this.STATS_ENDPOINT,
-      {
-        headers: {
-          Authorization: `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        params: {
-          start_date: from,
-          end_date: to,
-        },
-      }
-    );
-
-    return results.map(this.buildStats);
+    debug(from, to);
+    try {
+      const results: SendGridStatsResponse = await this.api.get(
+        this.STATS_ENDPOINT,
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`,
+            'Content-Type': 'application/json',
+          },
+          params: {
+            start_date: '2021-06-15',
+            end_date: to,
+          },
+        }
+      );
+      return results.map(this.buildStats);
+    } catch (error) {
+      debug(error)
+      throw new Error();
+    }
   }
 
   public setKey(key: string): this {

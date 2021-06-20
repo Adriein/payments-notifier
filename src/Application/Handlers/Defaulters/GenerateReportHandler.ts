@@ -5,12 +5,15 @@ import {
 } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
 import { AppConfig } from '../../../Domain/Entities/AppConfig.entity';
+import { EmailStats } from '../../../Domain/Entities/Mail/EmailStats.entity';
 import { TemplateEmailConfig } from '../../../Domain/Entities/Mail/TemplateEmailConfig';
 import { User } from '../../../Domain/Entities/User.entity';
 import { IHandler, INotifier } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { IEmailApi } from '../../../Domain/Interfaces/IEmailApi';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
+import { Report } from '../../../Domain/Templates/nReport.template';
+import { debug } from '../../../Infraestructure/Helpers/Debug.utils';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
 
 type Summary = {
@@ -48,35 +51,43 @@ export class GenerateReportHandler implements IHandler<void> {
       const config = await this.configRepository.findByAdminId(admin.getId());
 
       const stats = await this.getEmailStats(key, config!);
-
-      const template = users.reduce((template: Report, user: User) => {
-        return {...template, template: this.buildReport(user, template)}
-      }, this.getTemplate());
-
-      template.summary.newDefaulters = template.defaulters.length;
-      template.summary.lastReportDate = Time.format(config!.lastSentReport!, Time.SEND_GRID_DATE_FORMAT);
       
-      stats.reduce()
-          
+      const lastReportDate = Time.format(config!.lastSentReport!, Time.EUROPEAN_DATE_FORMAT);
+      const report = users.reduce((template: Report, user: User) => {
+        return this.buildReport(user, template);
+      }, new Report(lastReportDate));
+      
+      report.summary.newDefaulters = report.defaulters.length;
+      report.summary.lastReportDate = Time.format(config!.lastSentReport!, Time.SEND_GRID_DATE_FORMAT);
+      
+      const {totalEmailSent, totalEmailsRead} = stats.reduce((acc, stat) => {
+        acc.totalEmailSent = acc.totalEmailSent + stat.sent;
+        acc.totalEmailsRead = acc.totalEmailsRead + stat.opened;
+        return acc;
 
+      }, {totalEmailSent: 0, totalEmailsRead: 0});
+          
+      report.summary.totalEmailsRead = totalEmailsRead;
+      report.summary.totalWarningEmailsSent = totalEmailSent;
+      debug(report);
       if (report.defaulters.length === 0) {
         return;
       }
 
-      // const template = await new Report(report, config!).generate();
-
+      throw new Error();
+      
       const destinatary =
         process.env.NODE_ENV! === 'PRO'
           ? process.env.ADMIN_EMAIL!
           : BACKOFFICE_EMAIL;
 
       await this.notifier.notify(
-        new TemplateEmailConfig(NOTIFICATIONS_EMAIL, destinatary, '', template)
+        new TemplateEmailConfig(NOTIFICATIONS_EMAIL, destinatary, '', report)
       );
     }
   }
 
-  private async getEmailStats(key: string, config: AppConfig) {
+  private async getEmailStats(key: string, config: AppConfig): Promise<EmailStats[]> {
     return await this.api
       .setKey(key)
       .getEmailStats(
@@ -87,6 +98,7 @@ export class GenerateReportHandler implements IHandler<void> {
 
   private buildReport(user: User, template: Report): Report {
     if (user.isDefaulter() && user.isOneDayOldDefaulter()) {
+
       template['summary']['totalDefaulters'] = template['summary']['totalDefaulters'] + 1;
       template['oldDefaulters'] = [...template['oldDefaulters'], user.getName()];
     }
