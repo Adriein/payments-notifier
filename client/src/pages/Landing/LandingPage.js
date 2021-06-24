@@ -106,16 +106,33 @@ const LandingPage = () => {
               clientes sin perder calidad en tus asesorías.
             </Styled.HeroSubtitle>
             <Styled.HeroActionButtons>
-              <Button type="submit" variant="primary" onClick={registerModalHelpers.open}>
+              <Button
+                type="submit"
+                variant="primary"
+                onClick={registerModalHelpers.open}
+              >
                 Regístrate
               </Button>
-              <Button type="submit" variant="secondary" onClick={contactModalHelpers.open}>
+              <Button
+                type="submit"
+                variant="secondary"
+                onClick={contactModalHelpers.open}
+              >
                 Contacta con nostros
               </Button>
             </Styled.HeroActionButtons>
           </Styled.HeroDescription>
           <Styled.HeroVideo>
             <iframe
+              width="600"
+              height="338"
+              src="https://www.youtube.com/embed/UyB4vTFaA_c"
+              title="Nutrilog promo"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+            {/* <iframe
               width="400"
               height="200"
               src={`https://www.youtube.com/embed/EZzbh9YjVhQ?list=RDEZzbh9YjVhQ`}
@@ -123,7 +140,7 @@ const LandingPage = () => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               title="Embedded youtube"
-            />
+            /> */}
           </Styled.HeroVideo>
         </Styled.Hero>
       </Styled.HeroWrapper>
@@ -166,7 +183,11 @@ const LandingPage = () => {
             </Styled.WhyCardContent>
           </Styled.WhyCard>
           <Styled.WhyActionButtons>
-            <Button type="submit" variant="primary" onClick={registerModalHelpers.open}>
+            <Button
+              type="submit"
+              variant="primary"
+              onClick={registerModalHelpers.open}
+            >
               ¡Quiero probarlo!
             </Button>
           </Styled.WhyActionButtons>
@@ -200,7 +221,11 @@ const LandingPage = () => {
               que significa que con frecuencia se lanzan actualizaciones pese
               que la app es 100% funcional en los módulos ya lanzados.
               <Styled.WhoActionButtons>
-                <Button type="submit" variant="primary" onClick={contactModalHelpers.open}>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  onClick={contactModalHelpers.open}
+                >
                   Contacta
                 </Button>
               </Styled.WhoActionButtons>

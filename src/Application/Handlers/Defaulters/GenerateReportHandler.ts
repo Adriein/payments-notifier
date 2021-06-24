@@ -28,7 +28,7 @@ export class GenerateReportHandler implements IHandler<void> {
     const admins = await this.finder.onlyAdmins().find();
 
     const key = process.env.SEND_GRID_API_KEY!; //await this.apiKeyRepository.getSendGridApiKey();
-
+    
     for (const admin of admins) {
       const users = await this.finder.adminId(admin.getId()).find();
 
@@ -49,7 +49,7 @@ export class GenerateReportHandler implements IHandler<void> {
       );
 
       if (report.defaulters().length === 0) {
-        return;
+        continue;
       }
 
       const destinatary =
@@ -86,6 +86,7 @@ export class GenerateReportHandler implements IHandler<void> {
       report.addOldDefaulter({ name: user.getName(), email: user.getEmail() });
     }
     if (user.isDefaulter() && !user.isOneDayOldDefaulter()) {
+      report.incrementTotalDefaulters();
       report.addDefaulter({ name: user.getName(), email: user.getEmail() });
     }
 

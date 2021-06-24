@@ -37,6 +37,15 @@ export class AppConfigRepository
   }
 
   @Log(process.env.LOG_LEVEL)
+  public async update(config: AppConfig): Promise<void> {
+    const datamodel = this.mapper.datamodel(config);
+    const query = this.buildUpdateQuery(datamodel); 
+    await this.db.query(
+      `${query} WHERE user_id='${datamodel.user_id}'`
+    );
+  }
+
+  @Log(process.env.LOG_LEVEL)
   public async updatePricing(config: AppConfig): Promise<void> {
     const datamodel = this.mapper.datamodel(config);
     await this.db.query(

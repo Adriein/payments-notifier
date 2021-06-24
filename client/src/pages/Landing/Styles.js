@@ -31,7 +31,7 @@ export const Signin = styled.div`
   justify-content: center;
   align-items: center;
   height: 100px;
-  margin-right: 230px;
+  margin-right: 263px;
 `;
 
 export const HeroWrapper = styled.div`
@@ -48,7 +48,6 @@ export const Hero = styled.div`
 export const HeroDescription = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   width: 50%;
   margin-right: 100px;
 `;
@@ -56,7 +55,7 @@ export const HeroDescription = styled.div`
 export const HeroVideo = styled.div``;
 
 export const HeroTitle = styled.p`
-  font-size: 30px;
+  font-size: 40px;
 `;
 
 export const HeroTitleEmphasis = styled.p`
@@ -66,8 +65,9 @@ export const HeroTitleEmphasis = styled.p`
 
 export const HeroSubtitle = styled.p`
   color: ${COLORS.textLight};
-  margin-top: 10px;
+  margin-top: 30px;
   margin-bottom: 10px;
+  flex-grow: 1;
 `;
 
 export const HeroActionButtons = styled.div`

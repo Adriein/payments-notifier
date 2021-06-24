@@ -33,7 +33,7 @@ const EditUser = ({ modalClose, onCreate }) => {
       await getAppConfig();
     })();
   }, []);
-  console.log(editingUser);
+
   return (
     <Form
       enableReinitialize
