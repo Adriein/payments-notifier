@@ -9,7 +9,9 @@ export const StyledInput = styled.div`
   width: 100%;
 `;
 
-export const InputElement = styled.input`
+export const InputElement = styled.input.attrs((props) => ({
+  type: props.type || 'text',
+}))`
   height: 100%;
   width: 100%;
   padding: 0 7px;
@@ -17,7 +19,7 @@ export const InputElement = styled.input`
   border: 1px solid ${COLORS.borderLightest};
   background: ${COLORS.backgroundLightest};
   transition: background 0.1s;
-  ${props => props.hasIcon && 'padding-left: 32px;'};
+  ${(props) => props.hasIcon && 'padding-left: 32px;'};
   &:hover {
     background: ${COLORS.backgroundLight};
   }

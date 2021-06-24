@@ -44,7 +44,7 @@ const Login = ({ modalClose, onCreate, signin }) => {
           Accede a Nutri<TitleSpan>log</TitleSpan>
         </FormHeading>
         <Form.Field.Input name="email" label="Email" />
-        <Form.Field.Input name="password" label="Password" />
+        <Form.Field.Input name="password" label="Password" type="password"/>
         <Actions>
           <ActionButton type="submit" variant="primary">
             Entrar
