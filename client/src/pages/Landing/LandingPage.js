@@ -7,6 +7,7 @@ import Login from '../../project/Login/Login';
 import onlinePaymentsImg from '../../img/undraw_online_payments_luau.svg';
 import dietImg from '../../img/undraw_healthy_options_sdo3.svg';
 import exercicesImg from '../../img/undraw_fitness_stats_sht6.svg';
+import socialImg from '../../img/undraw_Followers_re_6k3g.svg'
 import developer from '../../img/curridefi.jpg';
 import logo from '../../img/nutrilog-C3.png';
 
@@ -59,6 +60,7 @@ const LandingPage = () => {
             <Register
               modalClose={modal.close}
               onCreate={registerModalHelpers.close}
+              send={contact}
             />
           )}
         />
@@ -132,15 +134,6 @@ const LandingPage = () => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
             ></iframe>
-            {/* <iframe
-              width="400"
-              height="200"
-              src={`https://www.youtube.com/embed/EZzbh9YjVhQ?list=RDEZzbh9YjVhQ`}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title="Embedded youtube"
-            /> */}
           </Styled.HeroVideo>
         </Styled.Hero>
       </Styled.HeroWrapper>
@@ -180,6 +173,17 @@ const LandingPage = () => {
               Pautar ejercicios y guiar a tus clientes para realizarlos
               correctamente nunca fue tan fácil, con Nutrilog recibes las
               herramientas adecuadas para hacer progresar a tus clientes
+            </Styled.WhyCardContent>
+          </Styled.WhyCard>
+          <Styled.WhyCard>
+            <Styled.WhyCardMedia src={socialImg} />
+            <Styled.WhyCardTitle>SOCIAL</Styled.WhyCardTitle>
+            <Styled.WhyCardSubtitle>EN DESARROLLO</Styled.WhyCardSubtitle>
+            <Styled.WhyCardContent>
+              Un area para clientes desde donde pueden consultar sus dietas y
+              rutinas, hacer peticiones de modificaciones y consultar graficas
+              donde pueden ver sus progresiones (peso, ejercicios, perdida de
+              grasa, etc)
             </Styled.WhyCardContent>
           </Styled.WhyCard>
           <Styled.WhyActionButtons>

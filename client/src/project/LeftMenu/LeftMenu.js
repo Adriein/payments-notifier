@@ -2,19 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { NavLeft, Bottom, Item, ItemText, StyledLogo } from './Styles';
-import { FiPlus, FiSettings, FiHelpCircle, FiTrello, FiLogOut } from 'react-icons/fi';
+import { FiPlus, FiSettings, FiHelpCircle, FiTrello, FiLogOut, FiUser } from 'react-icons/fi';
 import AboutTooltip from '../../shared/components/AboutTooltip/AboutTooltip';
 
 const propTypes = {
   configAppModalOpen: PropTypes.func.isRequired,
   userCreateModalOpen: PropTypes.func.isRequired,
   pricingCreateModalOpen: PropTypes.func.isRequired,
+  accountModalOpen: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const LeftMenu = ({
   configAppModalOpen,
   userCreateModalOpen,
   pricingCreateModalOpen,
+  accountModalOpen,
   logout
 }) => (
   <NavLeft>
@@ -42,6 +45,12 @@ const LeftMenu = ({
           <FiLogOut />
         </StyledLogo>
         <ItemText>Salir</ItemText>
+      </Item>
+      <Item onClick={accountModalOpen}>
+        <StyledLogo>
+          <FiUser />
+        </StyledLogo>
+        <ItemText>Cuenta</ItemText>
       </Item>
       <AboutTooltip
         placement="right"

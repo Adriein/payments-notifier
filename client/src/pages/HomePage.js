@@ -10,6 +10,7 @@ import LeftMenu from '../project/LeftMenu/LeftMenu';
 import AppConfig from '../project/AppConfig/AppConfig';
 import CreatePricing from '../project/CreatePricing/CreatePricing';
 import { Context as AuthContext } from '../context/AuthContext';
+import Account from '../project/Account/Account';
 
 export default function HomePage() {
   const { logout } = useContext(AuthContext);
@@ -18,11 +19,13 @@ export default function HomePage() {
   const USER_EDIT = 'user-edit';
   const CONFIG_APP = 'app-config';
   const PRICING_CREATE = 'pricing-create';
+  const ACCOUNT = 'account';
 
   const userCreateModalHelpers = useQueryParamModal(USER_CREATE);
   const userEditModalHelpers = useQueryParamModal(USER_EDIT);
   const configAppModalHelpers = useQueryParamModal(CONFIG_APP);
   const pricingCreateAppModalHelpers = useQueryParamModal(PRICING_CREATE);
+  const accountModalHelpers = useQueryParamModal(ACCOUNT);
 
   return (
     <div className="page__container--main">
@@ -31,6 +34,7 @@ export default function HomePage() {
         configAppModalOpen={configAppModalHelpers.open}
         userCreateModalOpen={userCreateModalHelpers.open}
         pricingCreateModalOpen={pricingCreateAppModalHelpers.open}
+        accountModalOpen={accountModalHelpers.open}
         logout={logout}
       />
       <div className="wrapper">
@@ -86,6 +90,20 @@ export default function HomePage() {
               <CreatePricing
                 modalClose={modal.close}
                 onCreate={pricingCreateAppModalHelpers.close}
+              />
+            )}
+          />
+        )}
+        {accountModalHelpers.isOpen() && (
+          <Modal
+            isOpen
+            width={800}
+            withCloseIcon={false}
+            onClose={accountModalHelpers.close}
+            renderContent={(modal) => (
+              <Account
+                modalClose={modal.close}
+                onCreate={accountModalHelpers.close}
               />
             )}
           />
