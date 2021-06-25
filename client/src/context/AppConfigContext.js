@@ -50,10 +50,10 @@ const getAppConfig = (dispatch) => {
 };
 
 const createPricing = (dispatch) => {
-  return async ({ name, duration, price }) => {
+  return async ({ name, duration, pricing }) => {
     try {
       dispatch({ type: REQUEST_ACTION });
-      await server.post('/appConfig/pricing', { name, duration, price });
+      await server.post('/appConfig/pricing', { name, duration, price: pricing });
       dispatch({ type: FINISH_LOADING_ACTION });
       getAppConfig(dispatch)();
     } catch (error) {

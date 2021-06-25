@@ -28,7 +28,7 @@ export class GenerateReportHandler implements IHandler<void> {
     const admins = await this.finder.onlyAdmins().find();
 
     const key = process.env.SEND_GRID_API_KEY!; //await this.apiKeyRepository.getSendGridApiKey();
-    
+
     for (const admin of admins) {
       const users = await this.finder.adminId(admin.getId()).find();
 
@@ -40,13 +40,8 @@ export class GenerateReportHandler implements IHandler<void> {
         config!.lastSentReport!,
         Time.EUROPEAN_DATE_FORMAT
       );
-      const report = users.reduce((template: Report, user: User) => {
-        return this.buildReport(user, template);
-      }, new Report(lastReportDate));
 
-      stats.forEach((stat: EmailStats) =>
-        this.fillReportWithStats(stat, report)
-      );
+      const report = this.generateReport(users, lastReportDate, stats);
 
       if (report.defaulters().length === 0) {
         continue;
@@ -65,7 +60,23 @@ export class GenerateReportHandler implements IHandler<void> {
           this.mapDomainReportToSendGridReport(report)
         )
       );
+
+      this.configRepository.updateLastReportDate(config!.id);
     }
+  }
+
+  private generateReport(
+    users: User[],
+    lastReportDate: string,
+    stats: EmailStats[]
+  ) {
+    const report = users.reduce((template: Report, user: User) => {
+      return this.buildReport(user, template);
+    }, new Report(lastReportDate));
+
+    stats.forEach((stat: EmailStats) => this.fillReportWithStats(stat, report));
+
+    return report;
   }
 
   private async getEmailStats(

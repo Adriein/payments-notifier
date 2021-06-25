@@ -52,4 +52,11 @@ export class AppConfigRepository
       `UPDATE ${this.entity} SET pricing='${datamodel.pricing}' WHERE user_id='${datamodel.user_id}'`
     );
   }
+
+  @Log(process.env.LOG_LEVEL)
+  public async updateLastReportDate(id: string): Promise<void> {
+    await this.db.query(
+      `UPDATE ${this.entity} SET last_sent_report=now() WHERE id='${id}'`
+    );
+  }
 }
