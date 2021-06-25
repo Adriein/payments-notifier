@@ -184,11 +184,11 @@ export class User implements ISerializable {
     throw new SubscriptionError();
   }
 
-  public get isConfiguredDaysBeforeExpiration(): (
+  public get isAboutToExpire(): (
     daysBeforeExpiration: number | undefined
   ) => boolean {
     if (this.subscription) {
-      return this.subscription.isConfiguredDaysBeforeExpiration;
+      return this.subscription.isAboutToExpire;
     }
     throw new SubscriptionError();
   }

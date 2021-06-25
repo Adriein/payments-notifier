@@ -1,5 +1,5 @@
+import { Time } from '../../Infraestructure/Helpers/Time.utils';
 import { LastPaymentDateError } from '../Errors';
-import dayjs from 'dayjs';
 
 export class LastPaymentDate {
   private _date: Date;
@@ -11,8 +11,8 @@ export class LastPaymentDate {
     if (date.includes('/')) {
       formatedDate = this.formatStringDate(date);
     }
-
-    const parsedDate = dayjs(formatedDate).format('YYYY-MM-DD');
+    
+    const parsedDate = Time.format(formatedDate, Time.AMERICAN_DATE_FORMAT);
 
     if (!this.regex.test(parsedDate)) {
       throw new LastPaymentDateError();

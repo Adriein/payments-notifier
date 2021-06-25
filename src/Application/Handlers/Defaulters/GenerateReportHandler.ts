@@ -75,8 +75,8 @@ export class GenerateReportHandler implements IHandler<void> {
     return await this.api
       .setKey(key)
       .getEmailStats(
-        Time.format(config.lastSentReport!, Time.SEND_GRID_DATE_FORMAT),
-        Time.format(new Date(), Time.SEND_GRID_DATE_FORMAT)
+        Time.format(config.lastSentReport!, Time.AMERICAN_DATE_FORMAT),
+        Time.format(new Date(), Time.AMERICAN_DATE_FORMAT)
       );
   }
 
