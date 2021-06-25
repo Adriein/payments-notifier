@@ -130,9 +130,9 @@ const LandingPage = () => {
               height="338"
               src="https://www.youtube.com/embed/UyB4vTFaA_c"
               title="Nutrilog promo"
-              frameborder="0"
+              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
+              allowFullScreen
             ></iframe>
           </Styled.HeroVideo>
         </Styled.Hero>

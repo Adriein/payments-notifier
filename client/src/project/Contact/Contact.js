@@ -58,10 +58,7 @@ const Contact = ({ modalClose, send, onCreate }) => {
           tip="Escribe tus dudas o tus sugerencias, en Nutrilog nos encanta ayudar a nuestros clientes"
         />
         <Actions>
-          <ActionButton
-            type="submit"
-            variant="primary" /*loading={state.loading}*/
-          >
+          <ActionButton type="submit" variant="primary">
             Enviar
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>

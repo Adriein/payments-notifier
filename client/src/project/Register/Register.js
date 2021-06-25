@@ -109,10 +109,7 @@ const Register = ({ modalClose, send, onCreate }) => {
           tip="Indica que deseas una prueba de 60 días y nos pondremos en contacto"
         />
         <Actions>
-          <ActionButton
-            type="submit"
-            variant="primary" /*loading={state.loading}*/
-          >
+          <ActionButton type="submit" variant="primary">
             Enviar
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>
