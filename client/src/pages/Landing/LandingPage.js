@@ -82,7 +82,7 @@ const LandingPage = () => {
         />
       )}
       <Styled.Header>
-        <Styled.ContentWrapper>
+        <Styled.HeaderMargin>
           <Styled.Logo src={logoWhite} />
           <Styled.Space />
           <Styled.Signin>
@@ -94,10 +94,10 @@ const LandingPage = () => {
               Entrar
             </Button>
           </Styled.Signin>
-        </Styled.ContentWrapper>
+        </Styled.HeaderMargin>
       </Styled.Header>
       <Styled.HeroWrapper>
-        <Styled.Hero>
+        <Styled.HeroMargin>
           <Styled.HeroDescription>
             <Styled.HeroTitle>
               La solución integral para profesionales del
@@ -130,7 +130,7 @@ const LandingPage = () => {
           <Styled.HeroVideo>
             <iframe
               width="600"
-              height="338"
+              height="100%"
               src="https://www.youtube.com/embed/UyB4vTFaA_c"
               title="Nutrilog promo"
               frameBorder="0"
@@ -138,7 +138,7 @@ const LandingPage = () => {
               allowFullScreen
             ></iframe>
           </Styled.HeroVideo>
-        </Styled.Hero>
+        </Styled.HeroMargin>
       </Styled.HeroWrapper>
       <Styled.WhyWrapper>
         <Styled.WhyHero>

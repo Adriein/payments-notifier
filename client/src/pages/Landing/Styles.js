@@ -14,7 +14,7 @@ export const Header = styled.div`
   background-color: black;
 `;
 
-export const ContentWrapper = styled.div`
+export const HeaderMargin = styled.div`
   display: flex;
   margin-left: 230px;
   margin-right: 230px;
@@ -50,6 +50,19 @@ export const Signin = styled.div`
   height: 100px;
 `;
 
+export const HeroMargin = styled.div`
+  display: flex;
+  margin-left: 230px;
+  margin-right: 230px;
+
+  @media ${QUERIES.laptopAndSmaller} {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
+`;
+
 export const HeroWrapper = styled.div`
   background-color: ${COLORS.backgroundWhite};
   padding: 80px 0px;
@@ -57,21 +70,32 @@ export const HeroWrapper = styled.div`
 
 export const Hero = styled.div`
   display: flex;
-  margin-left: 230px;
-  margin-right: 230px;
 `;
 
 export const HeroDescription = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 50%;
   margin-right: 100px;
+  min-height: 338px;
+  flex-direction: column;
+
+  @media ${QUERIES.laptopAndSmaller} {
+    margin: 0;
+  }
 `;
 
-export const HeroVideo = styled.div``;
+export const HeroVideo = styled.div`
+`;
 
 export const HeroTitle = styled.p`
   font-size: 40px;
+
+  @media ${QUERIES.bigLaptopAndSmaller} {
+    font-size: 35px;
+  }
+
+  @media ${QUERIES.phoneAndSmaller} {
+    font-size: 20px;
+  }
 `;
 
 export const HeroTitleEmphasis = styled.p`
