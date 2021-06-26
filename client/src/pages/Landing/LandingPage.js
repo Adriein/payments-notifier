@@ -7,9 +7,10 @@ import Login from '../../project/Login/Login';
 import onlinePaymentsImg from '../../img/undraw_online_payments_luau.svg';
 import dietImg from '../../img/undraw_healthy_options_sdo3.svg';
 import exercicesImg from '../../img/undraw_fitness_stats_sht6.svg';
-import socialImg from '../../img/undraw_Followers_re_6k3g.svg'
+import socialImg from '../../img/undraw_Followers_re_6k3g.svg';
 import developer from '../../img/curridefi.jpg';
-import logo from '../../img/nutrilog-C3.png';
+import logoWhite from '../../img/Logo-white.png';
+import logoPhoneWhite from '../../img/Logo-phone-white.png';
 
 import { Context as AuthContext } from '../../context/AuthContext';
 import { Redirect } from 'react-router-dom';
@@ -81,17 +82,19 @@ const LandingPage = () => {
         />
       )}
       <Styled.Header>
-        <Styled.Logo src={logo} />
-        <Styled.Space />
-        <Styled.Signin>
-          <Button
-            type="submit"
-            variant="secondary"
-            onClick={loginModalHelpers.open}
-          >
-            Entrar
-          </Button>
-        </Styled.Signin>
+        <Styled.ContentWrapper>
+          <Styled.Logo src={logoWhite} />
+          <Styled.Space />
+          <Styled.Signin>
+            <Button
+              type="submit"
+              variant="secondary"
+              onClick={loginModalHelpers.open}
+            >
+              Entrar
+            </Button>
+          </Styled.Signin>
+        </Styled.ContentWrapper>
       </Styled.Header>
       <Styled.HeroWrapper>
         <Styled.Hero>
@@ -180,9 +183,9 @@ const LandingPage = () => {
             <Styled.WhyCardTitle>SOCIAL</Styled.WhyCardTitle>
             <Styled.WhyCardSubtitle>EN DESARROLLO</Styled.WhyCardSubtitle>
             <Styled.WhyCardContent>
-              Un area para clientes desde donde pueden consultar sus dietas y
-              rutinas, hacer peticiones de modificaciones y consultar graficas
-              donde pueden ver sus progresiones (peso, ejercicios, perdida de
+              Un área para clientes desde donde pueden consultar sus dietas y
+              rutinas, hacer peticiones de modificaciones y consultar gráficas
+              donde pueden ver sus progresiones (peso, ejercicios, pérdida de
               grasa, etc)
             </Styled.WhyCardContent>
           </Styled.WhyCard>

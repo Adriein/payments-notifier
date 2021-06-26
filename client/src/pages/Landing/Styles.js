@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { COLORS } from '../../shared/utils/colors';
 import { FaLinkedin } from 'react-icons/fa';
+import { QUERIES } from '../../shared/utils/constants';
 
 export const LandingPage = styled.div`
   overflow-x: hidden;
@@ -13,12 +14,29 @@ export const Header = styled.div`
   background-color: black;
 `;
 
+export const ContentWrapper = styled.div`
+  display: flex;
+  margin-left: 230px;
+  margin-right: 230px;
+  width: 100%;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    margin: 0;
+    align-items: center;
+    padding: 0px 10px;
+  }
+`;
+
 export const Logo = styled.img`
-  margin-left: 205px;
-  width: 300px;
+  width: 250px;
   height: 100px;
-  object-fit: cover;
-  object-position: center right;
+  object-fit: contain;
+  object-position: center-right;
+
+  @media ${QUERIES.phoneAndSmaller} {
+    width: 200px;
+    height: 100px;
+  }
 `;
 
 export const Space = styled.div`
@@ -26,12 +44,10 @@ export const Space = styled.div`
 `;
 
 export const Signin = styled.div`
-  align-self: flex-end;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100px;
-  margin-right: 263px;
 `;
 
 export const HeroWrapper = styled.div`
