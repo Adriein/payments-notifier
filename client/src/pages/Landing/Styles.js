@@ -66,10 +66,10 @@ export const HeroMargin = styled.div`
 export const HeroWrapper = styled.div`
   background-color: ${COLORS.backgroundWhite};
   padding: 80px 0px;
-`;
 
-export const Hero = styled.div`
-  display: flex;
+  @media ${QUERIES.phoneAndSmaller} {
+    padding: 30px 0px;
+  }
 `;
 
 export const HeroDescription = styled.div`
@@ -80,21 +80,31 @@ export const HeroDescription = styled.div`
 
   @media ${QUERIES.laptopAndSmaller} {
     margin: 0;
+    padding: 0 10px;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
 export const HeroVideo = styled.div`
+  @media ${QUERIES.phoneAndSmaller} {
+    margin-top: 20px;
+  }
 `;
 
 export const HeroTitle = styled.p`
   font-size: 40px;
 
   @media ${QUERIES.bigLaptopAndSmaller} {
-    font-size: 35px;
+    font-size: 30px;
+  }
+
+  @media ${QUERIES.laptopAndSmaller} {
+    text-align: center;
   }
 
   @media ${QUERIES.phoneAndSmaller} {
-    font-size: 20px;
+    font-size: 25px;
   }
 `;
 
@@ -108,6 +118,16 @@ export const HeroSubtitle = styled.p`
   margin-top: 30px;
   margin-bottom: 10px;
   flex-grow: 1;
+
+  @media ${QUERIES.laptopAndSmaller} {
+    text-align: center;
+    max-width: 650px;
+    flex-grow: 0;
+  }
+
+  @media ${QUERIES.phoneAndSmaller} {
+    font-size: 15px;
+  }
 `;
 
 export const HeroActionButtons = styled.div`
@@ -118,10 +138,16 @@ export const HeroActionButtons = styled.div`
 `;
 
 export const WhyWrapper = styled.div`
-  padding: 50px 50px 50px 50px;
+  padding: 50px 0px;
   display: flex;
   justify-content: center;
+  margin-left: 230px;
+  margin-right: 230px;
   color: ${COLORS.textMedium};
+
+  @media ${QUERIES.laptopAndSmaller} {
+    margin: 0;
+  }
 `;
 
 export const WhyTitle = styled.h2`
@@ -129,6 +155,10 @@ export const WhyTitle = styled.h2`
   display: flex;
   justify-content: center;
   font-weight: 500;
+
+  @media ${QUERIES.phoneAndSmaller} {
+    flex-wrap: wrap;
+  }
 `;
 
 export const WhyTitleSpan = styled.span`
@@ -145,9 +175,10 @@ export const WhyCard = styled.div`
   overflow: hidden;
 `;
 
-export const WhyHero = styled(Hero)`
+export const WhyHero = styled.div`
+  display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 
 export const WhyCardTitle = styled.h3`
@@ -217,6 +248,10 @@ export const LinkedinIcon = styled(FaLinkedin)`
 
 export const WhoTextWrapper = styled.div`
   display: flex;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    flex-direction: column;
+  }
 `;
 
 export const WhoActionButtons = styled.div`
@@ -227,11 +262,9 @@ export const WhoActionButtons = styled.div`
 export const WhoTitle = styled.h2`
   padding-bottom: 10px;
   width: 100%;
-  display: flex;
   font-weight: 500;
-`;
-
-export const WhoTitleSpan = styled.span`
-  color: ${COLORS.primary};
-  margin-right: 6px;
+  &:after {
+    content: 'log';
+    color: ${COLORS.primary};
+  }
 `;

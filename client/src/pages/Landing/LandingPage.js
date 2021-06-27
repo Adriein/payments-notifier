@@ -217,10 +217,7 @@ const LandingPage = () => {
               </Styled.LogoLink>
             </Styled.WhoCard>
             <Styled.WhoBodyText>
-              <Styled.WhoTitle>
-                El equipo y la misión de Nutri
-                <Styled.WhoTitleSpan>log</Styled.WhoTitleSpan>
-              </Styled.WhoTitle>
+              <Styled.WhoTitle>El equipo y la misión de Nutri</Styled.WhoTitle>
               Los valores primordiales que sigue el desarrollo de Nutri
               <Styled.WhyTitleSpan>log</Styled.WhyTitleSpan>son la honestidad y
               la transparencia. La misión es llegar a ser la app de referencia
