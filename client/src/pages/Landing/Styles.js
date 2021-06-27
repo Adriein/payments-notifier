@@ -87,6 +87,9 @@ export const HeroDescription = styled.div`
 `;
 
 export const HeroVideo = styled.div`
+  @media ${QUERIES.laptopAndSmaller} {
+    display: none;
+  }
   @media ${QUERIES.phoneAndSmaller} {
     margin-top: 20px;
   }
