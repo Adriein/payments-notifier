@@ -52,6 +52,9 @@ import { ContactEmailCommand } from "../../Domain/Commands/Backoffice/ContactEma
 import { SendContactEmailHandler } from "../Handlers/Backoffice/SendContactEmailHandler";
 import { Api } from "../../Infraestructure/Apis/Api";
 import { SendGridApi } from "../../Infraestructure/Apis/SendGrid/SendGrid.api";
+import { CryptoService } from "../../Domain/Services/CryptoService";
+import { UpdateUserPasswordCommand } from "../../Domain/Commands/User/UpdateUserPasswordCommand";
+import { UpdateUserPasswordHandler } from "../Handlers/User/UpdateUserPasswordHandler";
 
 export class CommandBus implements ICommandBus {
   //repos
@@ -63,6 +66,7 @@ export class CommandBus implements ICommandBus {
   private userFinder = new UserFinder(this.usersRepository);
   private priceBuilder = new PriceBuilder(this.appConfigRepository);
   private sendGridApi = new SendGridApi(new Api());
+  private cryptoService = new CryptoService();
  
   constructor() {}
 
@@ -92,7 +96,7 @@ export class CommandBus implements ICommandBus {
     }
 
     if (command instanceof SignInCommand) {
-      return new SignInHandler(this.userFinder);
+      return new SignInHandler(this.userFinder, this.cryptoService);
     }
 
     if (command instanceof ReadUserCommand) {
@@ -153,6 +157,10 @@ export class CommandBus implements ICommandBus {
 
     if(command instanceof ContactEmailCommand) {
       return new SendContactEmailHandler(this.notifier);
+    }
+
+    if(command instanceof UpdateUserPasswordCommand) {
+      return new UpdateUserPasswordHandler(this.userFinder, this.usersRepository, this.cryptoService);
     }
 
     throw new Error();

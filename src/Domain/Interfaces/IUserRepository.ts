@@ -15,4 +15,5 @@ export interface IUserRepository extends IRepository<User> {
   ): Promise<void>;
   insertNewSubscription(user: User): Promise<void>;
   getAllSubscriptionsByUser(id: string): Promise<Subscription[]>;
+  updatePassword(id: string, password: string): Promise<void>;
 }

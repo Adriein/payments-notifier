@@ -8,8 +8,7 @@ import { UserFinder } from '../../../Domain/Services/UserFinder';
 
 
 export class SignInHandler implements IHandler<void> {
-  private cryptoService = new CryptoService();
-  constructor(private finder: UserFinder) {}
+  constructor(private finder: UserFinder, private cryptoService: CryptoService) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(comm: ICommand): Promise<void> {

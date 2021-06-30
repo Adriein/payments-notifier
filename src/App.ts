@@ -19,6 +19,7 @@ import './Infraestructure/Rest/Controllers/Users/DeleteUserController';
 import './Infraestructure/Rest/Controllers/Users/RegisterUserPaymentController';
 import './Infraestructure/Rest/Controllers/Users/UpdateUserController';
 import './Infraestructure/Rest/Controllers/Users/UpdateUserNotificationController';
+import './Infraestructure/Rest/Controllers/Users/UpdateUserPasswordController';
 import './Infraestructure/Rest/Controllers/Defaulters/CheckForDefaultersController';
 import './Infraestructure/Rest/Controllers/Defaulters/GenerateDefaultersReportController';
 import './Infraestructure/Rest/Controllers/Config/CreatePricingController';

@@ -13,7 +13,8 @@ import { SubscriptionMapper } from '../Mappers/SubscriptionMapper';
 
 export class UserRepository
   extends GenericRepository<User>
-  implements IUserRepository {
+  implements IUserRepository
+{
   constructor(
     protected entity: string,
     protected mapper: UserMapper,
@@ -164,5 +165,12 @@ export class UserRepository
     );
 
     return rows.map((row) => this.subscriptionMapper.domain(row));
+  }
+
+  @Log(process.env.LOG_LEVEL)
+  async updatePassword(id: string, password: string): Promise<void> {
+    await this.db.query(
+      `UPDATE ${this.entity} SET password='${password}' WHERE id = '${id}'`
+    );
   }
 }
