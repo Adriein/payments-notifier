@@ -23,7 +23,7 @@ export class CreateMoneyChartHandler implements IHandler<Chart> {
         return [
           ...(await subscriptions),
           ...(await this.repository.getAllSubscriptionsByUser(
-            user.getId()
+            user.id()
           )),
         ];
       },

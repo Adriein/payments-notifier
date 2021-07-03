@@ -1,15 +1,13 @@
 import { ActivityType } from '../constants';
 import { ActivityError } from '../Errors/ActivityError';
+import { ValueObject } from './ValueObject';
 
-export class Activity {
+export class Activity extends ValueObject {
   private activity: string;
   constructor(activity: string) {
-    if (
-      typeof activity !== 'string' ||
-      (activity !== ActivityType.low &&
-        activity !== ActivityType.moderate &&
-        activity !== ActivityType.high)
-    ) {
+    super();
+
+    if (this.validate(activity)) {
       throw new ActivityError();
     }
 
@@ -18,5 +16,14 @@ export class Activity {
 
   public get value(): string {
     return this.activity;
+  }
+
+  protected validate(activity: string): boolean {
+    return (
+      typeof activity !== 'string' ||
+      (activity !== ActivityType.low &&
+        activity !== ActivityType.moderate &&
+        activity !== ActivityType.high)
+    );
   }
 }

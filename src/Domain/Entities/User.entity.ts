@@ -1,41 +1,35 @@
-import { v4 as uuidv4 } from 'uuid';
 import { SubscriptionError } from '../Errors/Users/SubscriptionError';
-import { ISerializable } from '../Interfaces/ISerializable';
-import { Activity } from '../VO/Activity.vo';
-import { Age } from '../VO/Age.vo';
 import { Email } from '../VO/Email.vo';
+import { ID } from '../VO/Id.vo';
 import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
 import { Password } from '../VO/Password.vo';
 import { Pricing } from '../VO/Pricing.vo';
-import { Nutrition } from './Nutrition.entity';
+import { BaseEntity } from './BaseEntity';
 import { Subscription } from './Subscription.entity';
 import { UserConfig } from './UserConfig.entity';
 
-export class User implements ISerializable {
+export class User extends BaseEntity {
   public static build(
     name: string,
     email: Email,
     config: UserConfig,
     ownerId?: string
   ): User {
-    return new User(uuidv4(), name, email, config, ownerId);
+    return new User(ID.generate(), name, email, config, ownerId);
   }
   constructor(
-    private id: string,
+    _id: ID,
     private name: string,
     private email: Email,
     private config: UserConfig,
     private _ownerId?: string
-  ) {}
+  ) {
+    super(_id, new Date(), new Date());
+  }
 
   private subscription?: Subscription;
   private password?: string;
   private _createdAt?: Date;
-  private nutrition?: Nutrition;
-
-  public getId(): string {
-    return this.id;
-  }
 
   public getName(): string {
     return this.name;
@@ -72,25 +66,21 @@ export class User implements ISerializable {
   public createSubscription(
     pricing: Pricing,
     lastPayment: LastPaymentDate,
+    id?: string,
     isWarned: boolean = false,
-    isNotified: boolean = false
+    isNotified: boolean = false,
+    isActive: boolean = false
   ): void {
-    this.subscription = Subscription.build(
-      pricing,
-      lastPayment,
-      isWarned,
-      isNotified
-    );
-  }
+    if (!id) {
+      this.subscription = Subscription.build(
+        pricing,
+        lastPayment,
+        isWarned,
+        isNotified
+      );
+      return;
+    }
 
-  public setSubscription(
-    id: string,
-    pricing: Pricing,
-    lastPayment: LastPaymentDate,
-    isWarned: boolean,
-    isNotified: boolean,
-    isActive: boolean
-  ): void {
     this.subscription = new Subscription(
       id,
       pricing,
@@ -100,60 +90,6 @@ export class User implements ISerializable {
       isActive
     );
   }
-
-  public createNutrition(
-    weight: number,
-    height: number,
-    kcal: number,
-    allergies: string[],
-    favourites: string[],
-    hated: string[],
-    age: Age,
-    activity: Activity
-  ) {
-    this.nutrition = Nutrition.build(
-      weight,
-      height,
-      kcal,
-      allergies,
-      favourites,
-      hated,
-      age,
-      activity
-    );
-  }
-
-  public setNutrition(
-    id: string,
-    weight: number,
-    height: number,
-    kcal: number,
-    allergies: string[],
-    favourites: string[],
-    hated: string[],
-    age: Age,
-    activity: Activity
-  ) {
-    this.nutrition = new Nutrition(
-      id,
-      weight,
-      height,
-      kcal,
-      allergies,
-      favourites,
-      hated,
-      age,
-      activity
-    );
-  }
-
-  public hasNutrition = (): boolean => {
-    if (this.nutrition) {
-      return true;
-    }
-
-    return false;
-  };
 
   public hasSubscription = (): boolean => {
     if (this.subscription) {
@@ -282,78 +218,6 @@ export class User implements ISerializable {
     return this.config.getId;
   }
 
-  public get nutritionId(): () => string {
-    if (this.nutrition) {
-      return this.nutrition.getId;
-    }
-
-    throw new Error();
-  }
-
-  public get weight(): () => number {
-    if (this.nutrition) {
-      return this.nutrition.getWeight;
-    }
-
-    throw new Error();
-  }
-
-  public get height(): () => number {
-    if (this.nutrition) {
-      return this.nutrition.getHeight;
-    }
-
-    throw new Error();
-  }
-
-  public get kcal(): () => number {
-    if (this.nutrition) {
-      return this.nutrition.getKcal;
-    }
-
-    throw new Error();
-  }
-
-  public get allergies(): () => string[] {
-    if (this.nutrition) {
-      return this.nutrition.getAllergies;
-    }
-
-    throw new Error();
-  }
-
-  public get favourites(): () => string[] {
-    if (this.nutrition) {
-      return this.nutrition.getFavourites;
-    }
-
-    throw new Error();
-  }
-
-  public get hated(): () => string[] {
-    if (this.nutrition) {
-      return this.nutrition.getHated;
-    }
-
-    throw new Error();
-  }
-
-  public get age(): () => number {
-    if (this.nutrition) {
-      return this.nutrition.getAge;
-    }
-
-    throw new Error();
-  }
-
-  public get activity(): () => string {
-    if (this.nutrition) {
-      return this.nutrition.getActivity;
-    }
-
-    throw new Error();
-  }
-
   public serialize(): Object {
     return {
       id: this.id,
@@ -362,7 +226,6 @@ export class User implements ISerializable {
       defaulter: this.subscription ? (this.isDefaulter() ? 'Si' : 'No') : null,
       subscription: this.subscription ? this.subscription.serialize() : null,
       config: this.config.serialize(),
-      nutrition: this.nutrition ? this.nutrition.serialize() : null,
     };
   }
 }

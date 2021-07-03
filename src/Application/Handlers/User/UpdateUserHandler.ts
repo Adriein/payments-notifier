@@ -8,6 +8,7 @@ import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { PriceBuilder } from '../../../Domain/Services/PriceBuilder';
 import { Email } from '../../../Domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
+import { ID } from '../../../Domain/VO/Id.vo';
 
 export class UpdateUserHandler {
   constructor(
@@ -22,12 +23,13 @@ export class UpdateUserHandler {
 
     const user = await this.finder.findById(comm.id);
 
+    const id = new ID(user.id());
     const email = new Email(comm.email);
     const pricing = await this.priceBuilder.build(comm.adminId, comm.pricing);
     const lastPaymentDate = new LastPaymentDate(comm.lastPaymentDate);
 
     const updatedUser = new User(
-      user.getId(),
+      id,
       comm.username,
       email,
       new UserConfig(
@@ -40,10 +42,10 @@ export class UpdateUserHandler {
       comm.adminId
     );
 
-    updatedUser.setSubscription(
-      user.subscriptionId()!,
+    updatedUser.createSubscription(
       pricing,
       lastPaymentDate,
+      user.subscriptionId()!,
       user.isWarned(),
       user.isNotified(),
       user.isSubscriptionActive()

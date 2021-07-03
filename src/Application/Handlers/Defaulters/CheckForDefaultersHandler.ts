@@ -30,9 +30,9 @@ export class CheckForDefaultersHandler implements IHandler<void> {
     const criteria = new Criteria([withWarnings, notNotified]);
 
     for (const admin of admins) {
-      const users = await this.finder.adminId(admin.getId()).find(criteria);
+      const users = await this.finder.adminId(admin.id()).find(criteria);
 
-      const config = await this.configRepository.findByAdminId(admin.getId());
+      const config = await this.configRepository.findByAdminId(admin.id());
 
       for (const user of users) {
         if (!user.isAboutToExpire(config?.warningDelay)) {

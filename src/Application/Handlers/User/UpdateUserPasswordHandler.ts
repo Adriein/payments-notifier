@@ -27,6 +27,6 @@ export class UpdateUserPasswordHandler {
       throw new Error();
     }
 
-    await this.userRepository.updatePassword(user.getId(), command.newPassword);
+    await this.userRepository.updatePassword(user.id(), command.newPassword);
   }
 }

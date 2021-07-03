@@ -1,9 +1,11 @@
 import { CryptoService } from '../Services/CryptoService';
+import { ValueObject } from './ValueObject';
 
-export class Password {
+export class Password extends ValueObject {
   private cryptoService = new CryptoService();
   private password: string;
   constructor(password: string) {
+    super();
     this.password = password;
   }
 
@@ -13,5 +15,9 @@ export class Password {
 
   public get value(): string {
     return this.password;
+  }
+
+  protected validate(): boolean {
+    return true;
   }
 }

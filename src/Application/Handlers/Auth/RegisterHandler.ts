@@ -59,7 +59,7 @@ export class RegisterHandler implements IHandler<void> {
         DEFAULT_WARNING_DAYS,
         DEFAULT_DELAY_DAYS,
         DEFAULT_EMAIL_CONTENT,
-        user.getId()
+        user.id()
       )
     );
   }

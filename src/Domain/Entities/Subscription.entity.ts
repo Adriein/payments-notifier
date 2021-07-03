@@ -3,8 +3,6 @@ import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
 import { Pricing } from '../VO/Pricing.vo';
 import dayjs from 'dayjs';
 import { ISerializable } from '../Interfaces/ISerializable';
-import { debug } from '../../Infraestructure/Helpers/Debug.utils';
-import { Time } from '../../Infraestructure/Helpers/Time.utils';
 
 export class Subscription implements ISerializable {
   public static build(

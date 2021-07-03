@@ -6,6 +6,7 @@ import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { Email } from '../../../Domain/VO/Email.vo';
+import { ID } from '../../../Domain/VO/Id.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
 
@@ -38,7 +39,7 @@ export class IngestDefaultersHandler implements IHandler<void> {
       }
 
       const user = new User(
-        userOnDb.getId(),
+        new ID(userOnDb.id()),
         command.name,
         new Email(email),
         new UserConfig(
@@ -49,10 +50,10 @@ export class IngestDefaultersHandler implements IHandler<void> {
         )
       );
 
-      user.setSubscription(
-        userOnDb.subscriptionId()!,
+      user.createSubscription(
         pricing,
         lastPaymentDate,
+        userOnDb.subscriptionId()!,
         userOnDb.isWarned(),
         userOnDb.isNotified(),
         userOnDb.isSubscriptionActive()

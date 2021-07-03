@@ -98,7 +98,7 @@ export class UserRepository
         user.role(),
         user.sendNotifications(),
         user.sendWarnings(),
-        user.getId(),
+        user.id(),
       ]
     );
 
@@ -106,7 +106,7 @@ export class UserRepository
       await this.db.query(
         `INSERT INTO ${SUBSCRIPTIONS_TABLE} VALUES ('${user.subscriptionId()}', '${JSON.stringify(
           user.pricing().value
-        )}', '${user.paymentDate()}', '${user.isWarned()}', '${user.isNotified()}', '${user.getId()}', '${user.isSubscriptionActive()}');`
+        )}', '${user.paymentDate()}', '${user.isWarned()}', '${user.isNotified()}', '${user.id()}', '${user.isSubscriptionActive()}');`
       );
     }
   }
@@ -118,7 +118,7 @@ export class UserRepository
         `UPDATE ${SUBSCRIPTIONS_TABLE}
          SET pricing='${JSON.stringify(
            user.pricing().value
-         )}', payment_date='${user.paymentDate()}', warned=${user.isWarned()}, notified=${user.isNotified()}, user_id='${user.getId()}', active=${user.isSubscriptionActive()} WHERE id='${user.subscriptionId()}';`
+         )}', payment_date='${user.paymentDate()}', warned=${user.isWarned()}, notified=${user.isNotified()}, user_id='${user.id()}', active=${user.isSubscriptionActive()} WHERE id='${user.subscriptionId()}';`
       );
     }
 
@@ -127,7 +127,7 @@ export class UserRepository
        SET username='${user.getName()}', email='${user.getEmail()}', password='${user.getPassword()}', owner_id='${
         user.ownerId
       }'
-       WHERE id='${user.getId()}';`
+       WHERE id='${user.id()}';`
     );
   }
 
@@ -153,7 +153,7 @@ export class UserRepository
         `INSERT INTO ${SUBSCRIPTIONS_TABLE}
         VALUES ('${user.subscriptionId()}', '${JSON.stringify(
           user.pricing().value
-        )}', '${user.paymentDate()}', ${user.isWarned()}, ${user.isNotified()}, '${user.getId()}', ${user.isSubscriptionActive()});`
+        )}', '${user.paymentDate()}', ${user.isWarned()}, ${user.isNotified()}, '${user.id()}', ${user.isSubscriptionActive()});`
       );
     }
   }

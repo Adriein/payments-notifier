@@ -19,7 +19,7 @@ export class EnsureUsersConsistencyHandler {
     if (users.length > command.rows.length) {
       for (const user of users) {
         if (!emails.includes(user.getEmail()) && user.role() === USER_ROLE) {
-          await this.repository.delete(user.getId());
+          await this.repository.delete(user.id());
         }
       }
     }

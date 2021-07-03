@@ -2,6 +2,7 @@ import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { IMapper } from '../../../Domain/Interfaces';
 import { Email } from '../../../Domain/VO/Email.vo';
+import { ID } from '../../../Domain/VO/Id.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Password } from '../../../Domain/VO/Password.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
@@ -38,7 +39,7 @@ type UsersTable = {
 export class UserMapper implements IMapper<User> {
   public domain(userDatamodel: UsersTableJoined): User {
     const user = new User(
-      userDatamodel.id,
+      new ID(userDatamodel.id),
       userDatamodel.username,
       new Email(userDatamodel.email),
       new UserConfig(
@@ -54,10 +55,10 @@ export class UserMapper implements IMapper<User> {
     user.setCreatedAt(new Date(userDatamodel.created_at));
 
     if (userDatamodel.subscriptions_id !== null) {
-      user.setSubscription(
-        userDatamodel.subscriptions_id,
+      user.createSubscription(
         new Pricing(JSON.parse(userDatamodel.pricing)),
         new LastPaymentDate(userDatamodel.payment_date),
+        userDatamodel.subscriptions_id,
         userDatamodel.warned,
         userDatamodel.notified,
         userDatamodel.active
@@ -68,7 +69,7 @@ export class UserMapper implements IMapper<User> {
   }
   public datamodel(domain: User): UsersTable {
     return {
-      id: domain.getId(),
+      id: domain.id(),
       username: domain.getName(),
       email: domain.getEmail(),
       password: domain.getPassword()!,

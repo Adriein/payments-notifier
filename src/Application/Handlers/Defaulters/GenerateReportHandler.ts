@@ -30,9 +30,9 @@ export class GenerateReportHandler implements IHandler<void> {
     const key = process.env.SEND_GRID_API_KEY!; //await this.apiKeyRepository.getSendGridApiKey();
 
     for (const admin of admins) {
-      const users = await this.finder.adminId(admin.getId()).find();
+      const users = await this.finder.adminId(admin.id()).find();
 
-      const config = await this.configRepository.findByAdminId(admin.getId());
+      const config = await this.configRepository.findByAdminId(admin.id());
 
       const stats = await this.getEmailStats(key, config!);
 
