@@ -41,7 +41,6 @@ import { ReadUserHandler } from "../Handlers/User/ReadUserHandler";
 import { RegisterUserPaymentHandler } from "../Handlers/User/RegisterUserPaymentHandler";
 import { UpdateUserHandler } from "../Handlers/User/UpdateUserHandler";
 import { UpdateUserNotificationsHandler } from "../Handlers/User/UpdateUserNotificationsHandler";
-import { CriteriaBuilder } from "../../Domain/Services/CriteriaBuilder";
 import { CriteriaMapper } from "../../Infraestructure/Data/Mappers/CriteriaMapper";
 import { SubscriptionMapper } from "../../Infraestructure/Data/Mappers/SubscriptionMapper";
 import { CreatePricingCommand } from "../../Domain/Commands/AppConfig/CreatePricingCommand";
