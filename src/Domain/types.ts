@@ -3,7 +3,13 @@ export type PricingObject = {
 };
 
 export type CriteriaObject = {
-  [key: string]: { value: string; operation: string; };
+  [key: string]: { value: string; operation: string };
 };
 
 export type Counter = { [key: string]: number };
+
+export type NutritionPlan = {
+  bulk: 'bulk';
+  cut: 'cut';
+  mantinence: 'mantinence';
+};
