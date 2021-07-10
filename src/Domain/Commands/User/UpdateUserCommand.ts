@@ -1,4 +1,4 @@
-import { PricingObject } from "../../types";
+import { PricingObject } from "../../../Shared/Domain/types";
 
 export class UpdateUserCommand {
   constructor(

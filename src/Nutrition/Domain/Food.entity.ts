@@ -1,5 +1,5 @@
-import { ID } from '../../VO/Id.vo';
-import { BaseEntity } from '../BaseEntity';
+import { BaseEntity } from '../../Domain/Entities/BaseEntity';
+import { ID } from '../../Domain/VO/Id.vo';
 import { Macros } from './Macros.entity';
 
 export class Food extends BaseEntity {

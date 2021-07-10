@@ -1,3 +1,5 @@
+import { IHandler } from '../../Domain/Interfaces';
+
 export type PricingObject = {
   [key: string]: { duration: number; price: number };
 };
@@ -12,4 +14,19 @@ export type NutritionPlan = {
   bulk: 'bulk';
   cut: 'cut';
   mantinence: 'mantinence';
+};
+
+export type Gender = {
+  male: 'male';
+  female: 'female';
+};
+
+export type KcalFormula = {
+  weight: number;
+  height: number;
+  age: number;
+};
+
+export type BindCommandHandler<T> = {
+  [key: string]: T;
 };

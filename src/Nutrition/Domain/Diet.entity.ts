@@ -1,7 +1,8 @@
-import { NutritionPlan } from '../../types';
-import { ID } from '../../VO/Id.vo';
-import { BaseEntity } from '../BaseEntity';
+import { NutritionPlan } from '../../Shared/Domain/types';
+import { ID } from '../../Domain/VO/Id.vo';
+import { BaseEntity } from '../../Domain/Entities/BaseEntity';
 import { Food } from './Food.entity';
+import { KcalCalculator } from './KcalCalculator';
 import { Meal } from './Meal.entity';
 
 export class Diet extends BaseEntity {
@@ -10,16 +11,18 @@ export class Diet extends BaseEntity {
   public static build(
     name: string,
     userId: ID,
-    objective: keyof NutritionPlan
+    objective: keyof NutritionPlan,
+    kcal: number
   ): Diet {
-    return new Diet(ID.generate(), name, userId, objective);
+    return new Diet(ID.generate(), name, userId, objective, kcal);
   }
 
   constructor(
     _id: ID,
     private _name: string,
     private _userId: ID,
-    private _objective: keyof NutritionPlan
+    private _objective: keyof NutritionPlan,
+    private _kcal: number
   ) {
     super(_id, new Date(), new Date());
   }
@@ -31,6 +34,8 @@ export class Diet extends BaseEntity {
   public add(name: string, foods: Food[]) {
     this._meals.push(Meal.build(name, foods));
   }
+
+  public kcal = (): number => this._kcal;
 
   public serialize(): Object {
     return {};

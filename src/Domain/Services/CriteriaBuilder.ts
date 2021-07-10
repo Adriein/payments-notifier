@@ -1,7 +1,7 @@
 import { OPERATORS } from '../constants';
 import { Criteria } from '../Entities/Criteria.entity';
 import { Filter } from '../Entities/Filter.entity';
-import { CriteriaObject } from '../types';
+import { CriteriaObject } from '../../Shared/Domain/types';
 
 export class CriteriaBuilder {
   constructor() {}

@@ -1,7 +1,7 @@
 import { ISerializable } from '../Interfaces/ISerializable';
 import { v4 as uuidv4 } from 'uuid';
 import { Pricing } from '../VO/Pricing.vo';
-import { PricingObject } from '../types';
+import { PricingObject } from '../../Shared/Domain/types';
 
 export class AppConfig implements ISerializable {
   public static build(

@@ -6,7 +6,7 @@ import { User } from '../../../Domain/Entities/User.entity';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
-import { Counter } from '../../../Domain/types';
+import { Counter } from '../../../Shared/Domain/types';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
 

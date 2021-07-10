@@ -6,7 +6,7 @@ import { Log } from '../../../Domain/Decorators/Log';
 import { ReadCalculatedReportCommand } from '../../../Domain/Commands/User/ReadCalculatedReportCommand';
 import { Criteria } from '../../../Domain/Entities/Criteria.entity';
 import { Filter } from '../../../Domain/Entities/Filter.entity';
-import { CriteriaObject } from '../../../Domain/types';
+import { CriteriaObject } from '../../../Shared/Domain/types';
 
 export class ReadCalculatedReportHandler implements IHandler<User[]> {
   constructor(private finder: UserFinder) {}

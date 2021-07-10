@@ -1,4 +1,4 @@
-import { ICommand } from '../../Shared/Domain/Bus/ICommand';
+import { ICommand } from './ICommand';
 
 export interface ICommandBus {
   execute(command: ICommand): Promise<any>;

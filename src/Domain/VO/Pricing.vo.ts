@@ -1,6 +1,6 @@
 import { PricingType } from '../constants';
 import { PricingError } from '../Errors';
-import { PricingObject } from '../types';
+import { PricingObject } from '../../Shared/Domain/types';
 
 export class Pricing {
   private pricing: PricingObject;

@@ -4,7 +4,7 @@ import { Chart } from '../../../Domain/Entities/Chart.entity';
 import { User } from '../../../Domain/Entities/User.entity';
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
-import { Counter } from '../../../Domain/types';
+import { Counter } from '../../../Shared/Domain/types';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
 

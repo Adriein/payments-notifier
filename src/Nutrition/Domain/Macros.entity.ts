@@ -1,5 +1,5 @@
-import { ID } from '../../VO/Id.vo';
-import { BaseEntity } from '../BaseEntity';
+import { BaseEntity } from '../../Domain/Entities/BaseEntity';
+import { ID } from '../../Domain/VO/Id.vo';
 
 export class Macros extends BaseEntity {
   constructor(
