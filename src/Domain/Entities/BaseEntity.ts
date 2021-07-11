@@ -10,6 +10,14 @@ export abstract class BaseEntity {
   public abstract serialize(): Object;
 
   public id(): string {
-      return this._id.value;
+    return this._id.value;
+  }
+
+  public createdAt(): Date {
+    return this._dateCreated;
+  }
+
+  public updatedAt(): Date {
+    return this._dateUpdated;
   }
 }

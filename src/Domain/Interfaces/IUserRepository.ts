@@ -2,7 +2,7 @@ import { Criteria } from '../Entities/Criteria.entity';
 import { Subscription } from '../Entities/Subscription.entity';
 import { User } from '../Entities/User.entity';
 import { Email } from '../VO/Email.vo';
-import { IRepository } from './IRepository';
+import { IRepository } from '../../Shared/Domain/Interfaces/IRepository';
 
 export interface IUserRepository extends IRepository<User> {
   find(adminId: string, criteria?: Criteria): Promise<User[]>;

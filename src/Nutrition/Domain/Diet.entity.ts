@@ -2,7 +2,6 @@ import { NutritionPlan } from '../../Shared/Domain/types';
 import { ID } from '../../Domain/VO/Id.vo';
 import { BaseEntity } from '../../Domain/Entities/BaseEntity';
 import { Food } from './Food.entity';
-import { KcalCalculator } from './KcalCalculator';
 import { Meal } from './Meal.entity';
 
 export class Diet extends BaseEntity {

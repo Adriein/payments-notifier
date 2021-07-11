@@ -1,6 +1,6 @@
 import { Log } from '../../../Domain/Decorators/Log';
 import { IMapper } from '../../../Domain/Interfaces';
-import { IRepository } from '../../../Domain/Interfaces/IRepository';
+import { IRepository } from '../../../Shared/Domain/Interfaces/IRepository';
 import Database from '../Database';
 import { CriteriaMapper } from '../Mappers/CriteriaMapper';
 

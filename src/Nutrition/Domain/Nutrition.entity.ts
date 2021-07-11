@@ -34,12 +34,12 @@ export class Nutrition extends BaseEntity {
     objective: keyof NutritionPlan,
     kcalChange: number = 0
   ) {
-    const kcal = this.calcKcal(this.getLastDietKcal(), kcalChange);
+    const kcal = this.calcKcal(this.lastDietKcal(), kcalChange);
 
     this._diets.push(Diet.build(name, this._userId, objective, kcal));
   }
 
-  public getKcalDiffHistory(): number[] {
+  public kcalDiffHistory(): number[] {
     return this._diets.reduce(
       (history: number[], diet: Diet, index: number) => {
         const diff =
@@ -66,8 +66,28 @@ export class Nutrition extends BaseEntity {
     return kcal ? kcal : calcKcal;
   }
 
-  private getLastDietKcal(): number | undefined {
+  private lastDietKcal(): number | undefined {
     return this._diets[this._diets.length - 1]?.kcal();
+  }
+
+  public userId(): string {
+    return this._userId.value;
+  }
+
+  public weight(): number {
+    return this._weight;
+  }
+
+  public height(): number {
+    return this._height;
+  }
+  
+  public age(): number {
+    return this._age;
+  }
+
+  public gender(): keyof Gender {
+    return this._gender;
   }
 
   public serialize(): Object {

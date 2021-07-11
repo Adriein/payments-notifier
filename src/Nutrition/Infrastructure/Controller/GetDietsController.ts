@@ -7,6 +7,7 @@ import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { Diet } from '../../Domain/Diet.entity';
 import { GetDietsCommand } from '../../Domain/GetDietsCommand';
 import { GetDietsHandler } from '../../Application/GetDietsHandler';
+import { NutritionRepository } from '../Data/NutritionRepository';
 
 @Controller()
 export class GetDietsController {
@@ -16,8 +17,11 @@ export class GetDietsController {
   public async getDiets(req: Request, res: Response, next: NextFunction) {
     try {
       const queryBus = new QueryBus<Diet[]>();
-
-      queryBus.bind(GetDietsCommand.name, new GetDietsHandler());
+    
+      queryBus.bind(
+        GetDietsCommand.name,
+        new GetDietsHandler(new NutritionRepository())
+      );
 
       await queryBus.execute(new GetDietsCommand());
 
