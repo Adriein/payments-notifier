@@ -4,16 +4,14 @@ export abstract class AbstractDAO<T extends object, K extends keyof T = any> {
   protected db: Database = Database.getInstance();
 
   protected insertQuery = (table: string, entity: T): string => {
-    console.log(Reflect.getMetadata('baby', entity, 'id'))
-    console.log(Reflect.getMetadataKeys(AbstractDAO.prototype));
-    throw new Error();
+    const fields = Reflect.getMetadataKeys(this);
     return `
       INSERT INTO ${table} 
-      VALUES(${this.values(entity)});
+      VALUES(${this.values(entity, fields)});
     `;
   };
 
-  private values = (entity: T): string => {
+  private values = (entity: T, fields: string[]): string => {
     const extractFromEntity = (key: string) => {
       return `${entity[key as K] !== null ? `'${entity[key as K]}'` : null}`;
     };

@@ -2,6 +2,7 @@ import { Criteria } from '../../../Domain/Entities/Criteria.entity';
 import { IMapper } from '../../../Shared/Domain/Interfaces/IMapper';
 import { INutritionRepository } from '../../Domain/INutritionRepository';
 import { Nutrition } from '../../Domain/Nutrition.entity';
+import { DietDAO } from './Diet.dao';
 import { NutritionDAO } from './Nutrition.dao';
 import { NutritionMapper } from './NutritionMapper';
 

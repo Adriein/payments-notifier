@@ -1,33 +1,18 @@
-import { debug } from '../../../Infraestructure/Helpers/Debug.utils';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
 import { column } from '../../../Shared/Infrastructure/Decorators/column';
 
 export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   private table: string = 'nutrition';
 
-  @column()
-  public id: string;
-
-  @column()
-  public weight: number;
-
-  @column()
-  public height: number;
-
-  @column()
-  public age: number;
-
-  @column()
-  public gender: string;
-
-  @column()
-  public user_id: string;
-
-  @column()
-  public created_at: Date;
-
-  @column()
-  public updated_at: Date;
+  
+  @column() public id: string;
+  @column() public weight: number;
+  @column() public height: number;
+  @column() public age: number;
+  @column() public gender: string;
+  @column() public user_id: string;
+  @column() public created_at: Date;
+  @column() public updated_at: Date;
 
   constructor(
     id: string,
