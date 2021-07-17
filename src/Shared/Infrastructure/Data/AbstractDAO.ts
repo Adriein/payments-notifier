@@ -1,10 +1,12 @@
 import Database from '../../../Infraestructure/Data/Database';
+import { debug } from '../../../Infraestructure/Helpers/Debug.utils';
 
 export abstract class AbstractDAO<T extends object, K extends keyof T = any> {
   protected db: Database = Database.getInstance();
 
   protected insertQuery = (table: string, entity: T): string => {
     const fields = Reflect.getMetadataKeys(this);
+    debug(this.values(entity, fields))
     return `
       INSERT INTO ${table} 
       VALUES(${this.values(entity, fields)});
@@ -16,7 +18,7 @@ export abstract class AbstractDAO<T extends object, K extends keyof T = any> {
       return `${entity[key as K] !== null ? `'${entity[key as K]}'` : null}`;
     };
 
-    return Object.keys(entity).map(extractFromEntity).join(',');
+    return fields.map(extractFromEntity).join(',');
   };
 
   public abstract getOne(id: string): Promise<T | undefined>;

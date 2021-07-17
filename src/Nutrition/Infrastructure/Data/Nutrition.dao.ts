@@ -4,7 +4,6 @@ import { column } from '../../../Shared/Infrastructure/Decorators/column';
 export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   private table: string = 'nutrition';
 
-  
   @column() public id: string;
   @column() public weight: number;
   @column() public height: number;
@@ -43,8 +42,6 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   }
   public async save(): Promise<void> {
     const query = this.insertQuery(this.table, this);
-    console.log(query);
-    throw new Error();
     await this.db.getConnection().query(query);
   }
   public update(entity: NutritionDAO): Promise<void> {

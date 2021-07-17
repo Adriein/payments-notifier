@@ -12,17 +12,25 @@ export class NutritionRepository implements INutritionRepository {
   findOne(id: string): Promise<Nutrition | undefined> {
     throw new Error('Method not implemented.');
   }
+
   find(adminId: string, criteria: Criteria): Promise<Nutrition[]> {
     throw new Error('Method not implemented.');
   }
+
   async save(entity: Nutrition): Promise<void> {
     const nutritionDAO = this.mapper.datamodel(entity);
     await nutritionDAO.save();
   }
+
   update(entity: Nutrition): Promise<void> {
     throw new Error('Method not implemented.');
   }
+  
   delete(id: string): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
+  findByUserId(id: string): Promise<Nutrition> {
     throw new Error('Method not implemented.');
   }
 }

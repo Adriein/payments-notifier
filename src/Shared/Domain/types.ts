@@ -16,7 +16,7 @@ export type NutritionPlan = {
   mantinence: 'mantinence';
 };
 
-export type Gender = {
+export type GenderType = {
   male: 'male';
   female: 'female';
 };

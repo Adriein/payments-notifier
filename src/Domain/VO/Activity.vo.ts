@@ -1,6 +1,6 @@
 import { ActivityType } from '../constants';
 import { ActivityError } from '../Errors/ActivityError';
-import { ValueObject } from './ValueObject';
+import { ValueObject } from '../../Shared/Domain/VO/ValueObject';
 
 export class Activity extends ValueObject {
   private activity: string;

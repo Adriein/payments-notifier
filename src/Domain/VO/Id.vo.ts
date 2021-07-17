@@ -1,5 +1,5 @@
 import { v4 as uuidV4, validate } from 'uuid';
-import { ValueObject } from './ValueObject';
+import { ValueObject } from '../../Shared/Domain/VO/ValueObject';
 
 export class ID extends ValueObject {
   constructor(private _value: string) {

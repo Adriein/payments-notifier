@@ -1,7 +1,8 @@
 import { ID } from '../../../Domain/VO/Id.vo';
 import { IMapper } from '../../../Shared/Domain/Interfaces/IMapper';
-import { Gender } from '../../../Shared/Domain/types';
+import { GenderType } from '../../../Shared/Domain/types';
 import { Nutrition } from '../../Domain/Nutrition.entity';
+import { Gender } from '../../Domain/VO/Gender.vo';
 import { NutritionDAO } from './Nutrition.dao';
 
 export class NutritionMapper implements IMapper<Nutrition, NutritionDAO> {
@@ -24,7 +25,7 @@ export class NutritionMapper implements IMapper<Nutrition, NutritionDAO> {
       datamodel.weight,
       datamodel.height,
       datamodel.age,
-      datamodel.gender as keyof Gender
+      new Gender(datamodel.gender)
     );
   }
 }

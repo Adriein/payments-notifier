@@ -21,16 +21,18 @@ export class Diet extends BaseEntity {
     private _name: string,
     private _userId: ID,
     private _objective: keyof NutritionPlan,
-    private _kcal: number
+    private _kcal: number,
+    _dateCreated?: Date,
+    _dateUpdated?: Date
   ) {
-    super(_id, new Date(), new Date());
+    super(_id, _dateCreated, _dateUpdated);
   }
 
   public meals(): Meal[] {
     return this._meals;
   }
 
-  public add(name: string, foods: Food[]) {
+  public add(name: string, foods: Food[] = []) {
     this._meals.push(Meal.build(name, foods));
   }
 

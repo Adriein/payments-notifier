@@ -5,7 +5,7 @@ import { get } from '../../../Infraestructure/Rest/Decorators/routes';
 import { use } from '../../../Infraestructure/Rest/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { Diet } from '../../Domain/Diet.entity';
-import { GetDietsCommand } from '../../Domain/GetDietsCommand';
+import { GetDietsQuery } from '../../Domain/Commands/GetDietsQuery';
 import { GetDietsHandler } from '../../Application/GetDietsHandler';
 import { NutritionRepository } from '../Data/NutritionRepository';
 
@@ -17,13 +17,13 @@ export class GetDietsController {
   public async getDiets(req: Request, res: Response, next: NextFunction) {
     try {
       const queryBus = new QueryBus<Diet[]>();
-    
+
       queryBus.bind(
-        GetDietsCommand.name,
+        GetDietsQuery.name,
         new GetDietsHandler(new NutritionRepository())
       );
 
-      await queryBus.execute(new GetDietsCommand());
+      await queryBus.execute(new GetDietsQuery(req.body.userId));
 
       res.status(200).send({});
     } catch (error) {

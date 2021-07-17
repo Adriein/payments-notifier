@@ -29,6 +29,7 @@ import './Infraestructure/Rest/Controllers/Charts/GetMoneyChartController';
 import './Infraestructure/Rest/Controllers/Charts/GetUserChartController';
 import './Infraestructure/Rest/Controllers/Backoffice/ContactEmailController';
 import './Nutrition/Infrastructure/Controller/GetDietsController';
+import './Nutrition/Infrastructure/Controller/CreateNutritionController';
 
 export default class App {
   public init() {

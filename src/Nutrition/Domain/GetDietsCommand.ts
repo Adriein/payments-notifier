@@ -1,3 +1,0 @@
-export class GetDietsCommand {
-  constructor() {}
-}

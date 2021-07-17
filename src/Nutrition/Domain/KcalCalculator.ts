@@ -1,9 +1,9 @@
-import { Gender, KcalFormula } from "../../Shared/Domain/types";
+import { GenderType, KcalFormula } from '../../Shared/Domain/types';
 
 export class KcalCalculator {
   private MALE = 'male';
   private FEMALE = 'female';
-  private _gender?: keyof Gender;
+  private _gender?: string;
   private _formula!: string;
 
   public calculate(weight: number, height: number, age: number): number {
@@ -36,7 +36,7 @@ export class KcalCalculator {
       .replace('E', age.toString());
   }
 
-  public gender(gender: keyof Gender) {
+  public gender(gender: string) {
     this._gender = gender;
     return this;
   }

@@ -1,6 +1,6 @@
 import { Time } from '../../Infraestructure/Helpers/Time.utils';
 import { LastPaymentDateError } from '../Errors';
-import { ValueObject } from './ValueObject';
+import { ValueObject } from '../../Shared/Domain/VO/ValueObject';
 
 export class LastPaymentDate extends ValueObject{
   private _date: Date;

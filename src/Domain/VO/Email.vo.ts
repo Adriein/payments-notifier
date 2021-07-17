@@ -1,5 +1,5 @@
 import { EmailError } from '../Errors';
-import { ValueObject } from './ValueObject';
+import { ValueObject } from '../../Shared/Domain/VO/ValueObject';
 
 export class Email extends ValueObject {
   private regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;

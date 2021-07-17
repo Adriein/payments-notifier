@@ -1,5 +1,5 @@
 import { CryptoService } from '../Services/CryptoService';
-import { ValueObject } from './ValueObject';
+import { ValueObject } from '../../Shared/Domain/VO/ValueObject';
 
 export class Password extends ValueObject {
   private cryptoService = new CryptoService();

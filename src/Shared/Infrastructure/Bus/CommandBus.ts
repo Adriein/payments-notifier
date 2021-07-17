@@ -1,19 +1,24 @@
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { ICommandBus } from '../../Domain/Bus/ICommandBus';
-import { BindCommandHandler } from '../../Domain/types';
 
 export class CommandBus<C extends IHandler<void>> implements ICommandBus {
-  private handlers: BindCommandHandler<C> = {};
+  private handlers: Map<string, C> = new Map();
 
-  public bindHandler = (commandName: string, handler: C) => {
-    this.handlers = { ...this.handlers, [commandName]: handler };
+  public bind = (commandName: string, handler: C) => {
+    this.handlers.set(commandName, handler);
   };
 
   public async execute(command: ICommand): Promise<void> {
-    return await this.resolveHandler(command).handle(command);
+    return await this.resolve(command).handle(command);
   }
 
-  private resolveHandler(command: ICommand): C {
-    return this.handlers[command.constructor.name];
+  private resolve(command: ICommand): C {
+    const handler = this.handlers.get(command.constructor.name);
+
+    if (!handler) {
+      throw new Error();
+    }
+
+    return handler;
   }
 }

@@ -1,5 +1,5 @@
 import { AgeError } from '../Errors/AgeError';
-import { ValueObject } from './ValueObject';
+import { ValueObject } from '../../Shared/Domain/VO/ValueObject';
 
 export class Age extends ValueObject {
   private age: number;
