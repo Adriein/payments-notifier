@@ -26,7 +26,7 @@ export class GetDietsController {
         new CreateNutritionHandler(new NutritionRepository())
       );
 
-      await commandBus.execute(
+      await commandBus.dispatch(
         new CreateNutritionCommand(
           req.body.userId,
           req.body.weight,

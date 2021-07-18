@@ -10,7 +10,7 @@ export class QueryBus<T, C extends IHandler<T> = IHandler<T>> implements IQueryB
     this.handlers = { ...this.handlers, [commandName]: handler };
   };
 
-  public async execute(command: ICommand): Promise<T> {
+  public async dispatch(command: ICommand): Promise<T> {
     return await this.resolveHandler(command).handle(command);
   }
 

@@ -23,7 +23,7 @@ export class GetDietsController {
         new GetDietsHandler(new NutritionRepository())
       );
 
-      await queryBus.execute(new GetDietsQuery(req.body.userId));
+      await queryBus.dispatch(new GetDietsQuery(req.body.userId));
 
       res.status(200).send({});
     } catch (error) {

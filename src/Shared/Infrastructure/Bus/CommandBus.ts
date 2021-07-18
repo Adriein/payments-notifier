@@ -8,7 +8,7 @@ export class CommandBus<C extends IHandler<void>> implements ICommandBus {
     this.handlers.set(commandName, handler);
   };
 
-  public async execute(command: ICommand): Promise<void> {
+  public async dispatch(command: ICommand): Promise<void> {
     return await this.resolve(command).handle(command);
   }
 
