@@ -31,7 +31,7 @@ export default class HandlerFactory {
     );
 
     this.handlers.set(
-      GetDietsQuery.name,
+      GetDietsHandler.name,
       new GetDietsHandler(this.nutritionRepository)
     );
 

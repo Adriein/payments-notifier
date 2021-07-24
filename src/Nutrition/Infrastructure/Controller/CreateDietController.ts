@@ -4,10 +4,8 @@ import { post } from '../../../Infraestructure/Rest/Decorators/routes';
 import { use } from '../../../Infraestructure/Rest/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { BaseController } from '../../../Shared/Infrastructure/BaseController';
-import { CommandBus } from '../../../Shared/Infrastructure/Bus/CommandBus';
 import { CreateDietHandler } from '../../Application/CreateDietHandler';
 import { CreateDietCommand } from '../../Domain/Commands/CreateDietCommand';
-import { NutritionRepository } from '../Data/NutritionRepository';
 
 @Controller()
 export class CreateDietController extends BaseController<void> {
