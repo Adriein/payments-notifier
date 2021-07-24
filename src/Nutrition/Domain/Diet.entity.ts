@@ -1,26 +1,26 @@
-import { NutritionPlan } from '../../Shared/Domain/types';
 import { ID } from '../../Domain/VO/Id.vo';
 import { BaseEntity } from '../../Domain/Entities/BaseEntity';
 import { Food } from './Food.entity';
 import { Meal } from './Meal.entity';
+import { DietType } from './VO/DietType.vo';
 
 export class Diet extends BaseEntity {
   private _meals: Meal[] = [];
 
   public static build(
     name: string,
-    userId: ID,
-    objective: keyof NutritionPlan,
+    nutritionId: ID,
+    objective: DietType,
     kcal: number
   ): Diet {
-    return new Diet(ID.generate(), name, userId, objective, kcal);
+    return new Diet(ID.generate(), name, nutritionId, objective, kcal);
   }
 
   constructor(
     _id: ID,
     private _name: string,
-    private _userId: ID,
-    private _objective: keyof NutritionPlan,
+    private _nutritionId: ID,
+    private _objective: DietType,
     private _kcal: number,
     _dateCreated?: Date,
     _dateUpdated?: Date

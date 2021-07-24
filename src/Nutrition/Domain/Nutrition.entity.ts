@@ -1,8 +1,8 @@
 import { BaseEntity } from '../../Domain/Entities/BaseEntity';
 import { ID } from '../../Domain/VO/Id.vo';
-import { GenderType, NutritionPlan } from '../../Shared/Domain/types';
 import { Diet } from './Diet.entity';
 import { KcalCalculator } from './KcalCalculator';
+import { DietType } from './VO/DietType.vo';
 import { Gender } from './VO/Gender.vo';
 
 export class Nutrition extends BaseEntity {
@@ -34,12 +34,12 @@ export class Nutrition extends BaseEntity {
 
   public createDiet(
     name: string,
-    objective: keyof NutritionPlan,
+    objective: DietType,
     kcalChange: number = 0
   ) {
     const kcal = this.calcKcal(this.lastDietKcal(), kcalChange);
 
-    this._diets.push(Diet.build(name, this._userId, objective, kcal));
+    this._diets.push(Diet.build(name, new ID(this.id()), objective, kcal));
   }
 
   public kcalDiffHistory(): number[] {

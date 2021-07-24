@@ -10,6 +10,10 @@ export class Meal extends BaseEntity {
     super(_id, new Date(), new Date());
   }
 
+  public add(food: Food): void {
+    this._foods.push(food);
+  }
+
   public serialize(): Object {
     return {};
   }
