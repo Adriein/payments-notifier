@@ -1,5 +1,3 @@
-import { IHandler } from '../../Domain/Interfaces';
-
 export type PricingObject = {
   [key: string]: { duration: number; price: number };
 };
@@ -29,4 +27,8 @@ export type KcalFormula = {
 
 export type BindCommandHandler<T> = {
   [key: string]: T;
+};
+
+export type ConstructorFunc<T = any> = {
+  new (...args: any[]): T;
 };

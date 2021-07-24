@@ -1,20 +1,26 @@
 import { ICommand, IHandler } from '../../../Domain/Interfaces';
 import { IQueryBus } from '../../Domain/Bus/IQueryBus';
-import { BindCommandHandler } from '../../Domain/types';
+import { ConstructorFunc } from '../../Domain/types';
 
-export class QueryBus<T, C extends IHandler<T> = IHandler<T>> implements IQueryBus<T>
+export class QueryBus<T, H extends IHandler<T> = IHandler<T>> implements IQueryBus<T>
 {
-  private handlers: BindCommandHandler<C> = {};
+  private handlers: Map<string, H> = new Map();
 
-  public bind = (commandName: string, handler: C): void => {
-    this.handlers = { ...this.handlers, [commandName]: handler };
+  public bind = (command: ConstructorFunc, handler: H): void => {
+    this.handlers.set(command.name, handler);
   };
 
   public async dispatch(command: ICommand): Promise<T> {
-    return await this.resolveHandler(command).handle(command);
+    return await this.resolve(command).handle(command);
   }
 
-  private resolveHandler(command: ICommand): C {
-    return this.handlers[command.constructor.name];
+  private resolve(command: ICommand): H{
+    const handler = this.handlers.get(command.constructor.name);
+
+    if (!handler) {
+      throw new Error();
+    }
+
+    return handler;
   }
 }

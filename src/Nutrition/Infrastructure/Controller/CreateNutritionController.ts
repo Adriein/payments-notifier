@@ -3,13 +3,12 @@ import { Controller } from '../../../Infraestructure/Rest/Decorators/controller'
 import { post } from '../../../Infraestructure/Rest/Decorators/routes';
 import { use } from '../../../Infraestructure/Rest/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
-import { CommandBus } from '../../../Shared/Infrastructure/Bus/CommandBus';
+import { BaseController } from '../../../Shared/Infrastructure/BaseController';
 import { CreateNutritionHandler } from '../../Application/CreateNutritionHandler';
 import { CreateNutritionCommand } from '../../Domain/Commands/CreateNutritionCommand';
-import { NutritionRepository } from '../Data/NutritionRepository';
 
 @Controller()
-export class GetDietsController {
+export class GetDietsController extends BaseController<void> {
   @post('/nutrition')
   @use(requireAuth)
   @use(currentUser)
@@ -19,14 +18,12 @@ export class GetDietsController {
     next: NextFunction
   ) {
     try {
-      const commandBus = new CommandBus();
-
-      commandBus.bind(
-        CreateNutritionCommand.name,
-        new CreateNutritionHandler(new NutritionRepository())
+      this.commandBus.bind(
+        CreateNutritionCommand,
+        this.factory.create(CreateNutritionHandler)
       );
 
-      await commandBus.dispatch(
+      await this.commandBus.dispatch(
         new CreateNutritionCommand(
           req.body.userId,
           req.body.weight,

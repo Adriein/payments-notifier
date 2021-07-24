@@ -3,36 +3,30 @@ import { Controller } from '../../../Infraestructure/Rest/Decorators/controller'
 import { post } from '../../../Infraestructure/Rest/Decorators/routes';
 import { use } from '../../../Infraestructure/Rest/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
+import { BaseController } from '../../../Shared/Infrastructure/BaseController';
 import { CommandBus } from '../../../Shared/Infrastructure/Bus/CommandBus';
-import { CreateNutritionHandler } from '../../Application/CreateNutritionHandler';
-import { CreateNutritionCommand } from '../../Domain/Commands/CreateNutritionCommand';
+import { CreateDietHandler } from '../../Application/CreateDietHandler';
+import { CreateDietCommand } from '../../Domain/Commands/CreateDietCommand';
 import { NutritionRepository } from '../Data/NutritionRepository';
 
 @Controller()
-export class CreateDietController {
+export class CreateDietController extends BaseController<void> {
   @post('/diet')
   @use(requireAuth)
   @use(currentUser)
-  public async creaDiet(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  public async creaDiet(req: Request, res: Response, next: NextFunction) {
     try {
-      const commandBus = new CommandBus();
-
-      commandBus.bind(
-        CreateNutritionCommand.name,
-        new CreateNutritionHandler(new NutritionRepository())
+      this.commandBus.bind(
+        CreateDietCommand,
+        this.factory.create(CreateDietHandler)
       );
 
-      await commandBus.dispatch(
-        new CreateNutritionCommand(
-          req.body.userId,
-          req.body.weight,
-          req.body.height,
-          req.body.age,
-          req.body.gender
+      await this.commandBus.dispatch(
+        new CreateDietCommand(
+          req.body.name,
+          req.body.nutritionId,
+          req.body.objective,
+          req.body.kcalChange
         )
       );
 
