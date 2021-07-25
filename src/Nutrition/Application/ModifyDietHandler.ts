@@ -3,7 +3,6 @@ import { IHandler } from '../../Domain/Interfaces';
 import { INutritionRepository } from '../Domain/INutritionRepository';
 import { ID } from '../../Domain/VO/Id.vo';
 import { ModifyDietCommand } from '../Domain/Commands/ModifyDietCommand';
-import { Diet } from '../Domain/Diet.entity';
 import { NutritionFinder } from '../Domain/Services/NutritionFinder';
 
 export class ModifyDietHandler implements IHandler<void> {
