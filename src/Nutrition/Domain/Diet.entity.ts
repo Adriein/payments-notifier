@@ -36,6 +36,10 @@ export class Diet extends BaseEntity {
     this._meals.push(Meal.build(name, foods));
   }
 
+  public flush(): void {
+    this._meals = [];
+  }
+
   public kcal = (): number => this._kcal;
 
   public serialize(): Object {

@@ -36,7 +36,7 @@ export class Nutrition extends BaseEntity {
     name: string,
     objective: DietType,
     kcalChange: number = 0
-  ) {
+  ): void {
     const kcal = this.calcKcal(this.lastDietKcal(), kcalChange);
 
     this._diets.push(Diet.build(name, new ID(this.id()), objective, kcal));
@@ -52,6 +52,23 @@ export class Nutrition extends BaseEntity {
       },
       new Array<number>()
     );
+  }
+
+  public getOneDiet(dietId: ID): Diet {
+    const diet = this.diets().find((diet: Diet) => diet.id() === dietId.value);
+    if (!diet) {
+      throw new Error();
+    }
+
+    return diet;
+  }
+
+  public modifyDiet(modifyedDiet: Diet): void {
+    const filteredDiets = this.diets().filter(
+      (diet: Diet) => diet.id() !== modifyedDiet.id()
+    );
+
+    this._diets = [...filteredDiets, modifyedDiet];
   }
 
   private calcKcal(kcal?: number, change?: number): number {
