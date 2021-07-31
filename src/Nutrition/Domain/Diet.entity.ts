@@ -43,6 +43,6 @@ export class Diet extends BaseEntity {
   public kcal = (): number => this._kcal;
 
   public serialize(): Object {
-    return {a : 'aa'};
+    return {};
   }
 }

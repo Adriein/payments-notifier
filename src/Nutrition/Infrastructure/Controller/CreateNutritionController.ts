@@ -8,7 +8,7 @@ import { CreateNutritionHandler } from '../../Application/CreateNutritionHandler
 import { CreateNutritionCommand } from '../../Domain/Commands/CreateNutritionCommand';
 
 @Controller()
-export class GetDietsController extends BaseController<void> {
+export class CreateNutritionController extends BaseController<void> {
   @post('/nutrition')
   @use(requireAuth)
   @use(currentUser)
