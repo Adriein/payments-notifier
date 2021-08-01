@@ -9,7 +9,7 @@ export class NutritionFinder {
     const nutrition = await this.repository.findOne(nutritionId.value);
 
     if (!nutrition) {
-      throw new Error();
+      throw new Error('No nutrition found with this id');
     }
 
     return nutrition;

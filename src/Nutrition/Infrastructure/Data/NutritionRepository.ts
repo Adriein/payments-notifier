@@ -37,7 +37,8 @@ export class NutritionRepository implements INutritionRepository {
     throw new Error('Method not implemented.');
   }
 
-  findByUserId(id: string): Promise<Nutrition> {
+  findByUserId(userId: string): Promise<Nutrition> {
+    // Criteria.field('user_id').equal(userId);
     throw new Error('Method not implemented.');
   }
 }

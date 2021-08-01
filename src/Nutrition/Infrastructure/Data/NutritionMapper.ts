@@ -13,8 +13,8 @@ export class NutritionMapper implements IMapper<Nutrition, NutritionDAO> {
       domain.age(),
       domain.gender(),
       domain.userId(),
-      domain.createdAt(),
-      domain.updatedAt()
+      domain.createdAt().toUTCString(),
+      domain.updatedAt().toUTCString()
     );
   }
   domain(datamodel: NutritionDAO): Nutrition {
@@ -24,7 +24,10 @@ export class NutritionMapper implements IMapper<Nutrition, NutritionDAO> {
       datamodel.weight!,
       datamodel.height!,
       datamodel.age!,
-      new Gender(datamodel.gender!)
+      new Gender(datamodel.gender!),
+      [],
+      new Date(datamodel.created_at!),
+      new Date(datamodel.updated_at!)
     );
   }
 }

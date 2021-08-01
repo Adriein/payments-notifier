@@ -13,10 +13,10 @@ export abstract class AbstractDAO<T extends object, K extends keyof T = any> {
 
   protected selectQuery = (id: string, table: string, relations?: string[]): string => {
     if (relations) {
-      return `SELECT * FROM ${table} ${this.joins(table, relations)} WHERE id = ${id}`;
+      return `SELECT * FROM ${table} ${this.joins(table, relations)} WHERE id = '${id}'`;
     }
 
-    return `SELECT * FROM ${table} WHERE id = ${id}`;
+    return `SELECT * FROM ${table} WHERE id = '${id}'`;
   };
 
   private joins = (table: string, relations: string[]): string => {

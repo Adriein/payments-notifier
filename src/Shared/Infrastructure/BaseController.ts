@@ -3,7 +3,15 @@ import { QueryBus } from './Bus/QueryBus';
 import HandlerFactory from './Factories/Handler.factory';
 
 export abstract class BaseController<T> {
-  protected commandBus: CommandBus = new CommandBus();
-  protected queryBus: QueryBus<T> = new QueryBus();
-  protected factory: HandlerFactory = new HandlerFactory();
+  protected get commandBus() {
+    return CommandBus.instance();
+  }
+
+  protected get queryBus() {
+    return QueryBus.instance<T>();
+  }
+
+  protected get factory() {
+    return new HandlerFactory();
+  }
 }
