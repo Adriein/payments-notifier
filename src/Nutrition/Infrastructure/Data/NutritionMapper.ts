@@ -1,6 +1,5 @@
 import { ID } from '../../../Domain/VO/Id.vo';
 import { IMapper } from '../../../Shared/Domain/Interfaces/IMapper';
-import { GenderType } from '../../../Shared/Domain/types';
 import { Nutrition } from '../../Domain/Nutrition.entity';
 import { Gender } from '../../Domain/VO/Gender.vo';
 import { NutritionDAO } from './Nutrition.dao';
@@ -20,12 +19,12 @@ export class NutritionMapper implements IMapper<Nutrition, NutritionDAO> {
   }
   domain(datamodel: NutritionDAO): Nutrition {
     return new Nutrition(
-      new ID(datamodel.id),
-      new ID(datamodel.user_id),
-      datamodel.weight,
-      datamodel.height,
-      datamodel.age,
-      new Gender(datamodel.gender)
+      new ID(datamodel.id!),
+      new ID(datamodel.user_id!),
+      datamodel.weight!,
+      datamodel.height!,
+      datamodel.age!,
+      new Gender(datamodel.gender!)
     );
   }
 }

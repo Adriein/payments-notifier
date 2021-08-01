@@ -23,8 +23,8 @@ export class CreateUsersChartHandler implements IHandler<Chart> {
     const months: string[] = [];
 
     const counter = users.reduce((counter: Counter, user: User) => {
-      if (Time.between(user.createdAt, from, to)) {
-        const month = Time.month(user.createdAt);
+      if (Time.between(user.createdAt(), from, to)) {
+        const month = Time.month(user.createdAt());
         counter[month] = counter[month] ? counter[month] + 1 : 1;
         return counter;
       }

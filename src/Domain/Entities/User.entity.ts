@@ -29,7 +29,6 @@ export class User extends BaseEntity {
 
   private subscription?: Subscription;
   private password?: string;
-  private _createdAt?: Date;
 
   public getName(): string {
     return this.name;
@@ -41,14 +40,6 @@ export class User extends BaseEntity {
 
   public get ownerId(): string | undefined {
     return this._ownerId;
-  }
-
-  public get createdAt(): Date {
-    return this._createdAt!;
-  }
-
-  public setCreatedAt(date: Date) {
-    this._createdAt = date;
   }
 
   public async createPassword(password: Password): Promise<void> {

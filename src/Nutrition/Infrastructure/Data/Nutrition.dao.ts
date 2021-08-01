@@ -4,24 +4,24 @@ import { column } from '../../../Shared/Infrastructure/Decorators/column';
 export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   private table: string = 'nutrition';
 
-  @column() public id: string;
-  @column() public weight: number;
-  @column() public height: number;
-  @column() public age: number;
-  @column() public gender: string;
-  @column() public user_id: string;
-  @column() public created_at: Date;
-  @column() public updated_at: Date;
+  @column() public id: string | undefined;
+  @column() public weight: number | undefined;
+  @column() public height: number | undefined;
+  @column() public age: number | undefined;
+  @column() public gender: string | undefined;
+  @column() public user_id: string | undefined;
+  @column() public created_at: Date | undefined;
+  @column() public updated_at: Date | undefined;
 
   constructor(
-    id: string,
-    weight: number,
-    height: number,
-    age: number,
-    gender: string,
-    user_id: string,
-    created_at: Date,
-    updated_at: Date
+    id?: string,
+    weight?: number,
+    height?: number,
+    age?: number,
+    gender?: string,
+    user_id?: string,
+    created_at?: Date,
+    updated_at?: Date
   ) {
     super();
     this.id = id;
@@ -34,8 +34,24 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
     this.updated_at = updated_at;
   }
 
-  public getOne(id: string): Promise<NutritionDAO | undefined> {
-    throw new Error('Method not implemented.');
+  public async getOne(relations?: string[]): Promise<NutritionDAO | undefined> {
+    const query = this.selectQuery(this.id!, this.table, relations);
+    const { rows } = await this.db.getConnection().query(query);
+
+    if (!rows) {
+      return undefined;
+    }
+
+    return new NutritionDAO(
+      rows[0].id,
+      rows[0].weight,
+      rows[0].height,
+      rows[0].age,
+      rows[0].gender,
+      rows[0].user_id,
+      rows[0].created_at,
+      rows[0].updated_at
+    );
   }
   public find(criteria: any): Promise<NutritionDAO[] | undefined> {
     throw new Error('Method not implemented.');

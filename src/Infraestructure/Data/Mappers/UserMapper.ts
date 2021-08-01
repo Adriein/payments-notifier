@@ -52,7 +52,6 @@ export class UserMapper implements IMapper<User> {
       userDatamodel.owner_id ? userDatamodel.owner_id : undefined
     );
     user.setPassword(new Password(userDatamodel.password));   
-    user.setCreatedAt(new Date(userDatamodel.created_at));
 
     if (userDatamodel.subscriptions_id !== null) {
       user.createSubscription(

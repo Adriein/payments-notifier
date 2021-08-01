@@ -1,8 +1,8 @@
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
 import { column } from '../../../Shared/Infrastructure/Decorators/column';
 
-export class DietDAO extends AbstractDAO<DietDAO> {  
-  public getOne(id: string): Promise<DietDAO | undefined> {
+export class DietDAO extends AbstractDAO<DietDAO> {
+  public getOne(relations?: string[]): Promise<DietDAO | undefined> {
     throw new Error('Method not implemented.');
   }
   public find(criteria?: any): Promise<DietDAO[] | undefined> {

@@ -9,8 +9,15 @@ import { NutritionMapper } from './NutritionMapper';
 export class NutritionRepository implements INutritionRepository {
   private mapper: IMapper<Nutrition, NutritionDAO> = new NutritionMapper();
 
-  findOne(id: string): Promise<Nutrition | undefined> {
-    throw new Error('Method not implemented.');
+  async findOne(id: string): Promise<Nutrition | undefined> {
+    const dao = new NutritionDAO(id);
+    const result = await dao.getOne();
+
+    if (!result) {
+      return undefined;
+    }
+
+    return this.mapper.domain(result);
   }
 
   find(adminId: string, criteria: Criteria): Promise<Nutrition[]> {
@@ -25,7 +32,7 @@ export class NutritionRepository implements INutritionRepository {
   update(entity: Nutrition): Promise<void> {
     throw new Error('Method not implemented.');
   }
-  
+
   delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
