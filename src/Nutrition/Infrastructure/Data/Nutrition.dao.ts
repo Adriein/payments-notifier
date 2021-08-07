@@ -1,3 +1,4 @@
+import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
 import { column } from '../../../Shared/Infrastructure/Decorators/column';
 
@@ -53,12 +54,29 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
       rows[0].updated_at
     );
   }
-  public find(criteria: any): Promise<NutritionDAO[] | undefined> {
-    throw new Error('Method not implemented.');
+  public async find(criteria: Criteria): Promise<NutritionDAO[] | undefined> {
+    const query = `SELECT * FROM ${this.table} ${criteria.query}`;
+    const { rows } = await this.db.getConnection().query(query);
+
+    if (!rows) {
+      return undefined;
+    }
+
+    return rows.map((row: any) => {
+      return new NutritionDAO(
+        row.id,
+        row.weight,
+        row.height,
+        row.age,
+        row.gender,
+        row.user_id,
+        row.created_at,
+        row.updated_at
+      );
+    });
   }
   public async save(): Promise<void> {
-    const query = this.insertQuery(this.table, this);  
-    console.log(query);
+    const query = this.insertQuery(this.table, this);
     await this.db.getConnection().query(query);
   }
   public update(entity: NutritionDAO): Promise<void> {

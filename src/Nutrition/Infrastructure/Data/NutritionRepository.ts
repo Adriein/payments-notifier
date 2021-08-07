@@ -1,10 +1,11 @@
-import { Criteria } from '../../../Domain/Entities/Criteria.entity';
 import { IMapper } from '../../../Shared/Domain/Interfaces/IMapper';
 import { INutritionRepository } from '../../Domain/INutritionRepository';
 import { Nutrition } from '../../Domain/Nutrition.entity';
 import { DietDAO } from './Diet.dao';
 import { NutritionDAO } from './Nutrition.dao';
 import { NutritionMapper } from './NutritionMapper';
+import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
+import { SqlTranslator } from '../../../Shared/Domain/Entities/SqlTranslator';
 
 export class NutritionRepository implements INutritionRepository {
   private mapper: IMapper<Nutrition, NutritionDAO> = new NutritionMapper();
@@ -20,7 +21,7 @@ export class NutritionRepository implements INutritionRepository {
     return this.mapper.domain(result);
   }
 
-  find(adminId: string, criteria: Criteria): Promise<Nutrition[]> {
+  async find(adminId: string, criteria: any): Promise<Nutrition[]> {
     throw new Error('Method not implemented.');
   }
 
@@ -29,16 +30,25 @@ export class NutritionRepository implements INutritionRepository {
     await nutritionDAO.save();
   }
 
-  update(entity: Nutrition): Promise<void> {
+  async update(entity: Nutrition): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
-  delete(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
-  findByUserId(userId: string): Promise<Nutrition> {
-    // Criteria.field('user_id').equal(userId);
-    throw new Error('Method not implemented.');
+  async findByUserId(userId: string): Promise<Nutrition | undefined> {
+    const dao = new NutritionDAO();
+    const search = new Criteria(new SqlTranslator());
+
+    search.field('user_id').equals(userId);
+    const nutrition = await dao.find(search);
+
+    if (!nutrition) {
+      return undefined;
+    }
+
+    return this.mapper.domain(nutrition[0]);
   }
 }
