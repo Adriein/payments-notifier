@@ -1,5 +1,5 @@
 import { OPERATORS } from '../../../Domain/constants';
-import { ITranslator } from '../Interfaces/ITraducer';
+import { ITranslator } from '../Interfaces/ITranslator';
 
 export class Criteria {
   private _field!: string;
@@ -19,7 +19,7 @@ export class Criteria {
     return this;
   }
 
-  public query(): string {
+  public toQuery(): string {
     return this.translator.translate(
       this._field,
       this._equality,

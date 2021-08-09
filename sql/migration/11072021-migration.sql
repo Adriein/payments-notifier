@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS nutrition (
 
 CREATE TABLE IF NOT EXISTS diet (
     id VARCHAR(50) PRIMARY KEY,
-    name VARCHAR(100),
+    diet_name VARCHAR(100),
     objective VARCHAR(50),
     kcal SMALLINT,
     nutrition_id VARCHAR REFERENCES nutrition(id) ON DELETE CASCADE,

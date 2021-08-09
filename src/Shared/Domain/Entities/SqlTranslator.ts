@@ -1,4 +1,4 @@
-import { ITranslator } from '../Interfaces/ITraducer';
+import { ITranslator } from '../Interfaces/ITranslator';
 
 export class SqlTranslator implements ITranslator {
   public translate(field: string, equality: string, operator: string): string {

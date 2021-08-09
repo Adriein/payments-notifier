@@ -12,6 +12,6 @@ export class GetDietsHandler implements IHandler<Diet[]> {
   @Log(process.env.LOG_LEVEL)
   public async handle(query: GetDietsQuery): Promise<Diet[]> {
     const nutrition = await this.repository.findByUserId(query.userId);
-    return nutrition.diets();
+    return nutrition!.diets();
   }
 }

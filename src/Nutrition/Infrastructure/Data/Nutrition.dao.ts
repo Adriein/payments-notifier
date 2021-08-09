@@ -37,9 +37,11 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
 
   public async getOne(relations?: string[]): Promise<NutritionDAO | undefined> {
     const query = this.selectQuery(this.id!, this.table, relations);
+    console.log(query);
     const { rows } = await this.db.getConnection().query(query);
+    console.log(rows);
 
-    if (!rows) {
+    if (!rows.length) {
       return undefined;
     }
 
@@ -55,7 +57,7 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
     );
   }
   public async find(criteria: Criteria): Promise<NutritionDAO[] | undefined> {
-    const query = `SELECT * FROM ${this.table} ${criteria.query}`;
+    const query = `SELECT * FROM ${this.table} ${criteria.toQuery()}`;
     const { rows } = await this.db.getConnection().query(query);
 
     if (!rows) {

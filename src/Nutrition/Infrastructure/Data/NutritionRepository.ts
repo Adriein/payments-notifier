@@ -12,7 +12,7 @@ export class NutritionRepository implements INutritionRepository {
 
   async findOne(id: string): Promise<Nutrition | undefined> {
     const dao = new NutritionDAO(id);
-    const result = await dao.getOne();
+    const result = await dao.getOne(['diet']);
 
     if (!result) {
       return undefined;

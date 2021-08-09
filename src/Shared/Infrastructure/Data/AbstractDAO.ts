@@ -13,7 +13,9 @@ export abstract class AbstractDAO<T extends object, K extends keyof T = any> {
 
   protected selectQuery = (id: string, table: string, relations?: string[]): string => {
     if (relations) {
-      return `SELECT * FROM ${table} ${this.joins(table, relations)} WHERE id = '${id}'`;
+      const [ tableAlias ] = table.split('');
+
+      return `SELECT ${this.avoidNamingConflicts(relations)}, ${tableAlias}.* FROM ${table} ${tableAlias} ${this.joins(table, relations)} WHERE ${tableAlias}.id = '${id}'`;
     }
 
     return `SELECT * FROM ${table} WHERE id = '${id}'`;
@@ -22,10 +24,18 @@ export abstract class AbstractDAO<T extends object, K extends keyof T = any> {
   private joins = (table: string, relations: string[]): string => {
     return relations
       .map((relation: string) => {
-        return `LEFT JOIN ${relation} ON ${table}.id = ${relation}.${table}_id`;
+        const [ tableAlias ] = table.split('');
+
+        return `LEFT JOIN ${relation} ${relation} ON ${tableAlias}.id = ${relation}.${table}_id`;
       })
       .join('');
   };
+
+  private avoidNamingConflicts = (relations: string[]): string => {
+    return relations.map((relation: string) => {
+      return `${relation}.id as ${relation}_id, ${relation}.created_at as ${relation}_created_at, ${relation}.updated_at as ${relation}_updated_at, ${relation}.*`;
+    }).join('');
+  }
 
   private values = (entity: T, fields: string[]): string => {
     const extractFromEntity = (key: string) => {

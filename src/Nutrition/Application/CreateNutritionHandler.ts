@@ -14,8 +14,13 @@ export class CreateNutritionHandler implements IHandler<void> {
   public async handle(command: CreateNutritionCommand): Promise<void> {
     const userId = new ID(command.userId);
     const gender = new Gender(command.gender);
-    
+
     // Check if nutrition has been created or not
+    // const existingNutrition = await this.repository.findByUserId(userId.value);
+
+    // if(existingNutrition) {
+    //   throw new Error();
+    // }
 
     const nutrition = Nutrition.build(
       userId,
@@ -24,9 +29,12 @@ export class CreateNutritionHandler implements IHandler<void> {
       command.age,
       gender
     );
-      // const a = await this.repository.findOne('0cc2f31e-bf54-4f47-bf47-f7c27b5ec49d');
-      // console.log(a);
-      
-    await this.repository.save(nutrition);
+
+    const a = await this.repository.findOne(
+      '29632813-c458-4a62-bbc0-b11912132510'
+    );
+    console.log(a);
+
+    //await this.repository.save(nutrition);
   }
 }
