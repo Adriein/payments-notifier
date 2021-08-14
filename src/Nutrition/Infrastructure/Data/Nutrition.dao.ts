@@ -1,6 +1,7 @@
 import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
 import { column } from '../../../Shared/Infrastructure/Decorators/column';
+import { DietDAO } from './Diet.dao';
 
 export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   private table: string = 'nutrition';
@@ -13,6 +14,7 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   @column() public user_id: string | undefined;
   @column() public created_at: string | undefined;
   @column() public updated_at: string | undefined;
+  public diets: DietDAO[];
 
   constructor(
     id?: string,
@@ -22,7 +24,8 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
     gender?: string,
     user_id?: string,
     created_at?: string,
-    updated_at?: string
+    updated_at?: string,
+    diets?: DietDAO[]
   ) {
     super();
     this.id = id;
@@ -33,16 +36,42 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
     this.user_id = user_id;
     this.created_at = created_at;
     this.updated_at = updated_at;
+    this.diets = diets || [];
   }
 
   public async getOne(relations?: string[]): Promise<NutritionDAO | undefined> {
     const query = this.selectQuery(this.id!, this.table, relations);
     console.log(query);
     const { rows } = await this.db.getConnection().query(query);
-    console.log(rows);
 
     if (!rows.length) {
       return undefined;
+    }
+
+    if (relations?.length) {
+      const diets = rows.map((row) => {
+        return new DietDAO(
+          row.diet_id,
+          row.diet_name,
+          row.objective,
+          row.kcal,
+          row.nutrition_id,
+          row.diet_created_at,
+          row.diet_updated_at
+        );
+      });
+
+      return new NutritionDAO(
+        rows[0].id,
+        rows[0].weight,
+        rows[0].height,
+        rows[0].age,
+        rows[0].gender,
+        rows[0].user_id,
+        rows[0].created_at,
+        rows[0].updated_at,
+        diets
+      );
     }
 
     return new NutritionDAO(
