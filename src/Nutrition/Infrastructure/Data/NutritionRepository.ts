@@ -50,4 +50,8 @@ export class NutritionRepository implements INutritionRepository {
 
     return this.mapper.domain(nutrition[0]);
   }
+
+  async addDiet(entity: Nutrition): Promise<void> {
+    const dao = 
+  }
 }

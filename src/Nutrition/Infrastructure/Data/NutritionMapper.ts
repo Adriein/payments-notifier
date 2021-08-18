@@ -6,9 +6,14 @@ import { Nutrition } from '../../Domain/Nutrition.entity';
 import { Gender } from '../../Domain/VO/Gender.vo';
 import { DietDAO } from './Diet.dao';
 import { NutritionDAO } from './Nutrition.dao';
+import { DietMapper } from './DietMapper';
 
 export class NutritionMapper implements IMapper<Nutrition, NutritionDAO> {
-  datamodel(domain: Nutrition): NutritionDAO {
+  private dietMapper = new DietMapper();
+
+  public datamodel(domain: Nutrition): NutritionDAO {
+    const diets = domain.diets().map(this.dietMapper.datamodel);
+
     return new NutritionDAO(
       domain.id(),
       domain.weight(),
@@ -17,24 +22,13 @@ export class NutritionMapper implements IMapper<Nutrition, NutritionDAO> {
       domain.gender(),
       domain.userId(),
       domain.createdAt().toUTCString(),
-      domain.updatedAt().toUTCString()
+      domain.updatedAt().toUTCString(),
+      diets
     );
   }
 
-  domain(datamodel: NutritionDAO): Nutrition {
-    console.log(datamodel);
-    
-    const diets = datamodel.diets.map((diet: DietDAO) => {
-      return new Diet(
-        new ID(ID.generate().value),
-        diet.diet_name!,
-        new ID(diet.nutrition_id!),
-        new DietType(diet.objective!),
-        diet.kcal!,
-        new Date(diet.created_at!),
-        new Date(diet.updated_at!)
-      );
-    });
+  public domain(datamodel: NutritionDAO): Nutrition {
+    const diets = datamodel.diets.map(this.dietMapper.domain);
 
     return new Nutrition(
       new ID(datamodel.id!),

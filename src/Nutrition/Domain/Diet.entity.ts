@@ -32,6 +32,18 @@ export class Diet extends BaseEntity {
     return this._meals;
   }
 
+  public name(): string {
+    return this._name;
+  }
+
+  public nutritionId(): string {
+    return this._nutritionId.value;
+  }
+
+  public objective(): string {
+    return this._objective.value;
+  }
+
   public add(name: string, foods: Food[] = []) {
     this._meals.push(Meal.build(name, foods));
   }
