@@ -5,6 +5,7 @@ import { NutritionDAO } from './Nutrition.dao';
 import { NutritionMapper } from './NutritionMapper';
 import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { SqlTranslator } from '../../../Shared/Domain/Entities/SqlTranslator';
+import { DietDAO } from './Diet.dao';
 
 export class NutritionRepository implements INutritionRepository {
   private mapper: IMapper<Nutrition, NutritionDAO> = new NutritionMapper();
@@ -51,7 +52,11 @@ export class NutritionRepository implements INutritionRepository {
     return this.mapper.domain(nutrition[0]);
   }
 
-  async addDiet(entity: Nutrition): Promise<void> {
-    const dao = 
+  async saveDiet(entity: Nutrition): Promise<void> {
+    const dao = this.mapper.datamodel(entity);
+
+    const newDietToSave = dao.diets[dao.diets.length - 1];
+    
+    newDietToSave.save();
   }
 }

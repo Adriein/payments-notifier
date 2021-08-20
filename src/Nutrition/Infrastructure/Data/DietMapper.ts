@@ -12,8 +12,8 @@ export class DietMapper implements IMapper<Diet, DietDAO> {
       domain.objective(),
       domain.kcal(),
       domain.nutritionId(),
-      domain.createdAt().toString(),
-      domain.updatedAt().toString()
+      domain.createdAt().toUTCString(),
+      domain.updatedAt().toUTCString()
     );
   }
 

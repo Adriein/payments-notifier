@@ -21,6 +21,6 @@ export class CreateDietHandler implements IHandler<void> {
 
     nutrition.createDiet(command.name, objective, command.kcalChange);
 
-    await this.repository.update(nutrition);
+    await this.repository.saveDiet(nutrition);
   }
 }

@@ -1,10 +1,7 @@
 import { ID } from '../../../Domain/VO/Id.vo';
-import { DietType } from '../../Domain/VO/DietType.vo';
 import { IMapper } from '../../../Shared/Domain/Interfaces/IMapper';
-import { Diet } from '../../Domain/Diet.entity';
 import { Nutrition } from '../../Domain/Nutrition.entity';
 import { Gender } from '../../Domain/VO/Gender.vo';
-import { DietDAO } from './Diet.dao';
 import { NutritionDAO } from './Nutrition.dao';
 import { DietMapper } from './DietMapper';
 

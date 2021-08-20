@@ -4,7 +4,7 @@ import { column } from '../../../Shared/Infrastructure/Decorators/column';
 import { DietDAO } from './Diet.dao';
 
 export class NutritionDAO extends AbstractDAO<NutritionDAO> {
-  private table: string = 'nutrition';
+  protected table: string = 'nutrition';
 
   @column() public id: string | undefined;
   @column() public weight: number | undefined;
@@ -41,14 +41,14 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
 
   public async getOne(relations?: string[]): Promise<NutritionDAO | undefined> {
     const query = this.selectQuery(this.id!, this.table, relations);
-    console.log(query);
+
     const { rows } = await this.db.getConnection().query(query);
 
     if (!rows.length) {
       return undefined;
     }
 
-    if (relations?.length) {
+    if (relations?.length && !this.isDietJoinEmpty(rows)) {
       const diets = rows.map((row) => {
         return new DietDAO(
           row.diet_id,
@@ -107,13 +107,18 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
     });
   }
   public async save(): Promise<void> {
-    const query = this.insertQuery(this.table, this);
+    const query = this.insertQuery(this);
+
     await this.db.getConnection().query(query);
   }
-  public update(entity: NutritionDAO): Promise<void> {
+  public update(): Promise<void> {
     throw new Error('Method not implemented.');
   }
   public delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
+  }
+
+  private isDietJoinEmpty(rows: any[]): boolean {
+    return rows[0].diet_id === null;
   }
 }

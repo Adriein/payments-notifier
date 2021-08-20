@@ -2,7 +2,7 @@ import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
 import { column } from '../../../Shared/Infrastructure/Decorators/column';
 
 export class DietDAO extends AbstractDAO<DietDAO> {
-  private table: string = 'diet';
+  protected table: string = 'diet';
 
   @column() public id: string | undefined;
   @column() public diet_name: string | undefined;
@@ -31,19 +31,24 @@ export class DietDAO extends AbstractDAO<DietDAO> {
     this.updated_at = updated_at;
   }
 
-  public getOne(relations?: string[]): Promise<DietDAO | undefined> {
+  public async getOne(relations?: string[]): Promise<DietDAO | undefined> {
     throw new Error('Method not implemented.');
   }
-  public find(criteria?: any): Promise<DietDAO[] | undefined> {
+  public async find(criteria?: any): Promise<DietDAO[] | undefined> {
     throw new Error('Method not implemented.');
   }
-  public save(): Promise<void> {
-    throw new Error('Method not implemented.');
+  public async save(): Promise<void> {
+    const query = this.insertQuery(this);
+    console.log(query);
+    
+    await this.db.getConnection().query(query);
   }
-  public update(entity: DietDAO): Promise<void> {
-    throw new Error('Method not implemented.');
+  public async update(): Promise<void> {
+    const query = this.updateQuery(this);
+
+    await this.db.getConnection().query(query);
   }
-  public delete(id: string): Promise<void> {
+  public async delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
 }
