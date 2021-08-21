@@ -9,7 +9,7 @@ export class NutritionMapper implements IMapper<Nutrition, NutritionDAO> {
   private dietMapper = new DietMapper();
 
   public datamodel(domain: Nutrition): NutritionDAO {
-    const diets = domain.diets().map(this.dietMapper.datamodel);
+    const diets = domain.diets().map(this.dietMapper.datamodel.bind(this.dietMapper));
 
     return new NutritionDAO(
       domain.id(),

@@ -25,25 +25,25 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     return `
       UPDATE ${this.table}
       SET ${this.valuesToUpdate(entity, fields)}
-      WHERE id=${entity.id}
+      WHERE id='${entity.id}';
     `;
   }
 
-  protected selectQuery = (id: string, table: string, relations?: string[]): string => {
+  protected selectQuery = (id: string, relations?: string[]): string => {
     if (relations) {
-      const [ tableAlias ] = table.split('');
+      const [ tableAlias ] = this.table.split('');
 
       return `
         SELECT ${this.avoidNamingConflicts(relations)}, ${tableAlias}.* 
-        FROM ${table} ${tableAlias} ${this.joins(table, relations)} 
-        WHERE ${tableAlias}.id = '${id}'
+        FROM ${this.table} ${tableAlias} ${this.joins(this.table, relations)} 
+        WHERE ${tableAlias}.id = '${id}';
       `;
     }
 
     return `
       SELECT * 
-      FROM ${table} 
-      WHERE id = '${id}'
+      FROM ${this.table} 
+      WHERE id = '${id}';
     `;
   };
 
@@ -86,7 +86,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
 
   private updateStatement(entity: T) {
     return (field: string) => {
-      return `${field}=${entity[field as K]}`
+      return `${field}='${entity[field as K]}'`
     }
   }
 

@@ -57,7 +57,7 @@ export class Nutrition extends BaseEntity {
   public getOneDiet(dietId: ID): Diet {
     const diet = this.diets().find((diet: Diet) => diet.id() === dietId.value);
     if (!diet) {
-      throw new Error();
+      throw new Error('No diet found');
     }
 
     return diet;

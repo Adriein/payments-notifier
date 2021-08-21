@@ -40,7 +40,7 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   }
 
   public async getOne(relations?: string[]): Promise<NutritionDAO | undefined> {
-    const query = this.selectQuery(this.id!, this.table, relations);
+    const query = this.selectQuery(this.id!, relations);
 
     const { rows } = await this.db.getConnection().query(query);
 

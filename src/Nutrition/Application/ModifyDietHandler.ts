@@ -4,6 +4,7 @@ import { INutritionRepository } from '../Domain/INutritionRepository';
 import { ID } from '../../Domain/VO/Id.vo';
 import { ModifyDietCommand } from '../Domain/Commands/ModifyDietCommand';
 import { NutritionFinder } from '../Domain/Services/NutritionFinder';
+import { debug } from '../../Infraestructure/Helpers/Debug.utils';
 
 export class ModifyDietHandler implements IHandler<void> {
   constructor(
@@ -28,6 +29,6 @@ export class ModifyDietHandler implements IHandler<void> {
 
     nutrition.modifyDiet(diet);
 
-    await this.repository.update(nutrition);
+    await this.repository.updateDiet(nutrition);
   }
 }

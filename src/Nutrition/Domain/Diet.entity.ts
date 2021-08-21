@@ -5,8 +5,6 @@ import { Meal } from './Meal.entity';
 import { DietType } from './VO/DietType.vo';
 
 export class Diet extends BaseEntity {
-  private _meals: Meal[] = [];
-
   public static build(
     name: string,
     nutritionId: ID,
@@ -22,6 +20,7 @@ export class Diet extends BaseEntity {
     private _nutritionId: ID,
     private _objective: DietType,
     private _kcal: number,
+    private _meals: Meal[] = [],
     _dateCreated?: Date,
     _dateUpdated?: Date
   ) {
@@ -45,7 +44,7 @@ export class Diet extends BaseEntity {
   }
 
   public add(name: string, foods: Food[] = []) {
-    this._meals.push(Meal.build(name, foods));
+    this._meals.push(Meal.build(name, foods, new ID(this.id())));
   }
 
   public flush(): void {

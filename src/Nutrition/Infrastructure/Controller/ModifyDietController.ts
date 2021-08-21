@@ -29,7 +29,12 @@ export class ModifyDietController extends BaseController<void> {
       );
 
       await this.commandBus.dispatch(
-        new ModifyDietCommand(req.body.nutritionId, req.body.dietId, meals)
+        new ModifyDietCommand(
+          req.body.name,
+          req.body.nutritionId,
+          req.body.dietId,
+          meals
+        )
       );
 
       res.status(200).send({});
