@@ -4,7 +4,6 @@ import { INutritionRepository } from '../Domain/INutritionRepository';
 import { ID } from '../../Domain/VO/Id.vo';
 import { ModifyDietCommand } from '../Domain/Commands/ModifyDietCommand';
 import { NutritionFinder } from '../Domain/Services/NutritionFinder';
-import { debug } from '../../Infraestructure/Helpers/Debug.utils';
 
 export class ModifyDietHandler implements IHandler<void> {
   constructor(
@@ -20,7 +19,7 @@ export class ModifyDietHandler implements IHandler<void> {
     const nutrition = await this.finder.find(nutritionId);
 
     const diet = nutrition.getOneDiet(dietId);
-
+    logger(diet);
     diet.flush();
 
     command.meals.forEach((meal) => {

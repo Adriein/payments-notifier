@@ -45,10 +45,12 @@ export class Diet extends BaseEntity {
 
   public add(name: string, foods: Food[] = []) {
     this._meals.push(Meal.build(name, foods, new ID(this.id())));
+    this.updated();
   }
 
   public flush(): void {
     this._meals = [];
+    this.updated();
   }
 
   public kcal = (): number => this._kcal;

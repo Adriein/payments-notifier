@@ -20,4 +20,8 @@ export abstract class BaseEntity {
   public updatedAt(): Date {
     return this._dateUpdated ? this._dateUpdated : new Date();
   }
+
+  public updated(): void {
+    this._dateUpdated = new Date();
+  }
 }
