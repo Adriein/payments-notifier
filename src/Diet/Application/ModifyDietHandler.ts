@@ -1,14 +1,12 @@
 import { Log } from '../../Domain/Decorators/Log';
 import { IHandler } from '../../Domain/Interfaces';
-import { INutritionRepository } from '../Domain/INutritionRepository';
 import { ID } from '../../Domain/VO/Id.vo';
-import { ModifyDietCommand } from '../Domain/Commands/ModifyDietCommand';
-import { NutritionFinder } from '../Domain/Services/NutritionFinder';
+import { ModifyDietCommand } from '../Domain/Command/ModifyDietCommand';
+import { IDietRepository } from '../Domain/IDietRepository';
 
 export class ModifyDietHandler implements IHandler<void> {
   constructor(
-    private repository: INutritionRepository,
-    private finder: NutritionFinder
+    private repository: IDietRepository,
   ) {}
 
   @Log(process.env.LOG_LEVEL)
@@ -16,9 +14,12 @@ export class ModifyDietHandler implements IHandler<void> {
     const nutritionId = new ID(command.nutritionId);
     const dietId = new ID(command.dietId);
 
-    const nutrition = await this.finder.find(nutritionId);
 
-    const diet = nutrition.getOneDiet(dietId);
+    const diet = await this.repository.findOne(dietId.value);
+
+    if(!diet) {
+      throw new Error('Not diet found');
+    }
 
     diet.flush();
 
@@ -26,8 +27,6 @@ export class ModifyDietHandler implements IHandler<void> {
       diet.add(meal.name, meal.foods);
     });
 
-    nutrition.modifyDiet(diet);
-
-    await this.repository.updateDiet(nutrition);
+    await this.repository.update(diet);
   }
 }

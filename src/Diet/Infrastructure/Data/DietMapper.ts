@@ -1,7 +1,7 @@
 import { ID } from '../../../Domain/VO/Id.vo';
-import { DietType } from '../../Domain/VO/DietType.vo';
+import { DietType } from '../../../Diet/Domain/VO/DietType.vo';
 import { IMapper } from '../../../Shared/Domain/Interfaces/IMapper';
-import { Diet } from '../../Domain/Diet.entity';
+import { Diet } from '../../../Diet/Domain/Diet.entity';
 import { DietDAO } from './Diet.dao';
 import { MealMapper } from './MealMapper';
 
@@ -24,7 +24,6 @@ export class DietMapper implements IMapper<Diet, DietDAO> {
   }
 
   domain(datamodel: DietDAO): Diet {
-
     return new Diet(
       new ID(datamodel.id!),
       datamodel.diet_name!,

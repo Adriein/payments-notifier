@@ -3,8 +3,8 @@ import { Controller } from '../../../Infraestructure/Rest/Decorators/controller'
 import { get } from '../../../Infraestructure/Rest/Decorators/routes';
 import { use } from '../../../Infraestructure/Rest/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
-import { Diet } from '../../Domain/Diet.entity';
-import { GetDietsQuery } from '../../Domain/Commands/GetDietsQuery';
+import { Diet } from '../../../Diet/Domain/Diet.entity';
+import { GetDietsQuery } from '../../../Diet/Domain/Query/GetDietsQuery';
 import { GetDietsHandler } from '../../Application/GetDietsHandler';
 import { BaseController } from '../../../Shared/Infrastructure/BaseController';
 

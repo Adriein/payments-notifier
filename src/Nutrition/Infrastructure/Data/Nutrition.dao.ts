@@ -1,7 +1,6 @@
 import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
 import { column } from '../../../Shared/Infrastructure/Decorators/column';
-import { DietDAO } from './Diet.dao';
 
 export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   protected table: string = 'nutrition';
@@ -14,7 +13,6 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   @column() public user_id: string | undefined;
   @column() public created_at: string | undefined;
   @column() public updated_at: string | undefined;
-  public diets: DietDAO[];
 
   constructor(
     id?: string,
@@ -24,8 +22,7 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
     gender?: string,
     user_id?: string,
     created_at?: string,
-    updated_at?: string,
-    diets?: DietDAO[]
+    updated_at?: string
   ) {
     super();
     this.id = id;
@@ -36,7 +33,6 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
     this.user_id = user_id;
     this.created_at = created_at;
     this.updated_at = updated_at;
-    this.diets = diets || [];
   }
 
   public async getOne(relations?: string[]): Promise<NutritionDAO | undefined> {
@@ -46,32 +42,6 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
 
     if (!rows.length) {
       return undefined;
-    }
-
-    if (relations?.length && !this.isDietJoinEmpty(rows)) {
-      const diets = rows.map((row) => {
-        return new DietDAO(
-          row.diet_id,
-          row.diet_name,
-          row.objective,
-          row.kcal,
-          row.nutrition_id,
-          row.diet_created_at,
-          row.diet_updated_at
-        );
-      });
-
-      return new NutritionDAO(
-        rows[0].id,
-        rows[0].weight,
-        rows[0].height,
-        rows[0].age,
-        rows[0].gender,
-        rows[0].user_id,
-        rows[0].created_at,
-        rows[0].updated_at,
-        diets
-      );
     }
 
     return new NutritionDAO(
@@ -116,9 +86,5 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   }
   public delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
-  }
-
-  private isDietJoinEmpty(rows: any[]): boolean {
-    return rows[0].diet_id === null;
   }
 }

@@ -4,9 +4,9 @@ import { Controller } from '../../../Infraestructure/Rest/Decorators/controller'
 import { put } from '../../../Infraestructure/Rest/Decorators/routes';
 import { use } from '../../../Infraestructure/Rest/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
-import { ModifyDietCommand } from '../../Domain/Commands/ModifyDietCommand';
 import { ModifyDietHandler } from '../../Application/ModifyDietHandler';
-import { CreateMealCommand } from '../../Domain/Commands/CreateMealCommand';
+import { ModifyDietCommand } from '../../Domain/Command/ModifyDietCommand';
+import { CreateMealCommand } from '../../Domain/Command/CreateMealCommand';
 
 @Controller()
 export class ModifyDietController extends BaseController<void> {

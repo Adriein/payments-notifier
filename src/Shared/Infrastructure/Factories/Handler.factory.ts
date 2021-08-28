@@ -1,16 +1,17 @@
 import { IHandler } from '../../../Domain/Interfaces';
-import { CreateDietHandler } from '../../../Nutrition/Application/CreateDietHandler';
+import { CreateDietHandler } from '../../../Diet/Application/CreateDietHandler';
 import { CreateNutritionHandler } from '../../../Nutrition/Application/CreateNutritionHandler';
-import { GetDietsHandler } from '../../../Nutrition/Application/GetDietsHandler';
-import { ModifyDietHandler } from '../../../Nutrition/Application/ModifyDietHandler';
-import { GetDietsQuery } from '../../../Nutrition/Domain/Commands/GetDietsQuery';
 import { NutritionFinder } from '../../../Nutrition/Domain/Services/NutritionFinder';
 import { NutritionRepository } from '../../../Nutrition/Infrastructure/Data/NutritionRepository';
 import { ConstructorFunc } from '../../Domain/types';
+import { GetDietsHandler } from '../../../Diet/Application/GetDietsHandler';
+import { ModifyDietHandler } from '../../../Diet/Application/ModifyDietHandler';
+import { DietRepository } from '../../../Diet/Infrastructure/Data/DietRepository';
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
   private nutritionRepository: NutritionRepository = new NutritionRepository();
+  private dietRepository: DietRepository = new DietRepository();
   private finder: NutritionFinder = new NutritionFinder(
     this.nutritionRepository
   );
@@ -37,17 +38,17 @@ export default class HandlerFactory {
 
     this.handlers.set(
       GetDietsHandler.name,
-      new GetDietsHandler(this.nutritionRepository)
+      new GetDietsHandler(this.dietRepository)
     );
 
     this.handlers.set(
       CreateDietHandler.name,
-      new CreateDietHandler(this.nutritionRepository, this.finder)
+      new CreateDietHandler(this.dietRepository)
     );
 
     this.handlers.set(
       ModifyDietHandler.name,
-      new ModifyDietHandler(this.nutritionRepository, this.finder)
+      new ModifyDietHandler(this.dietRepository)
     );
   }
 }

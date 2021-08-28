@@ -1,8 +1,7 @@
 import { BaseEntity } from '../../Domain/Entities/BaseEntity';
 import { ID } from '../../Domain/VO/Id.vo';
-import { Diet } from './Diet.entity';
+import { Diet } from '../../Diet/Domain/Diet.entity';
 import { KcalCalculator } from './KcalCalculator';
-import { DietType } from './VO/DietType.vo';
 import { Gender } from './VO/Gender.vo';
 
 export class Nutrition extends BaseEntity {
@@ -25,50 +24,10 @@ export class Nutrition extends BaseEntity {
     private _height: number,
     private _age: number,
     private _gender: Gender,
-    private _diets: Diet[] = [],
     _dateCreated?: Date,
     _dateUpdated?: Date
   ) {
     super(_id, _dateCreated, _dateUpdated);
-  }
-
-  public createDiet(
-    name: string,
-    objective: DietType,
-    kcalChange: number = 0
-  ): void {
-    const kcal = this.calcKcal(this.lastDietKcal(), kcalChange);
-
-    this._diets.push(Diet.build(name, new ID(this.id()), objective, kcal));
-  }
-
-  public kcalDiffHistory(): number[] {
-    return this._diets.reduce(
-      (history: number[], diet: Diet, index: number) => {
-        const diff =
-          diet.kcal() -
-          (this._diets[index - 1] ? this._diets[index - 1].kcal() : 0);
-        return [...history, diff];
-      },
-      new Array<number>()
-    );
-  }
-
-  public getOneDiet(dietId: ID): Diet {
-    const diet = this.diets().find((diet: Diet) => diet.id() === dietId.value);
-    if (!diet) {
-      throw new Error('No diet found');
-    }
-
-    return diet;
-  }
-
-  public modifyDiet(modifyedDiet: Diet): void {
-    const filteredDiets = this.diets().filter(
-      (diet: Diet) => diet.id() !== modifyedDiet.id()
-    );
-
-    this._diets = [...filteredDiets, modifyedDiet];
   }
 
   private calcKcal(kcal?: number, change?: number): number {
@@ -84,10 +43,6 @@ export class Nutrition extends BaseEntity {
     }
 
     return kcal ? kcal : calcKcal;
-  }
-
-  private lastDietKcal(): number | undefined {
-    return this._diets[this._diets.length - 1]?.kcal();
   }
 
   public userId(): string {
@@ -108,10 +63,6 @@ export class Nutrition extends BaseEntity {
 
   public gender(): string {
     return this._gender.value;
-  }
-
-  public diets(): Diet[] {
-    return this._diets;
   }
 
   public serialize(): Object {
