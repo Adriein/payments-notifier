@@ -6,8 +6,8 @@ interface Colors {
 
 declare namespace NodeJS {
   export interface Global {
-    logger: (param: any, color?: keyof Colors) => void;
+    debug: (param: any, color?: keyof Colors) => void;
   }
 }
 
-declare var logger: (param: any, color?: keyof Colors) => void;
+declare var debug: (param: any, color?: keyof Colors) => void;

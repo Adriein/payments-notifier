@@ -41,11 +41,6 @@ export abstract class DomainEventsManager {
     if (aggregate) {
       await Promise.all(
         aggregate.domainEvents().map((event: DomainEvent) => {
-          logger(
-            `[Domain Event published]: ${
-              event.constructor.name
-            } ${aggregate.id()}`
-          );
           return this.publish(event);
         })
       );

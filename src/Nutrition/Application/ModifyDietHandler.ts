@@ -19,7 +19,7 @@ export class ModifyDietHandler implements IHandler<void> {
     const nutrition = await this.finder.find(nutritionId);
 
     const diet = nutrition.getOneDiet(dietId);
-    logger(diet);
+
     diet.flush();
 
     command.meals.forEach((meal) => {
