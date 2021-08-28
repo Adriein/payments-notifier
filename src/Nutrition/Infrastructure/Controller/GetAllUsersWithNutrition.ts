@@ -5,9 +5,8 @@
 // import { use } from '../../../Infraestructure/Rest/Decorators/use';
 // import { currentUser, requireAuth } from '../../../middlewares/auth';
 // import { BaseController } from '../../../Shared/Infrastructure/BaseController';
-// import { CreateNutritionHandler } from '../../Application/CreateNutritionHandler';
-// import { CreateNutritionCommand } from '../../Domain/Commands/CreateNutritionCommand';
-// import { GetNutritionCommand } from '../../Domain/Commands/GetNutritionCommand';
+// import { GetUserHandler } from '../../../Users/Application/GetUserHandler';
+// import { GetUserQuery } from '../../../Users/Domain/Query/GetUserQuery';
 // import { Nutrition } from '../../Domain/Nutrition.entity';
 
 // @Controller()
@@ -26,13 +25,15 @@
 //         this.factory.create(GetAllNutritionHandler)
 //       );
 
+//       this.queryBus.bind(GetUserQuery, this.factory.create(GetUserHandler));
+
 //       const nutritions: Nutrition[] = await this.queryBus.dispatch(
 //         new GetAllNutritionCommand()
 //       );
 
 //       for (const nutrition of nutritions) {
 //         const user: User = await this.queryBus.dispatch(
-//           new GetUserCommand(userId)
+//           new GetUserQuery(nutrition.userId())
 //         );
 //       }
 

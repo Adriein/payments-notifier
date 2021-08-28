@@ -7,6 +7,9 @@ import { ConstructorFunc } from '../../Domain/types';
 import { GetDietsHandler } from '../../../Diet/Application/GetDietsHandler';
 import { ModifyDietHandler } from '../../../Diet/Application/ModifyDietHandler';
 import { DietRepository } from '../../../Diet/Infrastructure/Data/DietRepository';
+import { GetUserQuery } from '../../../Users/Domain/Query/GetUserQuery';
+import { GetUserHandler } from '../../../Users/Application/GetUserHandler';
+import { UserRepository } from '../../../Infraestructure/Data/Repositories/UserRepository';
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -50,5 +53,10 @@ export default class HandlerFactory {
       ModifyDietHandler.name,
       new ModifyDietHandler(this.dietRepository)
     );
+
+    // this.handlers.set(
+    //   GetUserQuery.name,
+    //   new GetUserHandler(this.userRepository)
+    // );
   }
 }
