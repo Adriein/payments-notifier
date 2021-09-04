@@ -7,17 +7,19 @@ import { ConstructorFunc } from '../../Domain/types';
 import { GetDietsHandler } from '../../../Diet/Application/GetDietsHandler';
 import { ModifyDietHandler } from '../../../Diet/Application/ModifyDietHandler';
 import { DietRepository } from '../../../Diet/Infrastructure/Data/DietRepository';
-import { GetUserQuery } from '../../../Users/Domain/Query/GetUserQuery';
-import { GetUserHandler } from '../../../Users/Application/GetUserHandler';
-import { UserRepository } from '../../../Infraestructure/Data/Repositories/UserRepository';
 import { QueryBus } from '../Bus/QueryBus';
 import { Nutrition } from '../../../Nutrition/Domain/Nutrition.entity';
 import { KcalCalculator } from '../../../Nutrition/Domain/KcalCalculator';
+import { SearchFoodHandler } from '../../../Food/Application/SearchFoodHandler';
+import { FoodRepository } from '../../../Food/Infrastructure/Data/FoodRepository';
+import { SpoonacularRepository } from '../../../Food/Infrastructure/Data/SpoonacularRepository';
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
   private nutritionRepository: NutritionRepository = new NutritionRepository();
   private dietRepository: DietRepository = new DietRepository();
+  private foodRepository: FoodRepository = new FoodRepository();
+  private spoonacularRepository: SpoonacularRepository = new SpoonacularRepository();
   private finder: NutritionFinder = new NutritionFinder(
     this.nutritionRepository
   );
@@ -30,7 +32,7 @@ export default class HandlerFactory {
     const handler = this.handlers.get(_handler.name);
 
     if (!handler) {
-      throw new Error();
+      throw new Error('No handler with this name');
     }
 
     return handler;
@@ -61,9 +63,9 @@ export default class HandlerFactory {
       new ModifyDietHandler(this.dietRepository)
     );
 
-    // this.handlers.set(
-    //   GetUserQuery.name,
-    //   new GetUserHandler(this.userRepository)
-    // );
+    this.handlers.set(
+      SearchFoodHandler.name,
+      new SearchFoodHandler(this.foodRepository, this.spoonacularRepository)
+    );
   }
 }

@@ -28,10 +28,10 @@ import './Infraestructure/Rest/Controllers/Config/GetConfigController';
 import './Infraestructure/Rest/Controllers/Charts/GetMoneyChartController';
 import './Infraestructure/Rest/Controllers/Charts/GetUserChartController';
 import './Infraestructure/Rest/Controllers/Backoffice/ContactEmailController';
-import './Nutrition/Infrastructure/Controller/GetDietsController';
 import './Nutrition/Infrastructure/Controller/CreateNutritionController';
 import './Diet/Infrastructure/Controller/CreateDietController';
-import './Nutrition/Infrastructure/Controller/ModifyDietController';
+import './Diet/Infrastructure/Controller/ModifyDietController';
+import './Food/Infrastructure/Controller/SearchFoodController';
 
 
 export default class App {

@@ -1,15 +1,14 @@
 import { BaseEntity } from '../../Domain/Entities/BaseEntity';
 import { ID } from '../../Domain/VO/Id.vo';
-import { Food } from './Food.entity';
 
 export class Meal extends BaseEntity {
-  public static build(name: string, foods: Food[], dietId: ID): Meal {
+  public static build(name: string, foods: ID[], dietId: ID): Meal {
     return new Meal(ID.generate(), name, foods, dietId);
   }
   constructor(
     _id: ID,
     private _name: string,
-    private _foods: Food[],
+    private _foods: ID[],
     private _dietId: ID,
     _dateCreated?: Date,
     _dateUpdated?: Date
@@ -17,7 +16,7 @@ export class Meal extends BaseEntity {
     super(_id, _dateCreated, _dateUpdated);
   }
 
-  public add(food: Food): void {
+  public add(food: ID): void {
     this._foods.push(food);
   }
 
@@ -25,7 +24,7 @@ export class Meal extends BaseEntity {
     return this._name;
   }
 
-  public foods(): Food[] {
+  public foods(): ID[] {
     return this._foods;
   }
 

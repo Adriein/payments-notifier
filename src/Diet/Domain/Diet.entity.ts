@@ -1,6 +1,5 @@
 import { ID } from '../../Domain/VO/Id.vo';
 import { BaseEntity } from '../../Domain/Entities/BaseEntity';
-import { Food } from './Food.entity';
 import { Meal } from './Meal.entity';
 import { DietType } from './VO/DietType.vo';
 
@@ -43,7 +42,7 @@ export class Diet extends BaseEntity {
     return this._objective.value;
   }
 
-  public add(name: string, foods: Food[] = []) {
+  public add(name: string, foods: ID[] = []) {
     this._meals.push(Meal.build(name, foods, new ID(this.id())));
     this.updated();
   }
