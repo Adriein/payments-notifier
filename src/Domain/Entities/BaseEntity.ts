@@ -24,4 +24,8 @@ export abstract class BaseEntity {
   public updated(): void {
     this._dateUpdated = new Date();
   }
+
+  protected isNew(): boolean {
+    return !this._dateCreated;
+  }
 }

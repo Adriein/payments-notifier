@@ -17,7 +17,7 @@ export class GetDietsController extends BaseController<Diet[]> {
     try {
       this.queryBus.bind(GetDietsQuery, this.factory.create(GetDietsHandler));
 
-      await this.queryBus.dispatch(new GetDietsQuery(req.body.userId));
+      await this.queryBus.ask(new GetDietsQuery(req.body.userId));
 
       res.status(200).send({});
     } catch (error) {

@@ -47,4 +47,8 @@ export class DietRepository implements IDietRepository {
 
     return results.map((result: DietDAO) => this.mapper.domain(result));
   }
+
+  public async getLastDiet(): Promise<Diet | undefined> {
+    throw new Error('Method not implemented.');
+  }
 }

@@ -10,6 +10,9 @@ import { DietRepository } from '../../../Diet/Infrastructure/Data/DietRepository
 import { GetUserQuery } from '../../../Users/Domain/Query/GetUserQuery';
 import { GetUserHandler } from '../../../Users/Application/GetUserHandler';
 import { UserRepository } from '../../../Infraestructure/Data/Repositories/UserRepository';
+import { QueryBus } from '../Bus/QueryBus';
+import { Nutrition } from '../../../Nutrition/Domain/Nutrition.entity';
+import { KcalCalculator } from '../../../Nutrition/Domain/KcalCalculator';
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -46,7 +49,11 @@ export default class HandlerFactory {
 
     this.handlers.set(
       CreateDietHandler.name,
-      new CreateDietHandler(this.dietRepository)
+      new CreateDietHandler(
+        QueryBus.instance<Nutrition>(),
+        this.dietRepository,
+        new KcalCalculator()
+      )
     );
 
     this.handlers.set(

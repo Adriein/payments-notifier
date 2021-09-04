@@ -5,7 +5,6 @@ import { Nutrition } from '../Domain/Nutrition.entity';
 import { ID } from '../../Domain/VO/Id.vo';
 import { CreateNutritionCommand } from '../Domain/Commands/CreateNutritionCommand';
 import { Gender } from '../Domain/VO/Gender.vo';
-import { NutritionFinder } from '../Domain/Services/NutritionFinder';
 
 export class CreateNutritionHandler implements IHandler<void> {
   constructor(private repository: INutritionRepository) {}

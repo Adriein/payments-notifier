@@ -19,12 +19,6 @@ export type GenderType = {
   female: 'female';
 };
 
-export type KcalFormula = {
-  weight: number;
-  height: number;
-  age: number;
-};
-
 export type BindCommandHandler<T> = {
   [key: string]: T;
 };

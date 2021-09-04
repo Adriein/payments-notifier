@@ -3,6 +3,7 @@ export class CreateDietCommand {
     public name: string,
     public nutritionId: string,
     public objective: string,
-    public kcalChange?: number
+    public lastDietKcal?: number,
+    public newKcal?: number
   ) {}
 }

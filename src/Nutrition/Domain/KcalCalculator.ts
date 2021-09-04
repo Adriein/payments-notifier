@@ -1,25 +1,14 @@
-import { GenderType, KcalFormula } from '../../Shared/Domain/types';
+import { Nutrition } from './Nutrition.entity';
 
 export class KcalCalculator {
-  private MALE = 'male';
   private FEMALE = 'female';
-  private _gender?: string;
-  private _formula!: string;
 
-  public calculate(weight: number, height: number, age: number): number {
-    if (!this._gender) {
-      throw new Error();
+  public calculate(nutrition: Nutrition): number {
+    if (nutrition.gender() === this.FEMALE) {
+      return eval(this.parseFormula(this.femaleFormula(), nutrition));
     }
 
-    if (this._gender === this.FEMALE) {
-      this._formula = this.femaleFormula();
-    }
-
-    if (this._gender === this.MALE) {
-      this._formula = this.maleFormula();
-    }
-
-    return eval(this.parseFormula(this._formula, { weight, height, age }));
+    return eval(this.parseFormula(this.maleFormula(), nutrition));
   }
 
   private maleFormula(): string {
@@ -29,15 +18,10 @@ export class KcalCalculator {
     return '13.397*(P) + 4.799*(A) - 5.677*(E) + 88.362';
   }
 
-  private parseFormula(formula: string, { weight, height, age }: KcalFormula) {
+  private parseFormula(formula: string, nutrition: Nutrition) {
     return formula
-      .replace('P', weight.toString())
-      .replace('A', height.toString())
-      .replace('E', age.toString());
-  }
-
-  public gender(gender: string) {
-    this._gender = gender;
-    return this;
+      .replace('P', nutrition.weight().toString())
+      .replace('A', nutrition.height().toString())
+      .replace('E', nutrition.age().toString());
   }
 }
