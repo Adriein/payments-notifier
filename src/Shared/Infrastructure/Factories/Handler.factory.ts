@@ -12,14 +12,14 @@ import { Nutrition } from '../../../Nutrition/Domain/Nutrition.entity';
 import { KcalCalculator } from '../../../Nutrition/Domain/KcalCalculator';
 import { SearchFoodHandler } from '../../../Food/Application/SearchFoodHandler';
 import { FoodRepository } from '../../../Food/Infrastructure/Data/FoodRepository';
-import { SpoonacularRepository } from '../../../Food/Infrastructure/Data/SpoonacularRepository';
+import { NutritionixRepository } from '../../../Food/Infrastructure/Data/NutritionixRepository';
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
   private nutritionRepository: NutritionRepository = new NutritionRepository();
   private dietRepository: DietRepository = new DietRepository();
   private foodRepository: FoodRepository = new FoodRepository();
-  private spoonacularRepository: SpoonacularRepository = new SpoonacularRepository();
+  private nutritionixRepository: NutritionixRepository = new NutritionixRepository();
   private finder: NutritionFinder = new NutritionFinder(
     this.nutritionRepository
   );
@@ -65,7 +65,7 @@ export default class HandlerFactory {
 
     this.handlers.set(
       SearchFoodHandler.name,
-      new SearchFoodHandler(this.foodRepository, this.spoonacularRepository)
+      new SearchFoodHandler(this.foodRepository, this.nutritionixRepository)
     );
   }
 }
