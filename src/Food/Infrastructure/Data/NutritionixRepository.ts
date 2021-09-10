@@ -9,18 +9,15 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
   protected BASE_URL: string = 'https://trackapi.nutritionix.com/v2';
   private mapper = new FoodApiMapper();
 
-  public async search(term: string): Promise<Food[]> {
-    const searchQuery = `/search/instant?query=brez&locale=de_DE`;
+  constructor() {
+    super();
+    this.setHeaders();
+  }
 
-    const { data, headers } = await this.get<NutritionixApiSearchResponse>(
-      `/search/instant?query=${term}&locale=es_ES`,
-      {
-        headers: {
-          'x-app-id': process.env.NUTRITIONIX_APPLICATION_ID,
-          'x-app-key': process.env.NUTRITIONIX_API_KEY,
-        },
-      }
-    );
+  public async search(term: string): Promise<Food[]> {
+    const searchQuery = `/search/instant?query=${term}&locale=es_ES`;
+
+    const { data } = await this.get<NutritionixApiSearchResponse>(searchQuery);
     debug(data);
 
     throw new Error();
@@ -44,5 +41,16 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
 
   delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
+  }
+
+  private getCommonFoodNutrients(): any {
+    
+  }
+
+  private setHeaders(): void {
+    this.headers({
+      'x-app-id': process.env.NUTRITIONIX_APPLICATION_ID,
+      'x-app-key': process.env.NUTRITIONIX_API_KEY,
+    });
   }
 }
