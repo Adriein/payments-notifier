@@ -3,7 +3,10 @@ import { HttpApi } from '../../../Shared/Infrastructure/Data/HttpApi';
 import { Food } from '../../Domain/Food.entity';
 import { IFoodRepository } from '../../Domain/IFoodRepository';
 import { FoodApiMapper } from './FoodApiMapper';
-import { NutritionixApiSearchResponse } from './NutritionixApiSearch.response.api';
+import { FoodSearch, NutritionixApiSearchResponse } from './NutritionixApiSearch.response.api';
+import { NutrientsFood, NutritionixApiNutrientsResponse } from './NutritionixApiNutrients.response.api';
+import { NutritionixApiNutrientsRequest } from './NutritionixApiNutrients.request';
+import { Collection } from '../../../Shared/Domain/Entities/Collection';
 
 export class NutritionixRepository extends HttpApi implements IFoodRepository {
   protected BASE_URL: string = 'https://trackapi.nutritionix.com/v2';
@@ -17,10 +20,22 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
   public async search(term: string): Promise<Food[]> {
     const searchQuery = `/search/instant?query=${term}&locale=es_ES`;
 
-    const { data } = await this.get<NutritionixApiSearchResponse>(searchQuery);
-    debug(data);
+    const { data: searchResponse } = await this.get<NutritionixApiSearchResponse>(searchQuery);
 
-    throw new Error();
+    const foods: Food[] = [];
+
+    const results = new Collection<FoodSearch>(searchResponse.common).cut(5);
+
+    for (const result of results.get()) {
+      const { data: nutrientsResponse } = await this.post<
+        NutritionixApiNutrientsResponse,
+        NutritionixApiNutrientsRequest
+      >('/natural/nutrients', { query: result.food_name, locale: 'es_ES' });
+
+      foods.push(this.mapper.domain(nutrientsResponse.foods[0]));
+    }
+
+    return foods;
   }
 
   findOne(id: string): Promise<Food | undefined> {
@@ -43,9 +58,7 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
     throw new Error('Method not implemented.');
   }
 
-  private getCommonFoodNutrients(): any {
-    
-  }
+  private getCommonFoodNutrients(): any {}
 
   private setHeaders(): void {
     this.headers({

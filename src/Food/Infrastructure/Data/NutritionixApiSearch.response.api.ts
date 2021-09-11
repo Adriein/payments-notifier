@@ -15,5 +15,7 @@ export interface FoodSearch {
 
 export interface NutritionixApiSearchResponse {
   headers: any;
-  data: FoodSearch;
+  data: {
+    common: FoodSearch[];
+  };
 }
