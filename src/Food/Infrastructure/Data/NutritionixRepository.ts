@@ -21,7 +21,7 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
     const searchQuery = `/search/instant?query=${term}&locale=es_ES`;
 
     const { data: searchResponse } = await this.get<NutritionixApiSearchResponse>(searchQuery);
-
+    
     const foods: Food[] = [];
 
     const results = new Collection<FoodSearch>(searchResponse.common).cut(5);

@@ -3,8 +3,8 @@ import { AggregateRoot } from '../../Shared/Domain/Entities/AggregateRoot';
 import { MicroNutrients } from './MicroNutrients.entity';
 
 export class Food extends AggregateRoot {
-  public static build(name: string, unit: string, qty: number, photo: string, micro: MicroNutrients[]): Food {
-    return new Food(ID.generate(), name, unit, qty, photo, micro);
+  public static build(name: string, unit: string, qty: number, photo: string, kcal: number, micro: MicroNutrients[]): Food {
+    return new Food(ID.generate(), name, unit, qty, photo, kcal, micro);
   }
   constructor(
     _id: ID,
@@ -12,6 +12,7 @@ export class Food extends AggregateRoot {
     private _unit: string,
     private _qty: number,
     private _photo: string,
+    private _kcal: number,
     private _micro: MicroNutrients[],
     _dateCreated?: Date,
     _dateUpdated?: Date
