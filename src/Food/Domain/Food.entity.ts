@@ -40,6 +40,11 @@ export class Food extends AggregateRoot {
     return this._qty;
   }
 
+  public kcal(): number {
+    return this._kcal;
+  }
+  
+
   public serialize(): Object {
     throw new Error('Method not implemented.');
   }

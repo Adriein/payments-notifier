@@ -1,4 +1,3 @@
-import { ID } from '../../../Domain/VO/Id.vo';
 import { AggregateRoot } from './AggregateRoot';
 import { DomainEvent } from './DomainEvent';
 
@@ -35,8 +34,8 @@ export abstract class DomainEventsManager {
     }
   }
 
-  public static async publishEvents(id: ID): Promise<void> {
-    const aggregate = this.findAggregateByID(id.value);
+  public static async publishEvents(id: string): Promise<void> {
+    const aggregate = this.findAggregateByID(id);
 
     if (aggregate) {
       await Promise.all(

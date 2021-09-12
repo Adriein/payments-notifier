@@ -1,5 +1,6 @@
 import { Log } from '../../Domain/Decorators/Log';
 import { IHandler } from '../../Domain/Interfaces';
+import { DomainEventsManager } from '../../Shared/Domain/Entities/DomainEventsManager';
 import { Food } from '../Domain/Food.entity';
 import { IFoodRepository } from '../Domain/IFoodRepository';
 import { SearchFoodQuery } from '../Domain/Query/SearchFoodQuery';
@@ -18,6 +19,10 @@ export class SearchFoodHandler implements IHandler<Food[]> {
     //   return foods;
     // }
 
-    return await this.apiRepository.search(query.searchTerm);
+    const foods = await this.apiRepository.search(query.searchTerm);
+
+    foods.forEach((food: Food) => DomainEventsManager.publishEvents(food.id()))
+
+    return foods;
   }
 }

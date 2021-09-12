@@ -7,6 +7,8 @@ import { FoodSearch, NutritionixApiSearchResponse } from './NutritionixApiSearch
 import { NutrientsFood, NutritionixApiNutrientsResponse } from './NutritionixApiNutrients.response.api';
 import { NutritionixApiNutrientsRequest } from './NutritionixApiNutrients.request';
 import { Collection } from '../../../Shared/Domain/Entities/Collection';
+import { ApiQueryDomainEvent } from '../../Domain/ApiQueryDomainEvent';
+import { ID } from '../../../Domain/VO/Id.vo';
 
 export class NutritionixRepository extends HttpApi implements IFoodRepository {
   protected BASE_URL: string = 'https://trackapi.nutritionix.com/v2';
@@ -21,7 +23,7 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
     const searchQuery = `/search/instant?query=${term}&locale=es_ES`;
 
     const { data: searchResponse } = await this.get<NutritionixApiSearchResponse>(searchQuery);
-    
+
     const foods: Food[] = [];
 
     const results = new Collection<FoodSearch>(searchResponse.common).cut(5);
@@ -32,8 +34,14 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
         NutritionixApiNutrientsRequest
       >('/natural/nutrients', { query: result.food_name, locale: 'es_ES' });
 
-      foods.push(this.mapper.domain(nutrientsResponse.foods[0]));
+      const food = this.mapper.domain(nutrientsResponse.foods[0]);
+
+      food.addEvent(new ApiQueryDomainEvent(food.id(), 1));
+
+      foods.push(food);
     }
+
+    this.addSearchEvent(foods);
 
     return foods;
   }
@@ -58,12 +66,16 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
     throw new Error('Method not implemented.');
   }
 
-  private getCommonFoodNutrients(): any {}
-
   private setHeaders(): void {
     this.headers({
       'x-app-id': process.env.NUTRITIONIX_APPLICATION_ID,
       'x-app-key': process.env.NUTRITIONIX_API_KEY,
     });
+  }
+
+  private addSearchEvent(foods: Food[]) {
+    const food = foods[0];
+    food.addEvent(new ApiQueryDomainEvent(food.id(), 1));
+    return foods;
   }
 }
