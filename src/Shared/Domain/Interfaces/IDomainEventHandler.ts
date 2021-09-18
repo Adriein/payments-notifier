@@ -1,3 +1,5 @@
+import { DomainEvent } from '../Entities/DomainEvent';
+
 export interface IDomainEventHandler {
-  listen(): void;
+  handle(event: DomainEvent): Promise<void>;
 }

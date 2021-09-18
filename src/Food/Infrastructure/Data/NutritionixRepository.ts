@@ -4,11 +4,10 @@ import { Food } from '../../Domain/Food.entity';
 import { IFoodRepository } from '../../Domain/IFoodRepository';
 import { FoodApiMapper } from './FoodApiMapper';
 import { FoodSearch, NutritionixApiSearchResponse } from './NutritionixApiSearch.response.api';
-import { NutrientsFood, NutritionixApiNutrientsResponse } from './NutritionixApiNutrients.response.api';
+import {  NutritionixApiNutrientsResponse } from './NutritionixApiNutrients.response.api';
 import { NutritionixApiNutrientsRequest } from './NutritionixApiNutrients.request';
 import { Collection } from '../../../Shared/Domain/Entities/Collection';
 import { ApiQueryDomainEvent } from '../../Domain/ApiQueryDomainEvent';
-import { ID } from '../../../Domain/VO/Id.vo';
 
 export class NutritionixRepository extends HttpApi implements IFoodRepository {
   protected BASE_URL: string = 'https://trackapi.nutritionix.com/v2';
@@ -19,14 +18,14 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
     this.setHeaders();
   }
 
-  public async search(term: string): Promise<Food[]> {
+  public async search(term: string, maxSearch: number = 5): Promise<Food[]> {
     const searchQuery = `/search/instant?query=${term}&locale=es_ES`;
 
     const { data: searchResponse } = await this.get<NutritionixApiSearchResponse>(searchQuery);
 
     const foods: Food[] = [];
 
-    const results = new Collection<FoodSearch>(searchResponse.common).cut(5);
+    const results = new Collection<FoodSearch>(searchResponse.common).cut(maxSearch);
 
     for (const result of results.get()) {
       const { data: nutrientsResponse } = await this.post<
@@ -36,12 +35,8 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
 
       const food = this.mapper.domain(nutrientsResponse.foods[0]);
 
-      food.addEvent(new ApiQueryDomainEvent(food.id(), 1));
-
       foods.push(food);
     }
-
-    this.addSearchEvent(foods);
 
     return foods;
   }
@@ -71,11 +66,5 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
       'x-app-id': process.env.NUTRITIONIX_APPLICATION_ID,
       'x-app-key': process.env.NUTRITIONIX_API_KEY,
     });
-  }
-
-  private addSearchEvent(foods: Food[]) {
-    const food = foods[0];
-    food.addEvent(new ApiQueryDomainEvent(food.id(), 1));
-    return foods;
   }
 }

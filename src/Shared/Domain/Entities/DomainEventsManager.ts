@@ -1,3 +1,5 @@
+import { IDomainEventHandler } from '../Interfaces/IDomainEventHandler';
+import { DomainEventClass } from '../types';
 import { AggregateRoot } from './AggregateRoot';
 import { DomainEvent } from './DomainEvent';
 
@@ -9,22 +11,21 @@ export type EventCallback = (event: DomainEvent) => Promise<void>;
 
 type EventName = string;
 
-type DomainEventClass = new (...args: never[]) => DomainEvent;
-
 export abstract class DomainEventsManager {
-  private static subscribers: Map<EventName, EventCallback[]> = new Map();
+  private static subscribers: Map<EventName, IDomainEventHandler[]> = new Map();
 
   private static aggregates: AggregateRoot[] = [];
 
-  public static subscribe<T extends DomainEvent>(
+  public static subscribe(
     event: DomainEventClass,
-    callback: (event: T) => Promise<void>
+    handler: IDomainEventHandler
   ): void {
     const eventName: EventName = event.name;
     if (!this.subscribers.has(eventName)) {
       this.subscribers.set(eventName, []);
     }
-    this.subscribers.get(eventName)?.push(callback as EventCallback);
+
+    this.subscribers.get(eventName)?.push(handler);
   }
 
   public static prepareForPublish(aggregate: AggregateRoot): void {
@@ -66,8 +67,8 @@ export abstract class DomainEventsManager {
     const eventName: string = event.constructor.name;
 
     if (this.subscribers.has(eventName)) {
-      const callbacks: EventCallback[] = this.subscribers.get(eventName) || [];
-      await Promise.all(callbacks.map((callback) => callback(event)));
+      const handlers: IDomainEventHandler[] = this.subscribers.get(eventName) || [];
+      await Promise.all(handlers.map((handler: IDomainEventHandler) => handler.handle(event)));
     }
   }
 }

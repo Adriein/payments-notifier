@@ -32,7 +32,7 @@ import './Nutrition/Infrastructure/Controller/CreateNutritionController';
 import './Diet/Infrastructure/Controller/CreateDietController';
 import './Diet/Infrastructure/Controller/ModifyDietController';
 import './Food/Infrastructure/Controller/SearchFoodController';
-
+import './Backoffice/Application/RegisterApiUsageHandler';
 
 export default class App {
   public init() {
@@ -41,11 +41,7 @@ export default class App {
     console.log(chalk.cyan('> Checking env variables...'));
 
     process.on('exit', (code) => {
-      console.log(
-        chalk.red.bold(
-          `> About to exit with code: ${code} some env variables are not setted`
-        )
-      );
+      console.log(chalk.red.bold(`> About to exit with code: ${code} some env variables are not setted`));
     });
 
     this.checkEnvVariables();
@@ -56,16 +52,15 @@ export default class App {
 
     this.initDirectories();
 
+    this.bootstrapHttpServer();
+  }
+
+  private bootstrapHttpServer(): void {
+    console.log(chalk.cyan('> Starting http server... 👾'));
     const app = express();
 
     app.set('port', process.env.PORT || 5000);
-    console.log(
-      chalk.cyan(
-        `> App Environment: PORT: ${app.get('port')} CONFIG: ${
-          process.env.NODE_ENV
-        } `
-      )
-    );
+    console.log(chalk.cyan(`> App Environment: PORT: ${app.get('port')} CONFIG: ${process.env.NODE_ENV} `));
 
     app.use(express.json());
     app.use(
@@ -82,17 +77,14 @@ export default class App {
 
     if (process.env.NODE_ENV === 'PRO') {
       app.use((req, res, next) => {
-        if (req.header('x-forwarded-proto') !== 'https')
-          res.redirect(`https://${req.header('host')}${req.url}`);
+        if (req.header('x-forwarded-proto') !== 'https') res.redirect(`https://${req.header('host')}${req.url}`);
         else next();
       });
 
       app.use(express.static('client/build'));
 
-      app.get('*', (req, res) => {
-        res.sendFile(
-          path.resolve(__dirname, '..', 'client', 'build', 'index.html')
-        );
+      app.get('*', (_, res) => {
+        res.sendFile(path.resolve(__dirname, '..', 'client', 'build', 'index.html'));
       });
     }
 

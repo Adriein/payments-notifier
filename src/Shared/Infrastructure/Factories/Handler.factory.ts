@@ -16,13 +16,11 @@ import { NutritionixRepository } from '../../../Food/Infrastructure/Data/Nutriti
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
+  
   private nutritionRepository: NutritionRepository = new NutritionRepository();
   private dietRepository: DietRepository = new DietRepository();
   private foodRepository: FoodRepository = new FoodRepository();
   private nutritionixRepository: NutritionixRepository = new NutritionixRepository();
-  private finder: NutritionFinder = new NutritionFinder(
-    this.nutritionRepository
-  );
 
   constructor() {
     this.register();

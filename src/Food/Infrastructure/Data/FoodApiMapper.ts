@@ -1,4 +1,5 @@
 import { IMapper } from '../../../Shared/Domain/Interfaces/IMapper';
+import { ApiQueryDomainEvent } from '../../Domain/ApiQueryDomainEvent';
 import { Food } from '../../Domain/Food.entity';
 import { MicroNutrients } from '../../Domain/MicroNutrients.entity';
 import { NutrientsFood } from './NutritionixApiNutrients.response.api';

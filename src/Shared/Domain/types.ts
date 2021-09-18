@@ -1,3 +1,5 @@
+import { DomainEvent } from "./Entities/DomainEvent";
+
 export type PricingObject = {
   [key: string]: { duration: number; price: number };
 };
@@ -26,3 +28,5 @@ export type BindCommandHandler<T> = {
 export type ConstructorFunc<T = any> = {
   new (...args: any[]): T;
 };
+
+export type DomainEventClass = new (...args: never[]) => DomainEvent;

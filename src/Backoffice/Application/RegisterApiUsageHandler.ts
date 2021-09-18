@@ -1,9 +1,18 @@
+import { ID } from '../../Domain/VO/Id.vo';
 import { ApiQueryDomainEvent } from '../../Food/Domain/ApiQueryDomainEvent';
-import { DomainEventsManager } from '../../Shared/Domain/Entities/DomainEventsManager';
+import { DomainEventsHandler } from '../../Shared/Domain/Decorators/DomainEventsHandler.decorator';
 import { IDomainEventHandler } from '../../Shared/Domain/Interfaces/IDomainEventHandler';
+import { ApiUsage } from '../Domain/ApiUsage.entity';
+import { IApiUsageRepository } from '../Domain/IApiUsageRepository';
 
+
+@DomainEventsHandler(ApiQueryDomainEvent)
 export class RegisterApiUsageHandler implements IDomainEventHandler {
-  listen(): void {
-    DomainEventsManager.subscribe(ApiQueryDomainEvent, async () => console.log('hola'));
+  constructor(private repository: IApiUsageRepository) {}
+
+  public async handle(event: ApiQueryDomainEvent): Promise<void> {
+    debug(event);
+    const usage = ApiUsage.build(new ID(event.userId), event.calls);
+    await this.repository.save(usage);
   }
 }

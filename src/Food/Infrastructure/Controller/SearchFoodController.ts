@@ -21,7 +21,7 @@ export class SearchFoodController extends BaseController<Food[]> {
       );
 
       const foods = await this.queryBus.ask(
-        new SearchFoodQuery(req.params.search)
+        new SearchFoodQuery(req.params.search, req.currentUser!.id!)
       );
       
       res.status(200).send(foods);

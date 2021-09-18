@@ -98,7 +98,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
 
   public abstract getOne(relations?: string[]): Promise<T | undefined>;
   public abstract find(criteria: any): Promise<T[] | undefined>;
-  public abstract save(entity: T): Promise<void>;
+  public abstract save(): Promise<void>;
   public abstract update(): Promise<void>;
   public abstract delete(id: string): Promise<void>;
 }
