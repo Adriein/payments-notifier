@@ -76,8 +76,6 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
       const value = entity[field as K] ?? null;
 
       if(typeof value === 'number') {
-        console.log(value);
-        
         return `${value}`
       }
       return `'${value}'` 

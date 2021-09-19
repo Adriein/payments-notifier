@@ -32,7 +32,12 @@ import './Nutrition/Infrastructure/Controller/CreateNutritionController';
 import './Diet/Infrastructure/Controller/CreateDietController';
 import './Diet/Infrastructure/Controller/ModifyDietController';
 import './Food/Infrastructure/Controller/SearchFoodController';
-import './Backoffice/Application/RegisterApiUsageHandler';
+import './Backoffice';
+import { ExplorerService } from './ExplorerService';
+import DomainEventHandlerFactory from './Shared/Infrastructure/Factories/DomainEventHandler.factory';
+import { IDomainEventHandler } from './Shared/Domain/Interfaces/IDomainEventHandler';
+import { DomainEventsManager } from './Shared/Domain/Entities/DomainEventsManager';
+import { ConstructorFunc, DomainEventClass } from './Shared/Domain/types';
 
 export default class App {
   public init() {
@@ -49,6 +54,8 @@ export default class App {
     console.log(chalk.cyan('> Env variables setted correctly ✨'));
 
     Database.getInstance();
+
+    this.bindDomainEvents();
 
     this.initDirectories();
 
@@ -119,5 +126,14 @@ export default class App {
     fs.mkdirSync(FILES_PATH);
 
     console.log(chalk.yellow('> File folders created 📁'));
+  }
+
+  private bindDomainEvents(): void {
+    const factory = new DomainEventHandlerFactory();
+    for (const handler of factory.getContainer().values()) {
+      const domainEvents = ExplorerService.explore<Function, DomainEventClass>(handler.constructor);
+
+      domainEvents.forEach((event: DomainEventClass) => DomainEventsManager.subscribe(event, handler));
+    }
   }
 }

@@ -1,6 +1,5 @@
 import { RegisterApiUsageHandler } from '../../../Backoffice/Application/RegisterApiUsageHandler';
 import { ApiUsageRepository } from '../../../Backoffice/Infrastructure/Data/ApiUsageRepository';
-import { ApiQueryDomainEvent } from '../../../Food/Domain/ApiQueryDomainEvent';
 import { IDomainEventHandler } from '../../Domain/Interfaces/IDomainEventHandler';
 import { ConstructorFunc } from '../../Domain/types';
 
@@ -24,6 +23,10 @@ export default class DomainEventHandlerFactory {
   }
 
   private register(): void {
-    this.handlers.set(ApiQueryDomainEvent.name, new RegisterApiUsageHandler(this.apiUsageRepo));
+    this.handlers.set(RegisterApiUsageHandler.name, new RegisterApiUsageHandler(this.apiUsageRepo));
+  }
+
+  public getContainer(): Map<string, IDomainEventHandler> {
+    return this.handlers;
   }
 }
