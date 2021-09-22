@@ -1,4 +1,6 @@
 import { DomainEvent } from "./Entities/DomainEvent";
+import { ICommand } from "./Interfaces/ICommand";
+import { IQuery } from "./Interfaces/IQuery";
 
 export type PricingObject = {
   [key: string]: { duration: number; price: number };
@@ -30,3 +32,6 @@ export type ConstructorFunc<T = any> = {
 };
 
 export type DomainEventClass = new (...args: never[]) => DomainEvent;
+
+export type CommandClass = new (...args: never[]) => ICommand;
+export type QueryClass = new (...args: never[]) => IQuery;

@@ -1,11 +1,12 @@
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { IHandler } from '../../../Domain/Interfaces';
 import { ICommandBus } from '../../Domain/Bus/ICommandBus';
-import { ConstructorFunc } from '../../Domain/types';
+import { CommandClass, ConstructorFunc } from '../../Domain/types';
+import { ICommand } from "../../Domain/Interfaces/ICommand";
 
-export class CommandBus<H extends IHandler<void> = IHandler<void>> implements ICommandBus
+export class CommandBus implements ICommandBus
 {
   private static _instance: CommandBus;
-  private handlers: Map<string, H> = new Map();
+  private static handlers: Map<string, IHandler<void>> = new Map();
 
   private constructor(){}
 
@@ -17,19 +18,19 @@ export class CommandBus<H extends IHandler<void> = IHandler<void>> implements IC
     return CommandBus._instance;
   }
 
-  public bind = (command: ConstructorFunc, handler: H) => {
-    this.handlers.set(command.name, handler);
+  public static bind = (command: CommandClass, handler: IHandler<void>) => {
+    CommandBus.handlers.set(command.name, handler);
   };
 
   public async dispatch(command: ICommand): Promise<void> {
     return await this.resolve(command).handle(command);
   }
 
-  private resolve(command: ICommand): H { 
-    const handler = this.handlers.get(command.constructor.name);
+  private resolve(command: ICommand): IHandler<void> {
+    const handler = CommandBus.handlers.get(command.constructor.name);
 
     if (!handler) {
-      throw new Error('no handler binded');
+      throw new Error('No handler bound');
     }
 
     return handler;

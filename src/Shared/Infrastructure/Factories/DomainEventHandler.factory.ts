@@ -1,4 +1,4 @@
-import { RegisterApiUsageHandler } from '../../../Backoffice/Application/RegisterApiUsageHandler';
+import { RegisterApiUsageHandler } from '../../../Backoffice';
 import { ApiUsageRepository } from '../../../Backoffice/Infrastructure/Data/ApiUsageRepository';
 import { IDomainEventHandler } from '../../Domain/Interfaces/IDomainEventHandler';
 import { ConstructorFunc } from '../../Domain/types';

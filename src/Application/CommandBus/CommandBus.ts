@@ -16,8 +16,7 @@ import { ReadUserCommand } from "../../Domain/Commands/User/ReadUserCommand";
 import { RegisterUserPaymentCommand } from "../../Domain/Commands/User/RegisterUserPaymentCommand";
 import { UpdateUserCommand } from "../../Domain/Commands/User/UpdateUserCommand";
 import { UpdateUserNotificationsCommand } from "../../Domain/Commands/User/UpdateUserNotificationsCommand";
-import { ICommand } from "../../Shared/Domain/Bus/ICommand";
-import { ICommandBus } from "../../Domain/Interfaces/ICommandBus";
+import { ICommandBus } from "../../Domain/Interfaces";
 import { UserFinder } from "../../Domain/Services/UserFinder";
 import { PriceBuilder } from "../../Domain/Services/PriceBuilder";
 import { AppConfigMapper } from "../../Infraestructure/Data/Mappers/AppConfigMapper";
@@ -54,6 +53,7 @@ import { SendGridApi } from "../../Infraestructure/Apis/SendGrid/SendGrid.api";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { UpdateUserPasswordCommand } from "../../Domain/Commands/User/UpdateUserPasswordCommand";
 import { UpdateUserPasswordHandler } from "../Handlers/User/UpdateUserPasswordHandler";
+import { ICommand } from "../../Shared/Domain/Interfaces/ICommand";
 
 export class CommandBus implements ICommandBus {
   //repos

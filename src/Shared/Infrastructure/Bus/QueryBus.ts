@@ -1,11 +1,12 @@
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { IHandler } from '../../../Domain/Interfaces';
 import { IQueryBus } from '../../Domain/Bus/IQueryBus';
-import { ConstructorFunc } from '../../Domain/types';
+import { QueryClass } from '../../Domain/types';
+import { IQuery } from "../../Domain/Interfaces/IQuery";
 
-export class QueryBus<T, H extends IHandler<T> = IHandler<T>> implements IQueryBus<T>
+export class QueryBus<T> implements IQueryBus<T>
 {
   private static _instance: QueryBus<any>;
-  private handlers: Map<string, H> = new Map();
+  private static handlers: Map<string, IHandler<any>> = new Map();
 
   private constructor() {}
 
@@ -17,16 +18,16 @@ export class QueryBus<T, H extends IHandler<T> = IHandler<T>> implements IQueryB
     return QueryBus._instance;
   }
 
-  public bind = (command: ConstructorFunc, handler: H): void => {
-    this.handlers.set(command.name, handler);
+  public static bind = (command: QueryClass, handler: IHandler<any>): void => {
+    QueryBus.handlers.set(command.name, handler);
   };
 
-  public async ask(command: ICommand): Promise<T> {
+  public async ask(command: IQuery): Promise<T> {
     return await this.resolve(command).handle(command);
   }
 
-  private resolve(command: ICommand): H {
-    const handler = this.handlers.get(command.constructor.name);
+  private resolve(query: IQuery): IHandler<T> {
+    const handler = QueryBus.handlers.get(query.constructor.name);
 
     if (!handler) {
       throw new Error();

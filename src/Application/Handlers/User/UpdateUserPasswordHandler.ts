@@ -1,9 +1,9 @@
 import { UpdateUserPasswordCommand } from '../../../Domain/Commands/User/UpdateUserPasswordCommand';
 import { Log } from '../../../Domain/Decorators/Log';
-import { ICommand } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { CryptoService } from '../../../Domain/Services/CryptoService';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class UpdateUserPasswordHandler {
   constructor(

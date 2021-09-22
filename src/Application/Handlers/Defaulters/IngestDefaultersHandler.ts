@@ -3,12 +3,13 @@ import { LANG_ES, USER_ROLE } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { Email } from '../../../Domain/VO/Email.vo';
 import { ID } from '../../../Domain/VO/Id.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class IngestDefaultersHandler implements IHandler<void> {
   constructor(private repository: IUserRepository) {}

@@ -6,7 +6,8 @@ import {
 } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
 import { TemplateEmailConfig } from '../../../Domain/Entities/Mail/TemplateEmailConfig';
-import { ICommand, IHandler, INotifier } from '../../../Domain/Interfaces';
+import { IHandler, INotifier } from '../../../Domain/Interfaces';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class SendContactEmailHandler implements IHandler<void> {
   constructor(private notifier: INotifier) {}

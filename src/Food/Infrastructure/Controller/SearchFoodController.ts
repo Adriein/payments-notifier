@@ -7,19 +7,16 @@ import { BaseController } from '../../../Shared/Infrastructure/BaseController';
 import { Food } from '../../Domain/Food.entity';
 import { SearchFoodQuery } from '../../Domain/Query/SearchFoodQuery';
 import { SearchFoodHandler } from '../../Application/SearchFoodHandler';
+import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
 
 @Controller()
+@QueryHandler(SearchFoodQuery)
 export class SearchFoodController extends BaseController<Food[]> {
   @get('/food/:search')
   @use(requireAuth)
   @use(currentUser)
   public async getFood(req: Request, res: Response, next: NextFunction) {
     try {
-      this.queryBus.bind(
-        SearchFoodQuery,
-        this.factory.create(SearchFoodHandler)
-      );
-
       const foods = await this.queryBus.ask(
         new SearchFoodQuery(req.params.search, req.currentUser!.id!)
       );

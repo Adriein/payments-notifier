@@ -2,11 +2,12 @@ import { UserChartCommand } from '../../../Domain/Commands/Chart/UserChartComman
 import { Log } from '../../../Domain/Decorators/Log';
 import { Chart } from '../../../Domain/Entities/Chart.entity';
 import { User } from '../../../Domain/Entities/User.entity';
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { IHandler } from '../../../Domain/Interfaces';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Counter } from '../../../Shared/Domain/types';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class CreateUsersChartHandler implements IHandler<Chart> {
   constructor(private finder: UserFinder) {}

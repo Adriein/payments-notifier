@@ -1,11 +1,11 @@
 import { RegisterUserPaymentCommand } from '../../../Domain/Commands/User/RegisterUserPaymentCommand';
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
-import { ICommand } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Email } from '../../../Domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class RegisterUserPaymentHandler {
   constructor(

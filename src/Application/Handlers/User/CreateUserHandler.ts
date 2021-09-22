@@ -1,14 +1,15 @@
 import { CreateUserCommand } from '../../../Domain/Commands/User/CreateUserCommand';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
-import { UserAlreadyExistsError } from '../../../Domain/Errors/Users/UserAlreadyExistsError';
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { UserAlreadyExistsError } from '../../../Domain/Errors';
+import { IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { Email } from '../../../Domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { LANG_ES, USER_ROLE } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
 import { PriceBuilder } from '../../../Domain/Services/PriceBuilder';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class CreateUserHandler implements IHandler<void> {
   constructor(

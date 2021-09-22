@@ -7,8 +7,10 @@ import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { ModifyDietHandler } from '../../Application/ModifyDietHandler';
 import { ModifyDietCommand } from '../../Domain/Command/ModifyDietCommand';
 import { CreateMealCommand } from '../../Domain/Command/CreateMealCommand';
+import { CommandHandler } from "../../../Shared/Domain/Decorators/CommandHandler.decorator";
 
 @Controller()
+@CommandHandler(ModifyDietCommand)
 export class ModifyDietController extends BaseController<void> {
   @put('/diet')
   @use(requireAuth)
@@ -19,11 +21,6 @@ export class ModifyDietController extends BaseController<void> {
     next: NextFunction
   ) {
     try {
-      this.commandBus.bind(
-        ModifyDietCommand,
-        this.factory.create(ModifyDietHandler)
-      );
-
       const meals = req.body.meals.map(
         (meal: any) => new CreateMealCommand(meal.name, meal.foods)
       );

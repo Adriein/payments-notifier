@@ -7,11 +7,12 @@ import { Log } from '../../../Domain/Decorators/Log';
 import { Criteria } from '../../../Domain/Entities/Criteria.entity';
 import { Filter } from '../../../Domain/Entities/Filter.entity';
 import { EmailConfig } from '../../../Domain/Entities/Mail/EmailConfig.entity';
-import { ICommand, IHandler, INotifier } from '../../../Domain/Interfaces';
+import { IHandler, INotifier } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { AboutToExpire } from '../../../Domain/Templates/AboutToExpire.template';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class CheckForDefaultersHandler implements IHandler<void> {
   constructor(

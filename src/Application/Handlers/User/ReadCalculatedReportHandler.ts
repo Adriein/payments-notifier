@@ -1,5 +1,5 @@
 import { User } from '../../../Domain/Entities/User.entity';
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { IHandler } from '../../../Domain/Interfaces';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { OPERATORS } from '../../../Domain/constants';
 import { Log } from '../../../Domain/Decorators/Log';
@@ -7,6 +7,7 @@ import { ReadCalculatedReportCommand } from '../../../Domain/Commands/User/ReadC
 import { Criteria } from '../../../Domain/Entities/Criteria.entity';
 import { Filter } from '../../../Domain/Entities/Filter.entity';
 import { CriteriaObject } from '../../../Shared/Domain/types';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class ReadCalculatedReportHandler implements IHandler<User[]> {
   constructor(private finder: UserFinder) {}

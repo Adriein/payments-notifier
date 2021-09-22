@@ -13,6 +13,7 @@ import { KcalCalculator } from '../../../Nutrition/Domain/KcalCalculator';
 import { SearchFoodHandler } from '../../../Food/Application/SearchFoodHandler';
 import { FoodRepository } from '../../../Food/Infrastructure/Data/FoodRepository';
 import { NutritionixRepository } from '../../../Food/Infrastructure/Data/NutritionixRepository';
+import { IDomainEventHandler } from "../../Domain/Interfaces/IDomainEventHandler";
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -65,5 +66,9 @@ export default class HandlerFactory {
       SearchFoodHandler.name,
       new SearchFoodHandler(this.foodRepository, this.nutritionixRepository)
     );
+  }
+
+  public getContainer(): Map<string, IHandler<any>> {
+    return this.handlers;
   }
 }

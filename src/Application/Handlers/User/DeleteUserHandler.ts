@@ -1,9 +1,9 @@
 import { DeleteUserCommand } from '../../../Domain/Commands/User/DeleteUserCommand';
 import { Log } from '../../../Domain/Decorators/Log';
-import { ICommand } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Email } from '../../../Domain/VO/Email.vo';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class DeleteUserHandler {
   constructor(

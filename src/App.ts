@@ -35,9 +35,12 @@ import './Food/Infrastructure/Controller/SearchFoodController';
 import './Backoffice';
 import { ExplorerService } from './ExplorerService';
 import DomainEventHandlerFactory from './Shared/Infrastructure/Factories/DomainEventHandler.factory';
-import { IDomainEventHandler } from './Shared/Domain/Interfaces/IDomainEventHandler';
 import { DomainEventsManager } from './Shared/Domain/Entities/DomainEventsManager';
-import { ConstructorFunc, DomainEventClass } from './Shared/Domain/types';
+import { CommandClass, DomainEventClass, QueryClass } from './Shared/Domain/types';
+import { COMMANDS_HANDLER_METADATA, EVENTS_HANDLER_METADATA, QUERY_HANDLER_METADATA } from './Shared/Domain/constants';
+import { CommandBus } from "./Shared/Infrastructure/Bus/CommandBus";
+import { QueryBus } from "./Shared/Infrastructure/Bus/QueryBus";
+import HandlerFactory from "./Shared/Infrastructure/Factories/Handler.factory";
 
 export default class App {
   public init() {
@@ -56,6 +59,10 @@ export default class App {
     Database.getInstance();
 
     this.bindDomainEvents();
+
+    this.bindCommands();
+
+    this.bindQueries();
 
     this.initDirectories();
 
@@ -131,9 +138,27 @@ export default class App {
   private bindDomainEvents(): void {
     const factory = new DomainEventHandlerFactory();
     for (const handler of factory.getContainer().values()) {
-      const domainEvents = ExplorerService.explore<Function, DomainEventClass>(handler.constructor);
+      const domainEvents = ExplorerService.explore<Function, DomainEventClass>(handler.constructor, EVENTS_HANDLER_METADATA);
 
       domainEvents.forEach((event: DomainEventClass) => DomainEventsManager.subscribe(event, handler));
+    }
+  }
+
+  private bindCommands(): void {
+    const factory = new HandlerFactory();
+    for (const handler of factory.getContainer().values()) {
+      const commands = ExplorerService.explore<Function, DomainEventClass>(handler.constructor, COMMANDS_HANDLER_METADATA);
+
+      commands.forEach((command: CommandClass) => CommandBus.bind(command, handler));
+    }
+  }
+
+  private bindQueries(): void {
+    const factory = new HandlerFactory();
+    for (const handler of factory.getContainer().values()) {
+      const queries = ExplorerService.explore<Function, DomainEventClass>(handler.constructor, QUERY_HANDLER_METADATA);
+
+      queries.forEach((query: QueryClass) => QueryBus.bind(query, handler));
     }
   }
 }

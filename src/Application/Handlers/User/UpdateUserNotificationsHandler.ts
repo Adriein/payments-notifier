@@ -1,8 +1,9 @@
 import { UpdateUserNotificationsCommand } from '../../../Domain/Commands/User/UpdateUserNotificationsCommand';
 import { Log } from '../../../Domain/Decorators/Log';
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class UpdateUserNotificationsHandler implements IHandler<void> {
   constructor(

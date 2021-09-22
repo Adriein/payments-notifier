@@ -1,5 +1,5 @@
-import { ICommand } from "./ICommand";
+import { IQuery } from "../Interfaces/IQuery";
 
 export interface IQueryBus<T> {
-  ask(command: ICommand): Promise<T>;
+  ask(query: IQuery): Promise<T>;
 }

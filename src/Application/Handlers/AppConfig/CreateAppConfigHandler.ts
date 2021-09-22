@@ -1,8 +1,9 @@
 import { CreateAppConfigCommand } from '../../../Domain/Commands/AppConfig/CreateAppConfigCommand';
 import { Log } from '../../../Domain/Decorators/Log';
 import { AppConfig } from '../../../Domain/Entities/AppConfig.entity';
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { IHandler } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class CreateAppConfigHandler implements IHandler<void> {
   constructor(private appConfigRepository: IConfigRepository) {}

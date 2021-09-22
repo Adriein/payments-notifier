@@ -1,8 +1,9 @@
 import { ReadUserCommand } from '../../../Domain/Commands/User/ReadUserCommand';
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { IHandler } from '../../../Domain/Interfaces';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class ReadUserHandler implements IHandler<User> {
   constructor(private finder: UserFinder) {}

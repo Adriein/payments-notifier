@@ -1,9 +1,10 @@
 import { CreatePricingCommand } from '../../../Domain/Commands/AppConfig/CreatePricingCommand';
 import { Log } from '../../../Domain/Decorators/Log';
 import { AppConfig } from '../../../Domain/Entities/AppConfig.entity';
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { IHandler } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class CreatePricingHandler implements IHandler<void> {
   constructor(private appConfigRepository: IConfigRepository) {}

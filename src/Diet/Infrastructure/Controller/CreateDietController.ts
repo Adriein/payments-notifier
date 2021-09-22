@@ -6,19 +6,16 @@ import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { BaseController } from '../../../Shared/Infrastructure/BaseController';
 import { CreateDietHandler } from '../../Application/CreateDietHandler';
 import { CreateDietCommand } from '../../Domain/Command/CreateDietCommand';
+import { CommandHandler } from "../../../Shared/Domain/Decorators/CommandHandler.decorator";
 
 @Controller()
+@CommandHandler(CreateDietCommand)
 export class CreateDietController extends BaseController<void> {
   @post('/diet')
   @use(requireAuth)
   @use(currentUser)
   public async creaDiet(req: Request, res: Response, next: NextFunction) {
     try {
-      this.commandBus.bind(
-        CreateDietCommand,
-        this.factory.create(CreateDietHandler)
-      );
-
       await this.commandBus.dispatch(
         new CreateDietCommand(
           req.body.name,

@@ -12,14 +12,15 @@ import {
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
-import { UserAlreadyExistsError } from '../../../Domain/Errors/Users/UserAlreadyExistsError';
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { UserAlreadyExistsError } from '../../../Domain/Errors';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { Email } from '../../../Domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { Password } from '../../../Domain/VO/Password.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
 import { CommandBus } from '../../CommandBus/CommandBus';
+import { IHandler } from "../../../Domain/Interfaces";
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class RegisterHandler implements IHandler<void> {
   constructor(

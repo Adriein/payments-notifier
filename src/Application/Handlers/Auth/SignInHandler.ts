@@ -2,9 +2,10 @@ import { SignInCommand } from '../../../Domain/Commands/Auth/SignInCommand';
 import { Log } from '../../../Domain/Decorators/Log';
 import { NotAuthorizedError } from '../../../Domain/Errors/NotAuthorizedError';
 import { UserNotExistError } from '../../../Domain/Errors';
-import { ICommand, IHandler } from '../../../Domain/Interfaces';
+import { IHandler } from '../../../Domain/Interfaces';
 import { CryptoService } from '../../../Domain/Services/CryptoService';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 
 export class SignInHandler implements IHandler<void> {

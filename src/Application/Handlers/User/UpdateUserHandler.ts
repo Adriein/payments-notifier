@@ -2,13 +2,13 @@ import { UpdateUserCommand } from '../../../Domain/Commands/User/UpdateUserComma
 import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
-import { ICommand } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { PriceBuilder } from '../../../Domain/Services/PriceBuilder';
 import { Email } from '../../../Domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
 import { ID } from '../../../Domain/VO/Id.vo';
+import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class UpdateUserHandler {
   constructor(

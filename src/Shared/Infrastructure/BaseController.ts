@@ -10,8 +10,4 @@ export abstract class BaseController<T> {
   protected get queryBus() {
     return QueryBus.instance<T>();
   }
-
-  protected get factory() {
-    return new HandlerFactory();
-  }
 }

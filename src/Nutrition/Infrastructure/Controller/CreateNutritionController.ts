@@ -6,8 +6,10 @@ import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { BaseController } from '../../../Shared/Infrastructure/BaseController';
 import { CreateNutritionHandler } from '../../Application/CreateNutritionHandler';
 import { CreateNutritionCommand } from '../../Domain/Commands/CreateNutritionCommand';
+import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
 
 @Controller()
+@QueryHandler(CreateNutritionCommand)
 export class CreateNutritionController extends BaseController<void> {
   @post('/nutrition')
   @use(requireAuth)
@@ -18,11 +20,6 @@ export class CreateNutritionController extends BaseController<void> {
     next: NextFunction
   ) {
     try {
-      this.commandBus.bind(
-        CreateNutritionCommand,
-        this.factory.create(CreateNutritionHandler)
-      );
-
       await this.commandBus.dispatch(
         new CreateNutritionCommand(
           req.body.userId,
