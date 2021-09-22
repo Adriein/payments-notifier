@@ -15,7 +15,6 @@ export class SaveFoodController extends BaseController<void> {
   @use(currentUser)
   public async saveFood(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      
       await this.commandBus.dispatch(
         new SaveFoodCommand(
           req.body.id,
