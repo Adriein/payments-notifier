@@ -4,13 +4,11 @@ import { Controller } from '../../../Infraestructure/Rest/Decorators/controller'
 import { put } from '../../../Infraestructure/Rest/Decorators/routes';
 import { use } from '../../../Infraestructure/Rest/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
-import { ModifyDietHandler } from '../../Application/ModifyDietHandler';
 import { ModifyDietCommand } from '../../Domain/Command/ModifyDietCommand';
 import { CreateMealCommand } from '../../Domain/Command/CreateMealCommand';
-import { CommandHandler } from "../../../Shared/Domain/Decorators/CommandHandler.decorator";
 
 @Controller()
-@CommandHandler(ModifyDietCommand)
+
 export class ModifyDietController extends BaseController<void> {
   @put('/diet')
   @use(requireAuth)

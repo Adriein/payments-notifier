@@ -10,6 +10,14 @@ import { errorHandler } from './middlewares';
 import Database from './Infraestructure/Data/Database';
 import { FILES_PATH } from './Domain/constants';
 import { AppRouter } from './Infraestructure/Rest/AppRouter';
+import { ExplorerService } from './ExplorerService';
+import DomainEventHandlerFactory from './Shared/Infrastructure/Factories/DomainEventHandler.factory';
+import { DomainEventsManager } from './Shared/Domain/Entities/DomainEventsManager';
+import { CommandClass, DomainEventClass, QueryClass } from './Shared/Domain/types';
+import { COMMANDS_HANDLER_METADATA, EVENTS_HANDLER_METADATA, QUERY_HANDLER_METADATA } from './Shared/Domain/constants';
+import { CommandBus } from "./Shared/Infrastructure/Bus/CommandBus";
+import { QueryBus } from "./Shared/Infrastructure/Bus/QueryBus";
+import HandlerFactory from "./Shared/Infrastructure/Factories/Handler.factory";
 import './Infraestructure/Rest/Controllers/Auth/SignInController';
 import './Infraestructure/Rest/Controllers/Auth/RegisterController';
 import './Infraestructure/Rest/Controllers/Auth/SignOutController';
@@ -31,16 +39,9 @@ import './Infraestructure/Rest/Controllers/Backoffice/ContactEmailController';
 import './Nutrition/Infrastructure/Controller/CreateNutritionController';
 import './Diet/Infrastructure/Controller/CreateDietController';
 import './Diet/Infrastructure/Controller/ModifyDietController';
-import './Food/Infrastructure/Controller/SearchFoodController';
+import './Food';
 import './Backoffice';
-import { ExplorerService } from './ExplorerService';
-import DomainEventHandlerFactory from './Shared/Infrastructure/Factories/DomainEventHandler.factory';
-import { DomainEventsManager } from './Shared/Domain/Entities/DomainEventsManager';
-import { CommandClass, DomainEventClass, QueryClass } from './Shared/Domain/types';
-import { COMMANDS_HANDLER_METADATA, EVENTS_HANDLER_METADATA, QUERY_HANDLER_METADATA } from './Shared/Domain/constants';
-import { CommandBus } from "./Shared/Infrastructure/Bus/CommandBus";
-import { QueryBus } from "./Shared/Infrastructure/Bus/QueryBus";
-import HandlerFactory from "./Shared/Infrastructure/Factories/Handler.factory";
+
 
 export default class App {
   public init() {
@@ -138,7 +139,10 @@ export default class App {
   private bindDomainEvents(): void {
     const factory = new DomainEventHandlerFactory();
     for (const handler of factory.getContainer().values()) {
-      const domainEvents = ExplorerService.explore<Function, DomainEventClass>(handler.constructor, EVENTS_HANDLER_METADATA);
+      const domainEvents = ExplorerService.explore<Function, DomainEventClass>(
+        handler.constructor,
+        EVENTS_HANDLER_METADATA
+      );
 
       domainEvents.forEach((event: DomainEventClass) => DomainEventsManager.subscribe(event, handler));
     }
@@ -147,7 +151,10 @@ export default class App {
   private bindCommands(): void {
     const factory = new HandlerFactory();
     for (const handler of factory.getContainer().values()) {
-      const commands = ExplorerService.explore<Function, DomainEventClass>(handler.constructor, COMMANDS_HANDLER_METADATA);
+      const commands = ExplorerService.explore<Function, DomainEventClass>(
+        handler.constructor,
+        COMMANDS_HANDLER_METADATA
+      );
 
       commands.forEach((command: CommandClass) => CommandBus.bind(command, handler));
     }

@@ -4,12 +4,9 @@ import { post } from '../../../Infraestructure/Rest/Decorators/routes';
 import { use } from '../../../Infraestructure/Rest/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { BaseController } from '../../../Shared/Infrastructure/BaseController';
-import { CreateNutritionHandler } from '../../Application/CreateNutritionHandler';
 import { CreateNutritionCommand } from '../../Domain/Commands/CreateNutritionCommand';
-import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
 
 @Controller()
-@QueryHandler(CreateNutritionCommand)
 export class CreateNutritionController extends BaseController<void> {
   @post('/nutrition')
   @use(requireAuth)

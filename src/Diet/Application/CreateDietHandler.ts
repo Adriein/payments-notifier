@@ -9,13 +9,16 @@ import { KcalCalculator } from '../../Nutrition/Domain/KcalCalculator';
 import { IQueryBus } from '../../Shared/Domain/Bus/IQueryBus';
 import { Nutrition } from '../../Nutrition/Domain/Nutrition.entity';
 import { GetNutritionCommand } from '../../Nutrition/Domain/Commands/GetNutritionCommand';
+import { CommandHandler } from "../../Shared/Domain/Decorators/CommandHandler.decorator";
 
+@CommandHandler(CreateDietCommand)
 export class CreateDietHandler implements IHandler<void> {
   constructor(
     private queryBus: IQueryBus<Nutrition>,
     private repository: IDietRepository,
     private kcalCalc: KcalCalculator
-  ) {}
+  ) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: CreateDietCommand): Promise<void> {

@@ -5,9 +5,12 @@ import { Nutrition } from '../Domain/Nutrition.entity';
 import { ID } from '../../Domain/VO/Id.vo';
 import { CreateNutritionCommand } from '../Domain/Commands/CreateNutritionCommand';
 import { Gender } from '../Domain/VO/Gender.vo';
+import { QueryHandler } from "../../Shared/Domain/Decorators/QueryHandler.decorator";
 
+@QueryHandler(CreateNutritionCommand)
 export class CreateNutritionHandler implements IHandler<void> {
-  constructor(private repository: INutritionRepository) {}
+  constructor(private repository: INutritionRepository) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: CreateNutritionCommand): Promise<void> {
@@ -16,7 +19,7 @@ export class CreateNutritionHandler implements IHandler<void> {
 
     const existingNutrition = await this.repository.findByUserId(userId.value);
 
-    if(existingNutrition) {
+    if (existingNutrition) {
       throw new Error();
     }
 

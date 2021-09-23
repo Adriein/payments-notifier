@@ -6,11 +6,8 @@ import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { BaseController } from '../../../Shared/Infrastructure/BaseController';
 import { Food } from '../../Domain/Food.entity';
 import { SearchFoodQuery } from '../../Domain/Query/SearchFoodQuery';
-import { SearchFoodHandler } from '../../Application/SearchFoodHandler';
-import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
 
 @Controller()
-@QueryHandler(SearchFoodQuery)
 export class SearchFoodController extends BaseController<Food[]> {
   @get('/food/:search')
   @use(requireAuth)
@@ -20,7 +17,7 @@ export class SearchFoodController extends BaseController<Food[]> {
       const foods = await this.queryBus.ask(
         new SearchFoodQuery(req.params.search, req.currentUser!.id!)
       );
-      
+
       res.status(200).send(foods);
     } catch (error) {
       next(error);

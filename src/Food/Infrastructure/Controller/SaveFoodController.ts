@@ -1,6 +1,5 @@
 import { BaseController } from "../../../Shared/Infrastructure/BaseController";
 import { Controller } from "../../../Infraestructure/Rest/Decorators/controller";
-import { CommandHandler } from "../../../Shared/Domain/Decorators/CommandHandler.decorator";
 import { post } from "../../../Infraestructure/Rest/Decorators/routes";
 import { use } from "../../../Infraestructure/Rest/Decorators/use";
 import { currentUser, requireAuth } from "../../../middlewares/auth";
@@ -8,7 +7,6 @@ import { SaveFoodCommand } from "../../Domain/Command/SaveFoodCommand";
 import { NextFunction, Request, Response } from "express";
 
 @Controller()
-@CommandHandler()
 export class SaveFoodController extends BaseController<void> {
   @post('/food')
   @use(requireAuth)

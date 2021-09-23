@@ -5,11 +5,14 @@ import { ApiQueryDomainEvent } from '../Domain/ApiQueryDomainEvent';
 import { Food } from '../Domain/Food.entity';
 import { IFoodRepository } from '../Domain/IFoodRepository';
 import { SearchFoodQuery } from '../Domain/Query/SearchFoodQuery';
+import { QueryHandler } from "../../Shared/Domain/Decorators/QueryHandler.decorator";
 
+@QueryHandler(SearchFoodQuery)
 export class SearchFoodHandler implements IHandler<Food[]> {
   private MAX_FOOD_SEARCH = 5;
 
-  constructor(private postgreRepository: IFoodRepository, private apiRepository: IFoodRepository) {}
+  constructor(private postgreRepository: IFoodRepository, private apiRepository: IFoodRepository) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: SearchFoodQuery): Promise<Food[]> {
