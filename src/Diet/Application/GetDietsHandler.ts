@@ -1,7 +1,7 @@
 import { Log } from '../../Domain/Decorators/Log';
 import { Diet } from '../Domain/Diet.entity';
 import { IHandler } from '../../Domain/Interfaces';
-import { ID } from '../../Domain/VO/Id.vo';
+import { ID } from '../../Shared/Domain/VO/Id.vo';
 import { IDietRepository } from '../Domain/IDietRepository';
 import { GetDietsQuery } from '../Domain/Query/GetDietsQuery';
 import { QueryHandler } from "../../Shared/Domain/Decorators/QueryHandler.decorator";

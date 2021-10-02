@@ -3,7 +3,7 @@ import { CommandHandler } from "../../Shared/Domain/Decorators/CommandHandler.de
 import { SaveFoodCommand } from "../Domain/Command/SaveFoodCommand";
 import { IFoodRepository } from "../Domain/IFoodRepository";
 import { Food } from "../Domain/Food.entity";
-import { ID } from "../../Domain/VO/Id.vo";
+import { ID } from "../../Shared/Domain/VO/Id.vo";
 import { MicroNutrients } from "../Domain/MicroNutrients.entity";
 
 @CommandHandler(SaveFoodCommand)

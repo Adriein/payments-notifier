@@ -5,12 +5,13 @@ import { User } from '../../../Domain/Entities/User.entity';
 import { IHandler } from '../../../Domain/Interfaces';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Counter } from '../../../Shared/Domain/types';
-import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
+import { LastPaymentDate } from '../../../Shared/Domain/VO/LastPaymentDate.vo';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
 import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class CreateUsersChartHandler implements IHandler<Chart> {
-  constructor(private finder: UserFinder) {}
+  constructor(private finder: UserFinder) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   async handle(comm: ICommand): Promise<Chart> {

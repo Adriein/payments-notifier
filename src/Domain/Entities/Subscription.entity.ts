@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
+import { LastPaymentDate } from '../../Shared/Domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../VO/Pricing.vo';
 import dayjs from 'dayjs';
 import { ISerializable } from '../Interfaces/ISerializable';
@@ -21,6 +21,7 @@ export class Subscription implements ISerializable {
       isActive
     );
   }
+
   constructor(
     private _id: string,
     private _pricing: Pricing,
@@ -129,13 +130,13 @@ export class Subscription implements ISerializable {
   };
 
   public serialize = (): Object => {
-    const ye = new Intl.DateTimeFormat('es', { year: 'numeric' }).format(
+    const ye = new Intl.DateTimeFormat('es', {year: 'numeric'}).format(
       this.paymentDate()
     );
-    const mo = new Intl.DateTimeFormat('es', { month: '2-digit' }).format(
+    const mo = new Intl.DateTimeFormat('es', {month: '2-digit'}).format(
       this.paymentDate()
     );
-    const da = new Intl.DateTimeFormat('es', { day: '2-digit' }).format(
+    const da = new Intl.DateTimeFormat('es', {day: '2-digit'}).format(
       this.paymentDate()
     );
     return {

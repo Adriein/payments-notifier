@@ -3,13 +3,14 @@ import { Criteria } from '../Entities/Criteria.entity';
 import { User } from '../Entities/User.entity';
 import { UserNotExistError } from '../Errors';
 import { IUserRepository } from '../Interfaces/IUserRepository';
-import { Email } from '../VO/Email.vo';
+import { Email } from '../../Shared/Domain/VO/Email.vo';
 
 export class UserFinder {
   private _adminId!: string;
   private _onlyAdmins: boolean = false;
 
-  constructor(private repository: IUserRepository) {}
+  constructor(private repository: IUserRepository) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async find(criteria?: Criteria): Promise<User[]> {

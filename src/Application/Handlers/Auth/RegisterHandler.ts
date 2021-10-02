@@ -14,9 +14,9 @@ import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { UserAlreadyExistsError } from '../../../Domain/Errors';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
-import { Email } from '../../../Domain/VO/Email.vo';
-import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
-import { Password } from '../../../Domain/VO/Password.vo';
+import { Email } from '../../../Shared/Domain/VO/Email.vo';
+import { LastPaymentDate } from '../../../Shared/Domain/VO/LastPaymentDate.vo';
+import { Password } from '../../../Shared/Domain/VO/Password.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
 import { CommandBus } from '../../CommandBus/CommandBus';
 import { IHandler } from "../../../Domain/Interfaces";
@@ -26,7 +26,8 @@ export class RegisterHandler implements IHandler<void> {
   constructor(
     private repository: IUserRepository,
     private commandBus: CommandBus
-  ) {}
+  ) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(comm: ICommand): Promise<void> {

@@ -1,6 +1,6 @@
 import { Subscription } from '../../../Domain/Entities/Subscription.entity';
 import { IMapper } from '../../../Domain/Interfaces/IMapper';
-import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
+import { LastPaymentDate } from '../../../Shared/Domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
 
 type SubscriptionTable = {
@@ -24,6 +24,7 @@ export class SubscriptionMapper implements IMapper<Subscription> {
       subscriptionDatamodel.active
     );
   }
+
   public datamodel(domain: Subscription): SubscriptionTable {
     throw new Error('not implemented');
   }

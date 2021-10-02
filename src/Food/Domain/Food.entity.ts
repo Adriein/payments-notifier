@@ -1,11 +1,19 @@
-import { ID } from '../../Domain/VO/Id.vo';
+import { ID } from '../../Shared/Domain/VO/Id.vo';
 import { AggregateRoot } from '../../Shared/Domain/Entities/AggregateRoot';
 import { MicroNutrients } from './MicroNutrients.entity';
 
 export class Food extends AggregateRoot {
-  public static build(name: string, unit: string, qty: number, photo: string, kcal: number, micro: MicroNutrients[]): Food {
+  public static build(
+    name: string,
+    unit: string,
+    qty: number,
+    photo: string,
+    kcal: number,
+    micro: MicroNutrients[]
+  ): Food {
     return new Food(ID.generate(), name, unit, qty, photo, kcal, micro);
   }
+
   constructor(
     _id: ID,
     private _name: string,
@@ -43,7 +51,7 @@ export class Food extends AggregateRoot {
   public kcal(): number {
     return this._kcal;
   }
-  
+
 
   public serialize(): Object {
     throw new Error('Method not implemented.');

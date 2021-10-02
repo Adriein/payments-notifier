@@ -3,15 +3,16 @@ import { Log } from '../../../Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
-import { Email } from '../../../Domain/VO/Email.vo';
-import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
+import { Email } from '../../../Shared/Domain/VO/Email.vo';
+import { LastPaymentDate } from '../../../Shared/Domain/VO/LastPaymentDate.vo';
 import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class RegisterUserPaymentHandler {
   constructor(
     private finder: UserFinder,
     private userRepository: IUserRepository
-  ) {}
+  ) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   async handle(command: ICommand): Promise<void> {
@@ -26,7 +27,7 @@ export class RegisterUserPaymentHandler {
 
   private async renewSubscription(user: User): Promise<void> {
     user.desactivateExpiredSubscription();
-    
+
     await this.userRepository.update(user);
 
     user.createSubscription(

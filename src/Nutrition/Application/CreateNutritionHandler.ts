@@ -2,7 +2,7 @@ import { Log } from '../../Domain/Decorators/Log';
 import { IHandler } from '../../Domain/Interfaces';
 import { INutritionRepository } from '../Domain/INutritionRepository';
 import { Nutrition } from '../Domain/Nutrition.entity';
-import { ID } from '../../Domain/VO/Id.vo';
+import { ID } from '../../Shared/Domain/VO/Id.vo';
 import { CreateNutritionCommand } from '../Domain/Commands/CreateNutritionCommand';
 import { Gender } from '../Domain/VO/Gender.vo';
 import { QueryHandler } from "../../Shared/Domain/Decorators/QueryHandler.decorator";

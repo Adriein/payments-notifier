@@ -1,9 +1,10 @@
-import { ID } from '../../../Domain/VO/Id.vo';
+import { ID } from '../../../Shared/Domain/VO/Id.vo';
 import { INutritionRepository } from '../INutritionRepository';
 import { Nutrition } from '../Nutrition.entity';
 
 export class NutritionFinder {
-  constructor(private repository: INutritionRepository) {}
+  constructor(private repository: INutritionRepository) {
+  }
 
   public async find(nutritionId: ID): Promise<Nutrition> {
     const nutrition = await this.repository.findOne(nutritionId.value);

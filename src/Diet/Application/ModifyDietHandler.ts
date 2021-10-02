@@ -1,6 +1,6 @@
 import { Log } from '../../Domain/Decorators/Log';
 import { IHandler } from '../../Domain/Interfaces';
-import { ID } from '../../Domain/VO/Id.vo';
+import { ID } from '../../Shared/Domain/VO/Id.vo';
 import { ModifyDietCommand } from '../Domain/Command/ModifyDietCommand';
 import { IDietRepository } from '../Domain/IDietRepository';
 import { CommandHandler } from "../../Shared/Domain/Decorators/CommandHandler.decorator";

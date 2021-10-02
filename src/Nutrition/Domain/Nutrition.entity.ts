@@ -1,5 +1,5 @@
 import { BaseEntity } from '../../Domain/Entities/BaseEntity';
-import { ID } from '../../Domain/VO/Id.vo';
+import { ID } from '../../Shared/Domain/VO/Id.vo';
 import { Gender } from './VO/Gender.vo';
 
 export class Nutrition extends BaseEntity {

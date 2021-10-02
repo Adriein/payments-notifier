@@ -1,9 +1,10 @@
-import { CryptoService } from '../Services/CryptoService';
-import { ValueObject } from '../../Shared/Domain/VO/ValueObject';
+import { CryptoService } from '../../../Domain/Services/CryptoService';
+import { ValueObject } from './ValueObject';
 
 export class Password extends ValueObject {
   private cryptoService = new CryptoService();
   private password: string;
+
   constructor(password: string) {
     super();
     this.password = password;

@@ -1,13 +1,12 @@
-import { ID } from '../VO/Id.vo';
+import { ID } from '../../Shared/Domain/VO/Id.vo';
 
 export abstract class BaseEntity {
   constructor(
     private _id: ID,
     private _dateCreated?: Date,
     private _dateUpdated?: Date
-  ) {}
-
-  public abstract serialize(): Object;
+  ) {
+  }
 
   public id(): string {
     return this._id.value;
@@ -23,9 +22,5 @@ export abstract class BaseEntity {
 
   public updated(): void {
     this._dateUpdated = new Date();
-  }
-
-  protected isNew(): boolean {
-    return !this._dateCreated;
   }
 }

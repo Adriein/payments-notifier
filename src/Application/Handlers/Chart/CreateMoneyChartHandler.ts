@@ -7,12 +7,13 @@ import { IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Counter } from '../../../Shared/Domain/types';
-import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
+import { LastPaymentDate } from '../../../Shared/Domain/VO/LastPaymentDate.vo';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
 import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class CreateMoneyChartHandler implements IHandler<Chart> {
-  constructor(private repository: IUserRepository, private finder: UserFinder) {}
+  constructor(private repository: IUserRepository, private finder: UserFinder) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   async handle(comm: ICommand): Promise<Chart> {

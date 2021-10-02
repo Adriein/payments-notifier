@@ -1,5 +1,5 @@
 import { Log } from '../../Domain/Decorators/Log';
-import { ID } from '../../Domain/VO/Id.vo';
+import { ID } from '../../Shared/Domain/VO/Id.vo';
 import { ApiQueryDomainEvent } from '../../Food/Domain/ApiQueryDomainEvent';
 import { DomainEventsHandler } from '../../Shared/Domain/Decorators/DomainEventsHandler.decorator';
 import { IDomainEventHandler } from '../../Shared/Domain/Interfaces/IDomainEventHandler';
@@ -8,7 +8,8 @@ import { IApiUsageRepository } from '../Domain/IApiUsageRepository';
 
 @DomainEventsHandler(ApiQueryDomainEvent)
 export class RegisterApiUsageHandler implements IDomainEventHandler {
-  constructor(private repository: IApiUsageRepository) {}
+  constructor(private repository: IApiUsageRepository) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(event: ApiQueryDomainEvent): Promise<void> {

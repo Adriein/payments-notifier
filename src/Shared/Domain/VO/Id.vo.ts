@@ -1,13 +1,13 @@
 import { v4 as uuidV4, validate } from 'uuid';
-import { ValueObject } from '../../Shared/Domain/VO/ValueObject';
+import { ValueObject } from './ValueObject';
 
 export class ID extends ValueObject {
   constructor(private _value: string) {
     super();
 
     if (this.validate(this._value)) {
-        throw new Error('Incorrect ID format');
-      }
+      throw new Error('Incorrect ID format');
+    }
   }
 
   public get value(): string {

@@ -1,8 +1,8 @@
-import { SubscriptionError } from '../Errors/Users/SubscriptionError';
-import { Email } from '../VO/Email.vo';
-import { ID } from '../VO/Id.vo';
-import { LastPaymentDate } from '../VO/LastPaymentDate.vo';
-import { Password } from '../VO/Password.vo';
+import { SubscriptionError } from '../Errors';
+import { Email } from '../../Shared/Domain/VO/Email.vo';
+import { ID } from '../../Shared/Domain/VO/Id.vo';
+import { LastPaymentDate } from '../../Shared/Domain/VO/LastPaymentDate.vo';
+import { Password } from '../../Shared/Domain/VO/Password.vo';
 import { Pricing } from '../VO/Pricing.vo';
 import { BaseEntity } from './BaseEntity';
 import { Subscription } from './Subscription.entity';
@@ -17,6 +17,7 @@ export class User extends BaseEntity {
   ): User {
     return new User(ID.generate(), name, email, config, ownerId);
   }
+
   constructor(
     _id: ID,
     private name: string,

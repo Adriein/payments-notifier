@@ -5,14 +5,15 @@ import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
-import { Email } from '../../../Domain/VO/Email.vo';
-import { ID } from '../../../Domain/VO/Id.vo';
-import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
+import { Email } from '../../../Shared/Domain/VO/Email.vo';
+import { ID } from '../../../Shared/Domain/VO/Id.vo';
+import { LastPaymentDate } from '../../../Shared/Domain/VO/LastPaymentDate.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
 import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class IngestDefaultersHandler implements IHandler<void> {
-  constructor(private repository: IUserRepository) {}
+  constructor(private repository: IUserRepository) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(commands: ICommand): Promise<void> {

@@ -1,5 +1,5 @@
 import { BaseEntity } from '../../Domain/Entities/BaseEntity';
-import { ID } from '../../Domain/VO/Id.vo';
+import { ID } from '../../Shared/Domain/VO/Id.vo';
 
 export class ApiUsage extends BaseEntity {
   public static build(userId: ID, calls: number): ApiUsage {

@@ -1,4 +1,4 @@
-import { ID } from '../../../Domain/VO/Id.vo';
+import { ID } from '../../../Shared/Domain/VO/Id.vo';
 import { DietType } from '../../../Diet/Domain/VO/DietType.vo';
 import { IMapper } from '../../../Shared/Domain/Interfaces/IMapper';
 import { Diet } from '../../../Diet/Domain/Diet.entity';

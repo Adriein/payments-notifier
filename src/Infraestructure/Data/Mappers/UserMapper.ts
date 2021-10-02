@@ -1,10 +1,10 @@
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { IMapper } from '../../../Domain/Interfaces';
-import { Email } from '../../../Domain/VO/Email.vo';
-import { ID } from '../../../Domain/VO/Id.vo';
-import { LastPaymentDate } from '../../../Domain/VO/LastPaymentDate.vo';
-import { Password } from '../../../Domain/VO/Password.vo';
+import { Email } from '../../../Shared/Domain/VO/Email.vo';
+import { ID } from '../../../Shared/Domain/VO/Id.vo';
+import { LastPaymentDate } from '../../../Shared/Domain/VO/LastPaymentDate.vo';
+import { Password } from '../../../Shared/Domain/VO/Password.vo';
 import { Pricing } from '../../../Domain/VO/Pricing.vo';
 
 type UsersTableJoined = {
@@ -51,7 +51,7 @@ export class UserMapper implements IMapper<User> {
       ),
       userDatamodel.owner_id ? userDatamodel.owner_id : undefined
     );
-    user.setPassword(new Password(userDatamodel.password));   
+    user.setPassword(new Password(userDatamodel.password));
 
     if (userDatamodel.subscriptions_id !== null) {
       user.createSubscription(
@@ -66,6 +66,7 @@ export class UserMapper implements IMapper<User> {
 
     return user;
   }
+
   public datamodel(domain: User): UsersTable {
     return {
       id: domain.id(),

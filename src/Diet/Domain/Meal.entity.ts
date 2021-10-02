@@ -1,10 +1,11 @@
 import { BaseEntity } from '../../Domain/Entities/BaseEntity';
-import { ID } from '../../Domain/VO/Id.vo';
+import { ID } from '../../Shared/Domain/VO/Id.vo';
 
 export class Meal extends BaseEntity {
   public static build(name: string, foods: ID[], dietId: ID): Meal {
     return new Meal(ID.generate(), name, foods, dietId);
   }
+
   constructor(
     _id: ID,
     private _name: string,
