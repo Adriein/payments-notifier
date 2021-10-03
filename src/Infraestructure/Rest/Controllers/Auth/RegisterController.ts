@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { ReadUserCommand } from '../../../../Domain/Commands/User/ReadUserCommand';
-import { Controller } from '../../Decorators/controller';
+import { Controller } from '../../../../Shared/Infrastructure/Decorators/controller';
 import jwt from 'jsonwebtoken';
 import { User } from '../../../../Domain/Entities/User.entity';
-import { post } from '../../Decorators/routes';
+import { post } from '../../../../Shared/Infrastructure/Decorators/routes';
 import { RegisterCommand } from '../../../../Domain/Commands/Auth/RegisterCommand';
 
 @Controller()

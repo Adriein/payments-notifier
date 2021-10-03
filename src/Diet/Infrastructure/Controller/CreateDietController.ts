@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { Controller } from '../../../Infraestructure/Rest/Decorators/controller';
-import { post } from '../../../Infraestructure/Rest/Decorators/routes';
-import { use } from '../../../Infraestructure/Rest/Decorators/use';
+import { Controller } from '../../../Shared/Infrastructure/Decorators/controller';
+import { post } from '../../../Shared/Infrastructure/Decorators/routes';
+import { use } from '../../../Shared/Infrastructure/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { BaseController } from '../../../Shared/Infrastructure/BaseController';
 import { CreateDietCommand } from '../../Domain/Command/CreateDietCommand';
@@ -11,7 +11,7 @@ export class CreateDietController extends BaseController<void> {
   @post('/diet')
   @use(requireAuth)
   @use(currentUser)
-  public async creaDiet(req: Request, res: Response, next: NextFunction) {
+  public async createDiet(req: Request, res: Response, next: NextFunction) {
     try {
       await this.commandBus.dispatch(
         new CreateDietCommand(

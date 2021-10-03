@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { ContactEmailCommand } from '../../../../Domain/Commands/Backoffice/ContactEmailCommand';
-import { Controller } from '../../Decorators/controller';
-import { post } from '../../Decorators/routes';
+import { Controller } from '../../../../Shared/Infrastructure/Decorators/controller';
+import { post } from '../../../../Shared/Infrastructure/Decorators/routes';
 
 @Controller()
 export class ContactEmailController {

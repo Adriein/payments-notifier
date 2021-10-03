@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { SignInCommand } from '../../../../Domain/Commands/Auth/SignInCommand';
 import { ReadUserCommand } from '../../../../Domain/Commands/User/ReadUserCommand';
-import { Controller } from '../../Decorators/controller';
+import { Controller } from '../../../../Shared/Infrastructure/Decorators/controller';
 import jwt from 'jsonwebtoken';
 import { User } from '../../../../Domain/Entities/User.entity';
-import { post } from '../../Decorators/routes';
+import { post } from '../../../../Shared/Infrastructure/Decorators/routes';
 
 @Controller()
 export class SignInController {
@@ -17,7 +17,7 @@ export class SignInController {
   ): Promise<void> {
     try {
       const commandBus = new CommandBus();
-      const { email, password } = req.body;
+      const {email, password} = req.body;
 
       await commandBus.execute(new SignInCommand(email, password));
 

@@ -1,8 +1,8 @@
 import { BaseController } from '../../../Shared/Infrastructure/BaseController';
 import { Request, Response, NextFunction } from 'express';
-import { Controller } from '../../../Infraestructure/Rest/Decorators/controller';
-import { put } from '../../../Infraestructure/Rest/Decorators/routes';
-import { use } from '../../../Infraestructure/Rest/Decorators/use';
+import { Controller } from '../../../Shared/Infrastructure/Decorators/controller';
+import { put } from '../../../Shared/Infrastructure/Decorators/routes';
+import { use } from '../../../Shared/Infrastructure/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { ModifyDietCommand } from '../../Domain/Command/ModifyDietCommand';
 import { CreateMealCommand } from '../../Domain/Command/CreateMealCommand';

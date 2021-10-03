@@ -3,9 +3,9 @@ import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { ReadAppConfigCommand } from '../../../../Domain/Commands/AppConfig/ReadAppConfigCommand';
 import { AppConfig } from '../../../../Domain/Entities/AppConfig.entity';
 import { currentUser, requireAuth } from '../../../../middlewares/auth';
-import { Controller } from '../../Decorators/controller';
-import { get } from '../../Decorators/routes';
-import { use } from '../../Decorators/use';
+import { Controller } from '../../../../Shared/Infrastructure/Decorators/controller';
+import { get } from '../../../../Shared/Infrastructure/Decorators/routes';
+import { use } from '../../../../Shared/Infrastructure/Decorators/use';
 
 @Controller()
 export class GetConfigController {

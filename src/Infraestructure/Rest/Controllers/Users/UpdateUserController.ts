@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { UpdateUserCommand } from '../../../../Domain/Commands/User/UpdateUserCommand';
 import { currentUser, requireAuth } from '../../../../middlewares/auth';
-import { Controller } from '../../Decorators/controller';
-import { put } from '../../Decorators/routes';
-import { use } from '../../Decorators/use';
+import { Controller } from '../../../../Shared/Infrastructure/Decorators/controller';
+import { put } from '../../../../Shared/Infrastructure/Decorators/routes';
+import { use } from '../../../../Shared/Infrastructure/Decorators/use';
 
 @Controller()
 export class UpdateUserController {

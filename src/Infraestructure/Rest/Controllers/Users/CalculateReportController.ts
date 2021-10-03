@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { Controller } from '../../Decorators/controller';
+import { Controller } from '../../../../Shared/Infrastructure/Decorators/controller';
 import { User } from '../../../../Domain/Entities/User.entity';
-import { get } from '../../Decorators/routes';
+import { get } from '../../../../Shared/Infrastructure/Decorators/routes';
 import { OPERATORS } from '../../../../Domain/constants';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { ReadCalculatedReportCommand } from '../../../../Domain/Commands/User/ReadCalculatedReportCommand';
-import { use } from '../../Decorators/use';
+import { use } from '../../../../Shared/Infrastructure/Decorators/use';
 import { currentUser, requireAuth } from '../../../../middlewares/auth';
 
 @Controller()
@@ -44,7 +44,7 @@ export class CalculateReportController {
     return Object.keys(query).reduce((acc, key) => {
       return {
         ...acc,
-        [key]: { value: query[key], operation: OPERATORS.equal },
+        [key]: {value: query[key], operation: OPERATORS.equal},
       };
     }, {});
   }

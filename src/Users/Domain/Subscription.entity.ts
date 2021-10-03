@@ -51,10 +51,6 @@ export class Subscription extends BaseEntity {
     return DateUtils.equal(new Date(), warningDate);
   };
 
-  public pricing = (): Pricing => {
-    return this._pricing;
-  };
-
   public paymentDate = (): Date => {
     return this._lastPayment.value;
   };
@@ -67,19 +63,7 @@ export class Subscription extends BaseEntity {
     return this._isWarned;
   };
 
-  public setIsNotified = (): void => {
-    this._isNotified = !this._isNotified;
-  };
-
-  public setIsWarned = (): void => {
-    this._isWarned = !this._isWarned;
-  };
-
   public isActive = (): boolean => {
     return this._isActive;
-  };
-
-  public setIsActive = (): void => {
-    this._isActive = !this._isActive;
   };
 }

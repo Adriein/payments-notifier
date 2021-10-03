@@ -1,3 +1,6 @@
-export class GetUserQuery {
-  constructor(public userId: string){};
+import { IQuery } from "../../../Shared/Domain/Interfaces/IQuery";
+
+export class GetUserQuery implements IQuery {
+  constructor(public userId: string) {
+  };
 }

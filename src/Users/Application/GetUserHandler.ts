@@ -4,7 +4,9 @@ import { ID } from '../../Shared/Domain/VO/Id.vo';
 import { GetUserQuery } from '../Domain/Query/GetUserQuery';
 import { User } from '../../Domain/Entities/User.entity';
 import { IUserRepository } from '../../Domain/Interfaces/IUserRepository';
+import { QueryHandler } from "../../Shared/Domain/Decorators/QueryHandler.decorator";
 
+@QueryHandler(GetUserQuery)
 export class GetUserHandler implements IHandler<User> {
   constructor(private repository: IUserRepository) {
   }

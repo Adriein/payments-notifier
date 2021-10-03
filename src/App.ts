@@ -9,7 +9,7 @@ import fs from 'fs';
 import { errorHandler } from './middlewares';
 import Database from './Infraestructure/Data/Database';
 import { FILES_PATH } from './Domain/constants';
-import { AppRouter } from './Infraestructure/Rest/AppRouter';
+import { AppRouter } from './Shared/Infrastructure/AppRouter';
 import { ExplorerService } from './ExplorerService';
 import DomainEventHandlerFactory from './Shared/Infrastructure/Factories/DomainEventHandler.factory';
 import { DomainEventsManager } from './Shared/Domain/Entities/DomainEventsManager';

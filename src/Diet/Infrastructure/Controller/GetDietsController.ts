@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { Controller } from '../../../Infraestructure/Rest/Decorators/controller';
-import { get } from '../../../Infraestructure/Rest/Decorators/routes';
-import { use } from '../../../Infraestructure/Rest/Decorators/use';
+import { Controller } from '../../../Shared/Infrastructure/Decorators/controller';
+import { get } from '../../../Shared/Infrastructure/Decorators/routes';
+import { use } from '../../../Shared/Infrastructure/Decorators/use';
 import { currentUser, requireAuth } from '../../../middlewares/auth';
 import { Diet } from '../../Domain/Diet.entity';
 import { GetDietsQuery } from '../../Domain/Query/GetDietsQuery';

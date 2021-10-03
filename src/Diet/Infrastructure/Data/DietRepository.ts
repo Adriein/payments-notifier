@@ -13,22 +13,26 @@ export class DietRepository implements IDietRepository {
   public async findOne(id: string): Promise<Diet | undefined> {
     throw new Error('Method not implemented.');
   }
+
   public async find(adminId: string, criteria: any): Promise<Diet[]> {
     throw new Error('Method not implemented.');
   }
+
   public async save(entity: Diet): Promise<void> {
     const dao = this.mapper.datamodel(entity);
-    dao.save();
+    await dao.save();
   }
+
   public async update(entity: Diet): Promise<void> {
     const dao = this.mapper.datamodel(entity);
 
-    dao.update();
+    await dao.update();
 
     if (dao.meals.length) {
       dao.meals.forEach((mealDao: MealDAO) => mealDao.save());
     }
   }
+
   public async delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
