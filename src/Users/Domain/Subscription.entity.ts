@@ -8,17 +8,14 @@ export class Subscription extends BaseEntity {
   public static build(
     pricing: Pricing,
     lastPayment: LastPaymentDate,
-    isWarned: boolean,
-    isNotified: boolean,
-    isActive: boolean = true
   ): Subscription {
     return new Subscription(
       ID.generate(),
       pricing,
       lastPayment,
-      isWarned,
-      isNotified,
-      isActive
+      false,
+      false,
+      true
     );
   }
 
@@ -50,6 +47,18 @@ export class Subscription extends BaseEntity {
 
     return DateUtils.equal(new Date(), warningDate);
   };
+
+  public price = (): number => {
+    return this._pricing.price();
+  }
+
+  public duration = (): number => {
+    return this._pricing.duration();
+  }
+
+  public name = (): string => {
+    return this._pricing.name();
+  }
 
   public paymentDate = (): Date => {
     return this._lastPayment.value;

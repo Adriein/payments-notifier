@@ -14,12 +14,13 @@ export class User extends AggregateRoot {
     config: UserConfig,
     subscription: Subscription
   ): User {
-    return new User(ID.generate(), name, email, config, ownerId, subscription);
+    return new User(ID.generate(), name, password, email, config, ownerId, subscription);
   }
 
   constructor(
     _id: ID,
     private _name: string,
+    private _password: Password,
     private _email: Email,
     private _config: UserConfig,
     private _ownerId: ID,
@@ -48,27 +49,39 @@ export class User extends AggregateRoot {
     return this._config.role();
   }
 
-  public sendNotifications = (): () => boolean => {
-    return this._config.sendNotifications;
+  public sendNotifications = (): boolean => {
+    return this._config.sendNotifications();
   }
 
-  public sendWarnings = (): () => boolean => {
-    return this._config.sendWarnings;
+  public sendWarnings = (): boolean => {
+    return this._config.sendWarnings();
   }
 
-  public paymentDate = (): () => Date => {
-    return this._subscription.paymentDate;
+  public paymentDate = (): Date => {
+    return this._subscription.paymentDate();
   };
 
-  public isNotified = (): () => boolean => {
-    return this._subscription.isNotified;
+  public isNotified = (): boolean => {
+    return this._subscription.isNotified();
   };
 
-  public isWarned = (): () => boolean => {
-    return this._subscription.isWarned;
+  public isWarned = (): boolean => {
+    return this._subscription.isWarned();
   };
 
-  public isActive = (): () => boolean => {
-    return this._subscription.isActive;
+  public isActive = (): boolean => {
+    return this._subscription.isActive();
   };
+
+  public subscriptionPrice = (): number => {
+    return this._subscription.price();
+  }
+
+  public subscriptionName = (): string => {
+    return this._subscription.name();
+  }
+
+  public subscriptionDuration = (): number => {
+    return this._subscription.duration();
+  }
 }

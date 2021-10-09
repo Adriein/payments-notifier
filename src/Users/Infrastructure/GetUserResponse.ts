@@ -7,11 +7,23 @@ export type GetUserResponse = {
   config: GetConfigResponse,
 };
 
-type GetSubscriptionResponse = {}
+type GetSubscriptionResponse = {
+  pricing: SubscriptionPricing,
+  lastPayment: Date,
+  isWarned: boolean,
+  isNotified: boolean,
+  isActive: boolean,
+}
 
 type GetConfigResponse = {
   sendNotifications: string,
   sendWarnings: string,
   language: string,
   role: string,
+}
+
+type SubscriptionPricing = {
+  price: number;
+  name: string;
+  duration: number;
 }

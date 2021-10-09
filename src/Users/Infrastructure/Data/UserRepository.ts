@@ -22,4 +22,8 @@ export class UserRepository implements IUserRepository {
   public async update(entity: User): Promise<void> {
     return Promise.resolve(undefined);
   }
+
+  public async findByEmail(email: string): Promise<User | undefined> {
+    return undefined;
+  }
 }

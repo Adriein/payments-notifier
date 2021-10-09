@@ -50,14 +50,19 @@ import { ContactEmailCommand } from "../../Domain/Commands/Backoffice/ContactEma
 import { SendContactEmailHandler } from "../Handlers/Backoffice/SendContactEmailHandler";
 import { Api } from "../../Infraestructure/Apis/Api";
 import { SendGridApi } from "../../Infraestructure/Apis/SendGrid/SendGrid.api";
-import { CryptoService } from "../../Domain/Services/CryptoService";
+import { CryptoService } from "../../Shared/Domain/Services/CryptoService";
 import { UpdateUserPasswordCommand } from "../../Domain/Commands/User/UpdateUserPasswordCommand";
 import { UpdateUserPasswordHandler } from "../Handlers/User/UpdateUserPasswordHandler";
 import { ICommand } from "../../Shared/Domain/Interfaces/ICommand";
 
 export class CommandBus implements ICommandBus {
   //repos
-  private usersRepository = new UserRepository('users', new UserMapper(), new CriteriaMapper(), new SubscriptionMapper());
+  private usersRepository = new UserRepository(
+    'users',
+    new UserMapper(),
+    new CriteriaMapper(),
+    new SubscriptionMapper()
+  );
   private appConfigRepository = new AppConfigRepository('app_config', new AppConfigMapper(), new CriteriaMapper());
 
   //services
@@ -66,8 +71,9 @@ export class CommandBus implements ICommandBus {
   private priceBuilder = new PriceBuilder(this.appConfigRepository);
   private sendGridApi = new SendGridApi(new Api());
   private cryptoService = new CryptoService();
- 
-  constructor() {}
+
+  constructor() {
+  }
 
   public async execute(command: ICommand): Promise<any> {
     return await this.resolveHandler(command).handle(command);
@@ -75,7 +81,12 @@ export class CommandBus implements ICommandBus {
 
   private resolveHandler(command: ICommand) {
     if (command instanceof CheckForDefaultersCommand) {
-      return new CheckForDefaultersHandler(this.notifier, this.usersRepository, this.appConfigRepository, this.userFinder);
+      return new CheckForDefaultersHandler(
+        this.notifier,
+        this.usersRepository,
+        this.appConfigRepository,
+        this.userFinder
+      );
     }
 
     if (command instanceof IngestDefaultersCommand) {
@@ -114,31 +125,31 @@ export class CommandBus implements ICommandBus {
       return new CreateUserHandler(this.usersRepository, this.priceBuilder);
     }
 
-    if(command instanceof DeleteUserCommand) {
+    if (command instanceof DeleteUserCommand) {
       return new DeleteUserHandler(this.userFinder, this.usersRepository);
     }
 
-    if(command instanceof RegisterUserPaymentCommand) {
+    if (command instanceof RegisterUserPaymentCommand) {
       return new RegisterUserPaymentHandler(this.userFinder, this.usersRepository);
     }
 
-    if(command instanceof UpdateUserCommand) {
+    if (command instanceof UpdateUserCommand) {
       return new UpdateUserHandler(this.userFinder, this.usersRepository, this.priceBuilder);
     }
 
-    if(command instanceof CreateAppConfigCommand) {
+    if (command instanceof CreateAppConfigCommand) {
       return new CreateAppConfigHandler(this.appConfigRepository);
     }
 
-    if(command instanceof ModifyAppConfigCommand) {
+    if (command instanceof ModifyAppConfigCommand) {
       return new ModifyAppConfigHandler(this.appConfigRepository);
     }
 
-    if(command instanceof ReadAppConfigCommand) {
+    if (command instanceof ReadAppConfigCommand) {
       return new ReadAppConfigHandler(this.appConfigRepository);
     }
 
-    if(command instanceof CreatePricingCommand) {
+    if (command instanceof CreatePricingCommand) {
       return new CreatePricingHandler(this.appConfigRepository);
     }
 
@@ -154,11 +165,11 @@ export class CommandBus implements ICommandBus {
       return new CreateUsersChartHandler(this.userFinder);
     }
 
-    if(command instanceof ContactEmailCommand) {
+    if (command instanceof ContactEmailCommand) {
       return new SendContactEmailHandler(this.notifier);
     }
 
-    if(command instanceof UpdateUserPasswordCommand) {
+    if (command instanceof UpdateUserPasswordCommand) {
       return new UpdateUserPasswordHandler(this.userFinder, this.usersRepository, this.cryptoService);
     }
 

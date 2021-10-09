@@ -1,7 +1,7 @@
 import { UpdateUserPasswordCommand } from '../../../Domain/Commands/User/UpdateUserPasswordCommand';
 import { Log } from '../../../Domain/Decorators/Log';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
-import { CryptoService } from '../../../Domain/Services/CryptoService';
+import { CryptoService } from '../../../Shared/Domain/Services/CryptoService';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
@@ -10,7 +10,8 @@ export class UpdateUserPasswordHandler {
     private finder: UserFinder,
     private userRepository: IUserRepository,
     private cryptoService: CryptoService
-  ) {}
+  ) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   async handle(comm: ICommand): Promise<void> {

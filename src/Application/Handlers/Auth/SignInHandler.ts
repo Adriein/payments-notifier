@@ -3,13 +3,14 @@ import { Log } from '../../../Domain/Decorators/Log';
 import { NotAuthorizedError } from '../../../Domain/Errors/NotAuthorizedError';
 import { UserNotExistError } from '../../../Domain/Errors';
 import { IHandler } from '../../../Domain/Interfaces';
-import { CryptoService } from '../../../Domain/Services/CryptoService';
+import { CryptoService } from '../../../Shared/Domain/Services/CryptoService';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 
 export class SignInHandler implements IHandler<void> {
-  constructor(private finder: UserFinder, private cryptoService: CryptoService) {}
+  constructor(private finder: UserFinder, private cryptoService: CryptoService) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(comm: ICommand): Promise<void> {

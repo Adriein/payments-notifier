@@ -17,7 +17,17 @@ export class GetUserPresenter {
         role: this.translator(user.lang(), user.role()),
         language: user.lang()
       },
-      subscription: {},
+      subscription: {
+        pricing: {
+          price: user.subscriptionPrice(),
+          name: user.subscriptionName(),
+          duration: user.subscriptionDuration()
+        },
+        isNotified: user.isNotified(),
+        isWarned: user.isWarned(),
+        lastPayment: user.paymentDate(),
+        isActive: user.isActive()
+      },
     }
   }
 
