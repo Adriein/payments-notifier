@@ -12,6 +12,8 @@ import { LastPaymentDate } from "../../Shared/Domain/VO/LastPaymentDate.vo";
 import { Email } from "../../Shared/Domain/VO/Email.vo";
 import { ID } from "../../Shared/Domain/VO/Id.vo";
 import { Password } from "../../Shared/Domain/VO/Password.vo";
+import { LANG_ES, USER_ROLE } from "../../Domain/constants";
+import { UserAlreadyExistsError } from "../Domain/UserAlreadyExistsError";
 
 @DomainEventsHandler(AdminCreatedDomainEvent)
 export class CreateAdminDomainEventHandler implements IDomainEventHandler {
@@ -23,7 +25,7 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
     const userExists = await this.repository.findByEmail(event.email);
 
     if (userExists) {
-      throw new Error();
+      throw new UserAlreadyExistsError();
     }
 
     const id = ID.generate();
@@ -34,9 +36,12 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
       event.name,
       new Password(password),
       new Email(event.email),
-      UserConfig.build(),
+      new UserConfig(ID.generate(), LANG_ES, USER_ROLE),
       id,
-      Subscription.build(Pricing.build('', 4, 4), new LastPaymentDate(new Date().toString()))
+      Subscription.build(
+        Pricing.build('annual', 365, 1000),
+        new LastPaymentDate(new Date().toString())
+      )
     );
 
     await this.repository.save(user);

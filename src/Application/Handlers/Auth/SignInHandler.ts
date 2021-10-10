@@ -1,6 +1,6 @@
 import { SignInCommand } from '../../../Domain/Commands/Auth/SignInCommand';
 import { Log } from '../../../Domain/Decorators/Log';
-import { NotAuthorizedError } from '../../../Domain/Errors/NotAuthorizedError';
+import { NotAuthorizedError } from '../../../Auth/Domain/NotAuthorizedError';
 import { UserNotExistError } from '../../../Domain/Errors';
 import { IHandler } from '../../../Domain/Interfaces';
 import { CryptoService } from '../../../Shared/Domain/Services/CryptoService';

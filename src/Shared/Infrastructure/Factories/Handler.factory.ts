@@ -1,7 +1,6 @@
 import { IHandler } from '../../../Domain/Interfaces';
 import { CreateDietHandler } from '../../../Diet/Application/CreateDietHandler';
 import { CreateNutritionHandler } from '../../../Nutrition/Application/CreateNutritionHandler';
-import { NutritionFinder } from '../../../Nutrition/Domain/Services/NutritionFinder';
 import { NutritionRepository } from '../../../Nutrition/Infrastructure/Data/NutritionRepository';
 import { ConstructorFunc } from '../../Domain/types';
 import { GetDietsHandler } from '../../../Diet/Application/GetDietsHandler';
@@ -13,15 +12,20 @@ import { KcalCalculator } from '../../../Nutrition/Domain/KcalCalculator';
 import { SearchFoodHandler } from '../../../Food/Application/SearchFoodHandler';
 import { FoodRepository } from '../../../Food/Infrastructure/Data/FoodRepository';
 import { NutritionixRepository } from '../../../Food/Infrastructure/Data/NutritionixRepository';
-import { IDomainEventHandler } from "../../Domain/Interfaces/IDomainEventHandler";
+import { AuthRepository } from "../../../Auth/Infrastructure/Data/AuthRepository";
+import { SignInHandler } from "../../../Auth/Application/SignInHandler";
+import { CryptoService } from "../../Domain/Services/CryptoService";
+import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
-  
+
+  private authRepository: AuthRepository = new AuthRepository();
   private nutritionRepository: NutritionRepository = new NutritionRepository();
   private dietRepository: DietRepository = new DietRepository();
   private foodRepository: FoodRepository = new FoodRepository();
   private nutritionixRepository: NutritionixRepository = new NutritionixRepository();
+  private cryptoService: CryptoService = new CryptoService();
 
   constructor() {
     this.register();
@@ -65,6 +69,16 @@ export default class HandlerFactory {
     this.handlers.set(
       SearchFoodHandler.name,
       new SearchFoodHandler(this.foodRepository, this.nutritionixRepository)
+    );
+
+    this.handlers.set(
+      SignInHandler.name,
+      new SignInHandler(this.authRepository, this.cryptoService)
+    );
+
+    this.handlers.set(
+      RegisterAdminHandler.name,
+      new RegisterAdminHandler()
     );
   }
 

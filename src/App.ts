@@ -41,6 +41,8 @@ import './Diet/Infrastructure/Controller/CreateDietController';
 import './Diet/Infrastructure/Controller/ModifyDietController';
 import './Food';
 import './Backoffice';
+import './Auth';
+import './Users';
 
 
 export default class App {
@@ -151,7 +153,7 @@ export default class App {
   private bindCommands(): void {
     const factory = new HandlerFactory();
     for (const handler of factory.getContainer().values()) {
-      const commands = ExplorerService.explore<Function, DomainEventClass>(
+      const commands = ExplorerService.explore<Function, CommandClass>(
         handler.constructor,
         COMMANDS_HANDLER_METADATA
       );
@@ -163,7 +165,7 @@ export default class App {
   private bindQueries(): void {
     const factory = new HandlerFactory();
     for (const handler of factory.getContainer().values()) {
-      const queries = ExplorerService.explore<Function, DomainEventClass>(handler.constructor, QUERY_HANDLER_METADATA);
+      const queries = ExplorerService.explore<Function, QueryClass>(handler.constructor, QUERY_HANDLER_METADATA);
 
       queries.forEach((query: QueryClass) => QueryBus.bind(query, handler));
     }

@@ -1,4 +1,4 @@
-import { CustomError } from '../CustomError';
+import { CustomError } from '../../Domain/Errors/CustomError';
 
 export class UserAlreadyExistsError extends CustomError {
   statusCode = 400;
@@ -10,6 +10,6 @@ export class UserAlreadyExistsError extends CustomError {
   }
 
   serialize() {
-    return [{ message: this.message }];
+    return [{message: this.message}];
   }
 }
