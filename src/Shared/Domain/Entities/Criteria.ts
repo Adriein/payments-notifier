@@ -6,7 +6,8 @@ export class Criteria {
   private _equality!: string;
   private _operation!: OPERATORS;
 
-  constructor(private translator: ITranslator) {}
+  constructor(private translator: ITranslator) {
+  }
 
   public field(field: string): this {
     this._field = field;
@@ -19,9 +20,9 @@ export class Criteria {
     return this;
   }
 
-  public toQuery(): string {
+  public toQuery(prefix?: string): string {
     return this.translator.translate(
-      this._field,
+      `${prefix}_${this._field}`,
       this._equality,
       this._operation
     );

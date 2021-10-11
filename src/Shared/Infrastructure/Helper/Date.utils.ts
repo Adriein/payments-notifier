@@ -3,6 +3,7 @@ import dayjs, { OpUnitType } from "dayjs";
 
 export class DateUtils {
   private static DAY_UNIT: OpUnitType = 'day';
+  public static STANDARD_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
   public static add(date: Date, days: number): Date {
     return dayjs(date).add(days, DateUtils.DAY_UNIT).toDate();
@@ -22,5 +23,9 @@ export class DateUtils {
 
   public static diff(date: Date, date1: Date): number {
     return dayjs(date).diff(date1, DateUtils.DAY_UNIT);
+  }
+
+  public static format(date: Date, format: string): string {
+    return dayjs(date).format(format)
   }
 }

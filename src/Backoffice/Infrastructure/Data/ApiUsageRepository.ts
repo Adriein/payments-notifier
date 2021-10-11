@@ -15,14 +15,17 @@ export class ApiUsageRepository implements IApiUsageRepository {
   find(adminId: string, criteria: Criteria): Promise<ApiUsage[]> {
     throw new Error('Method not implemented.');
   }
+
   public async save(entity: ApiUsage): Promise<void> {
-    const dao = this.mapper.datamodel(entity);
+    const dao = this.mapper.toDataModel(entity);
 
     await dao.save();
   }
+
   update(entity: ApiUsage): Promise<void> {
     throw new Error('Method not implemented.');
   }
+
   delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }

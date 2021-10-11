@@ -15,7 +15,7 @@ export class SignInHandler implements IHandler<Auth> {
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: SigninQuery): Promise<Auth> {
-    const {email, password} = query;
+    const { email, password } = query;
 
     const auth = await this.repository.findByEmail(email);
 

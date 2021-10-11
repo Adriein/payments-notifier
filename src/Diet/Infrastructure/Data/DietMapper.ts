@@ -8,8 +8,8 @@ import { MealMapper } from './MealMapper';
 export class DietMapper implements IMapper<Diet, DietDAO> {
   private mealMapper = new MealMapper();
 
-  public datamodel(domain: Diet): DietDAO {
-    const meals = domain.meals().map(this.mealMapper.datamodel);
+  public toDataModel(domain: Diet): DietDAO {
+    const meals = domain.meals().map(this.mealMapper.toDataModel);
 
     return new DietDAO(
       domain.id(),
@@ -23,7 +23,7 @@ export class DietMapper implements IMapper<Diet, DietDAO> {
     );
   }
 
-  domain(datamodel: DietDAO): Diet {
+  toDomain(datamodel: DietDAO): Diet {
     return new Diet(
       new ID(datamodel.id!),
       datamodel.diet_name!,

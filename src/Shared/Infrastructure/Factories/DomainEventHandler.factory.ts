@@ -2,11 +2,16 @@ import { RegisterApiUsageHandler } from '../../../Backoffice';
 import { ApiUsageRepository } from '../../../Backoffice/Infrastructure/Data/ApiUsageRepository';
 import { IDomainEventHandler } from '../../Domain/Interfaces/IDomainEventHandler';
 import { ConstructorFunc } from '../../Domain/types';
+import { CreateAdminDomainEventHandler } from "../../../Users/Application/CreateAdminDomainEventHandler";
+import { UserRepository } from "../../../Users/Infrastructure/Data/UserRepository";
+import { CryptoService } from "../../Domain/Services/CryptoService";
 
 export default class DomainEventHandlerFactory {
   private handlers: Map<string, IDomainEventHandler> = new Map();
 
   private apiUsageRepo = new ApiUsageRepository();
+  private userRepository = new UserRepository();
+  private crypto = new CryptoService();
 
   constructor() {
     this.register();
@@ -24,6 +29,10 @@ export default class DomainEventHandlerFactory {
 
   private register(): void {
     this.handlers.set(RegisterApiUsageHandler.name, new RegisterApiUsageHandler(this.apiUsageRepo));
+    this.handlers.set(
+      CreateAdminDomainEventHandler.name,
+      new CreateAdminDomainEventHandler(this.userRepository, this.crypto)
+    );
   }
 
   public getContainer(): Map<string, IDomainEventHandler> {

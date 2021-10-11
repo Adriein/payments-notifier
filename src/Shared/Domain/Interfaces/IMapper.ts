@@ -1,4 +1,5 @@
 export interface IMapper<T, C> {
-  datamodel(domain: T): C;
-  domain(datamodel: C): T;
+  toDataModel(domain: T): C;
+
+  toDomain(datamodel: C): T;
 }

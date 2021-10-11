@@ -1,8 +1,14 @@
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 import { User } from "../../Domain/User.entity";
+import { UserDAO } from "./User.dao";
+import { UserMapper } from "./UserMapper";
+import { SqlTranslator } from "../../../Shared/Domain/Entities/SqlTranslator";
+
 
 export class UserRepository implements IUserRepository {
+  private mapper = new UserMapper();
+
   public async delete(id: string): Promise<void> {
     return Promise.resolve(undefined);
   }
@@ -16,7 +22,8 @@ export class UserRepository implements IUserRepository {
   }
 
   public async save(entity: User): Promise<void> {
-    return Promise.resolve(undefined);
+    const dao = this.mapper.toDataModel(entity);
+    await dao.save();
   }
 
   public async update(entity: User): Promise<void> {
@@ -24,6 +31,17 @@ export class UserRepository implements IUserRepository {
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
-    return undefined;
+    const dao = new UserDAO();
+    const criteria = new Criteria(new SqlTranslator());
+
+    criteria.field('email').equals(email);
+
+    const [ result ] = await dao.find(criteria);
+
+    if (!result) {
+      return undefined;
+    }
+
+    return this.mapper.toDomain(result);
   }
 }

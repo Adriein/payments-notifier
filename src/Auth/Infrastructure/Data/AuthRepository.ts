@@ -34,13 +34,13 @@ export class AuthRepository implements IAuthRepository {
     const criteria = new Criteria(new SqlTranslator());
     criteria.field('email').equals(email);
 
-    const [result] = await dao.find(criteria);
-
+    const [ result ] = await dao.find(criteria);
+    console.log(result)
     if (!result) {
       return undefined;
     }
 
-    return this.mapper.domain(result);
+    return this.mapper.toDomain(result);
   }
 
 }

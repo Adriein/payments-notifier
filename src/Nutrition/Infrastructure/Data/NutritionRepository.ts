@@ -17,7 +17,7 @@ export class NutritionRepository implements INutritionRepository {
       return undefined;
     }
 
-    return this.mapper.domain(result);
+    return this.mapper.toDomain(result);
   }
 
   async find(adminId: string, criteria: any): Promise<Nutrition[]> {
@@ -25,7 +25,7 @@ export class NutritionRepository implements INutritionRepository {
   }
 
   async save(entity: Nutrition): Promise<void> {
-    const nutritionDAO = this.mapper.datamodel(entity);
+    const nutritionDAO = this.mapper.toDataModel(entity);
     await nutritionDAO.save();
   }
 
@@ -48,6 +48,6 @@ export class NutritionRepository implements INutritionRepository {
       return undefined;
     }
 
-    return this.mapper.domain(nutrition[0]);
+    return this.mapper.toDomain(nutrition[0]);
   }
 }

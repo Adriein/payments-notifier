@@ -19,12 +19,12 @@ export class DietRepository implements IDietRepository {
   }
 
   public async save(entity: Diet): Promise<void> {
-    const dao = this.mapper.datamodel(entity);
+    const dao = this.mapper.toDataModel(entity);
     await dao.save();
   }
 
   public async update(entity: Diet): Promise<void> {
-    const dao = this.mapper.datamodel(entity);
+    const dao = this.mapper.toDataModel(entity);
 
     await dao.update();
 
@@ -49,7 +49,7 @@ export class DietRepository implements IDietRepository {
       return [];
     }
 
-    return results.map((result: DietDAO) => this.mapper.domain(result));
+    return results.map((result: DietDAO) => this.mapper.toDomain(result));
   }
 
   public async getLastDiet(): Promise<Diet | undefined> {

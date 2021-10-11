@@ -28,8 +28,14 @@ export type BindCommandHandler<T> = {
 };
 
 export type ConstructorFunc<T = any> = {
-  new (...args: any[]): T;
+  new(...args: any[]): T;
 };
+
+export type JSObject = {
+  [key: string]: any
+}
+
+export type Nullable<T> = T | undefined | null;
 
 export type DomainEventClass = new (...args: never[]) => DomainEvent;
 

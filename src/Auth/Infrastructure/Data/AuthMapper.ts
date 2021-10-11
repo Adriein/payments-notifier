@@ -6,11 +6,11 @@ import { Email } from "../../../Shared/Domain/VO/Email.vo";
 import { Password } from "../../../Shared/Domain/VO/Password.vo";
 
 export class AuthMapper implements IMapper<Auth, AuthDAO> {
-  public datamodel(domain: Auth): AuthDAO {
+  public toDataModel(domain: Auth): AuthDAO {
     throw new Error('Not implemented');
   }
 
-  public domain(datamodel: AuthDAO): Auth {
+  public toDomain(datamodel: AuthDAO): Auth {
     return new Auth(
       new ID(datamodel.id!),
       datamodel.username!,

@@ -4,7 +4,7 @@ import { Food } from '../../Domain/Food.entity';
 import { IFoodRepository } from '../../Domain/IFoodRepository';
 import { FoodApiMapper } from './FoodApiMapper';
 import { FoodSearch, NutritionixApiSearchResponse } from './NutritionixApiSearch.response.api';
-import {  NutritionixApiNutrientsResponse } from './NutritionixApiNutrients.response.api';
+import { NutritionixApiNutrientsResponse } from './NutritionixApiNutrients.response.api';
 import { NutritionixApiNutrientsRequest } from './NutritionixApiNutrients.request';
 import { Collection } from '../../../Shared/Domain/Entities/Collection';
 import { ApiQueryDomainEvent } from '../../Domain/ApiQueryDomainEvent';
@@ -28,12 +28,10 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
     const results = new Collection<FoodSearch>(searchResponse.common).cut(maxSearch);
 
     for (const result of results.get()) {
-      const { data: nutrientsResponse } = await this.post<
-        NutritionixApiNutrientsResponse,
-        NutritionixApiNutrientsRequest
-      >('/natural/nutrients', { query: result.food_name, locale: 'es_ES' });
+      const { data: nutrientsResponse } = await this.post<NutritionixApiNutrientsResponse,
+        NutritionixApiNutrientsRequest>('/natural/nutrients', { query: result.food_name, locale: 'es_ES' });
 
-      const food = this.mapper.domain(nutrientsResponse.foods[0]);
+      const food = this.mapper.toDomain(nutrientsResponse.foods[0]);
 
       foods.push(food);
     }

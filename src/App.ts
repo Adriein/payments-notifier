@@ -18,9 +18,6 @@ import { COMMANDS_HANDLER_METADATA, EVENTS_HANDLER_METADATA, QUERY_HANDLER_METAD
 import { CommandBus } from "./Shared/Infrastructure/Bus/CommandBus";
 import { QueryBus } from "./Shared/Infrastructure/Bus/QueryBus";
 import HandlerFactory from "./Shared/Infrastructure/Factories/Handler.factory";
-import './Infraestructure/Rest/Controllers/Auth/SignInController';
-import './Infraestructure/Rest/Controllers/Auth/RegisterController';
-import './Infraestructure/Rest/Controllers/Auth/SignOutController';
 import './Infraestructure/Rest/Controllers/Users/CalculateReportController';
 import './Infraestructure/Rest/Controllers/Users/CreateUserController';
 import './Infraestructure/Rest/Controllers/Users/DeleteUserController';

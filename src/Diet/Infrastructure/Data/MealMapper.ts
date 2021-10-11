@@ -4,7 +4,7 @@ import { Meal } from '../../Domain/Meal.entity';
 import { MealDAO } from './Meal.dao';
 
 export class MealMapper implements IMapper<Meal, MealDAO> {
-  public datamodel(domain: Meal): MealDAO {
+  public toDataModel(domain: Meal): MealDAO {
     return new MealDAO(
       domain.id(),
       domain.name(),
@@ -14,7 +14,7 @@ export class MealMapper implements IMapper<Meal, MealDAO> {
     );
   }
 
-  domain(datamodel: MealDAO): Meal {
+  toDomain(datamodel: MealDAO): Meal {
     return new Meal(
       new ID(datamodel.id!),
       datamodel.meal_name!,

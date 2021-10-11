@@ -37,6 +37,10 @@ export class User extends AggregateRoot {
     return this._email.value;
   }
 
+  public password(): string {
+    return this._password.value;
+  }
+
   public ownerId(): string {
     return this._ownerId.value;
   }

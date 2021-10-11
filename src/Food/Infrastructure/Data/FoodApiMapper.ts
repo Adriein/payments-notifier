@@ -5,10 +5,11 @@ import { MicroNutrients } from '../../Domain/MicroNutrients.entity';
 import { NutrientsFood } from './NutritionixApiNutrients.response.api';
 
 export class FoodApiMapper implements IMapper<Food, any> {
-  datamodel(domain: Food): any {
+  toDataModel(domain: Food): any {
     throw new Error('Method not implemented.');
   }
-  domain(datamodel: NutrientsFood): Food {
+
+  toDomain(datamodel: NutrientsFood): Food {
     const micro: MicroNutrients[] = [];
     micro.push(new MicroNutrients('carbohydrates', datamodel.nf_total_carbohydrate));
     micro.push(new MicroNutrients('total_fat', datamodel.nf_total_fat));

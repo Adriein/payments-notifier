@@ -1,6 +1,9 @@
 import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
 import { column } from '../../../Shared/Infrastructure/Decorators/column';
+import { SubscriptionDAO } from "./Subscription.dao";
+import { UserConfigDAO } from "./UserConfig.dao";
+import { Nullable } from "../../../Shared/Domain/types";
 
 export class UserDAO extends AbstractDAO<UserDAO> {
   protected table: string = 'users';
@@ -12,6 +15,9 @@ export class UserDAO extends AbstractDAO<UserDAO> {
   @column() public owner_id: string | undefined;
   @column() public created_at: string | undefined;
   @column() public updated_at: string | undefined;
+
+  public subscriptions: SubscriptionDAO[] = [];
+  public userConfig: Nullable<UserConfigDAO> = null;
 
   constructor(
     id?: string,
@@ -41,40 +47,18 @@ export class UserDAO extends AbstractDAO<UserDAO> {
       return undefined;
     }
 
-    return new UserDAO(
-      rows[0].id,
-      rows[0].username,
-      rows[0].email,
-      rows[0].password,
-      rows[0].owner_id,
-      rows[0].created_at,
-      rows[0].updated_at
-    );
+    return this.buildDAO(UserDAO, rows[0])
   }
 
   public async find(criteria: Criteria): Promise<UserDAO[]> {
-    const query = `
-        SELECT *
-        FROM ${this.table} ${criteria.toQuery()}
-    `;
-
+    const query = this.findQuery(criteria)
     const { rows } = await this.db.getConnection().query(query);
 
     if (!rows) {
       return [];
     }
 
-    return rows.map((row: any) => {
-      return new UserDAO(
-        row.id,
-        row.username,
-        row.email,
-        row.password,
-        row.owner_id,
-        row.created_at,
-        row.updated_at
-      );
-    });
+    return rows.map((row: any) => this.buildDAO(UserDAO, row));
   }
 
   public async save(): Promise<void> {

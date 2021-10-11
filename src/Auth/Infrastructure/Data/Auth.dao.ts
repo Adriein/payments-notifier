@@ -41,20 +41,11 @@ export class AuthDAO extends AbstractDAO<AuthDAO> {
       return undefined;
     }
 
-    return new AuthDAO(
-      rows[0].id,
-      rows[0].username,
-      rows[0].email,
-      rows[0].password,
-      rows[0].owner_id,
-      rows[0].created_at,
-      rows[0].updated_at
-    );
+    return this.buildDAO(AuthDAO, rows[0]);
   }
 
   public async find(criteria: Criteria): Promise<AuthDAO[]> {
-    const query = `SELECT *
-                   FROM ${this.table} ${criteria.toQuery()}`;
+    const query = this.findQuery(criteria)
 
     const { rows } = await this.db.getConnection().query(query);
 
@@ -62,18 +53,9 @@ export class AuthDAO extends AbstractDAO<AuthDAO> {
       return [];
     }
 
-    return rows.map((row: any) => {
-      return new AuthDAO(
-        row.id,
-        row.username,
-        row.email,
-        row.password,
-        row.owner_id,
-        row.created_at,
-        row.updated_at
-      );
-    });
+    return rows.map((row: any) => this.buildDAO(AuthDAO, row));
   }
+
 
   public async save(): Promise<void> {
     const query = this.insertQuery(this);

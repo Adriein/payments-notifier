@@ -5,7 +5,7 @@ import { Gender } from '../../Domain/VO/Gender.vo';
 import { NutritionDAO } from './Nutrition.dao';
 
 export class NutritionMapper implements IMapper<Nutrition, NutritionDAO> {
-  public datamodel(domain: Nutrition): NutritionDAO {
+  public toDataModel(domain: Nutrition): NutritionDAO {
     return new NutritionDAO(
       domain.id(),
       domain.weight(),
@@ -18,7 +18,7 @@ export class NutritionMapper implements IMapper<Nutrition, NutritionDAO> {
     );
   }
 
-  public domain(datamodel: NutritionDAO): Nutrition {
+  public toDomain(datamodel: NutritionDAO): Nutrition {
     return new Nutrition(
       new ID(datamodel.id!),
       new ID(datamodel.user_id!),
