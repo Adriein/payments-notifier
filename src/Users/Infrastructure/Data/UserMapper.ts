@@ -12,27 +12,27 @@ import { SubscriptionDAO } from "./Subscription.dao";
 export class UserMapper implements IMapper<User, UserDAO> {
 
   toDataModel(domain: User): UserDAO {
-    const subscriptionDAO = new SubscriptionDAO(
-      domain.subscriptionId(),
-      domain.pricingId(),
-      DateUtils.format(domain.paymentDate(), DateUtils.STANDARD_DATE_FORMAT),
-      domain.isWarned(),
-      domain.isNotified(),
-      domain.id(),
-      domain.isActive(),
-      DateUtils.format(domain.subscriptionCreatedAt(), DateUtils.STANDARD_DATE_FORMAT),
-      DateUtils.format(domain.subscriptionUpdatedAt(), DateUtils.STANDARD_DATE_FORMAT),
-    );
+    const subscriptionDAO = new SubscriptionDAO();
 
-    const userDAO = new UserDAO(
-      domain.id(),
-      domain.name(),
-      domain.email(),
-      domain.password(),
-      domain.ownerId(),
-      DateUtils.format(domain.createdAt(), DateUtils.STANDARD_DATE_FORMAT),
-      DateUtils.format(domain.updatedAt(), DateUtils.STANDARD_DATE_FORMAT)
-    );
+    subscriptionDAO.id = domain.subscriptionId();
+    subscriptionDAO.pricing_id = domain.pricingId();
+    subscriptionDAO.payment_date = DateUtils.format(domain.paymentDate(), DateUtils.STANDARD_DATE_FORMAT);
+    subscriptionDAO.warned = domain.isWarned();
+    subscriptionDAO.notified = domain.isNotified();
+    subscriptionDAO.user_id = domain.id();
+    subscriptionDAO.active = domain.isActive();
+    subscriptionDAO.created_at = DateUtils.format(domain.subscriptionCreatedAt(), DateUtils.STANDARD_DATE_FORMAT);
+    subscriptionDAO.updated_at = DateUtils.format(domain.subscriptionUpdatedAt(), DateUtils.STANDARD_DATE_FORMAT);
+
+    const userDAO = new UserDAO();
+
+    userDAO.id = domain.id();
+    userDAO.username = domain.name();
+    userDAO.email = domain.email();
+    userDAO.password = domain.password();
+    userDAO.owner_id = domain.ownerId();
+    userDAO.created_at = DateUtils.format(domain.createdAt(), DateUtils.STANDARD_DATE_FORMAT);
+    userDAO.updated_at = DateUtils.format(domain.updatedAt(), DateUtils.STANDARD_DATE_FORMAT);
 
     userDAO.subscriptions = [ subscriptionDAO ];
 

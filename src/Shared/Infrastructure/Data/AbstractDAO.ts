@@ -152,12 +152,10 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
 
   protected async save(entity: T): Promise<void> {
     const qb = new QueryBuilder(this.getPrefix());
-
     const values = this.getEntityFields().map(this.getEntityValues(entity));
-    console.log(entity);
-    throw new Error();
-    const query = qb.insert(this.table).values(values).toQuery();
 
+    const query = qb.insert(this.table).values(values).toQuery();
+    
     await this.db.getConnection().query(query);
   }
 

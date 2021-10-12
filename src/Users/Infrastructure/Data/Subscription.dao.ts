@@ -5,18 +5,17 @@ export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
   protected table: string = 'subscriptions';
   protected foreign: Map<string, string> = new Map<string, string>();
 
+  @column() public id!: string;
+  @column() public pricing_id!: string;
+  @column() public payment_date!: string;
+  @column() public warned!: boolean;
+  @column() public notified!: boolean;
+  @column() public user_id!: string;
+  @column() public active!: boolean;
+  @column() public created_at!: string;
+  @column() public updated_at!: string;
 
-  constructor(
-    @column() public id: string,
-    @column() public pricing_id: string,
-    @column() public payment_date: string,
-    @column() public warned: boolean,
-    @column() public notified: boolean,
-    @column() public user_id: string,
-    @column() public active: boolean,
-    @column() public created_at: string,
-    @column() public updated_at: string,
-  ) {
+  constructor() {
     super();
   }
 

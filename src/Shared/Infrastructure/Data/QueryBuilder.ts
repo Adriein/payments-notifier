@@ -39,14 +39,14 @@ export class QueryBuilder {
   }
 
   public values(values: string[]): this {
-    this._values = values.map((value: string) => `${this.prefix}_${value}`);
+    this._values = values;
     return this;
   }
 
   public toQuery(): string {
     const query = [];
 
-    if (this._select.length > 0) {
+    if (this._select.length > 1) {
       query.push(`SELECT ${this._select.join(',')}`);
     }
 
