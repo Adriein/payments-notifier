@@ -1,13 +1,18 @@
 import Database from '../../../Infraestructure/Data/Database';
 import { Criteria } from "../../Domain/Entities/Criteria";
 import { ConstructorFunc, JSObject } from "../../Domain/types";
+import { QueryBuilder } from "./QueryBuilder";
 
 interface HasID {
   id?: string;
 }
 
 export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
+  protected abstract table: string;
+  protected abstract foreign: Map<string, string>;
+
   protected db: Database = Database.getInstance();
+  private qb = new QueryBuilder();
 
   protected insertQuery = (entity: T): string => {
     const fields = this.getEntityFields();
@@ -115,9 +120,26 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     return dao;
   }
 
-  protected abstract table: string;
 
-  public abstract getOne(relations?: string[]): Promise<T | undefined>;
+  public async getOne(id: string, classDefinition: ConstructorFunc, lazy: boolean = false): Promise<T | undefined> {
+    const queryBuilder = this.qb.select().from(this.table);
+
+    if (lazy) {
+      const query = queryBuilder.where('id', id);
+
+
+    }
+
+    const query = queryBuilder.leftJoin();
+
+    const { rows } = await this.db.getConnection().query(query);
+
+    if (!rows.length) {
+      return undefined;
+    }
+
+    return this.buildDAO(classDefinition, rows[0])
+  }
 
   public abstract find(criteria: Criteria, relations?: string[]): Promise<T[] | undefined>;
 

@@ -7,47 +7,26 @@ import { Nullable } from "../../../Shared/Domain/types";
 
 export class UserDAO extends AbstractDAO<UserDAO> {
   protected table: string = 'users';
-
-  @column() public id: string | undefined;
-  @column() public username: string | undefined;
-  @column() public email: string | undefined;
-  @column() public password: string | undefined;
-  @column() public owner_id: string | undefined;
-  @column() public created_at: string | undefined;
-  @column() public updated_at: string | undefined;
+  protected foreign: Map<string, string>;
 
   public subscriptions: SubscriptionDAO[] = [];
   public userConfig: Nullable<UserConfigDAO> = null;
 
   constructor(
-    id?: string,
-    username?: string,
-    email?: string,
-    password?: string,
-    owner_id?: string,
-    created_at?: string,
-    updated_at?: string
+    @column() public id: string,
+    @column() public username: string,
+    @column() public email: string,
+    @column() public password: string,
+    @column() public owner_id: string,
+    @column() public created_at: string,
+    @column() public updated_at: string
   ) {
     super();
-    this.id = id;
-    this.username = username;
-    this.email = email;
-    this.password = password;
-    this.owner_id = owner_id;
-    this.created_at = created_at;
-    this.updated_at = updated_at;
+    this.foreign = new Map([ [ 'subscription', 'user_id' ] ]);
   }
 
-  public async getOne(relations?: string[]): Promise<UserDAO | undefined> {
-    const query = this.selectQuery(this.id!, relations);
-
-    const { rows } = await this.db.getConnection().query(query);
-
-    if (!rows.length) {
-      return undefined;
-    }
-
-    return this.buildDAO(UserDAO, rows[0])
+  public async getOne(): Promise<UserDAO | undefined> {
+    return await super.getOne(this.id, UserDAO);
   }
 
   public async find(criteria: Criteria): Promise<UserDAO[]> {
