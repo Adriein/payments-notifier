@@ -3,16 +3,20 @@ import { column } from "../../../Shared/Infrastructure/Decorators/column";
 
 export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
   protected table: string = 'subscriptions';
+  protected foreign: Map<string, string> = new Map<string, string>();
 
-  @column() public id: string | undefined;
-  @column() public username: string | undefined;
-  @column() public email: string | undefined;
-  @column() public password: string | undefined;
-  @column() public owner_id: string | undefined;
-  @column() public created_at: string | undefined;
-  @column() public updated_at: string | undefined;
 
-  constructor() {
+  constructor(
+    @column() public id: string,
+    @column() public pricing_id: string,
+    @column() public payment_date: string,
+    @column() public warned: boolean,
+    @column() public notified: boolean,
+    @column() public user_id: string,
+    @column() public active: boolean,
+    @column() public created_at: string,
+    @column() public updated_at: string,
+  ) {
     super();
   }
 
@@ -20,20 +24,15 @@ export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
     return Promise.resolve(undefined);
   }
 
-  find(criteria: any): Promise<SubscriptionDAO[] | undefined> {
+  find(): Promise<SubscriptionDAO[] | undefined> {
     return Promise.resolve(undefined);
   }
 
-  getOne(relations: string[] | undefined): Promise<SubscriptionDAO | undefined> {
-    return Promise.resolve(undefined);
-  }
-
-  save(): Promise<void> {
-    return Promise.resolve(undefined);
+  public async save(): Promise<void> {
+    await super.save(this);
   }
 
   update(): Promise<void> {
     return Promise.resolve(undefined);
   }
-
 }

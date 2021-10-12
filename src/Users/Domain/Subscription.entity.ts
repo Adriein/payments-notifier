@@ -60,6 +60,10 @@ export class Subscription extends BaseEntity {
     return this._pricing.name();
   }
 
+  public pricingId = (): string => {
+    return this._pricing.id();
+  }
+
   public paymentDate = (): Date => {
     return this._lastPayment.value;
   };

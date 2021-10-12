@@ -4,6 +4,7 @@ import { column } from '../../../Shared/Infrastructure/Decorators/column';
 
 export class AuthDAO extends AbstractDAO<AuthDAO> {
   protected table: string = 'users';
+  protected foreign: Map<string, string> = new Map();
 
   @column() public id: string | undefined;
   @column() public username: string | undefined;
@@ -32,16 +33,8 @@ export class AuthDAO extends AbstractDAO<AuthDAO> {
     this.updated_at = updated_at;
   }
 
-  public async getOne(relations?: string[]): Promise<AuthDAO | undefined> {
-    const query = this.selectQuery(this.id!, relations);
-
-    const { rows } = await this.db.getConnection().query(query);
-
-    if (!rows.length) {
-      return undefined;
-    }
-
-    return this.buildDAO(AuthDAO, rows[0]);
+  public async getOne(): Promise<AuthDAO | undefined> {
+    return await super.getOne(this.id!, AuthDAO);
   }
 
   public async find(criteria: Criteria): Promise<AuthDAO[]> {

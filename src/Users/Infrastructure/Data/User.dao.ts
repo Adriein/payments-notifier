@@ -9,18 +9,18 @@ export class UserDAO extends AbstractDAO<UserDAO> {
   protected table: string = 'users';
   protected foreign: Map<string, string>;
 
+  @column() public id!: string;
+  @column() public username!: string;
+  @column() public email!: string;
+  @column() public password!: string;
+  @column() public owner_id!: string;
+  @column() public created_at!: string;
+  @column() public updated_at!: string;
+
   public subscriptions: SubscriptionDAO[] = [];
   public userConfig: Nullable<UserConfigDAO> = null;
 
-  constructor(
-    @column() public id: string,
-    @column() public username: string,
-    @column() public email: string,
-    @column() public password: string,
-    @column() public owner_id: string,
-    @column() public created_at: string,
-    @column() public updated_at: string
-  ) {
+  constructor() {
     super();
     this.foreign = new Map([ [ 'subscription', 'user_id' ] ]);
   }
@@ -41,9 +41,7 @@ export class UserDAO extends AbstractDAO<UserDAO> {
   }
 
   public async save(): Promise<void> {
-    const query = this.insertQuery(this);
-
-    await this.db.getConnection().query(query);
+    await super.save(this);
   }
 
   public update(): Promise<void> {

@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS pricing (
 CREATE TABLE IF NOT EXISTS subscriptions (
     su_id VARCHAR(50) PRIMARY KEY,
     su_pricing_id VARCHAR REFERENCES pricing(pr_id) ON DELETE CASCADE,
-    su_payment_date VARCHAR(100),
+    su_payment_date TIMESTAMP(0),
     su_warned BOOLEAN,
     su_notified BOOLEAN,
     su_user_id VARCHAR REFERENCES users(us_id) ON DELETE CASCADE,

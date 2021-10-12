@@ -85,7 +85,23 @@ export class User extends AggregateRoot {
     return this._subscription.name();
   }
 
+  public pricingId = (): string => {
+    return this._subscription.pricingId();
+  }
+
   public subscriptionDuration = (): number => {
     return this._subscription.duration();
+  }
+
+  public subscriptionId = (): string => {
+    return this._subscription.id();
+  }
+
+  public subscriptionCreatedAt = (): Date => {
+    return this._subscription.createdAt();
+  }
+
+  public subscriptionUpdatedAt = (): Date => {
+    return this._subscription.updatedAt();
   }
 }

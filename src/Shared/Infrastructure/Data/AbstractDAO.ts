@@ -12,7 +12,6 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
   protected abstract foreign: Map<string, string>;
 
   protected db: Database = Database.getInstance();
-  private qb = new QueryBuilder();
 
   protected insertQuery = (entity: T): string => {
     const fields = this.getEntityFields();
@@ -121,29 +120,46 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
   }
 
 
-  public async getOne(id: string, classDefinition: ConstructorFunc, lazy: boolean = false): Promise<T | undefined> {
-    const queryBuilder = this.qb.select().from(this.table);
+  protected async getOne(id: string, classDefinition: ConstructorFunc, lazy: boolean = false): Promise<T | undefined> {
+    const qb = new QueryBuilder(this.getPrefix());
+    const queryBuilder = qb.select().from(this.table);
 
     if (lazy) {
-      const query = queryBuilder.where('id', id);
+      const query = queryBuilder.where('id', id).toQuery();
 
+      const { rows } = await this.db.getConnection().query(query);
+
+      if (!rows.length) {
+        return undefined;
+      }
+
+      return this.buildDAO(classDefinition, rows[0])
 
     }
 
-    const query = queryBuilder.leftJoin();
+    const query = queryBuilder.leftJoin(this.foreign).where('id', id).toQuery();
 
     const { rows } = await this.db.getConnection().query(query);
 
     if (!rows.length) {
       return undefined;
     }
-
+    console.log(rows);
     return this.buildDAO(classDefinition, rows[0])
   }
 
   public abstract find(criteria: Criteria, relations?: string[]): Promise<T[] | undefined>;
 
-  public abstract save(): Promise<void>;
+  protected async save(entity: T): Promise<void> {
+    const qb = new QueryBuilder(this.getPrefix());
+
+    const values = this.getEntityFields().map(this.getEntityValues(entity));
+    console.log(entity);
+    throw new Error();
+    const query = qb.insert(this.table).values(values).toQuery();
+
+    await this.db.getConnection().query(query);
+  }
 
   public abstract update(): Promise<void>;
 

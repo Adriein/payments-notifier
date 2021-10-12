@@ -35,7 +35,7 @@ export class AuthRepository implements IAuthRepository {
     criteria.field('email').equals(email);
 
     const [ result ] = await dao.find(criteria);
-    console.log(result)
+
     if (!result) {
       return undefined;
     }
