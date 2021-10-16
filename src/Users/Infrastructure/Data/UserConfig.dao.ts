@@ -1,10 +1,10 @@
 import { AbstractDAO } from "../../../Shared/Infrastructure/Data/AbstractDAO";
-import { column } from "../../../Shared/Infrastructure/Decorators/column";
+import { Column } from "../../../Shared/Infrastructure/Decorators/Orm/Column";
 
 export class UserConfigDAO extends AbstractDAO<UserConfigDAO> {
   protected table: string = 'config';
 
-  @column() public id: string | undefined;
+  @Column() public id: string | undefined;
 
   delete(id: string): Promise<void> {
     return Promise.resolve(undefined);

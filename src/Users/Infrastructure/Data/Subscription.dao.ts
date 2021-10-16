@@ -1,19 +1,19 @@
 import { AbstractDAO } from "../../../Shared/Infrastructure/Data/AbstractDAO";
-import { column } from "../../../Shared/Infrastructure/Decorators/column";
+import { Column } from "../../../Shared/Infrastructure/Decorators/Orm/Column";
 
 export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
   protected table: string = 'subscriptions';
   protected foreign: Map<string, string> = new Map<string, string>();
 
-  @column() public id!: string;
-  @column() public pricing_id!: string;
-  @column() public payment_date!: string;
-  @column() public warned!: boolean;
-  @column() public notified!: boolean;
-  @column() public user_id!: string;
-  @column() public active!: boolean;
-  @column() public created_at!: string;
-  @column() public updated_at!: string;
+  @Column() public id!: string;
+  @Column() public pricing_id!: string;
+  @Column() public payment_date!: string;
+  @Column() public warned!: boolean;
+  @Column() public notified!: boolean;
+  @Column() public user_id!: string;
+  @Column() public active!: boolean;
+  @Column() public created_at!: string;
+  @Column() public updated_at!: string;
 
   constructor() {
     super();

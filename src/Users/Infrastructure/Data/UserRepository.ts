@@ -35,8 +35,8 @@ export class UserRepository implements IUserRepository {
 
   public async findByEmail(email: string): Promise<User | undefined> {
     const dao = new UserDAO();
-    // await dao.getOne();
-
+    await dao.getOne();
+    throw new Error();
     const criteria = new Criteria(new SqlTranslator());
 
     criteria.field('email').equals(email);

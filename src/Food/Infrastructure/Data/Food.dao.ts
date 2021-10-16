@@ -1,27 +1,27 @@
 import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
-import { column } from '../../../Shared/Infrastructure/Decorators/column';
+import { Column } from '../../../Shared/Infrastructure/Decorators/Orm/Column';
 
 export class FoodDAO extends AbstractDAO<FoodDAO> {
   protected table: string = 'food';
 
-  @column() public id: string;
-  @column() public food_name: string;
-  @column() public serving_unit: string;
-  @column() public qty: string;
-  @column() public photo: string;
-  @column() public kcal: string;
-  @column() public carbohydrates: string;
-  @column() public total_fat: string;
-  @column() public satured_fat: string;
-  @column() public cholesterol: string;
-  @column() public sodium: string;
-  @column() public protein: string;
-  @column() public sugars: string;
-  @column() public potasium: string;
-  @column() public fiber: string;
-  @column() public created_at: string | undefined;
-  @column() public updated_at: string | undefined;
+  @Column() public id: string;
+  @Column() public food_name: string;
+  @Column() public serving_unit: string;
+  @Column() public qty: string;
+  @Column() public photo: string;
+  @Column() public kcal: string;
+  @Column() public carbohydrates: string;
+  @Column() public total_fat: string;
+  @Column() public satured_fat: string;
+  @Column() public cholesterol: string;
+  @Column() public sodium: string;
+  @Column() public protein: string;
+  @Column() public sugars: string;
+  @Column() public potasium: string;
+  @Column() public fiber: string;
+  @Column() public created_at: string | undefined;
+  @Column() public updated_at: string | undefined;
 
   constructor(
     public _id: string,
@@ -65,6 +65,7 @@ export class FoodDAO extends AbstractDAO<FoodDAO> {
   public async getOne(relations?: string[]): Promise<FoodDAO | undefined> {
     throw new Error('Method not implemented.');
   }
+
   public async find(criteria: Criteria): Promise<FoodDAO[] | undefined> {
     const query = `SELECT * FROM ${this.table} ${criteria.toQuery()}`;
     const { rows } = await this.db.getConnection().query(query);
@@ -95,12 +96,15 @@ export class FoodDAO extends AbstractDAO<FoodDAO> {
       );
     });
   }
+
   public async save(): Promise<void> {
     throw new Error('Method not implemented.');
   }
+
   public async update(): Promise<void> {
     throw new Error('Method not implemented.');
   }
+
   public async delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }

@@ -1,14 +1,14 @@
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
-import { column } from '../../../Shared/Infrastructure/Decorators/column';
+import { Column } from '../../../Shared/Infrastructure/Decorators/Orm/Column';
 
 export class MealDAO extends AbstractDAO<MealDAO> {
   protected table: string = 'meal';
 
-  @column() public id: string | undefined;
-  @column() public meal_name: string | undefined;
-  @column() public diet_id: string | undefined;
-  @column() public created_at: string | undefined;
-  @column() public updated_at: string | undefined;
+  @Column() public id: string | undefined;
+  @Column() public meal_name: string | undefined;
+  @Column() public diet_id: string | undefined;
+  @Column() public created_at: string | undefined;
+  @Column() public updated_at: string | undefined;
 
   constructor(
     id?: string,
@@ -28,20 +28,24 @@ export class MealDAO extends AbstractDAO<MealDAO> {
   public async getOne(relations?: string[]): Promise<MealDAO | undefined> {
     throw new Error('Method not implemented.');
   }
+
   public async find(criteria?: any): Promise<MealDAO[] | undefined> {
     throw new Error('Method not implemented.');
   }
+
   public async save(): Promise<void> {
     const query = this.insertQuery(this);
     console.log(query);
-    
+
     await this.db.getConnection().query(query);
   }
+
   public async update(): Promise<void> {
     const query = this.updateQuery(this);
 
     await this.db.getConnection().query(query);
   }
+
   public async delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }

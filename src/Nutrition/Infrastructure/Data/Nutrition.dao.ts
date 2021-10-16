@@ -1,18 +1,18 @@
 import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
-import { column } from '../../../Shared/Infrastructure/Decorators/column';
+import { Column } from '../../../Shared/Infrastructure/Decorators/Orm/Column';
 
 export class NutritionDAO extends AbstractDAO<NutritionDAO> {
   protected table: string = 'nutrition';
 
-  @column() public id: string | undefined;
-  @column() public weight: number | undefined;
-  @column() public height: number | undefined;
-  @column() public age: number | undefined;
-  @column() public gender: string | undefined;
-  @column() public user_id: string | undefined;
-  @column() public created_at: string | undefined;
-  @column() public updated_at: string | undefined;
+  @Column() public id: string | undefined;
+  @Column() public weight: number | undefined;
+  @Column() public height: number | undefined;
+  @Column() public age: number | undefined;
+  @Column() public gender: string | undefined;
+  @Column() public user_id: string | undefined;
+  @Column() public created_at: string | undefined;
+  @Column() public updated_at: string | undefined;
 
   constructor(
     id?: string,
@@ -55,6 +55,7 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
       rows[0].updated_at
     );
   }
+
   public async find(criteria: Criteria): Promise<NutritionDAO[] | undefined> {
     const query = `SELECT * FROM ${this.table} ${criteria.toQuery()}`;
     const { rows } = await this.db.getConnection().query(query);
@@ -76,14 +77,17 @@ export class NutritionDAO extends AbstractDAO<NutritionDAO> {
       );
     });
   }
+
   public async save(): Promise<void> {
     const query = this.insertQuery(this);
 
     await this.db.getConnection().query(query);
   }
+
   public update(): Promise<void> {
     throw new Error('Method not implemented.');
   }
+
   public delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }

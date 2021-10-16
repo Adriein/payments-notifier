@@ -1,21 +1,23 @@
 import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
-import { column } from '../../../Shared/Infrastructure/Decorators/column';
+import { Column } from '../../../Shared/Infrastructure/Decorators/Orm/Column';
 import { SubscriptionDAO } from "./Subscription.dao";
 import { UserConfigDAO } from "./UserConfig.dao";
 import { Nullable } from "../../../Shared/Domain/types";
+import { Model } from "../../../Shared/Infrastructure/Decorators/Orm/Model";
+import { TABLE_NAME_METADATA } from "../../../Shared/Domain/constants";
 
+@Model('users')
 export class UserDAO extends AbstractDAO<UserDAO> {
-  protected table: string = 'users';
   protected foreign: Map<string, string>;
 
-  @column() public id!: string;
-  @column() public username!: string;
-  @column() public email!: string;
-  @column() public password!: string;
-  @column() public owner_id!: string;
-  @column() public created_at!: string;
-  @column() public updated_at!: string;
+  @Column() public id!: string;
+  @Column() public username!: string;
+  @Column() public email!: string;
+  @Column() public password!: string;
+  @Column() public owner_id!: string;
+  @Column() public created_at!: string;
+  @Column() public updated_at!: string;
 
   public subscriptions: SubscriptionDAO[] = [];
   public userConfig: Nullable<UserConfigDAO> = null;

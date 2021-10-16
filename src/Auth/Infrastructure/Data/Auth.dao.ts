@@ -1,18 +1,18 @@
 import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
-import { column } from '../../../Shared/Infrastructure/Decorators/column';
+import { Column } from '../../../Shared/Infrastructure/Decorators/Orm/Column';
 
 export class AuthDAO extends AbstractDAO<AuthDAO> {
   protected table: string = 'users';
   protected foreign: Map<string, string> = new Map();
 
-  @column() public id: string | undefined;
-  @column() public username: string | undefined;
-  @column() public email: string | undefined;
-  @column() public password: string | undefined;
-  @column() public owner_id: string | undefined;
-  @column() public created_at: string | undefined;
-  @column() public updated_at: string | undefined;
+  @Column() public id: string | undefined;
+  @Column() public username: string | undefined;
+  @Column() public email: string | undefined;
+  @Column() public password: string | undefined;
+  @Column() public owner_id: string | undefined;
+  @Column() public created_at: string | undefined;
+  @Column() public updated_at: string | undefined;
 
   constructor(
     id?: string,
