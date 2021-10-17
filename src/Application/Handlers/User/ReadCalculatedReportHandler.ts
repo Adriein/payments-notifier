@@ -2,7 +2,7 @@ import { User } from '../../../Domain/Entities/User.entity';
 import { IHandler } from '../../../Domain/Interfaces';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { OPERATORS } from '../../../Domain/constants';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { ReadCalculatedReportCommand } from '../../../Domain/Commands/User/ReadCalculatedReportCommand';
 import { Criteria } from '../../../Domain/Entities/Criteria.entity';
 import { Filter } from '../../../Domain/Entities/Filter.entity';
@@ -10,7 +10,8 @@ import { CriteriaObject } from '../../../Shared/Domain/types';
 import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class ReadCalculatedReportHandler implements IHandler<User[]> {
-  constructor(private finder: UserFinder) {}
+  constructor(private finder: UserFinder) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(comm: ICommand): Promise<User[]> {
@@ -18,7 +19,7 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
 
     if (command.criteria) {
       let filteredUsers: User[] = [];
-      const [filters, postprocessFilters] = this.buildFilters(command);
+      const [ filters, postprocessFilters ] = this.buildFilters(command);
 
       if (filters.length) {
         const criteria = new Criteria(filters);
@@ -39,7 +40,7 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
           filteredUsers
         );
 
-        filteredUsers = [...postFilteredUsers];
+        filteredUsers = [ ...postFilteredUsers ];
       }
 
       return filteredUsers;
@@ -79,7 +80,7 @@ export class ReadCalculatedReportHandler implements IHandler<User[]> {
         new Filter(key, criteriaObj[key].value, criteriaObj[key].operation)
       );
     }
-    return [filters, postprocessFilters];
+    return [ filters, postprocessFilters ];
   }
 
   private postFiltering(postprocessFilters: Filter[], users: User[]) {

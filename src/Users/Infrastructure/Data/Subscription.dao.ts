@@ -1,9 +1,9 @@
 import { AbstractDAO } from "../../../Shared/Infrastructure/Data/AbstractDAO";
 import { Column } from "../../../Shared/Infrastructure/Decorators/Orm/Column";
+import { Model } from "../../../Shared/Infrastructure/Decorators/Orm/Model";
 
+@Model('subscriptions')
 export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
-  protected table: string = 'subscriptions';
-  protected foreign: Map<string, string> = new Map<string, string>();
 
   @Column() public id!: string;
   @Column() public pricing_id!: string;
@@ -20,10 +20,6 @@ export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
   }
 
   delete(id: string): Promise<void> {
-    return Promise.resolve(undefined);
-  }
-
-  find(): Promise<SubscriptionDAO[] | undefined> {
     return Promise.resolve(undefined);
   }
 

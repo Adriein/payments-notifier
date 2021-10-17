@@ -1,4 +1,4 @@
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { GenericRepository } from './GenericRepository';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { AppConfigMapper } from '../Mappers/AppConfigMapper';
@@ -39,7 +39,7 @@ export class AppConfigRepository
   @Log(process.env.LOG_LEVEL)
   public async update(config: AppConfig): Promise<void> {
     const datamodel = this.mapper.datamodel(config);
-    const query = this.buildUpdateQuery(datamodel); 
+    const query = this.buildUpdateQuery(datamodel);
     await this.db.query(
       `${query} WHERE user_id='${datamodel.user_id}'`
     );

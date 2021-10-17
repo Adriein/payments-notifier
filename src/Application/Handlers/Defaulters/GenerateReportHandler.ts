@@ -3,7 +3,7 @@ import {
   NOTIFICATIONS_EMAIL,
   REPORT_DYNAMIC_TEMPLATE,
 } from '../../../Domain/constants';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { AppConfig } from '../../../Domain/Entities/AppConfig.entity';
 import { EmailStats } from '../../../Domain/Entities/Mail/EmailStats.entity';
 import { TemplateEmailConfig } from '../../../Domain/Entities/Mail/TemplateEmailConfig';
@@ -21,7 +21,8 @@ export class GenerateReportHandler implements IHandler<void> {
     private finder: UserFinder,
     private configRepository: IConfigRepository,
     private api: IEmailApi
-  ) {}
+  ) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(): Promise<void> {

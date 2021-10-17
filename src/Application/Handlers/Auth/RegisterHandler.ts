@@ -9,7 +9,7 @@ import {
   DEFAULT_WARNING_DAYS,
   LANG_ES,
 } from '../../../Domain/constants';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { UserAlreadyExistsError } from '../../../Domain/Errors';

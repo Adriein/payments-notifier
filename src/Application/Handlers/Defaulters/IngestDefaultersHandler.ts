@@ -1,6 +1,6 @@
 import { IngestDefaultersCommand } from '../../../Domain/Commands/Defaulters/IngestDefaultersCommand';
 import { LANG_ES, USER_ROLE } from '../../../Domain/constants';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { IHandler } from '../../../Domain/Interfaces';

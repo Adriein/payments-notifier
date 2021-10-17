@@ -6,10 +6,10 @@ import { UserConfigDAO } from "./UserConfig.dao";
 import { Nullable } from "../../../Shared/Domain/types";
 import { Model } from "../../../Shared/Infrastructure/Decorators/Orm/Model";
 import { TABLE_NAME_METADATA } from "../../../Shared/Domain/constants";
+import { OneToMany } from "../../../Shared/Infrastructure/Decorators/Orm/OneToMany";
 
 @Model('users')
 export class UserDAO extends AbstractDAO<UserDAO> {
-  protected foreign: Map<string, string>;
 
   @Column() public id!: string;
   @Column() public username!: string;
@@ -19,27 +19,17 @@ export class UserDAO extends AbstractDAO<UserDAO> {
   @Column() public created_at!: string;
   @Column() public updated_at!: string;
 
+  @OneToMany('subscriptions', 'user_id')
   public subscriptions: SubscriptionDAO[] = [];
+  @OneToMany('config', 'user_id')
   public userConfig: Nullable<UserConfigDAO> = null;
 
-  constructor() {
-    super();
-    this.foreign = new Map([ [ 'subscription', 'user_id' ] ]);
-  }
-
   public async getOne(): Promise<UserDAO | undefined> {
-    return await super.getOne(this.id, UserDAO);
+    return await super.getOne(this.id);
   }
 
-  public async find(criteria: Criteria): Promise<UserDAO[]> {
-    const query = this.findQuery(criteria)
-    const { rows } = await this.db.getConnection().query(query);
-
-    if (!rows) {
-      return [];
-    }
-
-    return rows.map((row: any) => this.buildDAO(UserDAO, row));
+  public async find(criteria: Criteria[]): Promise<UserDAO[]> {
+    return await super.find(criteria);
   }
 
   public async save(): Promise<void> {

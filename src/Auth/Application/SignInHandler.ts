@@ -2,7 +2,7 @@ import { IHandler } from "../../Shared/Domain/Interfaces/IHandler";
 import { Auth } from "../Domain/Auth.entity";
 import { SigninQuery } from "../Domain/Query/SigninQuery";
 import { QueryHandler } from "../../Shared/Domain/Decorators/QueryHandler.decorator";
-import { Log } from "../../Domain/Decorators/Log";
+import { Log } from "../../Shared/Domain/Decorators/Log";
 import { IAuthRepository } from "../Domain/IAuthRepository";
 import { CryptoService } from "../../Shared/Domain/Services/CryptoService";
 import { NotAuthorizedError } from "../Domain/NotAuthorizedError";

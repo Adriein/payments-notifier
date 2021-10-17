@@ -1,5 +1,5 @@
 import { DeleteUserCommand } from '../../../Domain/Commands/User/DeleteUserCommand';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { Email } from '../../../Shared/Domain/VO/Email.vo';

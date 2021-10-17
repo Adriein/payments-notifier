@@ -1,8 +1,10 @@
+import { MetadataRelation } from "../../Domain/types";
+
 export class QueryBuilder {
-  private _select: string[] = [ '*' ];
+  private _select: string[] = [];
   private _from: string = '';
   private _where: string[][] = [];
-  private _leftJoin: Map<string, string> = new Map();
+  private _leftJoin: MetadataRelation[] = [];
 
   private _insert: string = '';
   private _values: string[] = [];
@@ -13,8 +15,9 @@ export class QueryBuilder {
   public select(fields?: string[]): this {
     if (fields) {
       this._select = fields.map((field: string) => `${this.prefix}_${field}`);
+      return this;
     }
-
+    this._select = [ '*' ];
     return this;
   }
 
@@ -23,12 +26,17 @@ export class QueryBuilder {
     return this;
   }
 
-  public leftJoin(relations: Map<string, string>): this {
+  public leftJoin(relations: MetadataRelation[]): this {
     this._leftJoin = relations;
     return this;
   }
 
   public where(field: string, value: string): this {
+    this._where.push([ field, value ]);
+    return this;
+  }
+
+  public andWhere(field: string, value: string): this {
     this._where.push([ field, value ]);
     return this;
   }
@@ -46,7 +54,7 @@ export class QueryBuilder {
   public toQuery(): string {
     const query = [];
 
-    if (this._select.length > 1) {
+    if (this._select.length > 0) {
       query.push(`SELECT ${this._select.join(',')}`);
     }
 
@@ -54,8 +62,8 @@ export class QueryBuilder {
       query.push(`FROM ${this._from}`);
     }
 
-    if (this._leftJoin.size > 0) {
-      query.push(`LEFT JOIN ${query}`);
+    if (this._leftJoin.length > 0) {
+      query.push(this.leftJoinBuilder());
     }
 
     if (this._where.length > 0) {
@@ -71,6 +79,12 @@ export class QueryBuilder {
     }
 
     return query.join(' ');
+  }
+
+  private leftJoinBuilder(): string {
+    return this._leftJoin.map((join: MetadataRelation) => {
+      return `LEFT JOIN ${join.refTable} ON ${this._from}.${this.prefix}_id = ${join.refTable}.${join.refPropName}`;
+    }).join(' ');
   }
 
   private whereBuilder(): string {

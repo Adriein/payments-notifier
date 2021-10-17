@@ -1,4 +1,4 @@
-import { Log } from '../../Domain/Decorators/Log';
+import { Log } from '../../Shared/Domain/Decorators/Log';
 import { IHandler } from '../../Domain/Interfaces';
 import { ID } from '../../Shared/Domain/VO/Id.vo';
 import { ModifyDietCommand } from '../Domain/Command/ModifyDietCommand';

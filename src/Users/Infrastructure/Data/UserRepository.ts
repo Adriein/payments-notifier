@@ -25,8 +25,11 @@ export class UserRepository implements IUserRepository {
     const userDAO = this.mapper.toDataModel(entity);
 
     const [ subscriptionDAO ] = userDAO.subscriptions;
+    const userConfigDAO = userDAO.userConfig;
+
     await userDAO.save();
     await subscriptionDAO.save();
+    await userConfigDAO!.save();
   }
 
   public async update(entity: User): Promise<void> {
@@ -35,14 +38,12 @@ export class UserRepository implements IUserRepository {
 
   public async findByEmail(email: string): Promise<User | undefined> {
     const dao = new UserDAO();
-    await dao.getOne();
-    throw new Error();
-    const criteria = new Criteria(new SqlTranslator());
+    const criteria = new Criteria();
 
     criteria.field('email').equals(email);
 
-    const [ result ] = await dao.find(criteria);
-
+    const [ result ] = await dao.find([ criteria ]);
+    debug(result)
     if (!result) {
       return undefined;
     }

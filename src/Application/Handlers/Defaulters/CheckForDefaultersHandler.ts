@@ -3,7 +3,7 @@ import {
   NOTIFICATIONS_EMAIL,
   OPERATORS,
 } from '../../../Domain/constants';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { Criteria } from '../../../Domain/Entities/Criteria.entity';
 import { Filter } from '../../../Domain/Entities/Filter.entity';
 import { EmailConfig } from '../../../Domain/Entities/Mail/EmailConfig.entity';
@@ -20,15 +20,16 @@ export class CheckForDefaultersHandler implements IHandler<void> {
     private repository: IUserRepository,
     private configRepository: IConfigRepository,
     private finder: UserFinder
-  ) {}
+  ) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: ICommand): Promise<void> {
     const admins = await this.finder.onlyAdmins().find();
-    
+
     const withWarnings = new Filter('send_warnings', 'true', OPERATORS.equal);
     const notNotified = new Filter('warned', 'false', OPERATORS.equal);
-    const criteria = new Criteria([withWarnings, notNotified]);
+    const criteria = new Criteria([ withWarnings, notNotified ]);
 
     for (const admin of admins) {
       const users = await this.finder.adminId(admin.id()).find(criteria);

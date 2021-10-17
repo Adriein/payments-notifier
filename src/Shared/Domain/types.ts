@@ -41,3 +41,5 @@ export type DomainEventClass = new (...args: never[]) => DomainEvent;
 
 export type CommandClass = new (...args: never[]) => ICommand;
 export type QueryClass = new (...args: never[]) => IQuery;
+
+export type MetadataRelation = { prop: string, refTable: string, refPropName: string }

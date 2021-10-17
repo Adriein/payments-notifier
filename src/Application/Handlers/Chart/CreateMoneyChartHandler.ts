@@ -1,5 +1,5 @@
 import { EarningsChartCommand } from '../../../Domain/Commands/Chart/EarningsChartCommand';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { Chart } from '../../../Domain/Entities/Chart.entity';
 import { Subscription } from '../../../Domain/Entities/Subscription.entity';
 import { User } from '../../../Domain/Entities/User.entity';
@@ -37,7 +37,7 @@ export class CreateMoneyChartHandler implements IHandler<Chart> {
 
     const counter = subscriptions.reduce(
       (counter: Counter, subscription: Subscription) => {
-        const [pricingName] = Object.keys(subscription.pricing().value);
+        const [ pricingName ] = Object.keys(subscription.pricing().value);
 
         if (Time.between(subscription.paymentDate(), from, to)) {
           const month = Time.month(subscription.paymentDate());

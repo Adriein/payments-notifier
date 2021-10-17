@@ -1,4 +1,4 @@
-import { Log } from "../../Domain/Decorators/Log";
+import { Log } from "../../Shared/Domain/Decorators/Log";
 import { CommandHandler } from "../../Shared/Domain/Decorators/CommandHandler.decorator";
 import { CreateUserCommand } from "../Domain/Command/CreateUserCommand";
 import { IUserRepository } from "../Domain/IUserRepository";
@@ -20,7 +20,7 @@ export class CreateUserHandler implements IHandler<void> {
   @Log(process.env.LOG_LEVEL)
   public async handle(command: CreateUserCommand): Promise<void> {
     const email = new Email(command.email);
-    
+
     const userExists = await this.repository.findByEmail(email.value);
 
     const user = User.build(

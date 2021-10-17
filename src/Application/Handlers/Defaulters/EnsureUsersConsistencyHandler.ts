@@ -1,12 +1,13 @@
 import { EnsureUsersConsistencyCommand } from '../../../Domain/Commands/Defaulters/EnsureUsersConsistencyCommand';
 import { USER_ROLE } from '../../../Domain/constants';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
 import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class EnsureUsersConsistencyHandler {
-  constructor(private repository: IUserRepository, private finder: UserFinder) {}
+  constructor(private repository: IUserRepository, private finder: UserFinder) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(comm: ICommand): Promise<void> {

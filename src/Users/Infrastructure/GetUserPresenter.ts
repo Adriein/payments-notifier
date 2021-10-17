@@ -14,8 +14,8 @@ export class GetUserPresenter {
       config: {
         sendNotifications: this.sendNotifications(user),
         sendWarnings: this.sendWarnings(user),
-        role: this.translator(user.lang(), user.role()),
-        language: user.lang()
+        role: this.translator(user.language(), user.role()),
+        language: user.language()
       },
       subscription: {
         pricing: {
@@ -45,17 +45,17 @@ export class GetUserPresenter {
 
   private sendNotifications(user: User): string {
     if (user.sendNotifications()) {
-      return this.translator(user.lang(), 'Si');
+      return this.translator(user.language(), 'Si');
     }
 
-    return this.translator(user.lang(), 'No')
+    return this.translator(user.language(), 'No')
   }
 
   private sendWarnings(user: User): string {
     if (user.sendWarnings()) {
-      return this.translator(user.lang(), 'Si');
+      return this.translator(user.language(), 'Si');
     }
 
-    return this.translator(user.lang(), 'No')
+    return this.translator(user.language(), 'No')
   }
 }

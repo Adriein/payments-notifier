@@ -1,5 +1,5 @@
 import { UpdateUserCommand } from '../../../Domain/Commands/User/UpdateUserCommand';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { UserConfig } from '../../../Domain/Entities/UserConfig.entity';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';

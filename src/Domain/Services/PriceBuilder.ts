@@ -1,10 +1,11 @@
-import { Log } from '../Decorators/Log';
+import { Log } from '../../Shared/Domain/Decorators/Log';
 import { AppConfig } from '../Entities/AppConfig.entity';
 import { IConfigRepository } from '../Interfaces/IConfigRepository';
 import { Pricing } from '../VO/Pricing.vo';
 
 export class PriceBuilder {
-  constructor(private appConfigRepository: IConfigRepository) {}
+  constructor(private appConfigRepository: IConfigRepository) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async build(adminId: string, pricing: string): Promise<Pricing> {
@@ -15,7 +16,7 @@ export class PriceBuilder {
     return new Pricing({
       [pricing]: config.pricing!.value[
         pricing ? pricing : Object.keys(config.pricing!.value)[0]
-      ],
+        ],
     });
   }
 }

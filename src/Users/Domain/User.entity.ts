@@ -45,7 +45,11 @@ export class User extends AggregateRoot {
     return this._ownerId.value;
   }
 
-  public lang = (): string => {
+  public configId = (): string => {
+    return this._config.id();
+  }
+
+  public language = (): string => {
     return this._config.lang();
   }
 
@@ -59,6 +63,14 @@ export class User extends AggregateRoot {
 
   public sendWarnings = (): boolean => {
     return this._config.sendWarnings();
+  }
+
+  public configCreatedAt = (): Date => {
+    return this._config.createdAt();
+  }
+  
+  public configUpdatedAt = (): Date => {
+    return this._config.updatedAt();
   }
 
   public paymentDate = (): Date => {

@@ -1,5 +1,5 @@
 import { UpdateUserNotificationsCommand } from '../../../Domain/Commands/User/UpdateUserNotificationsCommand';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { IHandler } from '../../../Domain/Interfaces';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
@@ -9,7 +9,8 @@ export class UpdateUserNotificationsHandler implements IHandler<void> {
   constructor(
     private finder: UserFinder,
     private userRepository: IUserRepository
-  ) {}
+  ) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async handle(comm: ICommand): Promise<void> {

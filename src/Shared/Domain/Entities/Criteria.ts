@@ -1,13 +1,9 @@
 import { OPERATORS } from '../../../Domain/constants';
-import { ITranslator } from '../Interfaces/ITranslator';
 
 export class Criteria {
   private _field!: string;
   private _equality!: string;
   private _operation!: OPERATORS;
-
-  constructor(private translator: ITranslator) {
-  }
 
   public field(field: string): this {
     this._field = field;
@@ -20,11 +16,19 @@ export class Criteria {
     return this;
   }
 
-  public toQuery(prefix?: string): string {
-    return this.translator.translate(
-      `${prefix}_${this._field}`,
-      this._equality,
-      this._operation
-    );
+  public getField(): string {
+    return this._field;
+  }
+
+  public getOperation(): string {
+    return this._operation;
+  }
+
+  public getEquality(): string {
+    return this._equality;
+  }
+
+  public toString(): string {
+    return `${this._field} ${this._operation} ${this._equality}`;
   }
 }

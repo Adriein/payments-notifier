@@ -7,7 +7,7 @@ import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { Email } from '../../../Shared/Domain/VO/Email.vo';
 import { LastPaymentDate } from '../../../Shared/Domain/VO/LastPaymentDate.vo';
 import { LANG_ES, USER_ROLE } from '../../../Domain/constants';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { PriceBuilder } from '../../../Domain/Services/PriceBuilder';
 import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 

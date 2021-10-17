@@ -1,4 +1,4 @@
-import { Log } from '../../Domain/Decorators/Log';
+import { Log } from '../../Shared/Domain/Decorators/Log';
 import { IHandler } from '../../Domain/Interfaces';
 import { DomainEventsManager } from '../../Shared/Domain/Entities/DomainEventsManager';
 import { ApiQueryDomainEvent } from '../Domain/ApiQueryDomainEvent';
@@ -29,7 +29,7 @@ export class SearchFoodHandler implements IHandler<Food[]> {
     return foods;
   }
 
-  private manageEvents([food]: Food[], userId: string): void {
+  private manageEvents([ food ]: Food[], userId: string): void {
     food.addEvent(new ApiQueryDomainEvent(food.id(), userId, this.MAX_FOOD_SEARCH + 1));
 
     DomainEventsManager.publishEvents(food.id());

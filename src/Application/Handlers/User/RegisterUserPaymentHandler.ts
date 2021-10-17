@@ -1,5 +1,5 @@
 import { RegisterUserPaymentCommand } from '../../../Domain/Commands/User/RegisterUserPaymentCommand';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';

@@ -1,4 +1,4 @@
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { IMapper } from '../../../Domain/Interfaces';
 import { IRepository } from '../../../Shared/Domain/Interfaces/IRepository';
 import Database from '../Database';
@@ -11,7 +11,8 @@ export abstract class GenericRepository<T> implements IRepository<T> {
     protected entity: string,
     protected mapper: IMapper<T>,
     protected criteriaMapper: CriteriaMapper
-  ) {}
+  ) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   async findOne(id: string): Promise<T | undefined> {

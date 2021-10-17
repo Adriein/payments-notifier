@@ -1,7 +1,7 @@
 import { IDomainEventHandler } from "../../Shared/Domain/Interfaces/IDomainEventHandler";
 import { DomainEventsHandler } from "../../Shared/Domain/Decorators/DomainEventsHandler.decorator";
 import { AdminCreatedDomainEvent } from "../../Auth/Domain/AdminCreatedDomainEvent";
-import { Log } from "../../Domain/Decorators/Log";
+import { Log } from "../../Shared/Domain/Decorators/Log";
 import { IUserRepository } from "../Domain/IUserRepository";
 import { User } from "../Domain/User.entity";
 import { UserConfig } from "../Domain/UserConfig.entity";

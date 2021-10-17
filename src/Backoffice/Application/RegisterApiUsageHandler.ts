@@ -1,4 +1,4 @@
-import { Log } from '../../Domain/Decorators/Log';
+import { Log } from '../../Shared/Domain/Decorators/Log';
 import { ID } from '../../Shared/Domain/VO/Id.vo';
 import { ApiQueryDomainEvent } from '../../Food/Domain/ApiQueryDomainEvent';
 import { DomainEventsHandler } from '../../Shared/Domain/Decorators/DomainEventsHandler.decorator';

@@ -1,4 +1,4 @@
-import { Log } from '../../Domain/Decorators/Log';
+import { Log } from '../../Shared/Domain/Decorators/Log';
 import { IHandler } from '../../Domain/Interfaces';
 import { INutritionRepository } from '../Domain/INutritionRepository';
 import { Nutrition } from '../Domain/Nutrition.entity';

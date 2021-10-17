@@ -1,4 +1,4 @@
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { EmailStats } from '../../../Domain/Entities/Mail/EmailStats.entity';
 import { IApi } from '../../../Domain/Interfaces/IApi';
 import { IEmailApi } from '../../../Domain/Interfaces/IEmailApi';
@@ -21,7 +21,8 @@ export class SendGridApi implements IEmailApi {
   private apiKey!: string;
   private STATS_ENDPOINT: string = 'https://api.sendgrid.com/v3/stats';
 
-  constructor(private api: IApi) {}
+  constructor(private api: IApi) {
+  }
 
   @Log(process.env.LOG_LEVEL)
   public async getEmailStats(from: string, to: string): Promise<EmailStats[]> {

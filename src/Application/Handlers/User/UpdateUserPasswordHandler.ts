@@ -1,5 +1,5 @@
 import { UpdateUserPasswordCommand } from '../../../Domain/Commands/User/UpdateUserPasswordCommand';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { CryptoService } from '../../../Shared/Domain/Services/CryptoService';
 import { UserFinder } from '../../../Domain/Services/UserFinder';

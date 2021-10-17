@@ -1,5 +1,5 @@
 import { UserChartCommand } from '../../../Domain/Commands/Chart/UserChartCommand';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { Chart } from '../../../Domain/Entities/Chart.entity';
 import { User } from '../../../Domain/Entities/User.entity';
 import { IHandler } from '../../../Domain/Interfaces';

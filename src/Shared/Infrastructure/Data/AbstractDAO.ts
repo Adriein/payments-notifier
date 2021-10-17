@@ -1,9 +1,10 @@
 import Database from '../../../Infraestructure/Data/Database';
 import { Criteria } from "../../Domain/Entities/Criteria";
-import { ConstructorFunc, JSObject } from "../../Domain/types";
+import { ConstructorFunc, JSObject, MetadataRelation } from "../../Domain/types";
 import { QueryBuilder } from "./QueryBuilder";
-import { TABLE_NAME_METADATA } from "../../Domain/constants";
+import { TABLE_FIELD_METADATA, TABLE_NAME_METADATA, TABLE_RELATION_METADATA } from "../../Domain/constants";
 import { UserDAO } from "../../../Users/Infrastructure/Data/User.dao";
+import { OPERATORS } from "../../../Domain/constants";
 
 interface HasID {
   id?: string;
@@ -11,16 +12,12 @@ interface HasID {
 
 export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
   private table: string = Reflect.getMetadata(TABLE_NAME_METADATA, this.constructor);
+  private prefix: string = this.getPrefix(this.table);
+  private relations: MetadataRelation[] = this.getEntityRelations();
+
   protected db: Database = Database.getInstance();
 
-  /*protected insertQuery = (entity: T): string => {
-   const fields = this.getEntityFields();
-   return `
-   INSERT INTO ${this.table}
-   VALUES (${this.valuesToInsert(entity, fields)});
-   `;
-   };
-
+  /*
    protected updateQuery = (entity: T) => {
    const fields = this.getEntityFields();
 
@@ -35,48 +32,6 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
    `;
    }
 
-   protected selectQuery = (id: string, relations?: string[]): string => {
-   if (relations) {
-   const [ tableAlias ] = this.table.split('');
-
-   return `
-   SELECT ${this.avoidNamingConflicts(relations)}, ${tableAlias}.*
-   FROM ${this.table} ${tableAlias} ${this.joins(this.table, relations)}
-   WHERE ${tableAlias}.id = '${id}';
-   `;
-   }
-
-   return `
-   SELECT *
-   FROM ${this.table}
-   WHERE id = '${id}';
-   `;
-   };
-
-   protected findQuery(criteria: Criteria): string {
-   return `SELECT *
-   FROM ${this.table} ${criteria.toQuery(this.getPrefix())}`;
-   }
-
-   private joins = (table: string, relations: string[]): string => {
-   return relations
-   .map((relation: string) => {
-   const [ tableAlias ] = table.split('');
-
-   return `LEFT JOIN ${relation} ${relation} ON ${tableAlias}.id = ${relation}.${table}_id`;
-   })
-   .join('');
-   };
-
-   private avoidNamingConflicts = (relations: string[]): string => {
-   return relations.map((relation: string) => {
-   return `${relation}.id as ${relation}_id, ${relation}.created_at as ${relation}_created_at, ${relation}.updated_at as ${relation}_updated_at, ${relation}.*`;
-   }).join('');
-   }
-
-   private valuesToInsert = (entity: T, fields: string[]): string => {
-   return fields.map(this.getEntityValues(entity)).join(',');
-   };
 
    private valuesToUpdate = (entity: T, fields: string[]): string => {
    return fields.map(this.updateStatement(entity)).join(',');
@@ -100,32 +55,22 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
    }
    }*/
 
-  protected getEntityFields(): string[] {
-    return Reflect.getMetadataKeys(this);
-  }
-
-  private getPrefix(): string {
-    const tablename = this.table.split('_');
-    return tablename.reduce((prefix: string, word: string) => `${prefix}${word.split('').slice(0, 2).join('')}`, '');
-  }
 
   protected buildDAO(Dao: ConstructorFunc, result: JSObject): T {
     const dao = new Dao();
     const fields = this.getEntityFields();
-    const prefix = this.getPrefix();
 
-    fields.forEach((field: string) => dao[field] = result[`${prefix}_${field}`]);
+    fields.forEach((field: string) => dao[field] = result[`${this.prefix}_${field}`]);
 
     return dao;
   }
 
 
-  protected async getOne(id: string, classDefinition: ConstructorFunc, lazy: boolean = false): Promise<T | undefined> {
-    const qb = new QueryBuilder(this.getPrefix());
-    const queryBuilder = qb.select().from(this.table);
+  protected async getOne(id: string, lazy: boolean = false): Promise<T | undefined> {
+    const qb = new QueryBuilder(this.prefix);
 
     if (lazy) {
-      const query = queryBuilder.where('id', id).toQuery();
+      const query = qb.select().from(this.table).where('id', id).toQuery();
 
       const { rows } = await this.db.getConnection().query(query);
 
@@ -133,25 +78,46 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
         return undefined;
       }
 
-      return this.buildDAO(classDefinition, rows[0])
+      return this.buildDAO(this.constructor as ConstructorFunc, rows[0])
 
     }
 
-    const query = queryBuilder.leftJoin(this.foreign).where('id', id).toQuery();
+    const query = qb.select().from(this.table).leftJoin(this.relations).where('id', id).toQuery();
 
     const { rows } = await this.db.getConnection().query(query);
 
     if (!rows.length) {
       return undefined;
     }
-    console.log(rows);
-    return this.buildDAO(classDefinition, rows[0])
+
+    return this.buildDAO(this.constructor as ConstructorFunc, rows[0])
   }
 
-  public abstract find(criteria: Criteria, relations?: string[]): Promise<T[] | undefined>;
+  public async find(criteria: Criteria[]): Promise<T[]> {
+    const qb = new QueryBuilder(this.prefix);
+    qb.select().from(this.table);
+
+    if (this.relations.length) {
+      qb.leftJoin(this.relations);
+
+      criteria.forEach((criteria: Criteria) => {
+        if (criteria.getOperation() === OPERATORS.equal) {
+          qb.where(criteria.getField(), criteria.getEquality());
+        }
+      });
+    }
+
+    const { rows } = await this.db.getConnection().query(qb.toQuery());
+
+    if (!rows) {
+      return [];
+    }
+
+    return rows.map((row: any) => this.buildDAO(this.constructor as ConstructorFunc, row));
+  }
 
   protected async save(entity: T): Promise<void> {
-    const qb = new QueryBuilder(this.getPrefix());
+    const qb = new QueryBuilder(this.prefix);
     const values = this.getEntityFields().map(this.getEntityValues(entity));
 
     const query = qb.insert(this.table).values(values).toQuery();
@@ -162,4 +128,30 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
   public abstract update(): Promise<void>;
 
   public abstract delete(id: string): Promise<void>;
+
+  private getEntityRelations(): MetadataRelation[] {
+    const relationMetadata = Reflect.getMetadata(TABLE_RELATION_METADATA, this);
+
+    if (!relationMetadata?.length) {
+      return [];
+    }
+
+    return relationMetadata.map(this.buildReferencedTablePrefix.bind(this));
+  }
+
+  private getEntityFields(): string[] {
+    return Reflect.getMetadata(TABLE_FIELD_METADATA, this);
+  }
+
+  private getPrefix(table: string): string {
+    const tablename = table.split('_');
+    return tablename.reduce((prefix: string, word: string) => `${prefix}${word.split('').slice(0, 2).join('')}`, '');
+  }
+
+  private buildReferencedTablePrefix(metadata: MetadataRelation): MetadataRelation {
+    return {
+      ...metadata,
+      refPropName: `${this.getPrefix(metadata.refTable)}_${metadata.refPropName}`
+    }
+  }
 }

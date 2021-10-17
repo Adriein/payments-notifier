@@ -1,5 +1,5 @@
 import { SignInCommand } from '../../../Domain/Commands/Auth/SignInCommand';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { NotAuthorizedError } from '../../../Auth/Domain/NotAuthorizedError';
 import { UserNotExistError } from '../../../Domain/Errors';
 import { IHandler } from '../../../Domain/Interfaces';

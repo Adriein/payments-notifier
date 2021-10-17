@@ -1,4 +1,4 @@
-import { Log } from '../Decorators/Log';
+import { Log } from '../../Shared/Domain/Decorators/Log';
 import { Criteria } from '../Entities/Criteria.entity';
 import { User } from '../Entities/User.entity';
 import { UserNotExistError } from '../Errors';

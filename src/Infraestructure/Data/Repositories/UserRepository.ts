@@ -1,5 +1,5 @@
 import { CONFIG_TABLE, SUBSCRIPTIONS_TABLE } from '../../../Domain/constants';
-import { Log } from '../../../Domain/Decorators/Log';
+import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { User } from '../../../Domain/Entities/User.entity';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { Email } from '../../../Shared/Domain/VO/Email.vo';
@@ -39,14 +39,14 @@ export class UserRepository
       where ? where.join(' ') : ''
     };`;
 
-    const {rows} = await this.db.query(query);
+    const { rows } = await this.db.query(query);
 
     return rows.map((row) => this.mapper.domain(row));
   }
 
   @Log(process.env.LOG_LEVEL)
   async findById(id: string): Promise<User | undefined> {
-    const {rows} = await this.db.query(
+    const { rows } = await this.db.query(
       `SELECT users.id, users.username, users.email, users.password, users.owner_id, users.created_at, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE users.id='${id}' AND subscriptions.active=true;`
     );
 
@@ -59,7 +59,7 @@ export class UserRepository
 
   @Log(process.env.LOG_LEVEL)
   async findByEmail(email: Email): Promise<User | undefined> {
-    const {rows} = await this.db.query(
+    const { rows } = await this.db.query(
       `SELECT users.id, users.username, users.email, users.password, users.owner_id, users.created_at, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${this.entity} LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE email='${email.value}' AND subscriptions.active=true;`
     );
 
@@ -72,7 +72,7 @@ export class UserRepository
 
   @Log(process.env.LOG_LEVEL)
   async findAll(onlyAdmins: boolean): Promise<User[]> {
-    const {rows} = await this.db.query(
+    const { rows } = await this.db.query(
       `SELECT users.id, users.username, users.email, users.password, users.owner_id, users.created_at, subscriptions.id as subscriptions_id, subscriptions.pricing, subscriptions.payment_date, subscriptions.warned, subscriptions.notified, subscriptions.active, config.id as config_id, config.language, config.role, config.send_notifications, config.send_warnings FROM ${
         this.entity
       } LEFT JOIN subscriptions ON users.id = subscriptions.user_id JOIN config ON users.id = config.user_id WHERE config.role='${
@@ -159,7 +159,7 @@ export class UserRepository
 
   @Log(process.env.LOG_LEVEL)
   async getAllSubscriptionsByUser(id: string): Promise<Subscription[]> {
-    const {rows} = await this.db.query(
+    const { rows } = await this.db.query(
       `SELECT * FROM ${SUBSCRIPTIONS_TABLE} WHERE user_id = '${id}'`
     );
 

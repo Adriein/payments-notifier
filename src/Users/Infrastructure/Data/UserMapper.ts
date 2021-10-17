@@ -8,6 +8,7 @@ import { UserConfig } from "../../Domain/UserConfig.entity";
 import { Subscription } from "../../Domain/Subscription.entity";
 import { DateUtils } from "../../../Shared/Infrastructure/Helper/Date.utils";
 import { SubscriptionDAO } from "./Subscription.dao";
+import { UserConfigDAO } from "./UserConfig.dao";
 
 export class UserMapper implements IMapper<User, UserDAO> {
 
@@ -23,6 +24,17 @@ export class UserMapper implements IMapper<User, UserDAO> {
     subscriptionDAO.active = domain.isActive();
     subscriptionDAO.created_at = DateUtils.format(domain.subscriptionCreatedAt(), DateUtils.STANDARD_DATE_FORMAT);
     subscriptionDAO.updated_at = DateUtils.format(domain.subscriptionUpdatedAt(), DateUtils.STANDARD_DATE_FORMAT);
+
+    const configDAO = new UserConfigDAO();
+
+    configDAO.id = domain.configId();
+    configDAO.role = domain.role();
+    configDAO.language = domain.language();
+    configDAO.user_id = domain.id();
+    configDAO.send_notifications = domain.sendNotifications();
+    configDAO.send_warnings = domain.sendWarnings();
+    configDAO.created_at = DateUtils.format(domain.configCreatedAt(), DateUtils.STANDARD_DATE_FORMAT);
+    configDAO.updated_at = DateUtils.format(domain.configUpdatedAt(), DateUtils.STANDARD_DATE_FORMAT);
 
     const userDAO = new UserDAO();
 
