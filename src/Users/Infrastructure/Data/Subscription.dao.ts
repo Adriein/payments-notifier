@@ -1,6 +1,8 @@
 import { AbstractDAO } from "../../../Shared/Infrastructure/Data/AbstractDAO";
 import { Column } from "../../../Shared/Infrastructure/Decorators/Orm/Column";
 import { Model } from "../../../Shared/Infrastructure/Decorators/Orm/Model";
+import { PricingDao } from "../../../Pricing/Infraestructure/Data/Pricing.dao";
+import { OneToOne } from "../../../Shared/Infrastructure/Decorators/Orm/OneToOne";
 
 @Model('subscriptions')
 export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
@@ -19,12 +21,12 @@ export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
     super();
   }
 
-  delete(id: string): Promise<void> {
-    return Promise.resolve(undefined);
-  }
-
   public async save(): Promise<void> {
     await super.save(this);
+  }
+
+  delete(id: string): Promise<void> {
+    return Promise.resolve(undefined);
   }
 
   update(): Promise<void> {

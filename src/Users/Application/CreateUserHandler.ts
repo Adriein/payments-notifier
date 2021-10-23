@@ -9,7 +9,7 @@ import { ID } from "../../Shared/Domain/VO/Id.vo";
 import { LastPaymentDate } from "../../Shared/Domain/VO/LastPaymentDate.vo";
 import { Password } from "../../Shared/Domain/VO/Password.vo";
 import { Email } from "../../Shared/Domain/VO/Email.vo";
-import { Pricing } from "../Domain/Pricing.vo";
+import { Pricing } from "../../Pricing/Domain/Pricing.entity";
 import { IHandler } from "../../Shared/Domain/Interfaces/IHandler";
 
 @CommandHandler(CreateUserCommand)

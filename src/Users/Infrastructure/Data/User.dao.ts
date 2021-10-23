@@ -28,7 +28,7 @@ export class UserDAO extends AbstractDAO<UserDAO> {
     return await super.getOne(this.id);
   }
 
-  public async find(criteria: Criteria[]): Promise<UserDAO[]> {
+  public async find(criteria: Criteria): Promise<UserDAO[]> {
     return await super.find(criteria);
   }
 

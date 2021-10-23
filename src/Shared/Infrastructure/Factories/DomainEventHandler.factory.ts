@@ -5,6 +5,7 @@ import { ConstructorFunc } from '../../Domain/types';
 import { CreateAdminDomainEventHandler } from "../../../Users/Application/CreateAdminDomainEventHandler";
 import { UserRepository } from "../../../Users/Infrastructure/Data/UserRepository";
 import { CryptoService } from "../../Domain/Services/CryptoService";
+import { QueryBus } from "../Bus/QueryBus";
 
 export default class DomainEventHandlerFactory {
   private handlers: Map<string, IDomainEventHandler> = new Map();
@@ -31,7 +32,7 @@ export default class DomainEventHandlerFactory {
     this.handlers.set(RegisterApiUsageHandler.name, new RegisterApiUsageHandler(this.apiUsageRepo));
     this.handlers.set(
       CreateAdminDomainEventHandler.name,
-      new CreateAdminDomainEventHandler(this.userRepository, this.crypto)
+      new CreateAdminDomainEventHandler(this.userRepository, this.crypto, QueryBus.instance())
     );
   }
 

@@ -42,8 +42,8 @@ export class UserRepository implements IUserRepository {
 
     criteria.field('email').equals(email);
 
-    const [ result ] = await dao.find([ criteria ]);
-    debug(result)
+    const [ result ] = await dao.find(criteria);
+
     if (!result) {
       return undefined;
     }

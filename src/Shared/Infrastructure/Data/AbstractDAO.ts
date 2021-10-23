@@ -93,14 +93,17 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     return this.buildDAO(this.constructor as ConstructorFunc, rows[0])
   }
 
-  public async find(criteria: Criteria[]): Promise<T[]> {
+  public async find(criteria: Criteria): Promise<T[]> {
     const qb = new QueryBuilder(this.prefix);
     qb.select().from(this.table);
 
     if (this.relations.length) {
       qb.leftJoin(this.relations);
 
-      criteria.forEach((criteria: Criteria) => {
+      for (const [ field, operations ] of criteria.storage.entries()) {
+
+      }
+      criteria.storage.forEach((criteria: Criteria) => {
         if (criteria.getOperation() === OPERATORS.equal) {
           qb.where(criteria.getField(), criteria.getEquality());
         }

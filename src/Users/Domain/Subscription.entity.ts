@@ -1,17 +1,17 @@
 import { BaseEntity } from "../../Domain/Entities/BaseEntity";
 import { LastPaymentDate } from "../../Shared/Domain/VO/LastPaymentDate.vo";
 import { ID } from "../../Shared/Domain/VO/Id.vo";
-import { Pricing } from "./Pricing.vo";
+import { Pricing } from "../../Pricing/Domain/Pricing.entity";
 import { DateUtils } from "../../Shared/Infrastructure/Helper/Date.utils";
 
 export class Subscription extends BaseEntity {
   public static build(
-    pricing: Pricing,
+    pricingId: ID,
     lastPayment: LastPaymentDate,
   ): Subscription {
     return new Subscription(
       ID.generate(),
-      pricing,
+      pricingId,
       lastPayment,
       false,
       false,
@@ -21,7 +21,7 @@ export class Subscription extends BaseEntity {
 
   constructor(
     _id: ID,
-    private _pricing: Pricing,
+    private _pricingId: ID,
     private _lastPayment: LastPaymentDate,
     private _isWarned: boolean,
     private _isNotified: boolean,

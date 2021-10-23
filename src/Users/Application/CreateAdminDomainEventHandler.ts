@@ -7,17 +7,25 @@ import { User } from "../Domain/User.entity";
 import { UserConfig } from "../Domain/UserConfig.entity";
 import { Subscription } from "../Domain/Subscription.entity";
 import { CryptoService } from "../../Shared/Domain/Services/CryptoService";
-import { Pricing } from "../Domain/Pricing.vo";
+import { Pricing } from "../../Pricing/Domain/Pricing.entity";
 import { LastPaymentDate } from "../../Shared/Domain/VO/LastPaymentDate.vo";
 import { Email } from "../../Shared/Domain/VO/Email.vo";
 import { ID } from "../../Shared/Domain/VO/Id.vo";
 import { Password } from "../../Shared/Domain/VO/Password.vo";
 import { ADMIN_ROLE, LANG_ES, USER_ROLE } from "../../Domain/constants";
 import { UserAlreadyExistsError } from "../Domain/UserAlreadyExistsError";
+import { IQueryBus } from "../../Shared/Domain/Bus/IQueryBus";
+import { PricingResponseDto } from "../../Pricing/Application/PricingResponse.dto";
+import { FindPricingQuery } from "../../Pricing/Domain/FindPricingQuery";
+import { Criteria } from "../../Shared/Domain/Entities/Criteria";
 
 @DomainEventsHandler(AdminCreatedDomainEvent)
 export class CreateAdminDomainEventHandler implements IDomainEventHandler {
-  constructor(private repository: IUserRepository, private crypto: CryptoService) {
+  constructor(
+    private repository: IUserRepository,
+    private crypto: CryptoService,
+    private queryBus: IQueryBus<PricingResponseDto>
+  ) {
   }
 
   @Log(process.env.LOG_LEVEL)
@@ -31,6 +39,10 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
     const id = ID.generate();
     const password = await this.crypto.hash(event.password);
 
+    const criteria = this.buildAdminPricingCriteria();
+
+    const pricing = await this.queryBus.ask(new FindPricingQuery(criteria));
+
     const user = new User(
       id,
       event.name,
@@ -39,11 +51,19 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
       new UserConfig(ID.generate(), LANG_ES, ADMIN_ROLE),
       id,
       Subscription.build(
-        Pricing.build('annual', 365, 1000),
+        new ID(pricing.id),
         new LastPaymentDate(new Date().toString())
       )
     );
 
     await this.repository.save(user);
+  }
+
+  private buildAdminPricingCriteria(): Criteria {
+    const criteria = new Criteria()
+    criteria.field('name').equals('yearly');
+    criteria.field('userId').equals('null');
+
+    return criteria;
   }
 }
