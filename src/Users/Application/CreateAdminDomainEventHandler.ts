@@ -61,7 +61,7 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
 
   private buildAdminPricingCriteria(): Criteria {
     const criteria = new Criteria()
-    criteria.field('name').equals('yearly');
+    criteria.field('pricingName').equals('yearly');
     criteria.field('userId').equals('null');
 
     return criteria;

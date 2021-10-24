@@ -68,7 +68,7 @@ export class User extends AggregateRoot {
   public configCreatedAt = (): Date => {
     return this._config.createdAt();
   }
-  
+
   public configUpdatedAt = (): Date => {
     return this._config.updatedAt();
   }
@@ -89,20 +89,8 @@ export class User extends AggregateRoot {
     return this._subscription.isActive();
   };
 
-  public subscriptionPrice = (): number => {
-    return this._subscription.price();
-  }
-
-  public subscriptionName = (): string => {
-    return this._subscription.name();
-  }
-
   public pricingId = (): string => {
     return this._subscription.pricingId();
-  }
-
-  public subscriptionDuration = (): number => {
-    return this._subscription.duration();
   }
 
   public subscriptionId = (): string => {

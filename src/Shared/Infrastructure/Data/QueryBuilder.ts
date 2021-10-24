@@ -90,8 +90,16 @@ export class QueryBuilder {
   private whereBuilder(): string {
     return this._where.reduce((where: string, clause: string[], index: number) => {
       const [ field, value ] = clause;
+      if (index === 0 && value === 'null') {
+        return `WHERE ${this.prefix}_${field} IS NULL`
+      }
+
       if (index === 0) {
         return `WHERE ${this.prefix}_${field} = '${value}'`
+      }
+
+      if (value === 'null') {
+        return `${where} AND ${this.prefix}_${field} IS NULL`;
       }
 
       return `${where} AND ${this.prefix}_${field} = '${value}'`;

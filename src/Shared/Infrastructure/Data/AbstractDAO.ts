@@ -3,8 +3,8 @@ import { Criteria } from "../../Domain/Entities/Criteria";
 import { ConstructorFunc, JSObject, MetadataRelation } from "../../Domain/types";
 import { QueryBuilder } from "./QueryBuilder";
 import { TABLE_FIELD_METADATA, TABLE_NAME_METADATA, TABLE_RELATION_METADATA } from "../../Domain/constants";
-import { UserDAO } from "../../../Users/Infrastructure/Data/User.dao";
 import { OPERATORS } from "../../../Domain/constants";
+import { StringUtils } from "../../Domain/Helper/String.utils";
 
 interface HasID {
   id?: string;
@@ -97,17 +97,15 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     const qb = new QueryBuilder(this.prefix);
     qb.select().from(this.table);
 
+    for (const [ field, { equality, operation } ] of criteria.storage.entries()) {
+      if (operation === OPERATORS.equal) {
+        qb.where(StringUtils.toSnakeCase(field), equality);
+      }
+    }
+
     if (this.relations.length) {
       qb.leftJoin(this.relations);
 
-      for (const [ field, operations ] of criteria.storage.entries()) {
-
-      }
-      criteria.storage.forEach((criteria: Criteria) => {
-        if (criteria.getOperation() === OPERATORS.equal) {
-          qb.where(criteria.getField(), criteria.getEquality());
-        }
-      });
     }
 
     const { rows } = await this.db.getConnection().query(qb.toQuery());
@@ -128,9 +126,13 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     await this.db.getConnection().query(query);
   }
 
-  public abstract update(): Promise<void>;
+  public update(): Promise<void> {
+    throw new Error();
+  }
 
-  public abstract delete(id: string): Promise<void>;
+  public delete(id: string): Promise<void> {
+    throw new Error();
+  }
 
   private getEntityRelations(): MetadataRelation[] {
     const relationMetadata = Reflect.getMetadata(TABLE_RELATION_METADATA, this);

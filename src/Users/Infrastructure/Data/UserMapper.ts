@@ -47,6 +47,7 @@ export class UserMapper implements IMapper<User, UserDAO> {
     userDAO.updated_at = DateUtils.format(domain.updatedAt(), DateUtils.STANDARD_DATE_FORMAT);
 
     userDAO.subscriptions = [ subscriptionDAO ];
+    userDAO.userConfig = configDAO;
 
     return userDAO;
   }

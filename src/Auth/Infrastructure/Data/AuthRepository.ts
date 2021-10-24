@@ -12,7 +12,7 @@ export class AuthRepository implements IAuthRepository {
     return Promise.resolve(undefined);
   }
 
-  public async find(adminId: string, criteria: any): Promise<Auth[]> {
+  public async find(criteria: Criteria): Promise<Auth[]> {
     return Promise.resolve([]);
   }
 
@@ -31,7 +31,7 @@ export class AuthRepository implements IAuthRepository {
   public async findByEmail(email: string): Promise<Auth | undefined> {
     const dao = new AuthDAO();
 
-    const criteria = new Criteria(new SqlTranslator());
+    const criteria = new Criteria();
     criteria.field('email').equals(email);
 
     const [ result ] = await dao.find(criteria);

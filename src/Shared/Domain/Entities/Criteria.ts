@@ -1,7 +1,7 @@
 import { OPERATORS } from '../../../Domain/constants';
 
 export class Criteria {
-  private _map = new Map<string, string[]>();
+  private _map = new Map<string, { equality: string, operation: string }>();
   private _field!: string;
 
   public field(field: string): this {
@@ -10,10 +10,10 @@ export class Criteria {
   }
 
   public equals(equality: string): void {
-    this._map.set(this._field, [ equality, OPERATORS.equal ]);
+    this._map.set(this._field, { equality, operation: OPERATORS.equal });
   }
 
-  public get storage(): Map<string, string[]> {
+  public get storage(): Map<string, { equality: string, operation: string }> {
     return this._map;
   }
 }

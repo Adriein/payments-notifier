@@ -1,7 +1,6 @@
 import { BaseEntity } from "../../Domain/Entities/BaseEntity";
 import { LastPaymentDate } from "../../Shared/Domain/VO/LastPaymentDate.vo";
 import { ID } from "../../Shared/Domain/VO/Id.vo";
-import { Pricing } from "../../Pricing/Domain/Pricing.entity";
 import { DateUtils } from "../../Shared/Infrastructure/Helper/Date.utils";
 
 export class Subscription extends BaseEntity {
@@ -48,20 +47,8 @@ export class Subscription extends BaseEntity {
     return DateUtils.equal(new Date(), warningDate);
   };
 
-  public price = (): number => {
-    return this._pricing.price();
-  }
-
-  public duration = (): number => {
-    return this._pricing.duration();
-  }
-
-  public name = (): string => {
-    return this._pricing.name();
-  }
-
   public pricingId = (): string => {
-    return this._pricing.id();
+    return this._pricingId.value;
   }
 
   public paymentDate = (): Date => {
