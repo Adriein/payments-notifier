@@ -1,7 +1,8 @@
-import { CustomError } from './CustomError';
+import { CustomError } from '../../Shared/Domain/CustomError';
 
 export class FileError extends CustomError {
   statusCode = 400;
+
   constructor(cause: string) {
     super(cause);
 
@@ -9,6 +10,6 @@ export class FileError extends CustomError {
   }
 
   serialize() {
-    return [{ message: this.message }];
+    return [ { message: this.message } ];
   }
 }

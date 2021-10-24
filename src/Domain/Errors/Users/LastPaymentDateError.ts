@@ -1,4 +1,4 @@
-import { CustomError } from '../CustomError';
+import { CustomError } from '../../../Shared/Domain/CustomError';
 
 export class LastPaymentDateError extends CustomError {
   statusCode = 400;
@@ -10,6 +10,6 @@ export class LastPaymentDateError extends CustomError {
   }
 
   serialize() {
-    return [{ message: this.message, field: 'LastPaymentDate on Subscription' }];
+    return [ { message: this.message, field: 'LastPaymentDate on Subscription' } ];
   }
 }

@@ -19,9 +19,9 @@ export class GetUserPresenter {
       },
       subscription: {
         pricing: {
-          price: user.subscriptionPrice(),
-          name: user.subscriptionName(),
-          duration: user.subscriptionDuration()
+          price: 10,
+          name: '10',
+          duration: 10
         },
         isNotified: user.isNotified(),
         isWarned: user.isWarned(),

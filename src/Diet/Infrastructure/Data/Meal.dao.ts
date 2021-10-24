@@ -1,9 +1,9 @@
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
 import { Column } from '../../../Shared/Infrastructure/Decorators/Orm/Column';
+import { Model } from "../../../Shared/Infrastructure/Decorators/Orm/Model";
 
+@Model('meal')
 export class MealDAO extends AbstractDAO<MealDAO> {
-  protected table: string = 'meal';
-
   @Column() public id: string | undefined;
   @Column() public meal_name: string | undefined;
   @Column() public diet_id: string | undefined;
@@ -23,30 +23,5 @@ export class MealDAO extends AbstractDAO<MealDAO> {
     this.diet_id = diet_id;
     this.created_at = created_at;
     this.updated_at = updated_at;
-  }
-
-  public async getOne(relations?: string[]): Promise<MealDAO | undefined> {
-    throw new Error('Method not implemented.');
-  }
-
-  public async find(criteria?: any): Promise<MealDAO[] | undefined> {
-    throw new Error('Method not implemented.');
-  }
-
-  public async save(): Promise<void> {
-    const query = this.insertQuery(this);
-    console.log(query);
-
-    await this.db.getConnection().query(query);
-  }
-
-  public async update(): Promise<void> {
-    const query = this.updateQuery(this);
-
-    await this.db.getConnection().query(query);
-  }
-
-  public async delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
   }
 }

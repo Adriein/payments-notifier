@@ -1,4 +1,4 @@
-import { CustomError } from './CustomError';
+import { CustomError } from '../../Shared/Domain/CustomError';
 
 export class AgeError extends CustomError {
   statusCode = 400;
@@ -10,6 +10,6 @@ export class AgeError extends CustomError {
   }
 
   serialize() {
-    return [{ message: this.message, field: 'Age on Nutrition in User' }];
+    return [ { message: this.message, field: 'Age on Nutrition in User' } ];
   }
 }

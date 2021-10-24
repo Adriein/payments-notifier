@@ -10,23 +10,15 @@ export class NutritionRepository implements INutritionRepository {
   private mapper: IMapper<Nutrition, NutritionDAO> = new NutritionMapper();
 
   async findOne(id: string): Promise<Nutrition | undefined> {
-    const dao = new NutritionDAO(id);
-    const result = await dao.getOne(['diet']);
-
-    if (!result) {
-      return undefined;
-    }
-
-    return this.mapper.toDomain(result);
+    throw new Error();
   }
 
-  async find(adminId: string, criteria: any): Promise<Nutrition[]> {
+  async find(criteria: any): Promise<Nutrition[]> {
     throw new Error('Method not implemented.');
   }
 
   async save(entity: Nutrition): Promise<void> {
-    const nutritionDAO = this.mapper.toDataModel(entity);
-    await nutritionDAO.save();
+
   }
 
   async update(entity: Nutrition): Promise<void> {
@@ -39,7 +31,7 @@ export class NutritionRepository implements INutritionRepository {
 
   async findByUserId(userId: string): Promise<Nutrition | undefined> {
     const dao = new NutritionDAO();
-    const search = new Criteria(new SqlTranslator());
+    const search = new Criteria();
 
     search.field('user_id').equals(userId);
     const nutrition = await dao.find(search);

@@ -1,10 +1,9 @@
-import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
 import { Column } from '../../../Shared/Infrastructure/Decorators/Orm/Column';
+import { Model } from "../../../Shared/Infrastructure/Decorators/Orm/Model";
 
+@Model('food')
 export class FoodDAO extends AbstractDAO<FoodDAO> {
-  protected table: string = 'food';
-
   @Column() public id: string;
   @Column() public food_name: string;
   @Column() public serving_unit: string;
@@ -60,52 +59,5 @@ export class FoodDAO extends AbstractDAO<FoodDAO> {
     this.fiber = _fiber;
     this.created_at = _created_at;
     this.updated_at = _updated_at;
-  }
-
-  public async getOne(relations?: string[]): Promise<FoodDAO | undefined> {
-    throw new Error('Method not implemented.');
-  }
-
-  public async find(criteria: Criteria): Promise<FoodDAO[] | undefined> {
-    const query = `SELECT * FROM ${this.table} ${criteria.toQuery()}`;
-    const { rows } = await this.db.getConnection().query(query);
-
-    if (!rows) {
-      return undefined;
-    }
-
-    return rows.map((row: any) => {
-      return new FoodDAO(
-        row.id,
-        row.food_name,
-        row.serving_unit,
-        row.qty,
-        row.photo,
-        row.kcal,
-        row.carbohydrates,
-        row.total_fat,
-        row.satured_fat,
-        row.cholesterol,
-        row.sodium,
-        row.protein,
-        row.sugars,
-        row.potasium,
-        row.fiber,
-        row.created_at,
-        row.updated_at
-      );
-    });
-  }
-
-  public async save(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
-  public async update(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
-  public async delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
   }
 }

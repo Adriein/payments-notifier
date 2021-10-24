@@ -1,4 +1,4 @@
-import { CustomError } from './CustomError';
+import { CustomError } from '../../Shared/Domain/CustomError';
 
 export class ActivityError extends CustomError {
   statusCode = 400;
@@ -10,6 +10,6 @@ export class ActivityError extends CustomError {
   }
 
   serialize() {
-    return [{ message: this.message, field: 'Activity on Nutrition in User' }];
+    return [ { message: this.message, field: 'Activity on Nutrition in User' } ];
   }
 }

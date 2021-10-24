@@ -1,11 +1,9 @@
 import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
-import { SqlTranslator } from '../../../Shared/Domain/Entities/SqlTranslator';
 import { IMapper } from '../../../Shared/Domain/Interfaces/IMapper';
 import { Diet } from '../../Domain/Diet.entity';
 import { IDietRepository } from '../../Domain/IDietRepository';
 import { DietDAO } from './Diet.dao';
 import { DietMapper } from './DietMapper';
-import { MealDAO } from './Meal.dao';
 
 export class DietRepository implements IDietRepository {
   private mapper: IMapper<Diet, DietDAO> = new DietMapper();
@@ -14,23 +12,16 @@ export class DietRepository implements IDietRepository {
     throw new Error('Method not implemented.');
   }
 
-  public async find(adminId: string, criteria: any): Promise<Diet[]> {
+  public async find(criteria: any): Promise<Diet[]> {
     throw new Error('Method not implemented.');
   }
 
   public async save(entity: Diet): Promise<void> {
-    const dao = this.mapper.toDataModel(entity);
-    await dao.save();
+
   }
 
   public async update(entity: Diet): Promise<void> {
-    const dao = this.mapper.toDataModel(entity);
 
-    await dao.update();
-
-    if (dao.meals.length) {
-      dao.meals.forEach((mealDao: MealDAO) => mealDao.save());
-    }
   }
 
   public async delete(id: string): Promise<void> {
@@ -39,7 +30,7 @@ export class DietRepository implements IDietRepository {
 
   public async findAll(nutritionId: string): Promise<Diet[]> {
     const dao = new DietDAO();
-    const criteria = new Criteria(new SqlTranslator());
+    const criteria = new Criteria();
 
     criteria.field('nutrition_id').equals(nutritionId);
 

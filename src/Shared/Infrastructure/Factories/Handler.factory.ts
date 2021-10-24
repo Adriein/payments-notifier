@@ -18,6 +18,8 @@ import { CryptoService } from "../../Domain/Services/CryptoService";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
 import { FindPricingHandler } from "../../../Pricing/Application/FindPricingHandler";
 import { PricingRepository } from "../../../Pricing/Infraestructure/Data/PricingRepository";
+import { CreateUserHandler } from "../../../Users/Application/CreateUserHandler";
+import { UserRepository } from "../../../Users/Infrastructure/Data/UserRepository";
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -29,6 +31,7 @@ export default class HandlerFactory {
   private nutritionixRepository: NutritionixRepository = new NutritionixRepository();
   private cryptoService: CryptoService = new CryptoService();
   private pricingRepository: PricingRepository = new PricingRepository();
+  private userRepository: UserRepository = new UserRepository();
 
   constructor() {
     this.register();
@@ -87,6 +90,11 @@ export default class HandlerFactory {
     this.handlers.set(
       FindPricingHandler.name,
       new FindPricingHandler(this.pricingRepository)
+    );
+
+    this.handlers.set(
+      CreateUserHandler.name,
+      new CreateUserHandler(this.userRepository, QueryBus.instance())
     );
   }
 

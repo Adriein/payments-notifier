@@ -31,17 +31,17 @@ export class Subscription extends BaseEntity {
 
 
   public hasExpired = (): boolean => {
-    const expirationDate = DateUtils.add(this._lastPayment.value, this._pricing.duration())
+    const expirationDate = DateUtils.add(this._lastPayment.value, 5)
     return DateUtils.before(expirationDate, new Date());
   };
 
   public daysExpired = (): number => {
-    const expirationDate = DateUtils.add(this._lastPayment.value, this._pricing.duration())
+    const expirationDate = DateUtils.add(this._lastPayment.value, 5)
     return DateUtils.diff(expirationDate, new Date());
   };
 
   public isAboutToExpire = (daysToWarn: number | undefined = 5): boolean => {
-    const expirationDate = DateUtils.add(this._lastPayment.value, this._pricing.duration());
+    const expirationDate = DateUtils.add(this._lastPayment.value, 5);
     const warningDate = DateUtils.subtract(expirationDate, daysToWarn)
 
     return DateUtils.equal(new Date(), warningDate);

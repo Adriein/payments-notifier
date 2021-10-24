@@ -1,4 +1,4 @@
-import { CustomError } from '../CustomError';
+import { CustomError } from '../../../Shared/Domain/CustomError';
 
 export class AppConfigNotExistsError extends CustomError {
   statusCode = 400;
@@ -10,6 +10,6 @@ export class AppConfigNotExistsError extends CustomError {
   }
 
   serialize() {
-    return [{ message: this.message }];
+    return [ { message: this.message } ];
   }
 }

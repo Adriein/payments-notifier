@@ -1,4 +1,3 @@
-import { Criteria } from '../../../Domain/Entities/Criteria.entity';
 import { HttpApi } from '../../../Shared/Infrastructure/Data/HttpApi';
 import { Food } from '../../Domain/Food.entity';
 import { IFoodRepository } from '../../Domain/IFoodRepository';
@@ -7,7 +6,7 @@ import { FoodSearch, NutritionixApiSearchResponse } from './NutritionixApiSearch
 import { NutritionixApiNutrientsResponse } from './NutritionixApiNutrients.response.api';
 import { NutritionixApiNutrientsRequest } from './NutritionixApiNutrients.request';
 import { Collection } from '../../../Shared/Domain/Entities/Collection';
-import { ApiQueryDomainEvent } from '../../Domain/ApiQueryDomainEvent';
+import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 
 export class NutritionixRepository extends HttpApi implements IFoodRepository {
   protected BASE_URL: string = 'https://trackapi.nutritionix.com/v2';
@@ -43,7 +42,7 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
     throw new Error('Method not implemented.');
   }
 
-  find(adminId: string, criteria: Criteria): Promise<Food[]> {
+  find(criteria: Criteria): Promise<Food[]> {
     throw new Error('Method not implemented.');
   }
 

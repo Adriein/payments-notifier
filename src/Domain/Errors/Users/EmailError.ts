@@ -1,4 +1,4 @@
-import { CustomError } from '../CustomError';
+import { CustomError } from '../../../Shared/Domain/CustomError';
 
 export class EmailError extends CustomError {
   statusCode = 400;
@@ -10,6 +10,6 @@ export class EmailError extends CustomError {
   }
 
   serialize() {
-    return [{ message: this.message, field: 'Email on User' }];
+    return [ { message: this.message, field: 'Email on User' } ];
   }
 }

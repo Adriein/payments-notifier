@@ -1,4 +1,3 @@
-import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
 import { AbstractDAO } from '../../../Shared/Infrastructure/Data/AbstractDAO';
 import { Column } from '../../../Shared/Infrastructure/Decorators/Orm/Column';
 import { Model } from "../../../Shared/Infrastructure/Decorators/Orm/Model";
