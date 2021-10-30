@@ -94,7 +94,7 @@ export default class HandlerFactory {
 
     this.handlers.set(
       CreateUserHandler.name,
-      new CreateUserHandler(this.userRepository, QueryBus.instance())
+      new CreateUserHandler(this.userRepository)
     );
   }
 

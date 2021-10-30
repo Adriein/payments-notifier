@@ -9,6 +9,9 @@ export class QueryBuilder {
   private _insert: string = '';
   private _values: string[] = [];
 
+  private _update: string = '';
+  private _set: string[][] = [];
+
   constructor(private prefix: string) {
   }
 
@@ -46,6 +49,16 @@ export class QueryBuilder {
     return this;
   }
 
+  public update(table: string): this {
+    this._update = table;
+    return this;
+  }
+
+  public set(set: string[][]): this {
+    this._set = set;
+    return this;
+  }
+
   public values(values: string[]): this {
     this._values = values;
     return this;
@@ -66,16 +79,24 @@ export class QueryBuilder {
       query.push(this.leftJoinBuilder());
     }
 
-    if (this._where.length > 0) {
-      query.push(this.whereBuilder());
-    }
-
     if (this._insert.length > 0) {
       query.push(`INSERT INTO ${this._insert}`);
     }
 
     if (this._values.length > 0) {
       query.push(`VALUES (${this._values.join(',')})`);
+    }
+
+    if (this._update.length > 0) {
+      query.push(`UPDATE ${this._update}`);
+    }
+
+    if (this._set.length > 0) {
+      query.push(this.updateBuilder());
+    }
+
+    if (this._where.length > 0) {
+      query.push(this.whereBuilder());
     }
 
     return query.join(' ');
@@ -85,6 +106,13 @@ export class QueryBuilder {
     return this._leftJoin.map((join: MetadataRelation) => {
       return `LEFT JOIN ${join.refTable} ON ${this._from}.${this.prefix}_id = ${join.refTable}.${join.refPropName}`;
     }).join(' ');
+  }
+
+  private updateBuilder(): string {
+    return this._set.reduce((set: string, clause: string[]) => {
+      const [ column, value ] = clause;
+      return `SET ${this.prefix}_${column} = ${value}`
+    }, '');
   }
 
   private whereBuilder(): string {

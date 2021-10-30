@@ -16,27 +16,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
   private relations: MetadataRelation[] = this.getEntityRelations();
 
   protected db: Database = Database.getInstance();
-
-  /*
-   protected updateQuery = (entity: T) => {
-   const fields = this.getEntityFields();
-
-   if (!entity.id) {
-   throw new Error('The entity you are trying to update has no id');
-   }
-
-   return `
-   UPDATE ${this.table}
-   SET ${this.valuesToUpdate(entity, fields)}
-   WHERE ${this.getPrefix()}_id = '${entity.id}';
-   `;
-   }
-
-
-   private valuesToUpdate = (entity: T, fields: string[]): string => {
-   return fields.map(this.updateStatement(entity)).join(',');
-   }*/
-
+  
   private getEntityValues(entity: T): (field: string) => string {
     return (field: string) => {
       const value = entity[field as K] ?? null;
@@ -48,12 +28,17 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     };
   }
 
-  /*private updateStatement(entity: T) {
-   const prefix = this.getPrefix();
-   return (field: string) => {
-   return `${prefix}_${field}='${entity[field as K]}'`
-   }
-   }*/
+  private getUpdateValues(entity: T): (field: string) => string[] {
+    return (field: string) => {
+      const value = entity[field as K] ?? null;
+
+      if (typeof value === 'number') {
+        return [ field, `${value}` ];
+      }
+
+      return [ field, `'${value}'` ]
+    };
+  }
 
 
   protected buildDAO(Dao: ConstructorFunc, result: JSObject): T {
@@ -126,8 +111,12 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     await this.db.getConnection().query(query);
   }
 
-  public update(): Promise<void> {
-    throw new Error();
+  protected async update(entity: T): Promise<void> {
+    const qb = new QueryBuilder(this.prefix);
+    const values = this.getEntityFields().map(this.getUpdateValues(entity));
+
+    const query = qb.update(this.table).set(values).where('id', entity.id!).toQuery();
+    await this.db.getConnection().query(query);
   }
 
   public delete(id: string): Promise<void> {

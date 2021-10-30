@@ -24,9 +24,11 @@ export class User extends AggregateRoot {
     private _email: Email,
     private _config: UserConfig,
     private _ownerId: ID,
-    private _subscription: Subscription
+    private _subscription: Subscription,
+    _createdAt?: Date,
+    _updatedAt?: Date
   ) {
-    super(_id);
+    super(_id, _createdAt, _updatedAt);
   }
 
   public name(): string {

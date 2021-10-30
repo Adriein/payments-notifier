@@ -1,25 +1,26 @@
+import { Request, Response, NextFunction } from 'express';
 import { Controller } from "../../../Shared/Infrastructure/Decorators/controller";
-import { BaseController } from "../../../Shared/Infrastructure/BaseController";
-import { post } from "../../../Shared/Infrastructure/Decorators/routes";
+import { put } from "../../../Shared/Infrastructure/Decorators/routes";
 import { use } from "../../../Shared/Infrastructure/Decorators/use";
 import { currentUser, requireAuth } from "../../../middlewares/auth";
-import { NextFunction, Request, Response } from "express";
-import { CreateUserCommand } from "../../Domain/Command/CreateUserCommand";
+import { BaseController } from "../../../Shared/Infrastructure/BaseController";
+import { UpdateUserCommand } from "../../Domain/Command/UpdateUserCommand";
 
 @Controller()
-export class CreateUserController extends BaseController<void> {
-  @post('/user')
+export class UpdateUserController extends BaseController<void> {
+  @put('/users')
   @use(requireAuth)
   @use(currentUser)
-  public async createUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
       await this.commandBus.dispatch(
-        new CreateUserCommand(
+        new UpdateUserCommand(
+          req.body.id,
           req.body.username,
           req.body.email,
           req.body.pricingId,
           req.body.lastPaymentDate,
-          req.currentUser!.id!
+          req.currentUser!.id
         )
       );
 

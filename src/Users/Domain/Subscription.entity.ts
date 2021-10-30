@@ -24,9 +24,11 @@ export class Subscription extends BaseEntity {
     private _lastPayment: LastPaymentDate,
     private _isWarned: boolean,
     private _isNotified: boolean,
-    private _isActive: boolean
+    private _isActive: boolean,
+    _createdAt?: Date,
+    _updatedAt?: Date
   ) {
-    super(_id);
+    super(_id, _createdAt, _updatedAt);
   }
 
 
