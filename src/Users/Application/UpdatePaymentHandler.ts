@@ -6,6 +6,7 @@ import { LastPaymentDate } from "../../Shared/Domain/VO/LastPaymentDate.vo";
 import { IHandler } from "../../Shared/Domain/Interfaces/IHandler";
 import { UserNotExistError } from "../Domain/UserNotExistError";
 import { UpdatePaymentCommand } from "../Domain/Command/UpdatePaymentCommand";
+import { User } from "../Domain/User.entity";
 
 @CommandHandler(UpdatePaymentCommand)
 export class UpdatePaymentHandler implements IHandler<void> {
@@ -24,6 +25,11 @@ export class UpdatePaymentHandler implements IHandler<void> {
       throw new UserNotExistError(id.value);
     }
 
+    await this.renew(user, pricingId, paymentDate);
+
+  }
+
+  private async renew(user: User, pricingId: ID, paymentDate: LastPaymentDate): Promise<void> {
     user.deactivateExpiredSubscription();
 
     await this.repository.update(user);
