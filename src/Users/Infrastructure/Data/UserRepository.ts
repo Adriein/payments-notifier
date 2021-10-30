@@ -3,7 +3,7 @@ import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 import { User } from "../../Domain/User.entity";
 import { UserDAO } from "./User.dao";
 import { UserMapper } from "./UserMapper";
-import { SqlTranslator } from "../../../Shared/Domain/Entities/SqlTranslator";
+import { SubscriptionDAO } from "./Subscription.dao";
 
 
 export class UserRepository implements IUserRepository {
@@ -33,7 +33,15 @@ export class UserRepository implements IUserRepository {
   }
 
   public async update(entity: User): Promise<void> {
-    return Promise.resolve(undefined);
+    const userDAO = this.mapper.toDataModel(entity);
+
+    const [ subscriptionDAO ] = userDAO.subscriptions;
+    const userConfigDAO = userDAO.userConfig;
+
+    await userDAO.update();
+    await subscriptionDAO.update();
+    await userConfigDAO!.update();
+
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
@@ -49,5 +57,13 @@ export class UserRepository implements IUserRepository {
     }
 
     return this.mapper.toDomain(result);
+  }
+  
+  public async saveSubscription(entity: User): Promise<void> {
+    const userDAO = this.mapper.toDataModel(entity);
+
+    const [ subscriptionDAO ] = userDAO.subscriptions;
+
+    await subscriptionDAO.save();
   }
 }

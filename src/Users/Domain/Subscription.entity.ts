@@ -49,6 +49,10 @@ export class Subscription extends BaseEntity {
     return DateUtils.equal(new Date(), warningDate);
   };
 
+  public deactivate = (): void => {
+    this._isActive = false;
+  }
+
   public pricingId = (): string => {
     return this._pricingId.value;
   }

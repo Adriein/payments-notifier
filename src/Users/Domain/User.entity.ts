@@ -4,6 +4,7 @@ import { ID } from "../../Shared/Domain/VO/Id.vo";
 import { Password } from "../../Shared/Domain/VO/Password.vo";
 import { Subscription } from "./Subscription.entity";
 import { UserConfig } from "./UserConfig.entity";
+import { LastPaymentDate } from "../../Shared/Domain/VO/LastPaymentDate.vo";
 
 export class User extends AggregateRoot {
   public static build(
@@ -105,5 +106,13 @@ export class User extends AggregateRoot {
 
   public subscriptionUpdatedAt = (): Date => {
     return this._subscription.updatedAt();
+  }
+
+  public deactivateExpiredSubscription(): void {
+    this._subscription.deactivate();
+  }
+
+  public renewSubscription(pricingId: ID, paymentDate: LastPaymentDate): void {
+    this._subscription = Subscription.build(pricingId, paymentDate);
   }
 }

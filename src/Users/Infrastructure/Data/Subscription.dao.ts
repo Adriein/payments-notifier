@@ -21,6 +21,10 @@ export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
     super();
   }
 
+  public async getOne(): Promise<SubscriptionDAO | undefined> {
+    return await super.getOne(this.id!, true);
+  }
+
   public async save(): Promise<void> {
     await super.save(this);
   }
