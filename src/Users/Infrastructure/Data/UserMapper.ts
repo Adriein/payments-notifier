@@ -59,7 +59,7 @@ export class UserMapper implements IMapper<User, UserDAO> {
     const subscription = new Subscription(
       new ID(subscriptionDAO.id),
       new ID(subscriptionDAO.pricing_id),
-      new LastPaymentDate(subscriptionDAO.payment_date),
+      new LastPaymentDate(subscriptionDAO.payment_date.toString()),
       subscriptionDAO.warned,
       subscriptionDAO.notified,
       subscriptionDAO.active,

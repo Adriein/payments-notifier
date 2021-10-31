@@ -1,11 +1,12 @@
 import { AbstractDAO } from "../../../Shared/Infrastructure/Data/AbstractDAO";
 import { Column } from "../../../Shared/Infrastructure/Decorators/Orm/Column";
 import { Model } from "../../../Shared/Infrastructure/Decorators/Orm/Model";
+import { PrimaryColumn } from "../../../Shared/Infrastructure/Decorators/Orm/PrimaryColumn";
 
 @Model('config')
 export class UserConfigDAO extends AbstractDAO<UserConfigDAO> {
 
-  @Column() public id!: string;
+  @PrimaryColumn() public id!: string;
   @Column() public language!: string;
   @Column() public role!: string;
   @Column() public send_notifications!: boolean;

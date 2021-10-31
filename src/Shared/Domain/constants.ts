@@ -5,3 +5,8 @@ export const QUERY_HANDLER_METADATA = '__queriesHandler';
 export const TABLE_NAME_METADATA = '__tableNameMetadata';
 export const TABLE_FIELD_METADATA = '__tableFieldMetadata';
 export const TABLE_RELATION_METADATA = '__tableRelationMetadata';
+
+export const PRIMARY_KEY = 'primaryKey';
+
+export const ONE_TO_MANY_RELATION = 'oneToMany';
+export const ONE_TO_ONE_RELATION = 'oneToOne';

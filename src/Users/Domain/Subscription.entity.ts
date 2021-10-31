@@ -51,6 +51,7 @@ export class Subscription extends BaseEntity {
 
   public deactivate = (): void => {
     this._isActive = false;
+    this.updated();
   }
 
   public pricingId = (): string => {

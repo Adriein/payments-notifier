@@ -3,11 +3,12 @@ import { Column } from "../../../Shared/Infrastructure/Decorators/Orm/Column";
 import { Model } from "../../../Shared/Infrastructure/Decorators/Orm/Model";
 import { PricingDao } from "../../../Pricing/Infraestructure/Data/Pricing.dao";
 import { OneToOne } from "../../../Shared/Infrastructure/Decorators/Orm/OneToOne";
+import { PrimaryColumn } from "../../../Shared/Infrastructure/Decorators/Orm/PrimaryColumn";
 
 @Model('subscriptions')
 export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
 
-  @Column() public id!: string;
+  @PrimaryColumn() public id!: string;
   @Column() public pricing_id!: string;
   @Column() public payment_date!: string;
   @Column() public warned!: boolean;

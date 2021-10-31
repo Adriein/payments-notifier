@@ -20,8 +20,7 @@ export class UpdatePaymentHandler implements IHandler<void> {
     const paymentDate = new LastPaymentDate(command.paymentDate);
 
     const user = await this.repository.findOne(id.value);
-    console.log(user);
-    throw new Error();
+
     if (!user) {
       throw new UserNotExistError(id.value);
     }

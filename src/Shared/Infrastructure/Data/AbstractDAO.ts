@@ -1,8 +1,13 @@
 import Database from '../../../Infraestructure/Data/Database';
 import { Criteria } from "../../Domain/Entities/Criteria";
-import { ConstructorFunc, JSObject, MetadataRelation } from "../../Domain/types";
+import { ColumnMetadata, ConstructorFunc, JSObject, RelationMetadata } from "../../Domain/types";
 import { QueryBuilder } from "./QueryBuilder";
-import { TABLE_FIELD_METADATA, TABLE_NAME_METADATA, TABLE_RELATION_METADATA } from "../../Domain/constants";
+import {
+  ONE_TO_ONE_RELATION, PRIMARY_KEY,
+  TABLE_FIELD_METADATA,
+  TABLE_NAME_METADATA,
+  TABLE_RELATION_METADATA
+} from "../../Domain/constants";
 import { OPERATORS } from "../../../Domain/constants";
 import { StringUtils } from "../../Domain/Helper/String.utils";
 
@@ -13,13 +18,13 @@ interface HasID {
 export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
   private table: string = Reflect.getMetadata(TABLE_NAME_METADATA, this.constructor);
   private prefix: string = this.getPrefix(this.table);
-  private relations: MetadataRelation[] = this.getEntityRelations();
+  private relations: RelationMetadata[] = this.getEntityRelations();
 
   protected db: Database = Database.getInstance();
 
-  private getEntityValues(entity: T): (field: string) => string {
-    return (field: string) => {
-      const value = entity[field as K] ?? null;
+  private getEntityValues(entity: T): (columnMetadata: ColumnMetadata) => string {
+    return (columnMetadata: ColumnMetadata) => {
+      const value = entity[columnMetadata.name as K] ?? null;
 
       if (typeof value === 'number') {
         return `${value}`
@@ -28,32 +33,40 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     };
   }
 
-  private getUpdateValues(entity: T): (field: string) => string[] {
-    return (field: string) => {
-      const value = entity[field as K] ?? null;
+  private getUpdateValues(entity: T): (columnMetadata: ColumnMetadata) => string[] {
+    return (columnMetadata: ColumnMetadata) => {
+      const value = entity[columnMetadata.name as K] ?? null;
 
-      if (typeof value === 'number') {
-        return [ field, `${value}` ];
+      if (typeof value === 'number' && columnMetadata.type !== PRIMARY_KEY) {
+        return [ columnMetadata.name, `${value}` ];
       }
 
-      return [ field, `'${value}'` ]
+      if (columnMetadata.type !== PRIMARY_KEY) {
+        return [ columnMetadata.name, `'${value}'` ];
+      }
+
+      return []
     };
   }
 
 
   protected buildDAO(Dao: ConstructorFunc, result: JSObject): T {
     const dao = new Dao();
-    const fields = this.getEntityFields(dao);
+    const columnMetadatas = this.getEntityFields(dao);
     const relations = this.getEntityRelations(dao);
 
-    fields.forEach((field: string) => dao[field] = result[`${dao.prefix}_${field}`]);
-    relations.forEach((metadata: MetadataRelation) => {
-      dao[metadata.prop] = this.buildDAO(metadata.dao, result);
+    columnMetadatas.forEach(({ name: field }) => dao[field] = result[`${dao.prefix}_${field}`]);
+    relations.forEach((metadata: RelationMetadata) => {
+      if (metadata.type === ONE_TO_ONE_RELATION) {
+        dao[metadata.prop] = this.buildDAO(metadata.dao, result);
+        return;
+      }
+      dao[metadata.prop] = [ this.buildDAO(metadata.dao, result) ];
     });
 
     return dao;
   }
-  
+
   protected async getOne(id: string, lazy: boolean = false): Promise<T | undefined> {
     const qb = new QueryBuilder(this.prefix);
 
@@ -116,9 +129,10 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
 
   protected async update(entity: T): Promise<void> {
     const qb = new QueryBuilder(this.prefix);
-    const values = this.getEntityFields().map(this.getUpdateValues(entity));
+    const values = this.getEntityFields().map(this.getUpdateValues(entity)).filter((arr: string[]) => arr.length);
 
     const query = qb.update(this.table).set(values).where('id', entity.id!).toQuery();
+
     await this.db.getConnection().query(query);
   }
 
@@ -126,7 +140,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     throw new Error();
   }
 
-  private getEntityRelations(constructorFn: any = this): MetadataRelation[] {
+  private getEntityRelations(constructorFn: any = this): RelationMetadata[] {
     const relationMetadata = Reflect.getMetadata(TABLE_RELATION_METADATA, constructorFn);
 
     if (!relationMetadata?.length) {
@@ -136,7 +150,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     return relationMetadata.map(this.buildReferencedTablePrefix.bind(this));
   }
 
-  private getEntityFields(constructorFn: any = this): string[] {
+  private getEntityFields(constructorFn: any = this): ColumnMetadata[] {
     return Reflect.getMetadata(TABLE_FIELD_METADATA, constructorFn);
   }
 
@@ -145,7 +159,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     return tablename.reduce((prefix: string, word: string) => `${prefix}${word.split('').slice(0, 2).join('')}`, '');
   }
 
-  private buildReferencedTablePrefix(metadata: MetadataRelation): MetadataRelation {
+  private buildReferencedTablePrefix(metadata: RelationMetadata): RelationMetadata {
     return {
       ...metadata,
       refPropName: `${this.getPrefix(metadata.refTable)}_${metadata.refPropName}`

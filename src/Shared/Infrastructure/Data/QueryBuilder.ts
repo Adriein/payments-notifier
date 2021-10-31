@@ -1,10 +1,10 @@
-import { MetadataRelation } from "../../Domain/types";
+import { RelationMetadata } from "../../Domain/types";
 
 export class QueryBuilder {
   private _select: string[] = [];
   private _from: string = '';
   private _where: string[][] = [];
-  private _leftJoin: MetadataRelation[] = [];
+  private _leftJoin: RelationMetadata[] = [];
 
   private _insert: string = '';
   private _values: string[] = [];
@@ -29,7 +29,7 @@ export class QueryBuilder {
     return this;
   }
 
-  public leftJoin(relations: MetadataRelation[]): this {
+  public leftJoin(relations: RelationMetadata[]): this {
     this._leftJoin = relations;
     return this;
   }
@@ -92,7 +92,7 @@ export class QueryBuilder {
     }
 
     if (this._set.length > 0) {
-      query.push(this.updateBuilder());
+      query.push(this.updateBuilder().join(','));
     }
 
     if (this._where.length > 0) {
@@ -103,16 +103,19 @@ export class QueryBuilder {
   }
 
   private leftJoinBuilder(): string {
-    return this._leftJoin.map((join: MetadataRelation) => {
+    return this._leftJoin.map((join: RelationMetadata) => {
       return `LEFT JOIN ${join.refTable} ON ${this._from}.${this.prefix}_id = ${join.refTable}.${join.refPropName}`;
     }).join(' ');
   }
 
-  private updateBuilder(): string {
-    return this._set.reduce((set: string, clause: string[]) => {
+  private updateBuilder(): string[] {
+    return this._set.reduce((set: string[], clause: string[], index: number) => {
       const [ column, value ] = clause;
-      return `SET ${this.prefix}_${column} = ${value}`
-    }, '');
+      if (index === 0) {
+        return [ ...set, `SET ${this.prefix}_${column} = ${value}` ]
+      }
+      return [ ...set, `${this.prefix}_${column} = ${value}` ]
+    }, []);
   }
 
   private whereBuilder(): string {
