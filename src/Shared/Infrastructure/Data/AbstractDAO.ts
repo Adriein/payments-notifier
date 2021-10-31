@@ -16,7 +16,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
   private relations: MetadataRelation[] = this.getEntityRelations();
 
   protected db: Database = Database.getInstance();
-  
+
   private getEntityValues(entity: T): (field: string) => string {
     return (field: string) => {
       const value = entity[field as K] ?? null;
@@ -43,14 +43,17 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
 
   protected buildDAO(Dao: ConstructorFunc, result: JSObject): T {
     const dao = new Dao();
-    const fields = this.getEntityFields();
+    const fields = this.getEntityFields(dao);
+    const relations = this.getEntityRelations(dao);
 
-    fields.forEach((field: string) => dao[field] = result[`${this.prefix}_${field}`]);
+    fields.forEach((field: string) => dao[field] = result[`${dao.prefix}_${field}`]);
+    relations.forEach((metadata: MetadataRelation) => {
+      dao[metadata.prop] = this.buildDAO(metadata.dao, result);
+    });
 
     return dao;
   }
-
-
+  
   protected async getOne(id: string, lazy: boolean = false): Promise<T | undefined> {
     const qb = new QueryBuilder(this.prefix);
 
@@ -70,7 +73,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     const query = qb.select().from(this.table).leftJoin(this.relations).where('id', id).toQuery();
 
     const { rows } = await this.db.getConnection().query(query);
-
+    console.log(rows);
     if (!rows.length) {
       return undefined;
     }
@@ -123,8 +126,8 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     throw new Error();
   }
 
-  private getEntityRelations(): MetadataRelation[] {
-    const relationMetadata = Reflect.getMetadata(TABLE_RELATION_METADATA, this);
+  private getEntityRelations(constructorFn: any = this): MetadataRelation[] {
+    const relationMetadata = Reflect.getMetadata(TABLE_RELATION_METADATA, constructorFn);
 
     if (!relationMetadata?.length) {
       return [];
@@ -133,8 +136,8 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     return relationMetadata.map(this.buildReferencedTablePrefix.bind(this));
   }
 
-  private getEntityFields(): string[] {
-    return Reflect.getMetadata(TABLE_FIELD_METADATA, this);
+  private getEntityFields(constructorFn: any = this): string[] {
+    return Reflect.getMetadata(TABLE_FIELD_METADATA, constructorFn);
   }
 
   private getPrefix(table: string): string {

@@ -7,7 +7,7 @@ import { BaseController } from "../../../Shared/Infrastructure/BaseController";
 import { UpdatePaymentCommand } from "../../Domain/Command/UpdatePaymentCommand";
 
 @Controller()
-export class UpdateUserController extends BaseController<void> {
+export class UpdateUserPaymentController extends BaseController<void> {
   @put('/users/subscription/payment')
   @use(requireAuth)
   @use(currentUser)

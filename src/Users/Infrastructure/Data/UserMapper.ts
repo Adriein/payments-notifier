@@ -9,6 +9,7 @@ import { Subscription } from "../../Domain/Subscription.entity";
 import { DateUtils } from "../../../Shared/Infrastructure/Helper/Date.utils";
 import { SubscriptionDAO } from "./Subscription.dao";
 import { UserConfigDAO } from "./UserConfig.dao";
+import { LastPaymentDate } from "../../../Shared/Domain/VO/LastPaymentDate.vo";
 
 export class UserMapper implements IMapper<User, UserDAO> {
 
@@ -53,16 +54,37 @@ export class UserMapper implements IMapper<User, UserDAO> {
   }
 
   toDomain(dataModel: UserDAO): User {
-    const p = {} as unknown as Subscription;
+    const [ subscriptionDAO ] = dataModel.subscriptions;
+
+    const subscription = new Subscription(
+      new ID(subscriptionDAO.id),
+      new ID(subscriptionDAO.pricing_id),
+      new LastPaymentDate(subscriptionDAO.payment_date),
+      subscriptionDAO.warned,
+      subscriptionDAO.notified,
+      subscriptionDAO.active,
+      new Date(subscriptionDAO.created_at),
+      new Date(subscriptionDAO.updated_at)
+    );
+
+    const config = new UserConfig(
+      new ID(dataModel.userConfig!.id),
+      dataModel.userConfig!.language,
+      dataModel.userConfig!.role,
+      dataModel.userConfig!.send_notifications,
+      dataModel.userConfig!.send_warnings
+    );
+
     return new User(
       new ID(dataModel.id!),
       dataModel.username!,
       new Password(dataModel.password!),
       new Email(dataModel.email!),
-      UserConfig.build(),
+      config,
       new ID(dataModel.owner_id!),
-      p,
+      subscription,
+      new Date(dataModel.created_at),
+      new Date(dataModel.updated_at)
     );
   }
-
 }

@@ -19,9 +19,9 @@ export class UserDAO extends AbstractDAO<UserDAO> {
   @Column() public created_at!: string;
   @Column() public updated_at!: string;
 
-  @OneToMany('subscriptions', 'user_id')
+  @OneToMany('subscriptions', 'user_id', SubscriptionDAO)
   public subscriptions: SubscriptionDAO[] = [];
-  @OneToMany('config', 'user_id')
+  @OneToMany('config', 'user_id', UserConfigDAO)
   public userConfig: Nullable<UserConfigDAO> = null;
 
   public async getOne(): Promise<UserDAO | undefined> {

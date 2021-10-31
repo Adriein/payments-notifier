@@ -20,6 +20,9 @@ import { FindPricingHandler } from "../../../Pricing/Application/FindPricingHand
 import { PricingRepository } from "../../../Pricing/Infraestructure/Data/PricingRepository";
 import { CreateUserHandler } from "../../../Users/Application/CreateUserHandler";
 import { UserRepository } from "../../../Users/Infrastructure/Data/UserRepository";
+import { UpdateUserHandler } from "../../../Users/Application/UpdateUserHandler";
+import { UpdatePaymentHandler } from "../../../Users/Application/UpdatePaymentHandler";
+
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -96,6 +99,17 @@ export default class HandlerFactory {
       CreateUserHandler.name,
       new CreateUserHandler(this.userRepository)
     );
+
+    this.handlers.set(
+      UpdateUserHandler.name,
+      new UpdateUserHandler(this.userRepository)
+    );
+
+    this.handlers.set(
+      UpdatePaymentHandler.name,
+      new UpdatePaymentHandler(this.userRepository)
+    );
+
   }
 
   public getContainer(): Map<string, IHandler<any>> {

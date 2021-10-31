@@ -20,7 +20,8 @@ export class UpdatePaymentHandler implements IHandler<void> {
     const paymentDate = new LastPaymentDate(command.paymentDate);
 
     const user = await this.repository.findOne(id.value);
-
+    console.log(user);
+    throw new Error();
     if (!user) {
       throw new UserNotExistError(id.value);
     }
@@ -36,6 +37,6 @@ export class UpdatePaymentHandler implements IHandler<void> {
 
     user.renewSubscription(pricingId, paymentDate);
 
-    await this.repository.saveSubscription(user);
+    await this.repository.save(user);
   }
 }

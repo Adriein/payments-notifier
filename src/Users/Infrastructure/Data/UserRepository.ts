@@ -18,7 +18,16 @@ export class UserRepository implements IUserRepository {
   }
 
   public async findOne(id: string): Promise<User | undefined> {
-    return Promise.resolve(undefined);
+    const dao = new UserDAO();
+    dao.id = id;
+
+    const userDAO = await dao.getOne();
+
+    if (!userDAO) {
+      return undefined;
+    }
+
+    return this.mapper.toDomain(userDAO);
   }
 
   public async save(entity: User): Promise<void> {
@@ -58,7 +67,7 @@ export class UserRepository implements IUserRepository {
 
     return this.mapper.toDomain(result);
   }
-  
+
   public async saveSubscription(entity: User): Promise<void> {
     const userDAO = this.mapper.toDataModel(entity);
 

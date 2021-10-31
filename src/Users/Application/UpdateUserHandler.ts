@@ -13,7 +13,7 @@ import { UpdateUserCommand } from "../Domain/Command/UpdateUserCommand";
 import { UserNotExistError } from "../Domain/UserNotExistError";
 
 @CommandHandler(UpdateUserCommand)
-export class CreateUserHandler implements IHandler<void> {
+export class UpdateUserHandler implements IHandler<void> {
   constructor(private repository: IUserRepository) {
   }
 
