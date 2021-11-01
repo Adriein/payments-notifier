@@ -18,10 +18,10 @@ import { CryptoService } from "../../Domain/Services/CryptoService";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
 import { FindPricingHandler } from "../../../Pricing/Application/FindPricingHandler";
 import { PricingRepository } from "../../../Pricing/Infraestructure/Data/PricingRepository";
-import { CreateUserHandler } from "../../../Users/Application/CreateUserHandler";
-import { UserRepository } from "../../../Users/Infrastructure/Data/UserRepository";
-import { UpdateUserHandler } from "../../../Users/Application/UpdateUserHandler";
-import { UpdatePaymentHandler } from "../../../Users/Application/UpdatePaymentHandler";
+import { CreateUserHandler } from "../../../Backoffice/Users/Application/CreateUserHandler";
+import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
+import { UpdateUserHandler } from "../../../Backoffice/Users/Application/UpdateUserHandler";
+import { UpdatePaymentHandler } from "../../../Backoffice/Users/Application/UpdatePaymentHandler";
 
 
 export default class HandlerFactory {

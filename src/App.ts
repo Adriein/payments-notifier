@@ -34,9 +34,9 @@ import './Nutrition/Infrastructure/Controller/CreateNutritionController';
 import './Diet/Infrastructure/Controller/CreateDietController';
 import './Diet/Infrastructure/Controller/ModifyDietController';
 import './Food';
-import './Backoffice';
+import './Backoffice/Metrics';
 import './Auth';
-import './Users';
+import './Backoffice/Users';
 
 
 export default class App {
