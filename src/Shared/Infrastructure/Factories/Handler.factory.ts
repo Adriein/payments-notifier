@@ -16,8 +16,8 @@ import { AuthRepository } from "../../../Auth/Infrastructure/Data/AuthRepository
 import { SignInHandler } from "../../../Auth/Application/SignInHandler";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
-import { FindPricingHandler } from "../../../Pricing/Application/FindPricingHandler";
-import { PricingRepository } from "../../../Pricing/Infraestructure/Data/PricingRepository";
+import { FindPricingHandler } from "../../../Backoffice/Pricing/Application/FindPricingHandler";
+import { PricingRepository } from "../../../Backoffice/Pricing/Infraestructure/Data/PricingRepository";
 import { CreateUserHandler } from "../../../Backoffice/Users/Application/CreateUserHandler";
 import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
 import { UpdateUserHandler } from "../../../Backoffice/Users/Application/UpdateUserHandler";

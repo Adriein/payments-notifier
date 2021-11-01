@@ -10,12 +10,12 @@ export class AuthMapper implements IMapper<Auth, AuthDAO> {
     throw new Error('Not implemented');
   }
 
-  public toDomain(datamodel: AuthDAO): Auth {
+  public toDomain(dataModel: AuthDAO): Auth {
     return new Auth(
-      new ID(datamodel.id!),
-      datamodel.username!,
-      new Email(datamodel.email!),
-      new Password(datamodel.password!)
+      new ID(dataModel.id!),
+      dataModel.username!,
+      new Email(dataModel.email!),
+      new Password(dataModel.password!)
     );
   }
 }

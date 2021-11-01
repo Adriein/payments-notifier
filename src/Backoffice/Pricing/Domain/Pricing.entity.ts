@@ -1,6 +1,6 @@
-import { BaseEntity } from "../../Domain/Entities/BaseEntity";
-import { ID } from "../../Shared/Domain/VO/Id.vo";
-import { Nullable } from "../../Shared/Domain/types";
+import { BaseEntity } from "../../../Domain/Entities/BaseEntity";
+import { ID } from "../../../Shared/Domain/VO/Id.vo";
+import { Nullable } from "../../../Shared/Domain/types";
 
 export class Pricing extends BaseEntity {
   public static build(name: string, duration: number, price: number, userId: Nullable<ID>): Pricing {

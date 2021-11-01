@@ -1,9 +1,9 @@
-import { QueryHandler } from "../../Shared/Domain/Decorators/QueryHandler.decorator";
-import { IHandler } from "../../Shared/Domain/Interfaces/IHandler";
+import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
+import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
 import { GetPricingQuery } from "../Domain/GetPricingQuery";
 import { PricingResponseDto } from "./PricingResponse.dto";
 import { IPricingRepository } from "../Domain/IPricingRepository";
-import { ID } from "../../Shared/Domain/VO/Id.vo";
+import { ID } from "../../../Shared/Domain/VO/Id.vo";
 
 @QueryHandler(GetPricingQuery)
 export class GetPricingHandler implements IHandler<PricingResponseDto> {

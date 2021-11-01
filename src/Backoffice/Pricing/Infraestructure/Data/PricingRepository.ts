@@ -1,6 +1,6 @@
 import { IPricingRepository } from "../../Domain/IPricingRepository";
 import { Pricing } from "../../Domain/Pricing.entity";
-import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
+import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { PricingDao } from "./Pricing.dao";
 import { PricingMapper } from "./PricingMapper";
 

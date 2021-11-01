@@ -1,8 +1,8 @@
-import { Model } from "../../../Shared/Infrastructure/Decorators/Orm/Model";
-import { Column } from "../../../Shared/Infrastructure/Decorators/Orm/Column";
-import { AbstractDAO } from "../../../Shared/Infrastructure/Data/AbstractDAO";
-import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
-import { Nullable } from "../../../Shared/Domain/types";
+import { Model } from "../../../../Shared/Infrastructure/Decorators/Orm/Model";
+import { Column } from "../../../../Shared/Infrastructure/Decorators/Orm/Column";
+import { AbstractDAO } from "../../../../Shared/Infrastructure/Data/AbstractDAO";
+import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
+import { Nullable } from "../../../../Shared/Domain/types";
 
 @Model('pricing')
 export class PricingDao extends AbstractDAO<PricingDao> {

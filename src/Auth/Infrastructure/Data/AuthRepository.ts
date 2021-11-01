@@ -3,7 +3,6 @@ import { Auth } from "../../Domain/Auth.entity";
 import { AuthMapper } from "./AuthMapper";
 import { AuthDAO } from "./Auth.dao";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
-import { SqlTranslator } from "../../../Shared/Domain/Entities/SqlTranslator";
 
 export class AuthRepository implements IAuthRepository {
   private mapper: AuthMapper = new AuthMapper();

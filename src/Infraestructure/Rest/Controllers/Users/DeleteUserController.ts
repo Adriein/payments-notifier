@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { DeleteUserCommand } from '../../../../Domain/Commands/User/DeleteUserCommand';
 import { currentUser, requireAuth } from '../../../../middlewares/auth';
 import { Controller } from '../../../../Shared/Infrastructure/Decorators/controller';

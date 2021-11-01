@@ -1,8 +1,8 @@
 // import { Request, Response, NextFunction } from 'express';
 // import { User } from '../../../Domain/Entities/User.entity';
-// import { Controller } from '../../../Infraestructure/Rest/Decorators/controller';
-// import { get } from '../../../Infraestructure/Rest/Decorators/routes';
-// import { use } from '../../../Infraestructure/Rest/Decorators/use';
+// import { Controller } from '../../../Infrastructure/Rest/Decorators/controller';
+// import { get } from '../../../Infrastructure/Rest/Decorators/routes';
+// import { use } from '../../../Infrastructure/Rest/Decorators/use';
 // import { currentUser, requireAuth } from '../../../middlewares/auth';
 // import { BaseController } from '../../../Shared/Infrastructure/BaseController';
 // import { GetUserHandler } from '../../../Users/Application/GetUserHandler';

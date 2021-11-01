@@ -1,6 +1,6 @@
-import { QueryHandler } from "../../Shared/Domain/Decorators/QueryHandler.decorator";
+import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
 import { FindPricingQuery } from "../Domain/FindPricingQuery";
-import { IHandler } from "../../Shared/Domain/Interfaces/IHandler";
+import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
 import { IPricingRepository } from "../Domain/IPricingRepository";
 import { PricingResponseDto } from "./PricingResponse.dto";
 

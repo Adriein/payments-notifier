@@ -14,8 +14,8 @@ import { Password } from "../../../Shared/Domain/VO/Password.vo";
 import { ADMIN_ROLE, LANG_ES } from "../../../Domain/constants";
 import { UserAlreadyExistsError } from "../Domain/UserAlreadyExistsError";
 import { IQueryBus } from "../../../Shared/Domain/Bus/IQueryBus";
-import { PricingResponseDto } from "../../../Pricing/Application/PricingResponse.dto";
-import { FindPricingQuery } from "../../../Pricing/Domain/FindPricingQuery";
+import { PricingResponseDto } from "../../Pricing/Application/PricingResponse.dto";
+import { FindPricingQuery } from "../../Pricing/Domain/FindPricingQuery";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 
 @DomainEventsHandler(AdminCreatedDomainEvent)
