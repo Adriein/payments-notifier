@@ -30,11 +30,7 @@ export class SubscriptionDAO extends AbstractDAO<SubscriptionDAO> {
     await super.save(this);
   }
 
-  delete(id: string): Promise<void> {
-    return Promise.resolve(undefined);
-  }
-
-  update(): Promise<void> {
-    return Promise.resolve(undefined);
+  public async update(): Promise<void> {
+    await super.update(this);
   }
 }

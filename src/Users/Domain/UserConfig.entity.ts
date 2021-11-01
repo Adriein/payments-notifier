@@ -6,7 +6,7 @@ export class UserConfig extends BaseEntity {
   public static build() {
     return new UserConfig(ID.generate(), LANG_ES, USER_ROLE);
   }
-  
+
   constructor(
     _id: ID,
     private _lang: string,
@@ -31,5 +31,10 @@ export class UserConfig extends BaseEntity {
 
   public sendWarnings(): boolean {
     return this._sendWarnings;
+  }
+
+  public warnings(warnings: boolean): void {
+    this._sendWarnings = warnings;
+    this.updated()
   }
 }

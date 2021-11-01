@@ -3,20 +3,22 @@ import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 import { User } from "../../Domain/User.entity";
 import { UserDAO } from "./User.dao";
 import { UserMapper } from "./UserMapper";
-import { SubscriptionDAO } from "./Subscription.dao";
-
+import { Log } from "../../../Shared/Domain/Decorators/Log";
 
 export class UserRepository implements IUserRepository {
   private mapper = new UserMapper();
 
+  @Log(process.env.LOG_LEVEL)
   public async delete(id: string): Promise<void> {
     return Promise.resolve(undefined);
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async find(): Promise<User[]> {
     return Promise.resolve([]);
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async findOne(id: string): Promise<User | undefined> {
     const dao = new UserDAO();
     dao.id = id;
@@ -30,17 +32,26 @@ export class UserRepository implements IUserRepository {
     return this.mapper.toDomain(userDAO);
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async save(entity: User): Promise<void> {
     const userDAO = this.mapper.toDataModel(entity);
 
     const [ subscriptionDAO ] = userDAO.subscriptions;
     const userConfigDAO = userDAO.userConfig;
 
+    const existingUser = userDAO.getOne();
+
+    if (existingUser) {
+      await subscriptionDAO.save();
+      return await Promise.resolve();
+    }
+
     await userDAO.save();
     await subscriptionDAO.save();
     await userConfigDAO!.save();
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async update(entity: User): Promise<void> {
     const userDAO = this.mapper.toDataModel(entity);
 
@@ -53,6 +64,7 @@ export class UserRepository implements IUserRepository {
 
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async findByEmail(email: string): Promise<User | undefined> {
     const dao = new UserDAO();
     const criteria = new Criteria();
@@ -68,6 +80,7 @@ export class UserRepository implements IUserRepository {
     return this.mapper.toDomain(result);
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async saveSubscription(entity: User): Promise<void> {
     const userDAO = this.mapper.toDataModel(entity);
 

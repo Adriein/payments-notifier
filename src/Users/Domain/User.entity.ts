@@ -115,4 +115,8 @@ export class User extends AggregateRoot {
   public renewSubscription(pricingId: ID, paymentDate: LastPaymentDate): void {
     this._subscription = Subscription.build(pricingId, paymentDate);
   }
+
+  public subscriptionWarnings(warnings: boolean): void {
+    this._config.warnings(warnings);
+  }
 }

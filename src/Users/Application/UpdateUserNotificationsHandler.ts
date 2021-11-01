@@ -5,19 +5,18 @@ import { ID } from "../../Shared/Domain/VO/Id.vo";
 import { LastPaymentDate } from "../../Shared/Domain/VO/LastPaymentDate.vo";
 import { IHandler } from "../../Shared/Domain/Interfaces/IHandler";
 import { UserNotExistError } from "../Domain/UserNotExistError";
-import { UpdatePaymentCommand } from "../Domain/Command/UpdatePaymentCommand";
 import { User } from "../Domain/User.entity";
+import { UpdateUserNotificationsCommand } from "../Domain/Command/UpdateUserNotificationsCommand";
 
-@CommandHandler(UpdatePaymentCommand)
-export class UpdatePaymentHandler implements IHandler<void> {
+@CommandHandler(UpdateUserNotificationsCommand)
+export class UpdateUserNotificationsHandler implements IHandler<void> {
   constructor(private repository: IUserRepository) {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(command: UpdatePaymentCommand): Promise<void> {
-    const id = new ID(command.userId);
-    const pricingId = new ID(command.pricingId);
-    const paymentDate = new LastPaymentDate(command.paymentDate);
+  public async handle(command: UpdateUserNotificationsCommand): Promise<void> {
+    const id = new ID(command.id);
+    const canSendWarnings = Boolean(command.sendWarnings);
 
     const user = await this.repository.findOne(id.value);
 
@@ -25,16 +24,8 @@ export class UpdatePaymentHandler implements IHandler<void> {
       throw new UserNotExistError(id.value);
     }
 
-    await this.renew(user, pricingId, paymentDate);
-  }
-
-  private async renew(user: User, pricingId: ID, paymentDate: LastPaymentDate): Promise<void> {
-    user.deactivateExpiredSubscription();
+    user.subscriptionWarnings(canSendWarnings);
 
     await this.repository.update(user);
-
-    user.renewSubscription(pricingId, paymentDate);
-
-    await this.repository.save(user);
   }
 }

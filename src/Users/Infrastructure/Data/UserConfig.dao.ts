@@ -14,17 +14,13 @@ export class UserConfigDAO extends AbstractDAO<UserConfigDAO> {
   @Column() public user_id!: string;
   @Column() public created_at!: string;
   @Column() public updated_at!: string;
-
-  delete(id: string): Promise<void> {
-    return Promise.resolve(undefined);
-  }
-
+  
   public async save(): Promise<void> {
     await super.save(this);
   }
 
-  update(): Promise<void> {
-    return Promise.resolve(undefined);
+  public async update(): Promise<void> {
+    return super.update(this);
   }
 
 }
