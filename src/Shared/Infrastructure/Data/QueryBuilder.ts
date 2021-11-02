@@ -135,8 +135,6 @@ export class QueryBuilder {
   }
 
   private whereBuilder(): string {
-    debug(this._leftJoin)
-    debug(this._where)
     return this._where.reduce((where: string, clause: string[], index: number) => {
       const [ field, value ] = this.setPrefix(clause);
       if (index === 0 && value === 'null') {

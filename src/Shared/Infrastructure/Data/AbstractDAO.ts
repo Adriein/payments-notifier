@@ -110,7 +110,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
       qb.leftJoin(this.relations);
 
     }
-    debug(qb.toQuery());
+
     const { rows } = await this.db.getConnection().query(qb.toQuery());
 
     if (!rows) {
