@@ -19,8 +19,17 @@ export class PricingRepository implements IPricingRepository {
     return results.map(result => this.mapper.toDomain(result));
   }
 
-  findOne(id: string): Promise<Pricing | undefined> {
-    return Promise.resolve(undefined);
+  public async findOne(id: string): Promise<Pricing | undefined> {
+    const dao = new PricingDao();
+    dao.id = id;
+
+    const pricingDAO = await dao.getOne();
+
+    if (!pricingDAO) {
+      return undefined;
+    }
+
+    return this.mapper.toDomain(pricingDAO);
   }
 
   save(entity: Pricing): Promise<void> {

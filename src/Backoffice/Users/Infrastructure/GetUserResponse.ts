@@ -16,8 +16,8 @@ type GetSubscriptionResponse = {
 }
 
 type GetConfigResponse = {
-  sendNotifications: string,
-  sendWarnings: string,
+  sendNotifications: boolean,
+  sendWarnings: boolean,
   language: string,
   role: string,
 }

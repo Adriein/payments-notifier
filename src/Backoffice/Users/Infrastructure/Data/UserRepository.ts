@@ -14,8 +14,12 @@ export class UserRepository implements IUserRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async find(): Promise<User[]> {
-    return Promise.resolve([]);
+  public async find(criteria?: Criteria): Promise<User[]> {
+    const dao = new UserDAO();
+
+    const results = await dao.find(criteria);
+
+    return results.map((dao: UserDAO) => this.mapper.toDomain(dao));
   }
 
   @Log(process.env.LOG_LEVEL)
@@ -81,11 +85,16 @@ export class UserRepository implements IUserRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async saveSubscription(entity: User): Promise<void> {
-    const userDAO = this.mapper.toDataModel(entity);
+  public async findAllUsersByAdminWithActiveSubscriptions(adminId: string): Promise<User[]> {
+    const dao = new UserDAO();
+    const criteria = new Criteria();
 
-    const [ subscriptionDAO ] = userDAO.subscriptions;
+    criteria.field('owner_id').equals(adminId);
+    criteria.field('subscriptions.active').equals('true');
+    criteria.field('config.role').equals('user');
 
-    await subscriptionDAO.save();
+    const results = await dao.find(criteria);
+
+    return results.map((dao: UserDAO) => this.mapper.toDomain(dao));
   }
 }

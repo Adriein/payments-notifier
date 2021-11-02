@@ -29,8 +29,22 @@ export class UserDAO extends AbstractDAO<UserDAO> {
     return await super.getOne(this.id);
   }
 
-  public async find(criteria: Criteria): Promise<UserDAO[]> {
-    return await super.find(criteria);
+  public async find(criteria?: Criteria): Promise<UserDAO[]> {
+    const results = await super.find(criteria);
+
+    const stack = new Map<string, UserDAO>();
+
+    for (const dao of results) {
+      if (stack.has(dao.id!)) {
+        const userDAO = stack.get(dao.id!)!;
+        userDAO.subscriptions = [ ...userDAO.subscriptions, ...dao.subscriptions ];
+        continue;
+      }
+
+      stack.set(dao.id!, dao);
+    }
+
+    return [ ...stack.values() ];
   }
 
   public async save(): Promise<void> {

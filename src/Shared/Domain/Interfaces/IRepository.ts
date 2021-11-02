@@ -4,7 +4,7 @@ import { Criteria } from "../Entities/Criteria";
 export interface IRepository<T> {
   findOne(id: string): Promise<T | undefined>;
 
-  find(criteria: Criteria): Promise<T[]>;
+  find(criteria?: Criteria): Promise<T[]>;
 
   save(entity: T): Promise<void>;
 

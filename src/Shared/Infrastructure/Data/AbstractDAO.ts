@@ -52,10 +52,10 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
 
   protected buildDAO(Dao: ConstructorFunc, result: JSObject): T {
     const dao = new Dao();
-    const columnMetadatas = this.getEntityFields(dao);
+    const columnMetadata = this.getEntityFields(dao);
     const relations = this.getEntityRelations(dao);
 
-    columnMetadatas.forEach(({ name: field }) => dao[field] = result[`${dao.prefix}_${field}`]);
+    columnMetadata.forEach(({ name: field }) => dao[field] = result[`${dao.prefix}_${field}`]);
     relations.forEach((metadata: RelationMetadata) => {
       if (metadata.type === ONE_TO_ONE_RELATION) {
         dao[metadata.prop] = this.buildDAO(metadata.dao, result);
@@ -86,7 +86,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     const query = qb.select().from(this.table).leftJoin(this.relations).where('id', id).toQuery();
 
     const { rows } = await this.db.getConnection().query(query);
-    console.log(rows);
+
     if (!rows.length) {
       return undefined;
     }
@@ -94,13 +94,15 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
     return this.buildDAO(this.constructor as ConstructorFunc, rows[0])
   }
 
-  public async find(criteria: Criteria): Promise<T[]> {
+  public async find(criteria?: Criteria): Promise<T[]> {
     const qb = new QueryBuilder(this.prefix);
     qb.select().from(this.table);
 
-    for (const [ field, { equality, operation } ] of criteria.storage.entries()) {
-      if (operation === OPERATORS.equal) {
-        qb.where(StringUtils.toSnakeCase(field), equality);
+    if (criteria) {
+      for (const [ field, { equality, operation } ] of criteria.storage.entries()) {
+        if (operation === OPERATORS.equal) {
+          qb.where(StringUtils.toSnakeCase(field), equality);
+        }
       }
     }
 
@@ -108,7 +110,7 @@ export abstract class AbstractDAO<T extends HasID, K extends keyof T = any> {
       qb.leftJoin(this.relations);
 
     }
-
+    debug(qb.toQuery());
     const { rows } = await this.db.getConnection().query(qb.toQuery());
 
     if (!rows) {

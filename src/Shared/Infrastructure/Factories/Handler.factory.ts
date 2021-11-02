@@ -22,6 +22,8 @@ import { CreateUserHandler } from "../../../Backoffice/Users/Application/CreateU
 import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
 import { UpdateUserHandler } from "../../../Backoffice/Users/Application/UpdateUserHandler";
 import { UpdatePaymentHandler } from "../../../Backoffice/Users/Application/UpdatePaymentHandler";
+import { GetPricingHandler } from "../../../Backoffice/Pricing/Application/GetPricingHandler";
+import { GetAllUsersHandler } from "../../../Backoffice/Users/Application/GetAllUsersHandler";
 
 
 export default class HandlerFactory {
@@ -81,6 +83,16 @@ export default class HandlerFactory {
     );
 
     this.handlers.set(
+      FindPricingHandler.name,
+      new FindPricingHandler(this.pricingRepository)
+    );
+
+    this.handlers.set(
+      GetPricingHandler.name,
+      new GetPricingHandler(this.pricingRepository)
+    );
+
+    this.handlers.set(
       SignInHandler.name,
       new SignInHandler(this.authRepository, this.cryptoService)
     );
@@ -88,11 +100,6 @@ export default class HandlerFactory {
     this.handlers.set(
       RegisterAdminHandler.name,
       new RegisterAdminHandler()
-    );
-
-    this.handlers.set(
-      FindPricingHandler.name,
-      new FindPricingHandler(this.pricingRepository)
     );
 
     this.handlers.set(
@@ -108,6 +115,11 @@ export default class HandlerFactory {
     this.handlers.set(
       UpdatePaymentHandler.name,
       new UpdatePaymentHandler(this.userRepository)
+    );
+
+    this.handlers.set(
+      GetAllUsersHandler.name,
+      new GetAllUsersHandler(this.userRepository, QueryBus.instance())
     );
 
   }

@@ -9,7 +9,7 @@ import { SigninQuery } from "../../Domain/Query/SigninQuery";
 @Controller()
 export class SignInController extends BaseController<Auth> {
   @post('/signin')
-  public async signIn(req: Request, res: Response<void>, next: NextFunction): Promise<void> {
+  public async signIn(req: Request, res: Response<any>, next: NextFunction): Promise<void> {
     try {
       const { email, password } = req.body;
 
@@ -27,7 +27,7 @@ export class SignInController extends BaseController<Auth> {
         jwt: userJwt,
       };
 
-      res.status(200).send();
+      res.status(200).send({ id: auth.id(), username: auth.name() });
     } catch (error) {
       next(error);
     }

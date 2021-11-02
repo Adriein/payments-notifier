@@ -18,11 +18,7 @@ export class PricingDao extends AbstractDAO<PricingDao> {
     return await super.find(criteria);
   }
 
-  delete(id: string): Promise<void> {
-    return Promise.resolve(undefined);
-  }
-
-  update(): Promise<void> {
-    return Promise.resolve(undefined);
+  public async getOne(): Promise<PricingDao | undefined> {
+    return await super.getOne(this.id!);
   }
 }

@@ -4,6 +4,7 @@ import { GetPricingQuery } from "../Domain/GetPricingQuery";
 import { PricingResponseDto } from "./PricingResponse.dto";
 import { IPricingRepository } from "../Domain/IPricingRepository";
 import { ID } from "../../../Shared/Domain/VO/Id.vo";
+import { PricingNotExistsError } from "../Domain/PricingNotExistsError";
 
 @QueryHandler(GetPricingQuery)
 export class GetPricingHandler implements IHandler<PricingResponseDto> {
@@ -16,7 +17,7 @@ export class GetPricingHandler implements IHandler<PricingResponseDto> {
     const pricing = await this.repository.findOne(id.value);
 
     if (!pricing) {
-      throw new Error();
+      throw new PricingNotExistsError(id.value);
     }
 
     return new PricingResponseDto(pricing.id(), pricing.name(), pricing.duration(), pricing.price());

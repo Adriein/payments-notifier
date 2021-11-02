@@ -1,27 +1,26 @@
 import { GetUserResponse } from "./GetUserResponse";
 import { User } from "../Domain/User.entity";
 import { Translations } from "../../../Shared/Domain/Entities/Translations";
+import { PricingResponseDto } from "../../Pricing/Application/PricingResponse.dto";
 
 export class GetUserPresenter {
-  private translations: Translations = new Translations();
-
-  public execute(user: User): GetUserResponse {
+  public execute(user: User, pricing: PricingResponseDto): GetUserResponse {
     return {
       id: user.id(),
       username: user.name(),
       email: user.email(),
       defaulter: '',
       config: {
-        sendNotifications: this.sendNotifications(user),
-        sendWarnings: this.sendWarnings(user),
-        role: this.translator(user.language(), user.role()),
+        sendNotifications: user.sendNotifications(),
+        sendWarnings: user.sendWarnings(),
+        role: user.role(),
         language: user.language()
       },
       subscription: {
         pricing: {
-          price: 10,
-          name: '10',
-          duration: 10
+          price: pricing.price,
+          name: pricing.name,
+          duration: pricing.duration
         },
         isNotified: user.isNotified(),
         isWarned: user.isWarned(),
@@ -31,31 +30,31 @@ export class GetUserPresenter {
     }
   }
 
-  private translator(lang: string, word: string): string {
-    const dictionary = this.translations.dictionary.get(lang)!;
+  /* private translator(lang: string, word: string): string {
+   const dictionary = this.translations.dictionary.get(lang)!;
 
-    const translation = dictionary.get(word);
+   const translation = dictionary.get(word);
 
-    if (!translation) {
-      throw new Error('No translation for this word');
-    }
+   if (!translation) {
+   throw new Error('No translation for this word');
+   }
 
-    return translation;
-  }
+   return translation;
+   }*/
 
-  private sendNotifications(user: User): string {
-    if (user.sendNotifications()) {
-      return this.translator(user.language(), 'Si');
-    }
+  /*private sendNotifications(user: User): string {
+   if (user.sendNotifications()) {
+   return this.translator(user.language(), 'Si');
+   }
 
-    return this.translator(user.language(), 'No')
-  }
+   return this.translator(user.language(), 'No')
+   }
 
-  private sendWarnings(user: User): string {
-    if (user.sendWarnings()) {
-      return this.translator(user.language(), 'Si');
-    }
+   private sendWarnings(user: User): string {
+   if (user.sendWarnings()) {
+   return this.translator(user.language(), 'Si');
+   }
 
-    return this.translator(user.language(), 'No')
-  }
+   return this.translator(user.language(), 'No')
+   }*/
 }

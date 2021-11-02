@@ -5,6 +5,7 @@ export class QueryBuilder {
   private _from: string = '';
   private _where: string[][] = [];
   private _leftJoin: RelationMetadata[] = [];
+  private _innerJoin: RelationMetadata[] = [];
 
   private _insert: string = '';
   private _values: string[] = [];
@@ -31,6 +32,11 @@ export class QueryBuilder {
 
   public leftJoin(relations: RelationMetadata[]): this {
     this._leftJoin = relations;
+    return this;
+  }
+
+  public innerJoin(relations: RelationMetadata[]): this {
+    this._innerJoin = relations;
     return this;
   }
 
@@ -79,6 +85,10 @@ export class QueryBuilder {
       query.push(this.leftJoinBuilder());
     }
 
+    if (this._innerJoin.length > 0) {
+      query.push(this.innerJoinBuilder());
+    }
+
     if (this._insert.length > 0) {
       query.push(`INSERT INTO ${this._insert}`);
     }
@@ -108,6 +118,12 @@ export class QueryBuilder {
     }).join(' ');
   }
 
+  private innerJoinBuilder(): string {
+    return this._leftJoin.map((join: RelationMetadata) => {
+      return `INNER JOIN ${join.refTable} ON ${this._from}.${this.prefix}_id = ${join.refTable}.${join.refPropName}`;
+    }).join(' ');
+  }
+
   private updateBuilder(): string[] {
     return this._set.reduce((set: string[], clause: string[], index: number) => {
       const [ column, value ] = clause;
@@ -119,21 +135,42 @@ export class QueryBuilder {
   }
 
   private whereBuilder(): string {
+    debug(this._leftJoin)
+    debug(this._where)
     return this._where.reduce((where: string, clause: string[], index: number) => {
-      const [ field, value ] = clause;
+      const [ field, value ] = this.setPrefix(clause);
       if (index === 0 && value === 'null') {
         return `WHERE ${this.prefix}_${field} IS NULL`
       }
 
       if (index === 0) {
-        return `WHERE ${this.prefix}_${field} = '${value}'`
+        return `WHERE ${field} = '${value}'`
       }
 
       if (value === 'null') {
-        return `${where} AND ${this.prefix}_${field} IS NULL`;
+        return `${where} AND ${field} IS NULL`;
       }
 
-      return `${where} AND ${this.prefix}_${field} = '${value}'`;
+      return `${where} AND ${field} = '${value}'`;
     }, '');
+  }
+
+  private setPrefix(clause: string[]): string[] {
+    const [ field, value ] = clause;
+
+    if (field.includes('.')) {
+      const [ table, fieldName ] = field.split('.');
+      const prefix = this.getPrefix(table);
+      const fieldWithPrefix = `${table}.${prefix}_${fieldName}`;
+
+      return [ fieldWithPrefix, value ];
+    }
+
+    return [ `${this.prefix}_${field}`, value ];
+  }
+
+  private getPrefix(table: string): string {
+    const tablename = table.split('_');
+    return tablename.reduce((prefix: string, word: string) => `${prefix}${word.split('').slice(0, 2).join('')}`, '');
   }
 }

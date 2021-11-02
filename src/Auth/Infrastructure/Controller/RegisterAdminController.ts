@@ -10,7 +10,7 @@ import { Auth } from "../../Domain/Auth.entity";
 @Controller()
 export class RegisterAdminController extends BaseController<Auth> {
   @post('/register')
-  public async register(req: Request, res: Response<void>, next: NextFunction): Promise<void> {
+  public async register(req: Request, res: Response<any>, next: NextFunction): Promise<void> {
     try {
       await this.commandBus.dispatch(
         new RegisterAdminCommand(req.body.name, req.body.email, req.body.password)
@@ -31,7 +31,7 @@ export class RegisterAdminController extends BaseController<Auth> {
         jwt: userJwt,
       };
 
-      res.status(201).send();
+      res.status(201).send({ id: auth.id(), username: auth.name() });
     } catch (error) {
       next(error);
     }
