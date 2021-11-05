@@ -1,7 +1,7 @@
 import { IQuery } from "../../../../Shared/Domain/Interfaces/IQuery";
-import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
+import { FilterRequestDto } from "../../Application/FilterRequestDto";
 
 export class GetAllUsersQuery implements IQuery {
-  constructor(public criteria: Criteria, public adminId: string) {
+  constructor(public filters: FilterRequestDto[], public adminId: string) {
   };
 }
