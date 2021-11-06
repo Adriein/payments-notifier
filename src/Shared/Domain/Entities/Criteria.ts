@@ -13,6 +13,10 @@ export class Criteria {
     this._map.set(this._field, { equality, operation: OPERATORS.equal });
   }
 
+  public like(equality: string): void {
+    this._map.set(this._field, { equality, operation: OPERATORS.like });
+  }
+
   public get storage(): Map<string, { equality: string, operation: string }> {
     return this._map;
   }

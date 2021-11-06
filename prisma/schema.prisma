@@ -1,0 +1,82 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+    id String @id
+    username String
+    email String @unique
+    password String
+    owner_id String
+    subscriptions Subscription[]
+    pricing Pricing?
+    role Role @relation(fields: [role_id], references: [id])
+    role_id String
+    config Config?
+    app_config AppConfig?
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}
+
+model Pricing {
+    id String @id
+    pricing_name String
+    duration Int @db.SmallInt
+    amount Int @db.SmallInt
+    user User @relation(fields: [user_id], references: [id])
+    user_id  String
+    subscriptions Subscription[]
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}
+
+model Subscription {
+    id String @id
+    payment_date DateTime @db.Timestamp(0)
+    warned Boolean
+    notified Boolean
+    active Boolean
+    expired Boolean
+    pricing Pricing  @relation(fields: [pricing_id], references: [id])
+    pricing_id String
+    user User @relation(fields: [user_id], references: [id])
+    user_id  String
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}
+
+model Role {
+    id String @id
+    type String
+    users User[]
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}
+
+model Config {
+    id String @id
+    language String
+    send_notifications Boolean
+    send_warnings Boolean
+    user User @relation(fields: [user_id], references: [id])
+    user_id  String
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}
+
+model AppConfig {
+    id String @id
+    warning_delay Int @db.SmallInt
+    notification_delay Int @db.SmallInt
+    email_content String
+    last_sent_report DateTime @db.Timestamp(0)
+    user User @relation(fields: [user_id], references: [id])
+    user_id  String
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}

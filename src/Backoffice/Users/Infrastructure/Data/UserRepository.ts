@@ -4,6 +4,7 @@ import { User } from "../../Domain/User.entity";
 import { UserDAO } from "./User.dao";
 import { UserMapper } from "./UserMapper";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
+import { PrismaClient } from '@prisma/client'
 
 export class UserRepository implements IUserRepository {
   private mapper = new UserMapper();
@@ -70,12 +71,24 @@ export class UserRepository implements IUserRepository {
 
   @Log(process.env.LOG_LEVEL)
   public async findByEmail(email: string): Promise<User | undefined> {
-    const dao = new UserDAO();
-    const criteria = new Criteria();
+    /*const dao = new UserDAO();
+     const criteria = new Criteria();
 
-    criteria.field('email').equals(email);
+     criteria.field('email').equals(email);
 
-    const [ result ] = await dao.find(criteria);
+     const [ result ] = await dao.find(criteria);
+
+     if (!result) {
+     return undefined;
+     }*/
+    const prisma = new PrismaClient()
+
+    const result = await prisma.user.findUnique({
+      where: {
+        email
+      },
+    });
+    prisma.$disconnect();
 
     if (!result) {
       return undefined;
