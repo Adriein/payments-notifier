@@ -14,9 +14,10 @@ export class User extends AggregateRoot {
     password: Password,
     email: Email,
     config: UserConfig,
-    subscription: Subscription
+    subscription: Subscription,
+    roleId: ID
   ): User {
-    return new User(ID.generate(), name, password, email, config, ownerId, subscription);
+    return new User(ID.generate(), name, password, email, config, ownerId, roleId, subscription);
   }
 
   constructor(
@@ -26,6 +27,7 @@ export class User extends AggregateRoot {
     private _email: Email,
     private _config: UserConfig,
     private _ownerId: ID,
+    private _roleId: ID,
     private _subscription: Subscription,
     _createdAt?: Date,
     _updatedAt?: Date
@@ -57,8 +59,8 @@ export class User extends AggregateRoot {
     return this._config.lang();
   }
 
-  public role = (): string => {
-    return this._config.role();
+  public roleId = (): string => {
+    return this._roleId.value;
   }
 
   public sendNotifications = (): boolean => {
@@ -99,6 +101,10 @@ export class User extends AggregateRoot {
 
   public subscriptionId = (): string => {
     return this._subscription.id();
+  }
+
+  public isSubscriptionExpired = (): boolean => {
+    return this._subscription.hasExpired();
   }
 
   public subscriptionCreatedAt = (): Date => {

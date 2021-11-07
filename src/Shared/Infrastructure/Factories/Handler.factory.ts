@@ -16,7 +16,6 @@ import { AuthRepository } from "../../../Auth/Infrastructure/Data/AuthRepository
 import { SignInHandler } from "../../../Auth/Application/SignInHandler";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
-import { FindPricingHandler } from "../../../Backoffice/Pricing/Application/FindPricingHandler";
 import { PricingRepository } from "../../../Backoffice/Pricing/Infraestructure/Data/PricingRepository";
 import { CreateUserHandler } from "../../../Backoffice/Users/Application/CreateUserHandler";
 import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
@@ -24,6 +23,9 @@ import { UpdateUserHandler } from "../../../Backoffice/Users/Application/UpdateU
 import { UpdatePaymentHandler } from "../../../Backoffice/Users/Application/UpdatePaymentHandler";
 import { GetPricingHandler } from "../../../Backoffice/Pricing/Application/GetPricingHandler";
 import { GetAllUsersHandler } from "../../../Backoffice/Users/Application/GetAllUsersHandler";
+import { SearchRoleHandler } from "../../../Backoffice/Role/Application/SearchRoleHandler";
+import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
+import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/SearchPricingHandler";
 
 
 export default class HandlerFactory {
@@ -37,6 +39,7 @@ export default class HandlerFactory {
   private cryptoService: CryptoService = new CryptoService();
   private pricingRepository: PricingRepository = new PricingRepository();
   private userRepository: UserRepository = new UserRepository();
+  private roleRepository: RoleRepository = new RoleRepository();
 
   constructor() {
     this.register();
@@ -83,13 +86,13 @@ export default class HandlerFactory {
     );
 
     this.handlers.set(
-      FindPricingHandler.name,
-      new FindPricingHandler(this.pricingRepository)
+      GetPricingHandler.name,
+      new GetPricingHandler(this.pricingRepository)
     );
 
     this.handlers.set(
-      GetPricingHandler.name,
-      new GetPricingHandler(this.pricingRepository)
+      SearchPricingHandler.name,
+      new SearchPricingHandler(this.pricingRepository)
     );
 
     this.handlers.set(
@@ -104,7 +107,7 @@ export default class HandlerFactory {
 
     this.handlers.set(
       CreateUserHandler.name,
-      new CreateUserHandler(this.userRepository)
+      new CreateUserHandler(this.userRepository, QueryBus.instance())
     );
 
     this.handlers.set(
@@ -120,6 +123,11 @@ export default class HandlerFactory {
     this.handlers.set(
       GetAllUsersHandler.name,
       new GetAllUsersHandler(this.userRepository, QueryBus.instance())
+    );
+
+    this.handlers.set(
+      SearchRoleHandler.name,
+      new SearchRoleHandler(this.roleRepository)
     );
 
   }

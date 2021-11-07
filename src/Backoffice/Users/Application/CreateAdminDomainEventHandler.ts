@@ -15,8 +15,8 @@ import { ADMIN_ROLE, LANG_ES } from "../../../Domain/constants";
 import { UserAlreadyExistsError } from "../Domain/UserAlreadyExistsError";
 import { IQueryBus } from "../../../Shared/Domain/Bus/IQueryBus";
 import { PricingResponseDto } from "../../Pricing/Application/PricingResponse.dto";
-import { FindPricingQuery } from "../../Pricing/Domain/FindPricingQuery";
-import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
+import { SearchRoleQuery } from "../../Role/Domain/SearchRoleQuery";
+import { SearchPricingQuery } from "../../Pricing/Domain/SearchPricingQuery";
 
 @DomainEventsHandler(AdminCreatedDomainEvent)
 export class CreateAdminDomainEventHandler implements IDomainEventHandler {
@@ -38,17 +38,17 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
     const id = ID.generate();
     const password = await this.crypto.hash(event.password);
 
-    const criteria = this.buildAdminPricingCriteria();
-
-    const pricing = await this.queryBus.ask(new FindPricingQuery(criteria));
+    const pricing = await this.queryBus.ask(new SearchPricingQuery('yearly'));
+    const role = await this.queryBus.ask(new SearchRoleQuery(ADMIN_ROLE));
 
     const user = new User(
       id,
       event.name,
       new Password(password),
       new Email(event.email),
-      new UserConfig(ID.generate(), LANG_ES, ADMIN_ROLE),
+      new UserConfig(ID.generate(), LANG_ES),
       id,
+      new ID(role.id),
       Subscription.build(
         new ID(pricing.id),
         new LastPaymentDate(new Date().toString())
@@ -56,13 +56,5 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
     );
 
     await this.repository.save(user);
-  }
-
-  private buildAdminPricingCriteria(): Criteria {
-    const criteria = new Criteria()
-    criteria.field('pricingName').equals('yearly');
-    criteria.field('userId').equals('null');
-
-    return criteria;
   }
 }

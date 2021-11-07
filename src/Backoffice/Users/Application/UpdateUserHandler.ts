@@ -31,7 +31,6 @@ export class UpdateUserHandler implements IHandler<void> {
     const config = new UserConfig(
       new ID(userOnDb.configId()),
       userOnDb.language(),
-      userOnDb.role(),
       userOnDb.sendNotifications(),
       userOnDb.sendWarnings()
     );
@@ -43,6 +42,7 @@ export class UpdateUserHandler implements IHandler<void> {
       userOnDb.isWarned(),
       userOnDb.isNotified(),
       userOnDb.isActive(),
+      userOnDb.isSubscriptionExpired(),
       userOnDb.subscriptionCreatedAt(),
       new Date()
     );
@@ -54,6 +54,7 @@ export class UpdateUserHandler implements IHandler<void> {
       email,
       config,
       new ID(command.adminId),
+      new ID(userOnDb.roleId()),
       subscription,
       userOnDb.createdAt(),
       new Date(),

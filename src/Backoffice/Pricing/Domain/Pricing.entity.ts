@@ -3,13 +3,12 @@ import { ID } from "../../../Shared/Domain/VO/Id.vo";
 import { Nullable } from "../../../Shared/Domain/types";
 
 export class Pricing extends BaseEntity {
-  public static build(name: string, duration: number, price: number, userId: Nullable<ID>): Pricing {
+  public static build(name: string, duration: number, price: number): Pricing {
     return new Pricing(
       ID.generate(),
       name,
       duration,
-      price,
-      userId
+      price
     );
   }
 
@@ -17,8 +16,7 @@ export class Pricing extends BaseEntity {
     _id: ID,
     private _name: string,
     private _duration: number,
-    private _price: number,
-    private _userId: Nullable<ID>
+    private _price: number
   ) {
     super(_id);
   }
@@ -33,9 +31,5 @@ export class Pricing extends BaseEntity {
 
   public price(): number {
     return this._price;
-  }
-
-  public userId(): Nullable<ID> {
-    return this._userId;
   }
 }

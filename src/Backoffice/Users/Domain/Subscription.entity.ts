@@ -15,7 +15,8 @@ export class Subscription extends BaseEntity {
       lastPayment,
       false,
       false,
-      true
+      true,
+      false,
     );
   }
 
@@ -26,6 +27,7 @@ export class Subscription extends BaseEntity {
     private _isWarned: boolean,
     private _isNotified: boolean,
     private _isActive: boolean,
+    private _isExpired: boolean,
     _createdAt?: Date,
     _updatedAt?: Date
   ) {
@@ -33,9 +35,13 @@ export class Subscription extends BaseEntity {
   }
 
 
+  /*public hasExpired = (): boolean => {
+   const expirationDate = DateUtils.add(this._lastPayment.value, 5)
+   return DateUtils.before(expirationDate, new Date());
+   };*/
+
   public hasExpired = (): boolean => {
-    const expirationDate = DateUtils.add(this._lastPayment.value, 5)
-    return DateUtils.before(expirationDate, new Date());
+    return this._isExpired;
   };
 
   public daysExpired = (): number => {

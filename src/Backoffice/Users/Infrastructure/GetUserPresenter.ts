@@ -13,7 +13,7 @@ export class GetUserPresenter {
       config: {
         sendNotifications: user.sendNotifications(),
         sendWarnings: user.sendWarnings(),
-        role: user.role(),
+        role: user.roleId(),
         language: user.language()
       },
       subscription: {

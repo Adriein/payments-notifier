@@ -2,4 +2,6 @@ import { IRepository } from "../../../Shared/Domain/Interfaces/IRepository";
 import { Pricing } from "./Pricing.entity";
 
 
-export interface IPricingRepository extends IRepository<Pricing> {}
+export interface IPricingRepository extends IRepository<Pricing> {
+  search(pricingName: string): Promise<Pricing | undefined>;
+}

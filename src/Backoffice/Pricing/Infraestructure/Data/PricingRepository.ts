@@ -1,43 +1,62 @@
 import { IPricingRepository } from "../../Domain/IPricingRepository";
 import { Pricing } from "../../Domain/Pricing.entity";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { PricingDao } from "./Pricing.dao";
 import { PricingMapper } from "./PricingMapper";
+import { PrismaClient } from "@prisma/client";
 
 export class PricingRepository implements IPricingRepository {
   private readonly mapper = new PricingMapper();
 
   delete(id: string): Promise<void> {
-    return Promise.resolve(undefined);
+    throw new Error('Not implemented yet');
   }
 
   public async find(criteria: Criteria): Promise<Pricing[]> {
-    const dao = new PricingDao();
-
-    const results = await dao.find(criteria);
-
-    return results.map(result => this.mapper.toDomain(result));
+    throw new Error('Not implemented yet');
   }
 
   public async findOne(id: string): Promise<Pricing | undefined> {
-    const dao = new PricingDao();
-    dao.id = id;
+    const prisma = new PrismaClient();
 
-    const pricingDAO = await dao.getOne();
+    const result = await prisma.pricing.findUnique({
+      where: {
+        id
+      }
+    });
 
-    if (!pricingDAO) {
+    prisma.$disconnect();
+
+    if (!result) {
       return undefined;
     }
 
-    return this.mapper.toDomain(pricingDAO);
+    return this.mapper.toDomain(result);
   }
 
   save(entity: Pricing): Promise<void> {
-    return Promise.resolve(undefined);
+    throw new Error('Not implemented yet');
   }
 
   update(entity: Pricing): Promise<void> {
-    return Promise.resolve(undefined);
+    throw new Error('Not implemented yet');
+  }
+
+  public async search(pricingName: string): Promise<Pricing | undefined> {
+    const prisma = new PrismaClient();
+
+    const [ result ] = await prisma.pricing.findMany({
+      where: {
+        pricing_name: pricingName
+      }
+    });
+
+    prisma.$disconnect();
+
+    if (!result) {
+      return undefined;
+    }
+
+    return this.mapper.toDomain(result);
   }
 
 }

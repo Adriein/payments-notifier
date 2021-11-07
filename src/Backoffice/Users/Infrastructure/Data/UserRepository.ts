@@ -1,10 +1,10 @@
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { User } from "../../Domain/User.entity";
-import { UserDAO } from "./User.dao";
 import { UserMapper } from "./UserMapper";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
+import { USER_ROLE } from "../../../../Domain/constants";
 
 export class UserRepository implements IUserRepository {
   private mapper = new UserMapper();
@@ -16,78 +16,66 @@ export class UserRepository implements IUserRepository {
 
   @Log(process.env.LOG_LEVEL)
   public async find(criteria?: Criteria): Promise<User[]> {
-    const dao = new UserDAO();
-
-    const results = await dao.find(criteria);
-
-    return results.map((dao: UserDAO) => this.mapper.toDomain(dao));
+    throw new Error();
   }
 
   @Log(process.env.LOG_LEVEL)
   public async findOne(id: string): Promise<User | undefined> {
-    const dao = new UserDAO();
-    dao.id = id;
+    const prisma = new PrismaClient();
+    try {
+      const result = await prisma.user.findUnique({
+        where: {
+          id
+        },
+        include: {
+          config: true,
+          subscriptions: true,
+          role: true
+        }
+      });
 
-    const userDAO = await dao.getOne();
+      prisma.$disconnect();
 
-    if (!userDAO) {
-      return undefined;
+      if (!result) {
+        return undefined;
+      }
+    } catch (error) {
+      prisma.$disconnect();
+      throw error;
     }
-
-    return this.mapper.toDomain(userDAO);
   }
 
   @Log(process.env.LOG_LEVEL)
   public async save(entity: User): Promise<void> {
-    const userDAO = this.mapper.toDataModel(entity);
-
-    const [ subscriptionDAO ] = userDAO.subscriptions;
-    const userConfigDAO = userDAO.userConfig;
-
-    const existingUser = userDAO.getOne();
-
-    if (existingUser) {
-      await subscriptionDAO.save();
-      return await Promise.resolve();
+    const prisma = new PrismaClient();
+    try {
+      await prisma.user.create({ data: this.buildUserCreationInput(entity) });
+    } catch (error) {
+      prisma.$disconnect();
+      throw error;
     }
-
-    await userDAO.save();
-    await subscriptionDAO.save();
-    await userConfigDAO!.save();
   }
 
   @Log(process.env.LOG_LEVEL)
   public async update(entity: User): Promise<void> {
-    const userDAO = this.mapper.toDataModel(entity);
-
-    const [ subscriptionDAO ] = userDAO.subscriptions;
-    const userConfigDAO = userDAO.userConfig;
-
-    await userDAO.update();
-    await subscriptionDAO.update();
-    await userConfigDAO!.update();
-
+    throw new Error();
   }
 
   @Log(process.env.LOG_LEVEL)
   public async findByEmail(email: string): Promise<User | undefined> {
-    /*const dao = new UserDAO();
-     const criteria = new Criteria();
-
-     criteria.field('email').equals(email);
-
-     const [ result ] = await dao.find(criteria);
-
-     if (!result) {
-     return undefined;
-     }*/
-    const prisma = new PrismaClient()
+    const prisma = new PrismaClient();
 
     const result = await prisma.user.findUnique({
       where: {
         email
       },
+      include: {
+        config: true,
+        subscriptions: true,
+        role: true
+      }
     });
+
     prisma.$disconnect();
 
     if (!result) {
@@ -99,15 +87,73 @@ export class UserRepository implements IUserRepository {
 
   @Log(process.env.LOG_LEVEL)
   public async findAllUsersByAdminWithActiveSubscriptions(adminId: string): Promise<User[]> {
-    const dao = new UserDAO();
-    const criteria = new Criteria();
+    const prisma = new PrismaClient();
+    try {
+      const results = await prisma.user.findMany({
+        where: {
+          owner_id: adminId,
+          subscriptions: {
+            some: {
+              active: true
+            }
+          },
+          role: {
+            type: USER_ROLE
+          }
+        },
+        include: {
+          config: true,
+          subscriptions: true,
+          role: true
+        }
+      });
 
-    criteria.field('owner_id').equals(adminId);
-    criteria.field('subscriptions.active').equals('true');
-    criteria.field('config.role').equals('user');
+      prisma.$disconnect();
+      
+      return results.map((result) => this.mapper.toDomain(result));
+    } catch (error) {
+      prisma.$disconnect();
+      throw error;
+    }
+  }
 
-    const results = await dao.find(criteria);
-
-    return results.map((dao: UserDAO) => this.mapper.toDomain(dao));
+  private buildUserCreationInput(entity: User): Prisma.userCreateInput {
+    return {
+      id: entity.id(),
+      username: entity.name(),
+      email: entity.email(),
+      password: entity.password(),
+      owner_id: entity.ownerId(),
+      created_at: entity.createdAt(),
+      updated_at: entity.updatedAt(),
+      role: {
+        connect: {
+          id: entity.roleId(),
+        }
+      },
+      config: {
+        create: {
+          id: entity.configId(),
+          send_warnings: entity.sendWarnings(),
+          send_notifications: entity.sendNotifications(),
+          language: entity.language(),
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      },
+      subscriptions: {
+        create: {
+          id: entity.subscriptionId(),
+          pricing_id: entity.pricingId(),
+          active: entity.isActive(),
+          expired: false,
+          warned: entity.isWarned(),
+          notified: entity.isNotified(),
+          payment_date: entity.paymentDate(),
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      }
+    };
   }
 }
