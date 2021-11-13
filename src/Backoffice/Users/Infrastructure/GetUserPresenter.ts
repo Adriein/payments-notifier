@@ -4,7 +4,7 @@ import { Translations } from "../../../Shared/Domain/Entities/Translations";
 import { PricingResponseDto } from "../../Pricing/Application/PricingResponse.dto";
 
 export class GetUserPresenter {
-  public execute(user: User, pricing: PricingResponseDto): GetUserResponse {
+  public execute(user: User): GetUserResponse {
     return {
       id: user.id(),
       username: user.name(),
@@ -18,7 +18,7 @@ export class GetUserPresenter {
       },
       subscription: {
         pricing: {
-          price: pricing.price,
+          price: user.pricingId(),
           name: pricing.name,
           duration: pricing.duration
         },

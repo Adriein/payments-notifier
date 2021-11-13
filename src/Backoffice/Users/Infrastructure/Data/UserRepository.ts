@@ -5,6 +5,7 @@ import { UserMapper } from "./UserMapper";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { Prisma, PrismaClient } from '@prisma/client'
 import { USER_ROLE } from "../../../../Domain/constants";
+import { Filter } from "../../../../Shared/Domain/Entities/Filter";
 
 export class UserRepository implements IUserRepository {
   private mapper = new UserMapper();
@@ -15,8 +16,36 @@ export class UserRepository implements IUserRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async find(criteria?: Criteria): Promise<User[]> {
-    throw new Error();
+  public async find(criteria: Criteria): Promise<User[]> {
+    const prisma = new PrismaClient();
+
+    const adminId = criteria.filters().find((filter: Filter) => filter.field() === 'owner_id');
+
+    if (!adminId) {
+      throw new Error('must send an admin id');
+    }
+
+    try {
+      const results = await prisma.user.findMany({
+        where: {
+          owner_id: adminId.value(),
+          ...criteria.translate()
+        },
+        include: {
+          config: true,
+          subscriptions: true,
+          role: true
+        }
+      });
+
+      prisma.$disconnect();
+
+      return results.map((result) => this.mapper.toDomain(result));
+    } catch
+      (error) {
+      prisma.$disconnect();
+      throw error;
+    }
   }
 
   @Log(process.env.LOG_LEVEL)
@@ -39,6 +68,8 @@ export class UserRepository implements IUserRepository {
       if (!result) {
         return undefined;
       }
+
+      return this.mapper.toDomain(result);
     } catch (error) {
       prisma.$disconnect();
       throw error;
@@ -93,7 +124,7 @@ export class UserRepository implements IUserRepository {
         where: {
           owner_id: adminId,
           subscriptions: {
-            some: {
+            every: {
               active: true
             }
           },
@@ -109,7 +140,7 @@ export class UserRepository implements IUserRepository {
       });
 
       prisma.$disconnect();
-      
+
       return results.map((result) => this.mapper.toDomain(result));
     } catch (error) {
       prisma.$disconnect();

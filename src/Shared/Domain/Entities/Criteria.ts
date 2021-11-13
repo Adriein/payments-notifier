@@ -1,23 +1,17 @@
-import { OPERATORS } from '../../../Domain/constants';
+import { Filter } from "./Filter";
+import { PrismaTranslator } from "./PrismaTranslator";
 
 export class Criteria {
-  private _map = new Map<string, { equality: string, operation: string }>();
-  private _field!: string;
 
-  public field(field: string): this {
-    this._field = field;
-    return this;
+  private prisma = new PrismaTranslator();
+
+  constructor(private readonly _filters: Filter[]) {}
+
+  public translate(): any {
+    return this.prisma.toPrisma(this._filters);
   }
 
-  public equals(equality: string): void {
-    this._map.set(this._field, { equality, operation: OPERATORS.equal });
-  }
-
-  public like(equality: string): void {
-    this._map.set(this._field, { equality, operation: OPERATORS.like });
-  }
-
-  public get storage(): Map<string, { equality: string, operation: string }> {
-    return this._map;
+  public filters(): Filter[] {
+    return this._filters;
   }
 }

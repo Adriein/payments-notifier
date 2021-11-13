@@ -2,21 +2,16 @@ import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
 import { GetAllUsersQuery } from "../Domain/Query/GetAllUsersQuery";
 import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
 import { IUserRepository } from "../Domain/IUserRepository";
-import { IQueryBus } from "../../../Shared/Domain/Bus/IQueryBus";
-import { PricingResponseDto } from "../../Pricing/Application/PricingResponse.dto";
 import { GetUserResponseDto } from "./GetUserResponseDto";
-import { GetPricingQuery } from "../../Pricing/Domain/GetPricingQuery";
 import { Log } from "../../../Shared/Domain/Decorators/Log";
 import { FilterRequestDto } from "./FilterRequestDto";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
+import { Filter } from "../../../Shared/Domain/Entities/Filter";
+import { OPERATORS } from "../../../Domain/constants";
 
 @QueryHandler(GetAllUsersQuery)
 export class GetAllUsersHandler implements IHandler<GetUserResponseDto[]> {
-  public constructor(
-    private readonly repository: IUserRepository,
-    private readonly bus: IQueryBus<PricingResponseDto>
-  ) {
-  }
+  public constructor(private readonly repository: IUserRepository) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: GetAllUsersQuery): Promise<GetUserResponseDto[]> {
@@ -26,11 +21,9 @@ export class GetAllUsersHandler implements IHandler<GetUserResponseDto[]> {
       const criteria = this.mapFiltersToCriteria(query.filters);
 
       const users = await this.repository.find(criteria);
-
+      console.log(users);
       for (const user of users) {
-        const pricing = await this.bus.ask(new GetPricingQuery(user.pricingId()));
-
-        responses.push(new GetUserResponseDto(user, pricing));
+        responses.push(new GetUserResponseDto(user));
       }
 
       return responses;
@@ -39,9 +32,7 @@ export class GetAllUsersHandler implements IHandler<GetUserResponseDto[]> {
     const users = await this.repository.findAllUsersByAdminWithActiveSubscriptions(query.adminId);
 
     for (const user of users) {
-      const pricing = await this.bus.ask(new GetPricingQuery(user.pricingId()));
-
-      responses.push(new GetUserResponseDto(user, pricing));
+      responses.push(new GetUserResponseDto(user));
     }
 
     return responses;
@@ -51,13 +42,13 @@ export class GetAllUsersHandler implements IHandler<GetUserResponseDto[]> {
     return filters.length > 0;
   }
 
-  private mapFiltersToCriteria(filters: FilterRequestDto[]): Criteria {
-    const criteria = new Criteria();
+  private mapFiltersToCriteria(queryFilters: FilterRequestDto[]): Criteria {
+    const filters = queryFilters.map((filter: FilterRequestDto) => new Filter(
+      filter.field,
+      filter.value,
+      filter.operation as unknown as OPERATORS
+    ));
 
-    for (const filter of filters) {
-      criteria.field(filter.field).equals(filter.value);
-    }
-
-    return criteria;
+    return new Criteria(filters);
   }
 }

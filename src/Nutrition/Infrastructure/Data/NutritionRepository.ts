@@ -4,7 +4,6 @@ import { Nutrition } from '../../Domain/Nutrition.entity';
 import { NutritionDAO } from './Nutrition.dao';
 import { NutritionMapper } from './NutritionMapper';
 import { Criteria } from '../../../Shared/Domain/Entities/Criteria';
-import { SqlTranslator } from '../../../Shared/Domain/Entities/SqlTranslator';
 
 export class NutritionRepository implements INutritionRepository {
   private mapper: IMapper<Nutrition, NutritionDAO> = new NutritionMapper();

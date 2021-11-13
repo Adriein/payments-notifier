@@ -7,7 +7,6 @@ import { UserConfig } from "../../Domain/UserConfig.entity";
 import { Subscription } from "../../Domain/Subscription.entity";
 import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
 import { IUserModel } from "./IUserModel";
-import { Prisma } from "@prisma/client";
 
 export class UserMapper implements IMapper<User, IUserModel> {
 

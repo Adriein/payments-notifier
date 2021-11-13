@@ -14,9 +14,13 @@ export class Collection<T = any> {
     return this.collection;
   }
 
+  public size(): number {
+    return this.collection.length;
+  }
+
   public static flat<T>(array: T[][]) {
-    const flattenedArray = array.reduce((flat: T[], value: T[]) => {      
-      return [...flat, ...value];
+    const flattenedArray = array.reduce((flat: T[], value: T[]) => {
+      return [ ...flat, ...value ];
     }, []);
 
     return new Collection<T>(flattenedArray);
