@@ -1,11 +1,11 @@
-import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
-import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
-import { CheckForExpiredSubscriptionsQuery } from "../Domain/Query/CheckForExpiredSubscriptionsQuery";
-import { IUserRepository } from "../Domain/IUserRepository";
-import { Log } from "../../../Shared/Domain/Decorators/Log";
-import { IQueryBus } from "../../../Shared/Domain/Bus/IQueryBus";
-import { GetAppConfigDto } from "../../AppConfig/Application/GetAppConfigDto";
-import { GetAppConfigQuery } from "../../AppConfig/Domain/GetAppConfigQuery";
+import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
+import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
+import { CheckForExpiredSubscriptionsQuery } from "../../Domain/Query/CheckForExpiredSubscriptionsQuery";
+import { IUserRepository } from "../../Domain/IUserRepository";
+import { Log } from "../../../../Shared/Domain/Decorators/Log";
+import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
+import { GetAppConfigDto } from "../../../AppConfig/Application/GetAppConfigDto";
+import { GetAppConfigQuery } from "../../../AppConfig/Domain/GetAppConfigQuery";
 
 @QueryHandler(CheckForExpiredSubscriptionsQuery)
 export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {

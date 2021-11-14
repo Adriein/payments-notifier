@@ -19,10 +19,10 @@ import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHan
 import { PricingRepository } from "../../../Backoffice/Pricing/Infraestructure/Data/PricingRepository";
 import { CreateUserHandler } from "../../../Backoffice/Users/Application/CreateUserHandler";
 import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
-import { UpdateUserHandler } from "../../../Backoffice/Users/Application/UpdateUserHandler";
-import { UpdatePaymentHandler } from "../../../Backoffice/Users/Application/UpdatePaymentHandler";
+import { UpdateUserHandler } from "../../../Backoffice/Users/Application/Update/UpdateUserHandler";
+import { UpdatePaymentHandler } from "../../../Backoffice/Users/Application/Update/UpdatePaymentHandler";
 import { GetPricingHandler } from "../../../Backoffice/Pricing/Application/GetPricingHandler";
-import { GetAllUsersHandler } from "../../../Backoffice/Users/Application/GetAllUsersHandler";
+import { GetAllUsersHandler } from "../../../Backoffice/Users/Application/Find/GetAllUsersHandler";
 import { SearchRoleHandler } from "../../../Backoffice/Role/Application/SearchRoleHandler";
 import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
 import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/SearchPricingHandler";

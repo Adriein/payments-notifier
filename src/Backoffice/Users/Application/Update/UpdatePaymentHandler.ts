@@ -1,12 +1,12 @@
-import { Log } from "../../../Shared/Domain/Decorators/Log";
-import { CommandHandler } from "../../../Shared/Domain/Decorators/CommandHandler.decorator";
-import { IUserRepository } from "../Domain/IUserRepository";
-import { ID } from "../../../Shared/Domain/VO/Id.vo";
-import { LastPaymentDate } from "../../../Shared/Domain/VO/LastPaymentDate.vo";
-import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
-import { UserNotExistError } from "../Domain/UserNotExistError";
-import { UpdatePaymentCommand } from "../Domain/Command/UpdatePaymentCommand";
-import { User } from "../Domain/User.entity";
+import { Log } from "../../../../Shared/Domain/Decorators/Log";
+import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
+import { IUserRepository } from "../../Domain/IUserRepository";
+import { ID } from "../../../../Shared/Domain/VO/Id.vo";
+import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
+import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
+import { UserNotExistError } from "../../Domain/UserNotExistError";
+import { UpdatePaymentCommand } from "../../Domain/Command/UpdatePaymentCommand";
+import { User } from "../../Domain/User.entity";
 
 @CommandHandler(UpdatePaymentCommand)
 export class UpdatePaymentHandler implements IHandler<void> {

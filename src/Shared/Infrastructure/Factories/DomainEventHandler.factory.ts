@@ -2,7 +2,7 @@ import { RegisterApiUsageHandler } from '../../../Backoffice/Metrics';
 import { ApiUsageRepository } from '../../../Backoffice/Metrics/Infraestructure/Data/ApiUsageRepository';
 import { IDomainEventHandler } from '../../Domain/Interfaces/IDomainEventHandler';
 import { ConstructorFunc } from '../../Domain/types';
-import { CreateAdminDomainEventHandler } from "../../../Backoffice/Users/Application/CreateAdminDomainEventHandler";
+import { CreateAdminDomainEventHandler } from "../../../Backoffice/Users/Application/Create/CreateAdminDomainEventHandler";
 import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { QueryBus } from "../Bus/QueryBus";

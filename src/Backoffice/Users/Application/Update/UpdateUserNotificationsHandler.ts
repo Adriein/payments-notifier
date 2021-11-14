@@ -1,10 +1,10 @@
-import { Log } from "../../../Shared/Domain/Decorators/Log";
-import { CommandHandler } from "../../../Shared/Domain/Decorators/CommandHandler.decorator";
-import { IUserRepository } from "../Domain/IUserRepository";
-import { ID } from "../../../Shared/Domain/VO/Id.vo";
-import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
-import { UserNotExistError } from "../Domain/UserNotExistError";
-import { UpdateUserNotificationsCommand } from "../Domain/Command/UpdateUserNotificationsCommand";
+import { Log } from "../../../../Shared/Domain/Decorators/Log";
+import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
+import { IUserRepository } from "../../Domain/IUserRepository";
+import { ID } from "../../../../Shared/Domain/VO/Id.vo";
+import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
+import { UserNotExistError } from "../../Domain/UserNotExistError";
+import { UpdateUserNotificationsCommand } from "../../Domain/Command/UpdateUserNotificationsCommand";
 
 @CommandHandler(UpdateUserNotificationsCommand)
 export class UpdateUserNotificationsHandler implements IHandler<void> {
