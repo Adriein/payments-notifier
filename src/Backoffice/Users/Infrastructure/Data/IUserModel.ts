@@ -2,8 +2,9 @@ export interface IUserModel {
   id: string;
   username: string;
   email: string;
-  password: string
-  owner_id: string
+  password: string;
+  owner_id: string;
+  active: boolean;
   subscriptions?: any[];
   role?: any;
   role_id: string

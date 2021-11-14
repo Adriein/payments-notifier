@@ -11,16 +11,7 @@ import { IUserModel } from "./IUserModel";
 export class UserMapper implements IMapper<User, IUserModel> {
 
   toDataModel(entity: User): IUserModel {
-    return {
-      id: entity.id(),
-      username: entity.name(),
-      email: entity.email(),
-      password: entity.password(),
-      owner_id: entity.ownerId(),
-      role_id: entity.roleId(),
-      created_at: entity.createdAt(),
-      updated_at: entity.updatedAt(),
-    }
+    throw new Error('Not implemented');
   }
 
   public toDomain(dataModel: IUserModel): User {
@@ -53,6 +44,8 @@ export class UserMapper implements IMapper<User, IUserModel> {
       new ID(dataModel.owner_id!),
       dataModel.role.id,
       subscription,
+      dataModel.active,
+      dataModel.app_config ? new ID(dataModel.app_config.id) : undefined,
       new Date(dataModel.created_at),
       new Date(dataModel.updated_at)
     );

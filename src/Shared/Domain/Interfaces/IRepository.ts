@@ -10,5 +10,5 @@ export interface IRepository<T> {
 
   update(entity: T): Promise<void>;
 
-  delete(id: string): Promise<void>;
+  delete(entity: T): Promise<void>;
 }

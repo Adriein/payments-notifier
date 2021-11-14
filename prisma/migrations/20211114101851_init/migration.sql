@@ -6,6 +6,7 @@ CREATE TABLE "user" (
     "password" TEXT NOT NULL,
     "owner_id" TEXT NOT NULL,
     "role_id" TEXT NOT NULL,
+    "active" BOOLEAN NOT NULL,
     "created_at" TIMESTAMP(0) NOT NULL,
     "updated_at" TIMESTAMP(0) NOT NULL,
 

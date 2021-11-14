@@ -3,6 +3,7 @@ export type GetUserResponse = {
   username: string,
   email: string,
   defaulter: string,
+  active: boolean,
   subscription: GetSubscriptionResponse,
   config: GetConfigResponse,
 };

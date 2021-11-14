@@ -4,11 +4,12 @@ import { Translations } from "../../../Shared/Domain/Entities/Translations";
 import { PricingResponseDto } from "../../Pricing/Application/PricingResponse.dto";
 
 export class GetUserPresenter {
-  public execute(user: User): GetUserResponse {
+  public execute(user: User, pricing: PricingResponseDto): GetUserResponse {
     return {
       id: user.id(),
       username: user.name(),
       email: user.email(),
+      active: user.isActive(),
       defaulter: '',
       config: {
         sendNotifications: user.sendNotifications(),
@@ -18,14 +19,14 @@ export class GetUserPresenter {
       },
       subscription: {
         pricing: {
-          price: user.pricingId(),
+          price: pricing.price,
           name: pricing.name,
           duration: pricing.duration
         },
         isNotified: user.isNotified(),
         isWarned: user.isWarned(),
         lastPayment: user.paymentDate(),
-        isActive: user.isActive()
+        isActive: user.isSubscriptionActive()
       },
     }
   }

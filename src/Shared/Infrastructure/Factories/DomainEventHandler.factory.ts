@@ -6,12 +6,15 @@ import { CreateAdminDomainEventHandler } from "../../../Backoffice/Users/Applica
 import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { QueryBus } from "../Bus/QueryBus";
+import { CreateAppConfigDomainEventHandler } from "../../../Backoffice/AppConfig/Application/CreateAppConfigDomainEventHandler";
+import { AppConfigRepository } from "../../../Backoffice/AppConfig/Infrastructure/AppConfigRepository";
 
 export default class DomainEventHandlerFactory {
   private handlers: Map<string, IDomainEventHandler> = new Map();
 
   private apiUsageRepo = new ApiUsageRepository();
   private userRepository = new UserRepository();
+  private appConfigRepository = new AppConfigRepository();
   private crypto = new CryptoService();
 
   constructor() {
@@ -33,6 +36,11 @@ export default class DomainEventHandlerFactory {
     this.handlers.set(
       CreateAdminDomainEventHandler.name,
       new CreateAdminDomainEventHandler(this.userRepository, this.crypto, QueryBus.instance())
+    );
+
+    this.handlers.set(
+      CreateAppConfigDomainEventHandler.name,
+      new CreateAppConfigDomainEventHandler(this.appConfigRepository)
     );
   }
 

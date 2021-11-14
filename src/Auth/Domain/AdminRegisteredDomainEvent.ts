@@ -1,6 +1,6 @@
 import { DomainEvent } from "../../Shared/Domain/Entities/DomainEvent";
 
-export class AdminCreatedDomainEvent extends DomainEvent {
+export class AdminRegisteredDomainEvent extends DomainEvent {
   constructor(
     public readonly aggregateId: string,
     public readonly name: string,

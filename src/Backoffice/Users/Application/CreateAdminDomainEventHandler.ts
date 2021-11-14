@@ -1,6 +1,6 @@
 import { IDomainEventHandler } from "../../../Shared/Domain/Interfaces/IDomainEventHandler";
 import { DomainEventsHandler } from "../../../Shared/Domain/Decorators/DomainEventsHandler.decorator";
-import { AdminCreatedDomainEvent } from "../../../Auth/Domain/AdminCreatedDomainEvent";
+import { AdminRegisteredDomainEvent } from "../../../Auth/Domain/AdminRegisteredDomainEvent";
 import { Log } from "../../../Shared/Domain/Decorators/Log";
 import { IUserRepository } from "../Domain/IUserRepository";
 import { User } from "../Domain/User.entity";
@@ -11,14 +11,16 @@ import { LastPaymentDate } from "../../../Shared/Domain/VO/LastPaymentDate.vo";
 import { Email } from "../../../Shared/Domain/VO/Email.vo";
 import { ID } from "../../../Shared/Domain/VO/Id.vo";
 import { Password } from "../../../Shared/Domain/VO/Password.vo";
-import { ADMIN_ROLE, LANG_ES } from "../../../Domain/constants";
+import { ADMIN_ROLE, LANG_ES, YEARLY_PRICING } from "../../../Domain/constants";
 import { UserAlreadyExistsError } from "../Domain/UserAlreadyExistsError";
 import { IQueryBus } from "../../../Shared/Domain/Bus/IQueryBus";
 import { PricingResponseDto } from "../../Pricing/Application/PricingResponse.dto";
 import { SearchRoleQuery } from "../../Role/Domain/SearchRoleQuery";
 import { SearchPricingQuery } from "../../Pricing/Domain/SearchPricingQuery";
+import { AdminCreatedDomainEvent } from "../Domain/DomainEvents/AdminCreatedDomainEvent";
+import { DomainEventsManager } from "../../../Shared/Domain/Entities/DomainEventsManager";
 
-@DomainEventsHandler(AdminCreatedDomainEvent)
+@DomainEventsHandler(AdminRegisteredDomainEvent)
 export class CreateAdminDomainEventHandler implements IDomainEventHandler {
   constructor(
     private repository: IUserRepository,
@@ -28,7 +30,7 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(event: AdminCreatedDomainEvent): Promise<void> {
+  public async handle(event: AdminRegisteredDomainEvent): Promise<void> {
     const userExists = await this.repository.findByEmail(event.email);
 
     if (userExists) {
@@ -38,7 +40,7 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
     const id = ID.generate();
     const password = await this.crypto.hash(event.password);
 
-    const pricing = await this.queryBus.ask(new SearchPricingQuery('yearly'));
+    const pricing = await this.queryBus.ask(new SearchPricingQuery(YEARLY_PRICING));
     const role = await this.queryBus.ask(new SearchRoleQuery(ADMIN_ROLE));
 
     const user = new User(
@@ -52,9 +54,14 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
       Subscription.build(
         new ID(pricing.id),
         new LastPaymentDate(new Date().toString())
-      )
+      ),
+      true
     );
 
     await this.repository.save(user);
+
+    user.addEvent(new AdminCreatedDomainEvent(user.id()));
+
+    await DomainEventsManager.publishEvents(user.id());
   }
 }

@@ -41,7 +41,7 @@ export class UpdateUserHandler implements IHandler<void> {
       new LastPaymentDate(command.lastPaymentDate),
       userOnDb.isWarned(),
       userOnDb.isNotified(),
-      userOnDb.isActive(),
+      userOnDb.isSubscriptionActive(),
       userOnDb.isSubscriptionExpired(),
       userOnDb.subscriptionCreatedAt(),
       new Date()
@@ -56,6 +56,8 @@ export class UpdateUserHandler implements IHandler<void> {
       new ID(command.adminId),
       new ID(userOnDb.roleId()),
       subscription,
+      userOnDb.isActive(),
+      undefined,
       userOnDb.createdAt(),
       new Date(),
     )

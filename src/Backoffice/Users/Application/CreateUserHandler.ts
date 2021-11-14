@@ -14,6 +14,7 @@ import { UserAlreadyExistsError } from "../Domain/UserAlreadyExistsError";
 import { IQueryBus } from "../../../Shared/Domain/Bus/IQueryBus";
 import { SearchRoleQuery } from "../../Role/Domain/SearchRoleQuery";
 import { SearchRoleResponseDto } from "../../Role/Application/SearchRoleResponseDto";
+import { USER_ROLE } from "../../../Domain/constants";
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements IHandler<void> {
@@ -30,7 +31,7 @@ export class CreateUserHandler implements IHandler<void> {
       throw new UserAlreadyExistsError()
     }
 
-    const role = await this.queryBus.ask(new SearchRoleQuery('user'));
+    const role = await this.queryBus.ask(new SearchRoleQuery(USER_ROLE));
 
     const user = User.build(
       new ID(command.adminId),

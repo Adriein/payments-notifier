@@ -29,7 +29,7 @@ export class GetAllUsersHandler implements IHandler<GetUserResponseDto[]> {
       return responses;
     }
 
-    const users = await this.repository.findAllUsersByAdminWithActiveSubscriptions(query.adminId);
+    const users = await this.repository.findUsersWithActiveSubscriptions(query.adminId);
 
     for (const user of users) {
       responses.push(new GetUserResponseDto(user));

@@ -26,6 +26,7 @@ import { GetAllUsersHandler } from "../../../Backoffice/Users/Application/GetAll
 import { SearchRoleHandler } from "../../../Backoffice/Role/Application/SearchRoleHandler";
 import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
 import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/SearchPricingHandler";
+import { DeleteUserHandler } from "../../../Backoffice/Users/Application/DeleteUserHandler";
 
 
 export default class HandlerFactory {
@@ -123,6 +124,11 @@ export default class HandlerFactory {
     this.handlers.set(
       GetAllUsersHandler.name,
       new GetAllUsersHandler(this.userRepository, QueryBus.instance())
+    );
+
+    this.handlers.set(
+      DeleteUserHandler.name,
+      new DeleteUserHandler(this.userRepository)
     );
 
     this.handlers.set(
