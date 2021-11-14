@@ -54,7 +54,7 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
     throw new Error('Method not implemented.');
   }
 
-  delete(id: string): Promise<void> {
+  delete(entity: Food): Promise<void> {
     throw new Error('Method not implemented.');
   }
 

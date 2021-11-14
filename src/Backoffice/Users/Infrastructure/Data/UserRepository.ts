@@ -3,18 +3,18 @@ import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { User } from "../../Domain/User.entity";
 import { UserMapper } from "./UserMapper";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
-import { PrismaClient } from '@prisma/client'
 import { ADMIN_ROLE, USER_ROLE } from "../../../../Domain/constants";
 import { Filter } from "../../../../Shared/Domain/Entities/Filter";
+import Database from "../../../../Infraestructure/Data/Database";
 
 export class UserRepository implements IUserRepository {
   private mapper = new UserMapper();
+  private prisma = Database.getInstance().getConnection();
 
   @Log(process.env.LOG_LEVEL)
   public async delete(user: User): Promise<void> {
-    const prisma = new PrismaClient();
     try {
-      await prisma.user.update({
+      await this.prisma.user.update({
         where: {
           id: user.id()
         },
@@ -23,17 +23,15 @@ export class UserRepository implements IUserRepository {
         }
       });
 
-      prisma.$disconnect();
+      this.prisma.$disconnect();
     } catch (error) {
-      prisma.$disconnect();
+      this.prisma.$disconnect();
       throw error;
     }
   }
 
   @Log(process.env.LOG_LEVEL)
   public async find(criteria: Criteria): Promise<User[]> {
-    const prisma = new PrismaClient();
-
     const adminId = criteria.filters().find((filter: Filter) => filter.field() === 'owner_id');
 
     if (!adminId) {
@@ -41,7 +39,7 @@ export class UserRepository implements IUserRepository {
     }
 
     try {
-      const results = await prisma.user.findMany({
+      const results = await this.prisma.user.findMany({
         where: {
           owner_id: adminId.value(),
           ...criteria.translate()
@@ -54,21 +52,20 @@ export class UserRepository implements IUserRepository {
         }
       });
 
-      prisma.$disconnect();
+      this.prisma.$disconnect();
 
       return results.map((result) => this.mapper.toDomain(result));
     } catch
       (error) {
-      prisma.$disconnect();
+      this.prisma.$disconnect();
       throw error;
     }
   }
 
   @Log(process.env.LOG_LEVEL)
   public async findOne(id: string): Promise<User | undefined> {
-    const prisma = new PrismaClient();
     try {
-      const result = await prisma.user.findUnique({
+      const result = await this.prisma.user.findUnique({
         where: {
           id
         },
@@ -80,7 +77,7 @@ export class UserRepository implements IUserRepository {
         }
       });
 
-      prisma.$disconnect();
+      this.prisma.$disconnect();
 
       if (!result) {
         return undefined;
@@ -88,16 +85,15 @@ export class UserRepository implements IUserRepository {
 
       return this.mapper.toDomain(result);
     } catch (error) {
-      prisma.$disconnect();
+      this.prisma.$disconnect();
       throw error;
     }
   }
 
   @Log(process.env.LOG_LEVEL)
   public async save(entity: User): Promise<void> {
-    const prisma = new PrismaClient();
     try {
-      await prisma.user.create({
+      await this.prisma.user.create({
         data: {
           id: entity.id(),
           username: entity.name(),
@@ -137,18 +133,17 @@ export class UserRepository implements IUserRepository {
           }
         }
       });
-      prisma.$disconnect();
+      this.prisma.$disconnect();
     } catch (error) {
-      prisma.$disconnect();
+      this.prisma.$disconnect();
       throw error;
     }
   }
 
   @Log(process.env.LOG_LEVEL)
   public async update(entity: User): Promise<void> {
-    const prisma = new PrismaClient();
     try {
-      await prisma.user.update({
+      await this.prisma.user.update({
         where: {
           id: entity.id()
         },
@@ -191,18 +186,16 @@ export class UserRepository implements IUserRepository {
         }
       });
 
-      prisma.$disconnect();
+      this.prisma.$disconnect();
     } catch (error) {
-      prisma.$disconnect();
+      this.prisma.$disconnect();
       throw error;
     }
   }
 
   @Log(process.env.LOG_LEVEL)
   public async findByEmail(email: string): Promise<User | undefined> {
-    const prisma = new PrismaClient();
-
-    const result = await prisma.user.findUnique({
+    const result = await this.prisma.user.findUnique({
       where: {
         email
       },
@@ -214,7 +207,7 @@ export class UserRepository implements IUserRepository {
       }
     });
 
-    prisma.$disconnect();
+    this.prisma.$disconnect();
 
     if (!result) {
       return undefined;
@@ -225,9 +218,8 @@ export class UserRepository implements IUserRepository {
 
   @Log(process.env.LOG_LEVEL)
   public async findUsersWithActiveSubscriptions(adminId: string): Promise<User[]> {
-    const prisma = new PrismaClient();
     try {
-      const results = await prisma.user.findMany({
+      const results = await this.prisma.user.findMany({
         where: {
           owner_id: adminId,
           subscriptions: {
@@ -247,20 +239,19 @@ export class UserRepository implements IUserRepository {
         }
       });
 
-      prisma.$disconnect();
+      this.prisma.$disconnect();
 
       return results.map((result) => this.mapper.toDomain(result));
     } catch (error) {
-      prisma.$disconnect();
+      this.prisma.$disconnect();
       throw error;
     }
   }
 
   @Log(process.env.LOG_LEVEL)
   public async findAdmins(): Promise<User[]> {
-    const prisma = new PrismaClient();
     try {
-      const results = await prisma.user.findMany({
+      const results = await this.prisma.user.findMany({
         where: {
           role: {
             type: ADMIN_ROLE
@@ -274,11 +265,40 @@ export class UserRepository implements IUserRepository {
         }
       });
 
-      prisma.$disconnect();
+      this.prisma.$disconnect();
 
       return results.map((result) => this.mapper.toDomain(result));
     } catch (error) {
-      prisma.$disconnect();
+      this.prisma.$disconnect();
+      throw error;
+    }
+  }
+
+  public async findUsersWithExpiredSubscriptions(adminId: string): Promise<User[]> {
+    throw new Error("Method not implemented.");
+  }
+
+  public async findUsersNotWarned(adminId: string): Promise<User[]> {
+    try {
+      const results = await this.prisma.user.findMany({
+        where: {
+          config: {
+            send_warnings: false
+          }
+        },
+        include: {
+          config: true,
+          subscriptions: true,
+          role: true,
+          app_config: true,
+        }
+      });
+
+      this.prisma.$disconnect();
+
+      return results.map((result) => this.mapper.toDomain(result));
+    } catch (error) {
+      this.prisma.$disconnect();
       throw error;
     }
   }

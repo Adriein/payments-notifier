@@ -34,12 +34,6 @@ export class Subscription extends BaseEntity {
     super(_id, _createdAt, _updatedAt);
   }
 
-
-  /*public hasExpired = (): boolean => {
-   const expirationDate = DateUtils.add(this._lastPayment.value, 5)
-   return DateUtils.before(expirationDate, new Date());
-   };*/
-
   public hasExpired = (): boolean => {
     return this._isExpired;
   };

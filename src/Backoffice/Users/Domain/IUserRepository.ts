@@ -7,4 +7,8 @@ export interface IUserRepository extends IRepository<User> {
   findUsersWithActiveSubscriptions(adminId: string): Promise<User[]>
 
   findAdmins(): Promise<User[]>;
+
+  findUsersWithExpiredSubscriptions(adminId: string): Promise<User[]>;
+
+  findUsersNotWarned(adminId: string): Promise<User[]>;
 }

@@ -1,26 +1,29 @@
 import pg from 'pg';
 import chalk from 'chalk';
+import { PrismaClient } from "@prisma/client";
 
 export default class Database {
   private static instance: Database;
-  private pool?: pg.Pool;
+  //private pool?: pg.Pool;
+  private prismaClient?: PrismaClient;
 
   private constructor() {
     console.log(chalk.yellow('> Establishing db connection... 💫'));
 
     (async () => {
       try {
-        const ssl = process.env.NODE_ENV === 'PRO'? {ssl: {rejectUnauthorized: false}} : {};
-        this.pool = new pg.Pool({
-          host: process.env.DATABASE_HOST!,
-          port: parseInt(process.env.DATABASE_PORT!),
-          database: process.env.DATABASE_NAME!,
-          user: process.env.DATABASE_USER!,
-          password: process.env.DATABASE_PASSWORD!,
-          ...ssl
-        });
+        // const ssl = process.env.NODE_ENV === 'PRO' ? { ssl: { rejectUnauthorized: false } } : {};
+        /*this.pool = new pg.Pool({
+         host: process.env.DATABASE_HOST!,
+         port: parseInt(process.env.DATABASE_PORT!),
+         database: process.env.DATABASE_NAME!,
+         user: process.env.DATABASE_USER!,
+         password: process.env.DATABASE_PASSWORD!,
+         ...ssl
+         });*/
 
-        await this.pool.query('SELECT 1 + 1;');
+        // await this.pool.query('SELECT 1 + 1;');
+        this.prismaClient = new PrismaClient();
       } catch (error) {
         console.log(
           chalk.red(`> Error connecting to ${process.env.DATABASE_NAME!} DB 😶`)
@@ -42,7 +45,11 @@ export default class Database {
     return Database.instance;
   }
 
-  public getConnection(): pg.Pool {
-    return this.pool!;
+  /*public getConnection(): pg.Pool {
+   return this.pool!;
+   }*/
+
+  public getConnection(): PrismaClient {
+    return this.prismaClient!;
   }
 }

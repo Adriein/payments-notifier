@@ -23,7 +23,7 @@ export class FoodRepository implements IFoodRepository {
     throw new Error('Method not implemented.');
   }
 
-  public async delete(id: string): Promise<void> {
+  public async delete(entity: Food): Promise<void> {
     throw new Error('Method not implemented.');
   }
 }

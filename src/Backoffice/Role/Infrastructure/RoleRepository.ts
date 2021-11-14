@@ -3,11 +3,13 @@ import { Role } from "../Domain/Role";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 import { PrismaClient } from "@prisma/client";
 import { RoleMapper } from "./RoleMapper";
+import Database from "../../../Infraestructure/Data/Database";
 
 export class RoleRepository implements IRoleRepository {
   private mapper = new RoleMapper();
-  
-  delete(id: string): Promise<void> {
+  private prisma = Database.getInstance().getConnection();
+
+  delete(entity: Role): Promise<void> {
     return Promise.resolve(undefined);
   }
 
@@ -24,13 +26,12 @@ export class RoleRepository implements IRoleRepository {
   }
 
   public async search(role: string): Promise<Role | undefined> {
-    const prisma = new PrismaClient();
     try {
-      const [ result ] = await prisma.role.findMany({ where: { type: role } });
+      const [ result ] = await this.prisma.role.findMany({ where: { type: role } });
 
       return this.mapper.toDomain(result);
     } catch (error) {
-      prisma.$disconnect();
+      this.prisma.$disconnect();
       throw error;
     }
   }

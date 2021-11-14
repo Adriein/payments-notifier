@@ -123,7 +123,7 @@ export default class HandlerFactory {
 
     this.handlers.set(
       GetAllUsersHandler.name,
-      new GetAllUsersHandler(this.userRepository, QueryBus.instance())
+      new GetAllUsersHandler(this.userRepository)
     );
 
     this.handlers.set(

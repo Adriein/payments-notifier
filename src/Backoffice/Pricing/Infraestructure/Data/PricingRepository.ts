@@ -3,11 +3,13 @@ import { Pricing } from "../../Domain/Pricing.entity";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { PricingMapper } from "./PricingMapper";
 import { PrismaClient } from "@prisma/client";
+import Database from "../../../../Infraestructure/Data/Database";
 
 export class PricingRepository implements IPricingRepository {
   private readonly mapper = new PricingMapper();
+  private prisma = Database.getInstance().getConnection();
 
-  delete(id: string): Promise<void> {
+  delete(entity: Pricing): Promise<void> {
     throw new Error('Not implemented yet');
   }
 
@@ -16,15 +18,13 @@ export class PricingRepository implements IPricingRepository {
   }
 
   public async findOne(id: string): Promise<Pricing | undefined> {
-    const prisma = new PrismaClient();
-
-    const result = await prisma.pricing.findUnique({
+    const result = await this.prisma.pricing.findUnique({
       where: {
         id
       }
     });
 
-    prisma.$disconnect();
+    this.prisma.$disconnect();
 
     if (!result) {
       return undefined;
@@ -42,15 +42,13 @@ export class PricingRepository implements IPricingRepository {
   }
 
   public async search(pricingName: string): Promise<Pricing | undefined> {
-    const prisma = new PrismaClient();
-
-    const [ result ] = await prisma.pricing.findMany({
+    const [ result ] = await this.prisma.pricing.findMany({
       where: {
         pricing_name: pricingName
       }
     });
 
-    prisma.$disconnect();
+    this.prisma.$disconnect();
 
     if (!result) {
       return undefined;

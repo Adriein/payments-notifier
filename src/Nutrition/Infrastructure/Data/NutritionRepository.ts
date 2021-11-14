@@ -24,21 +24,11 @@ export class NutritionRepository implements INutritionRepository {
     throw new Error('Method not implemented.');
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(entity: Nutrition): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
   async findByUserId(userId: string): Promise<Nutrition | undefined> {
-    const dao = new NutritionDAO();
-    const search = new Criteria();
-
-    search.field('user_id').equals(userId);
-    const nutrition = await dao.find(search);
-
-    if (!nutrition) {
-      return undefined;
-    }
-
-    return this.mapper.toDomain(nutrition[0]);
+    throw new Error();
   }
 }

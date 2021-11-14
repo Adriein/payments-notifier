@@ -133,6 +133,10 @@ export class User extends AggregateRoot {
     this._config.warnings(warnings);
   }
 
+  public subscriptionIsAboutToExpire(days: number): boolean {
+    return this._subscription.isAboutToExpire(days)
+  }
+
   public deactivateUser(): void {
     this._active = false;
     this.deactivateExpiredSubscription();

@@ -24,23 +24,12 @@ export class DietRepository implements IDietRepository {
 
   }
 
-  public async delete(id: string): Promise<void> {
+  public async delete(entity: Diet): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
   public async findAll(nutritionId: string): Promise<Diet[]> {
-    const dao = new DietDAO();
-    const criteria = new Criteria();
-
-    criteria.field('nutrition_id').equals(nutritionId);
-
-    const results = await dao.find(criteria);
-
-    if (!results) {
-      return [];
-    }
-
-    return results.map((result: DietDAO) => this.mapper.toDomain(result));
+    throw new Error();
   }
 
   public async getLastDiet(): Promise<Diet | undefined> {

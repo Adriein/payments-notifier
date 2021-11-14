@@ -4,11 +4,13 @@ import { AuthMapper } from "./AuthMapper";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 import { PrismaClient } from "@prisma/client";
 import { IAuthModel } from "./IAuthModel";
+import Database from "../../../Infraestructure/Data/Database";
 
 export class AuthRepository implements IAuthRepository {
   private mapper: AuthMapper = new AuthMapper();
+  private prisma = Database.getInstance().getConnection();
 
-  public async delete(id: string): Promise<void> {
+  public async delete(entity: Auth): Promise<void> {
     return Promise.resolve(undefined);
   }
 
@@ -29,9 +31,7 @@ export class AuthRepository implements IAuthRepository {
   }
 
   public async findByEmail(email: string): Promise<Auth | undefined> {
-    const prisma = new PrismaClient();
-
-    const result = await prisma.user.findUnique({
+    const result = await this.prisma.user.findUnique({
       where: {
         email
       },
@@ -42,7 +42,7 @@ export class AuthRepository implements IAuthRepository {
       }
     }) as unknown as IAuthModel;
 
-    prisma.$disconnect();
+    this.prisma.$disconnect();
 
     if (!result) {
       return undefined;
