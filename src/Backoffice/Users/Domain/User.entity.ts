@@ -97,6 +97,10 @@ export class User extends AggregateRoot {
     return this._subscription.isWarned();
   };
 
+  public hasBeenWarned(): void {
+    this._subscription.warningIsSent();
+  }
+
   public isSubscriptionActive = (): boolean => {
     return this._subscription.isActive();
   };
@@ -109,8 +113,8 @@ export class User extends AggregateRoot {
     return this._subscription.id();
   }
 
-  public isSubscriptionExpired = (): boolean => {
-    return this._subscription.hasExpired();
+  public isSubscriptionExpired = (priceDuration?: number): boolean => {
+    return this._subscription.hasExpired(priceDuration);
   }
 
   public subscriptionCreatedAt = (): Date => {
@@ -129,7 +133,7 @@ export class User extends AggregateRoot {
     this._subscription = Subscription.build(pricingId, paymentDate);
   }
 
-  public subscriptionWarnings(warnings: boolean): void {
+  public acceptWarnings(warnings: boolean): void {
     this._config.warnings(warnings);
   }
 
@@ -137,7 +141,7 @@ export class User extends AggregateRoot {
     return this._subscription.isAboutToExpire(days)
   }
 
-  public deactivateUser(): void {
+  public deactivate(): void {
     this._active = false;
     this.deactivateExpiredSubscription();
   }

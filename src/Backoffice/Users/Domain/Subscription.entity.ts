@@ -34,12 +34,22 @@ export class Subscription extends BaseEntity {
     super(_id, _createdAt, _updatedAt);
   }
 
-  public hasExpired = (): boolean => {
+  public hasExpired = (pricingDuration?: number): boolean => {
+    if (pricingDuration) {
+      this.checkExpired(pricingDuration);
+    }
     return this._isExpired;
   };
 
-  public daysExpired = (): number => {
-    const expirationDate = DateUtils.add(this._lastPayment.value, 5)
+  private checkExpired = (pricingDuration: number): void => {
+    const expirationDate = DateUtils.add(this._lastPayment.value, pricingDuration);
+    if (DateUtils.equal(new Date(), expirationDate)) {
+      this._isExpired = true;
+    }
+  }
+
+  public daysExpired = (pricingDuration: number): number => {
+    const expirationDate = DateUtils.add(this._lastPayment.value, pricingDuration)
     return DateUtils.diff(expirationDate, new Date());
   };
 
@@ -74,4 +84,8 @@ export class Subscription extends BaseEntity {
   public isActive = (): boolean => {
     return this._isActive;
   };
+
+  public warningIsSent(): void {
+    this._isWarned = true;
+  }
 }

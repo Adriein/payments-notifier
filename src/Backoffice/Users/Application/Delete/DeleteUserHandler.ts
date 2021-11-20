@@ -21,7 +21,7 @@ export class DeleteUserHandler implements IHandler<void> {
       throw new UserNotExistError(id.value);
     }
 
-    user.deactivateUser();
+    user.deactivate();
 
     await this.repository.update(user);
   }

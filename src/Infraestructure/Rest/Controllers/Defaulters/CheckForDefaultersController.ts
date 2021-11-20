@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { CheckForDefaultersCommand } from '../../../../Domain/Commands/Defaulters/CheckForDefaultersCommand';
 import { Controller } from '../../../../Shared/Infrastructure/Decorators/controller';
 import { get } from '../../../../Shared/Infrastructure/Decorators/routes';

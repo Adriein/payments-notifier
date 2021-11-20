@@ -1,6 +1,6 @@
 import { AppConfig } from '../Entities/AppConfig.entity';
 import { User } from '../Entities/User.entity';
-import { Template } from './Template';
+import { Template } from '../../Backoffice/Notifications/Domain/Template';
 
 export type ReportType = {
   summary: { defaulters: number; notifieds: number; total: number };
@@ -10,6 +10,7 @@ export type ReportType = {
 
 export class Report extends Template {
   protected user: User;
+
   constructor(private report: ReportType, protected config: AppConfig) {
     super();
     this.user = report.defaulters[0];
@@ -36,13 +37,13 @@ export class Report extends Template {
                 <td align="center">
                   <h5 style="font-family: Arial, Helvetica, sans-serif; font-size: 32px; color: #404040; margin-top: 0; margin-bottom: 20px; padding: 0; line-height: 135%" class="headline">Clientes con tarifa expirada ❌</h5>
                   ${
-                    this.report.defaulters.length > 0
-                      ? this.report.defaulters.map(
-                          (defaulter) =>
-                            `<p>${defaulter.getName()} - ${defaulter.getEmail()}</p>`
-                        )
-                      : 'Hoy no hay usuarios con la tarifa caducada'
-                  }
+      this.report.defaulters.length > 0
+        ? this.report.defaulters.map(
+          (defaulter) =>
+            `<p>${defaulter.getName()} - ${defaulter.getEmail()}</p>`
+        )
+        : 'Hoy no hay usuarios con la tarifa caducada'
+    }
                   </p>
                 </td>
                 <td width="30" class="spacer">&nbsp;</td>

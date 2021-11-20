@@ -12,7 +12,7 @@ import { IHandler, INotifier } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { IEmailApi } from '../../../Domain/Interfaces/IEmailApi';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
-import { Report } from '../../../Domain/Templates/Report.template';
+import { Report } from '../../../Backoffice/Notifications/Domain/Report.template';
 import { Time } from '../../../Infraestructure/Helpers/Time.utils';
 
 export class GenerateReportHandler implements IHandler<void> {

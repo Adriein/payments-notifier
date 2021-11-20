@@ -11,7 +11,7 @@ import { IHandler, INotifier } from '../../../Domain/Interfaces';
 import { IConfigRepository } from '../../../Domain/Interfaces/IConfigRepository';
 import { IUserRepository } from '../../../Domain/Interfaces/IUserRepository';
 import { UserFinder } from '../../../Domain/Services/UserFinder';
-import { AboutToExpire } from '../../../Domain/Templates/AboutToExpire.template';
+import { AboutToExpire } from '../../../Backoffice/Notifications/Domain/AboutToExpire.template';
 import { ICommand } from "../../../Shared/Domain/Interfaces/ICommand";
 
 export class CheckForDefaultersHandler implements IHandler<void> {

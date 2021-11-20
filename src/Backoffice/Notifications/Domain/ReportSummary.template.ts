@@ -1,4 +1,4 @@
-import { Time } from '../../Infraestructure/Helpers/Time.utils';
+import { Time } from '../../../Infraestructure/Helpers/Time.utils';
 
 export class ReportSummary {
   private _totalDefaulters: number = 0;

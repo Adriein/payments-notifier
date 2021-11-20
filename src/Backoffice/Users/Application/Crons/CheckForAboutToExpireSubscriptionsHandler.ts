@@ -1,18 +1,20 @@
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
-import { CheckForExpiredSubscriptionsQuery } from "../../Domain/Query/CheckForExpiredSubscriptionsQuery";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { GetAppConfigDto } from "../../../AppConfig/Application/GetAppConfigDto";
 import { GetAppConfigQuery } from "../../../AppConfig/Domain/GetAppConfigQuery";
+import { SendAboutToExpireEmailDomainEvent } from "../../../Notifications/Domain/DomainEvents/SendAboutToExpireEmailDomainEvent";
+import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
+import { CheckForAboutToExpireSubscriptionsQuery } from "../../Domain/Query/CheckForAboutToExpireSubscriptionsQuery";
 
-@QueryHandler(CheckForExpiredSubscriptionsQuery)
-export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
+@QueryHandler(CheckForAboutToExpireSubscriptionsQuery)
+export class CheckForAboutToExpireSubscriptionsHandler implements IHandler<void> {
   constructor(private readonly repository: IUserRepository, private readonly queryBus: IQueryBus<GetAppConfigDto>) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(query: CheckForExpiredSubscriptionsQuery): Promise<void> {
+  public async handle(query: CheckForAboutToExpireSubscriptionsQuery): Promise<void> {
     const admins = await this.repository.findAdmins();
 
     for (const admin of admins) {
@@ -26,7 +28,12 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
           continue;
         }
 
+        user.addEvent(new SendAboutToExpireEmailDomainEvent(user.id()));
+        await DomainEventsManager.publishEvents(user.id());
 
+        user.hasBeenWarned();
+
+        await this.repository.update(user);
       }
     }
   }

@@ -22,7 +22,7 @@ export class UpdateUserNotificationsHandler implements IHandler<void> {
       throw new UserNotExistError(id.value);
     }
 
-    user.subscriptionWarnings(canSendWarnings);
+    user.acceptWarnings(canSendWarnings);
 
     await this.repository.update(user);
   }

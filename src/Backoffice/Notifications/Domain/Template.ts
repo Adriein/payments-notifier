@@ -1,13 +1,14 @@
-import { AppConfig } from '../Entities/AppConfig.entity';
-import { User } from '../Entities/User.entity';
+import { User } from "../../Users/Domain/User.entity";
+import { AppConfig } from "../../AppConfig/Domain/AppConfig.entity";
 
 export abstract class Template {
   protected abstract user: User;
   protected abstract config: AppConfig;
+
   public abstract generate(): Promise<string>;
 
   private async getEmailContent(): Promise<string> {
-    return this.config.emailContent;
+    return this.config.emailContent();
   }
 
   private assignAlias(substr: string): string {
@@ -25,7 +26,9 @@ export abstract class Template {
   }
 
   protected async hasCustomEmail(): Promise<boolean> {
-    return (await this.getEmailContent()) !== '' ? true : false;
+    const hasContent = await this.getEmailContent();
+
+    return hasContent !== '';
   }
 
   protected getUserPricing(): string {
@@ -42,15 +45,15 @@ export abstract class Template {
       const alias = this.assignAlias(substring);
 
       return email
-        .replace('{{usuario}}', this.user.getName())
+        .replace('{{usuario}}', this.user.name())
         .replace('{{tarifa}}', this.getUserPricing())
-        .replace('{{preaviso}}', this.config.warningDelay.toString())
+        .replace('{{preaviso}}', this.config.warningDelay().toString())
         .replace(aliasTemplate, alias);
     }
 
     return email
-      .replace('{{usuario}}', this.user.getName())
-      .replace('{{preaviso}}', this.config.warningDelay.toString())
+      .replace('{{usuario}}', this.user.name())
+      .replace('{{preaviso}}', this.config.warningDelay().toString())
       .replace('{{tarifa}}', this.getUserPricing());
   }
 }

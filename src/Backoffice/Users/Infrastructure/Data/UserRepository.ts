@@ -255,6 +255,11 @@ export class UserRepository implements IUserRepository {
         where: {
           role: {
             type: ADMIN_ROLE
+          },
+          subscriptions: {
+            some: {
+              active: true
+            }
           }
         },
         include: {

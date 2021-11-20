@@ -1,16 +1,10 @@
-import { AppConfig } from '../Entities/AppConfig.entity';
-import { User } from '../Entities/User.entity';
+import { AppConfig } from '../../../Domain/Entities/AppConfig.entity';
+import { User } from '../../../Domain/Entities/User.entity';
 import { Template } from './Template';
 
-export class AboutToExpire extends Template {
+export class Expired extends Template {
   constructor(protected user: User, protected config: AppConfig) {
     super();
-  }
-
-  private async buildEmail(): Promise<string> {
-    return (await this.hasCustomEmail())
-      ? await this.parseEmailContent()
-      : `<strong>Hola, ${this.user.getName()}</strong>. Este es un correo automático de @IvanMFit para informarte de que en ${process.env.DAYS_BEFORE_EXPIRATION} días vence tu asesoría ${Object.keys(this.user.pricing().value)[0]} contratada y es hora de renovar para seguir disfrutando de los servicios.`;
   }
 
   public async generate(): Promise<string> {
@@ -32,8 +26,8 @@ export class AboutToExpire extends Template {
               <tr>
                 <td width="30" class="spacer">&nbsp;</td>
                 <td align="center">
-                  <h5 style="font-family: Arial, Helvetica, sans-serif; font-size: 32px; color: #404040; margin-top: 0; margin-bottom: 20px; padding: 0; line-height: 135%" class="headline">El servicio está a punto de caducar 🥶</h5>
-                  <p style="font-family: Arial, Helvetica, sans-serif; color: #555555; font-size: 14px; padding: 0 40px;">${await this.buildEmail()} ⚡
+                  <h5 style="font-family: Arial, Helvetica, sans-serif; font-size: 32px; color: #404040; margin-top: 0; margin-bottom: 20px; padding: 0; line-height: 135%" class="headline">El servicio ha caducado 😔</h5>
+                  <p style="font-family: Arial, Helvetica, sans-serif; color: #555555; font-size: 14px; padding: 0 40px;"><strong>Hola, ${this.user.getName()}</strong>. Este es un correo automático para informarte de que la tarifa contratada ha vencido, si quieres seguir disfrutando de los servicios debes de renovar pagando la tarifa que desees. 🚀
                   </p>
                 </td>
                 <td width="30" class="spacer">&nbsp;</td>
