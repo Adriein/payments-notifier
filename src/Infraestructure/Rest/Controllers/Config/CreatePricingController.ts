@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { CreatePricingCommand } from '../../../../Domain/Commands/AppConfig/CreatePricingCommand';
-import { currentUser, requireAuth } from '../../../../middlewares/auth';
+import { currentUser, requireAuth } from '../../../../Shared/Infrastructure/Middlewares/auth';
 import { Controller } from '../../../../Shared/Infrastructure/Decorators/controller';
 import { post } from '../../../../Shared/Infrastructure/Decorators/routes';
 import { use } from '../../../../Shared/Infrastructure/Decorators/use';

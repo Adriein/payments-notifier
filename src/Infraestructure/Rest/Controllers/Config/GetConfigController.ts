@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { ReadAppConfigCommand } from '../../../../Domain/Commands/AppConfig/ReadAppConfigCommand';
 import { AppConfig } from '../../../../Domain/Entities/AppConfig.entity';
-import { currentUser, requireAuth } from '../../../../middlewares/auth';
+import { currentUser, requireAuth } from '../../../../Shared/Infrastructure/Middlewares/auth';
 import { Controller } from '../../../../Shared/Infrastructure/Decorators/controller';
 import { get } from '../../../../Shared/Infrastructure/Decorators/routes';
 import { use } from '../../../../Shared/Infrastructure/Decorators/use';

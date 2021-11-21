@@ -2,12 +2,12 @@ import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { GetAllUsersQuery } from "../../Domain/Query/GetAllUsersQuery";
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 import { IUserRepository } from "../../Domain/IUserRepository";
-import { GetUserResponseDto } from "./GetUserResponseDto";
+import { GetUserResponseDto } from "../Dto/GetUserResponseDto";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
-import { FilterRequestDto } from "./FilterRequestDto";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { Filter } from "../../../../Shared/Domain/Entities/Filter";
 import { OPERATORS } from "../../../../Domain/constants";
+import { FilterRequestDto } from "../Dto/FilterRequestDto";
 
 @QueryHandler(GetAllUsersQuery)
 export class GetAllUsersHandler implements IHandler<GetUserResponseDto[]> {
@@ -21,7 +21,7 @@ export class GetAllUsersHandler implements IHandler<GetUserResponseDto[]> {
       const criteria = this.mapFiltersToCriteria(query.filters);
 
       const users = await this.repository.find(criteria);
-      console.log(users);
+
       for (const user of users) {
         responses.push(new GetUserResponseDto(user));
       }

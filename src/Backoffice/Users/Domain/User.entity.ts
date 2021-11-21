@@ -141,6 +141,10 @@ export class User extends AggregateRoot {
     return this._subscription.isAboutToExpire(days)
   }
 
+  public howLongHasSubscriptionExpired(pricingDuration: number): number {
+    return this._subscription.daysExpired(pricingDuration);
+  }
+
   public deactivate(): void {
     this._active = false;
     this.deactivateExpiredSubscription();

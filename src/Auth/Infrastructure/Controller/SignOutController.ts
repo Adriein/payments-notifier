@@ -2,7 +2,7 @@ import { BaseController } from "../../../Shared/Infrastructure/BaseController";
 import { Controller } from "../../../Shared/Infrastructure/Decorators/controller";
 import { post } from "../../../Shared/Infrastructure/Decorators/routes";
 import { use } from "../../../Shared/Infrastructure/Decorators/use";
-import { requireAuth } from "../../../middlewares/auth";
+import { requireAuth } from "../../../Shared/Infrastructure/Middlewares/auth";
 import { NextFunction, Request, Response } from "express";
 
 @Controller()

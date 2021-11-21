@@ -2,7 +2,7 @@ import { BaseController } from "../../../../Shared/Infrastructure/BaseController
 import { Controller } from "../../../../Shared/Infrastructure/Decorators/controller";
 import { del } from "../../../../Shared/Infrastructure/Decorators/routes";
 import { use } from "../../../../Shared/Infrastructure/Decorators/use";
-import { currentUser, requireAuth } from "../../../../middlewares/auth";
+import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Middlewares/auth";
 import { DeleteUserCommand } from "../../Domain/Command/DeleteUserCommand";
 import { NextFunction, Request, Response } from "express";
 

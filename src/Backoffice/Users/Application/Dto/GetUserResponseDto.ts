@@ -1,4 +1,5 @@
-import { User } from "../Domain/User.entity";
+import { User } from "../../Domain/User.entity";
+
 
 export class GetUserResponseDto {
   public constructor(

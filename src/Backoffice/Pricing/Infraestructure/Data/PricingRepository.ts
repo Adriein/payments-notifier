@@ -57,4 +57,25 @@ export class PricingRepository implements IPricingRepository {
     return this.mapper.toDomain(result);
   }
 
+  public async findAll(adminId: string): Promise<Pricing[]> {
+    try {
+      const results = await this.prisma.pricing.findMany({
+        where: {
+          user_id: adminId
+        }
+      });
+
+      this.prisma.$disconnect();
+
+      if (!results) {
+        return [];
+      }
+
+      return results.map((result) => this.mapper.toDomain(result));
+    } catch (error) {
+      this.prisma.$disconnect();
+      return [];
+    }
+  }
+
 }

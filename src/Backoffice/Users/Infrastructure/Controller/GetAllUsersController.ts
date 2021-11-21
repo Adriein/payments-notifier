@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Controller } from "../../../../Shared/Infrastructure/Decorators/controller";
 import { BaseController } from "../../../../Shared/Infrastructure/BaseController";
 import { use } from "../../../../Shared/Infrastructure/Decorators/use";
-import { currentUser, requireAuth } from "../../../../middlewares/auth";
+import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Middlewares/auth";
 import { post } from "../../../../Shared/Infrastructure/Decorators/routes";
 import { GetAllUsersQuery } from "../../Domain/Query/GetAllUsersQuery";
 import { GetUserResponseDto } from "../../Application/GetUserResponseDto";

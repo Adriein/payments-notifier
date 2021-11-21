@@ -6,7 +6,7 @@ import { OPERATORS } from '../../../../Domain/constants';
 import { CommandBus } from '../../../../Application/CommandBus/CommandBus';
 import { ReadCalculatedReportCommand } from '../../../../Domain/Commands/User/ReadCalculatedReportCommand';
 import { use } from '../../../../Shared/Infrastructure/Decorators/use';
-import { currentUser, requireAuth } from '../../../../middlewares/auth';
+import { currentUser, requireAuth } from '../../../../Shared/Infrastructure/Middlewares/auth';
 
 @Controller()
 export class CalculateReportController {
@@ -44,7 +44,7 @@ export class CalculateReportController {
     return Object.keys(query).reduce((acc, key) => {
       return {
         ...acc,
-        [key]: {value: query[key], operation: OPERATORS.equal},
+        [key]: { value: query[key], operation: OPERATORS.equal },
       };
     }, {});
   }

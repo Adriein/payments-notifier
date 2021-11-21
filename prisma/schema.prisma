@@ -28,6 +28,7 @@ model pricing {
     pricing_name String
     duration Int @db.SmallInt
     amount Int @db.SmallInt
+    user_id String?
     subscriptions subscription[]
     created_at DateTime @db.Timestamp(0)
     updated_at DateTime @db.Timestamp(0)

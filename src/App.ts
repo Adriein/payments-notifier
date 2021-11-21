@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import fileUpload from 'express-fileupload';
 import path from 'path';
 import fs from 'fs';
-import { errorHandler } from './middlewares';
+import { errorHandler } from './Shared/Infrastructure/Middlewares';
 import Database from './Infraestructure/Data/Database';
 import { FILES_PATH } from './Domain/constants';
 import { AppRouter } from './Shared/Infrastructure/AppRouter';
@@ -18,7 +18,7 @@ import { COMMANDS_HANDLER_METADATA, EVENTS_HANDLER_METADATA, QUERY_HANDLER_METAD
 import { CommandBus } from "./Shared/Infrastructure/Bus/CommandBus";
 import { QueryBus } from "./Shared/Infrastructure/Bus/QueryBus";
 import HandlerFactory from "./Shared/Infrastructure/Factories/Handler.factory";
-import './Food';
+import './NutritionContext/Food';
 import './Backoffice/Metrics';
 import './Auth';
 import './Backoffice/Users';
