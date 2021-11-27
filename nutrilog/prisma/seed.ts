@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { ID } from "../nutrilog/src/Shared/Domain/VO/Id.vo";
+import { ID } from "../src/Shared/Domain/VO/Id.vo";
 
 const prisma = new PrismaClient()
 
