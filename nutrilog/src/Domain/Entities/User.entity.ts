@@ -4,7 +4,7 @@ import { ID } from '../../Shared/Domain/VO/Id.vo';
 import { LastPaymentDate } from '../../Shared/Domain/VO/LastPaymentDate.vo';
 import { Password } from '../../Shared/Domain/VO/Password.vo';
 import { Pricing } from '../VO/Pricing.vo';
-import { BaseEntity } from './BaseEntity';
+import { BaseEntity } from '../../Shared/Domain/Entities/BaseEntity';
 import { Subscription } from './Subscription.entity';
 import { UserConfig } from './UserConfig.entity';
 

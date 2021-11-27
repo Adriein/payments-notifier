@@ -5,3 +5,5 @@ export * from './Infrastructure/Controller/DeleteUserController';
 export * from './Infrastructure/Controller/UpdateUserController';
 export * from './Infrastructure/Controller/UpdatePaymentController';
 export * from './Infrastructure/Controller/UpdateUserNotificationsController';
+export * from './Infrastructure/Controller/CheckForAboutToExpireSubscriptionsController';
+export * from './Infrastructure/Controller/CheckForExpiredSubscriptionController';

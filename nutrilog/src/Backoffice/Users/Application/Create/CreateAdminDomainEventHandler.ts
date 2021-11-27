@@ -14,9 +14,9 @@ import { Password } from "../../../../Shared/Domain/VO/Password.vo";
 import { ADMIN_ROLE, LANG_ES, YEARLY_PRICING } from "../../../../Domain/constants";
 import { UserAlreadyExistsError } from "../../Domain/UserAlreadyExistsError";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { PricingResponse } from "../../../Pricing/Application/PricingResponse";
+import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
-import { SearchPricingQuery } from "../../../Pricing/Domain/SearchPricingQuery";
+import { SearchPricingQuery } from "../../../Pricing/Domain/Query/SearchPricingQuery";
 import { AdminCreatedDomainEvent } from "../../Domain/DomainEvents/AdminCreatedDomainEvent";
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
 

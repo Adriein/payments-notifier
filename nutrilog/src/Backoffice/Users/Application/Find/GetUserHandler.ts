@@ -6,8 +6,8 @@ import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.
 import { UserNotExistError } from "../../Domain/UserNotExistError";
 import { GetUserResponseDto } from "./GetUserResponseDto";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { PricingResponse } from "../../../Pricing/Application/PricingResponse";
-import { GetPricingQuery } from "../../../Pricing/Domain/GetPricingQuery";
+import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
+import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 import { IUserRepository } from "../../Domain/IUserRepository";
 
 @QueryHandler(GetUserQuery)

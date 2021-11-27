@@ -3,13 +3,15 @@ import { CheckForExpiredSubscriptionsQuery } from "../../Domain/Query/CheckForEx
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { PricingResponse } from "../../../Pricing/Application/PricingResponse";
-import { GetPricingQuery } from "../../../Pricing/Domain/GetPricingQuery";
+import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
+import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
+import { Log } from "../../../../Shared/Domain/Decorators/Log";
 
 @QueryHandler(CheckForExpiredSubscriptionsQuery)
 export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
   constructor(private readonly repository: IUserRepository, private readonly queryBus: IQueryBus<PricingResponse>) {}
 
+  @Log(process.env.LOG_LEVEL)
   public async handle(command: CheckForExpiredSubscriptionsQuery): Promise<void> {
     const admins = await this.repository.findAdmins();
 

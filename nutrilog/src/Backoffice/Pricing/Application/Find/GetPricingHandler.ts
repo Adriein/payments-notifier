@@ -1,16 +1,18 @@
-import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
-import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
-import { GetPricingQuery } from "../Domain/GetPricingQuery";
+import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
+import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
+import { GetPricingQuery } from "../../Domain/Query/GetPricingQuery";
 import { PricingResponse } from "./PricingResponse";
-import { IPricingRepository } from "../Domain/IPricingRepository";
-import { ID } from "../../../Shared/Domain/VO/Id.vo";
-import { PricingNotExistsError } from "../Domain/PricingNotExistsError";
+import { IPricingRepository } from "../../Domain/IPricingRepository";
+import { ID } from "../../../../Shared/Domain/VO/Id.vo";
+import { PricingNotExistsError } from "../../Domain/PricingNotExistsError";
+import { Log } from "../../../../Shared/Domain/Decorators/Log";
 
 @QueryHandler(GetPricingQuery)
 export class GetPricingHandler implements IHandler<PricingResponse> {
   public constructor(private repository: IPricingRepository) {
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async handle(query: GetPricingQuery): Promise<PricingResponse> {
     const id = new ID(query.id);
 

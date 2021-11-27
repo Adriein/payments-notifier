@@ -1,7 +1,7 @@
 import { GetUserResponse } from "./GetUserResponse";
 import { User } from "../Domain/User.entity";
 import { Translations } from "../../../Shared/Domain/Entities/Translations";
-import { PricingResponse } from "../../Pricing/Application/PricingResponse";
+import { PricingResponse } from "../../Pricing/Application/Find/PricingResponse";
 
 export class GetUserPresenter {
   public execute(user: User, pricing: PricingResponse): GetUserResponse {

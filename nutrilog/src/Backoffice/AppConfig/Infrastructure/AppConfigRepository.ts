@@ -24,18 +24,8 @@ export class AppConfigRepository implements IAppConfigRepository {
   @Log(process.env.LOG_LEVEL)
   public async save(entity: AppConfig): Promise<void> {
     try {
-      await this.prisma.app_config.create({
-        data: {
-          id: entity.id(),
-          warning_delay: entity.warningDelay(),
-          notification_delay: entity.notificationDelay(),
-          last_sent_report: entity.lastSentReport(),
-          email_content: entity.emailContent(),
-          user_id: entity.userId().value,
-          created_at: entity.createdAt(),
-          updated_at: entity.updatedAt()
-        }
-      })
+      const data = this.mapper.toSaveDataModel(entity);
+      await this.prisma.app_config.create({ data })
       this.prisma.$disconnect();
     } catch (error) {
       this.prisma.$disconnect();

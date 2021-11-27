@@ -6,7 +6,7 @@ import { CreateAdminDomainEventHandler } from "../../../Backoffice/Users/Applica
 import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { QueryBus } from "../Bus/QueryBus";
-import { CreateAppConfigDomainEventHandler } from "../../../Backoffice/AppConfig/Application/CreateAppConfigDomainEventHandler";
+import { CreateAppConfigDomainEventHandler } from "../../../Backoffice/AppConfig/Application/Create/CreateAppConfigDomainEventHandler";
 import { AppConfigRepository } from "../../../Backoffice/AppConfig/Infrastructure/AppConfigRepository";
 
 export default class DomainEventHandlerFactory {

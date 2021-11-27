@@ -16,7 +16,7 @@ export class UserRepository implements IUserRepository {
     try {
       await this.prisma.user.update({
         where: {
-          id: user.id()
+          id: user.id().value
         },
         data: {
           active: false,
@@ -95,7 +95,7 @@ export class UserRepository implements IUserRepository {
     try {
       await this.prisma.user.create({
         data: {
-          id: entity.id(),
+          id: entity.id().value,
           username: entity.name(),
           email: entity.email(),
           password: entity.password(),
@@ -145,7 +145,7 @@ export class UserRepository implements IUserRepository {
     try {
       await this.prisma.user.update({
         where: {
-          id: entity.id()
+          id: entity.id().value
         },
         data: {
           username: entity.name(),

@@ -1,14 +1,17 @@
-import { BaseEntity } from "../../../Domain/Entities/BaseEntity";
 import { ID } from "../../../Shared/Domain/VO/Id.vo";
-import { Nullable } from "../../../Shared/Domain/types";
+import { AggregateRoot } from "../../../Shared/Domain/Entities/AggregateRoot";
+import { IPricingProps } from "./IPricingProps";
 
-export class Pricing extends BaseEntity {
-  public static build(name: string, duration: number, price: number): Pricing {
+
+export class Pricing extends AggregateRoot implements IPricingProps {
+
+  public static build(name: string, duration: number, price: number, adminId: ID): Pricing {
     return new Pricing(
       ID.generate(),
       name,
       duration,
-      price
+      price,
+      adminId
     );
   }
 
@@ -16,7 +19,8 @@ export class Pricing extends BaseEntity {
     _id: ID,
     private _name: string,
     private _duration: number,
-    private _price: number
+    private _price: number,
+    private _adminId: ID
   ) {
     super(_id);
   }
@@ -31,5 +35,9 @@ export class Pricing extends BaseEntity {
 
   public price(): number {
     return this._price;
+  }
+
+  public adminId(): ID {
+    return this._adminId;
   }
 }

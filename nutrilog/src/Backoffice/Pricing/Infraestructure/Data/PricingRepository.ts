@@ -2,7 +2,6 @@ import { IPricingRepository } from "../../Domain/IPricingRepository";
 import { Pricing } from "../../Domain/Pricing.entity";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { PricingMapper } from "./PricingMapper";
-import { PrismaClient } from "@prisma/client";
 import Database from "../../../../Infraestructure/Data/Database";
 
 export class PricingRepository implements IPricingRepository {
@@ -33,8 +32,10 @@ export class PricingRepository implements IPricingRepository {
     return this.mapper.toDomain(result);
   }
 
-  save(entity: Pricing): Promise<void> {
-    throw new Error('Not implemented yet');
+  public async save(entity: Pricing): Promise<void> {
+    const data = this.mapper.toSaveDataModel(entity);
+
+    await this.prisma.pricing.create({ data });
   }
 
   update(entity: Pricing): Promise<void> {

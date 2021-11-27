@@ -1,7 +1,6 @@
 import { IRoleRepository } from "../Domain/IRoleRepository";
 import { Role } from "../Domain/Role";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
-import { PrismaClient } from "@prisma/client";
 import { RoleMapper } from "./RoleMapper";
 import Database from "../../../Infraestructure/Data/Database";
 

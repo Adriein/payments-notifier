@@ -3,8 +3,8 @@ import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { AppConfigResponse } from "../../../AppConfig/Application/AppConfigResponse";
-import { GetAppConfigQuery } from "../../../AppConfig/Domain/GetAppConfigQuery";
+import { AppConfigResponse } from "../../../AppConfig/Application/Find/AppConfigResponse";
+import { GetAppConfigQuery } from "../../../AppConfig/Domain/Query/GetAppConfigQuery";
 import { SendAboutToExpireEmailDomainEvent } from "../../../Notifications/Domain/DomainEvents/SendAboutToExpireEmailDomainEvent";
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
 import { CheckForAboutToExpireSubscriptionsQuery } from "../../Domain/Query/CheckForAboutToExpireSubscriptionsQuery";

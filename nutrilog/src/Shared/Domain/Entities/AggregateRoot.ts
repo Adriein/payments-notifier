@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../../Domain/Entities/BaseEntity';
+import { BaseEntity } from './BaseEntity';
 import { DomainEvent } from './DomainEvent';
 import { DomainEventsManager } from './DomainEventsManager';
 

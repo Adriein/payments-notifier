@@ -1,4 +1,4 @@
-import { BaseEntity } from "../../../Domain/Entities/BaseEntity";
+import { BaseEntity } from "../../../Shared/Domain/Entities/BaseEntity";
 import { LastPaymentDate } from "../../../Shared/Domain/VO/LastPaymentDate.vo";
 import { ID } from "../../../Shared/Domain/VO/Id.vo";
 import { DateUtils } from "../../../Shared/Infrastructure/Helper/Date.utils";

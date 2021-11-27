@@ -21,11 +21,11 @@ import { CreateUserHandler } from "../../../Backoffice/Users/Application/CreateU
 import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
 import { UpdateUserHandler } from "../../../Backoffice/Users/Application/Update/UpdateUserHandler";
 import { UpdatePaymentHandler } from "../../../Backoffice/Users/Application/Update/UpdatePaymentHandler";
-import { GetPricingHandler } from "../../../Backoffice/Pricing/Application/GetPricingHandler";
+import { GetPricingHandler } from "../../../Backoffice/Pricing/Application/Find/GetPricingHandler";
 import { GetAllUsersHandler } from "../../../Backoffice/Users/Application/Find/GetAllUsersHandler";
 import { SearchRoleHandler } from "../../../Backoffice/Role/Application/SearchRoleHandler";
 import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
-import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/SearchPricingHandler";
+import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/Find/SearchPricingHandler";
 import { DeleteUserHandler } from "../../../Backoffice/Users/Application/DeleteUserHandler";
 
 

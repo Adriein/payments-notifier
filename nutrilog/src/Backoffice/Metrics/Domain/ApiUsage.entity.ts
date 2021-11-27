@@ -1,4 +1,4 @@
-import { BaseEntity } from "../../../Domain/Entities/BaseEntity";
+import { BaseEntity } from "../../../Shared/Domain/Entities/BaseEntity";
 import { ID } from "../../../Shared/Domain/VO/Id.vo";
 
 

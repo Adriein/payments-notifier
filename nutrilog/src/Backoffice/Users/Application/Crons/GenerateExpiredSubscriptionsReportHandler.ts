@@ -5,12 +5,12 @@ import { IUserRepository } from "../../Domain/IUserRepository";
 import { UserCollection } from "../../Domain/UserCollection.entity";
 import { SendExpiredSubscriptionsReportEmailDomainEvent } from "../../../Notifications/Domain/DomainEvents/SendExpiredSubscriptionsReportEmailDomainEvent";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { AppConfigResponse } from "../../../AppConfig/Application/AppConfigResponse";
-import { GetAppConfigQuery } from "../../../AppConfig/Domain/GetAppConfigQuery";
+import { AppConfigResponse } from "../../../AppConfig/Application/Find/AppConfigResponse";
+import { GetAppConfigQuery } from "../../../AppConfig/Domain/Query/GetAppConfigQuery";
 import { User } from "../../Domain/User.entity";
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
-import { GetAllPricingQuery } from "../../../Pricing/Domain/GetAllPricingQuery";
-import { PricingResponse } from "../../../Pricing/Application/PricingResponse";
+import { GetAllPricingQuery } from "../../../Pricing/Domain/Query/GetAllPricingQuery";
+import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 
 @QueryHandler(GenerateExpiredSubscriptionsReportQuery)
 export class GenerateExpiredSubscriptionsReportHandler implements IHandler<void> {

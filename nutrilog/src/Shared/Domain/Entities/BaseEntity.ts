@@ -1,4 +1,4 @@
-import { ID } from '../../Shared/Domain/VO/Id.vo';
+import { ID } from '../VO/Id.vo';
 
 export abstract class BaseEntity {
   constructor(

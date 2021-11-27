@@ -1,5 +1,7 @@
-export interface IMapper<T, C> {
-  toDataModel(domain: T): C;
+export interface IMapper<T, M> {
+  toSaveDataModel(domain: T): M;
 
-  toDomain(dataModel: C): T;
+  toUpdateDataModel(domain: T): M;
+
+  toDomain<C>(dataModel: C): T;
 }

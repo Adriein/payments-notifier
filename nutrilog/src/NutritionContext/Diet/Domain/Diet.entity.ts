@@ -1,5 +1,5 @@
 import { ID } from '../../../Shared/Domain/VO/Id.vo';
-import { BaseEntity } from '../../../Domain/Entities/BaseEntity';
+import { BaseEntity } from '../../../Shared/Domain/Entities/BaseEntity';
 import { Meal } from './Meal.entity';
 import { DietType } from './VO/DietType.vo';
 
