@@ -1,8 +1,0 @@
-node_modules
-.vscode
-.env
-dist
-db.json
-.eslintcache
-.idea
-tsconfig.tsbuildinfo
