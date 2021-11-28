@@ -1,17 +1,19 @@
 import { Filter } from "./Filter";
-import { PrismaTranslator } from "./PrismaTranslator";
+import { PrismaTranslator } from "../../Infrastructure/Data/PrismaTranslator";
 
-export class Criteria {
-
+export class Criteria<T> {
+  private readonly _filters: Filter<T>[] = [];
   private prisma = new PrismaTranslator();
 
-  constructor(private readonly _filters: Filter[]) {}
-
-  public translate(): any {
-    return this.prisma.toPrisma(this._filters);
+  public add(filter: Filter<T>): void {
+    this._filters.push(filter);
   }
 
-  public filters(): Filter[] {
+  public translate(): any {
+    
+  }
+
+  public filters(): Filter<T>[] {
     return this._filters;
   }
 }

@@ -22,7 +22,7 @@ export class UpdatePaymentHandler implements IHandler<void> {
     const user = await this.repository.findOne(id.value);
 
     if (!user) {
-      throw new UserNotExistError(id.value);
+      throw new UserNotExistError(`User with id: ${id.value} not exists`);
     }
 
     await this.renew(user, pricingId, paymentDate);

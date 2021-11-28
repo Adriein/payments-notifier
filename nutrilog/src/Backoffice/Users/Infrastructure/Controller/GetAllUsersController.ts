@@ -6,8 +6,8 @@ import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Midd
 import { post } from "../../../../Shared/Infrastructure/Decorators/routes";
 import { GetAllUsersQuery } from "../../Domain/Query/GetAllUsersQuery";
 import { GetUserResponseDto } from "../../Application/GetUserResponseDto";
-import { GetUserResponse } from "../GetUserResponse";
-import { GetUserPresenter } from "../GetUserPresenter";
+import { GetUserResponse } from "../../Application/Find/GetUserResponse";
+import { GetUserPresenter } from "../../Application/Find/GetUserPresenter";
 
 @Controller()
 export class GetAllUsersController extends BaseController<GetUserResponseDto[]> {

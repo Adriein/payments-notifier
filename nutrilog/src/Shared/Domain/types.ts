@@ -44,3 +44,7 @@ export type QueryClass = new (...args: never[]) => IQuery;
 
 export type RelationMetadata = { prop: string, refTable: string, refPropName: string, dao: ConstructorFunc, type: string }
 export type ColumnMetadata = { name: string, type: string }
+
+export type GetReturnType<T> = {
+  [K in keyof T]: T[K] extends (...args: any) => any ? ReturnType<T[K]> : never;
+}[keyof T];

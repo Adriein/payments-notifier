@@ -1,10 +1,8 @@
 import { IUserRepository } from "../../Domain/IUserRepository";
-import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { User } from "../../Domain/User.entity";
 import { UserMapper } from "./UserMapper";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { ADMIN_ROLE, USER_ROLE } from "../../../../Domain/constants";
-import { Filter } from "../../../../Shared/Domain/Entities/Filter";
 import Database from "../../../../Infraestructure/Data/Database";
 
 export class UserRepository implements IUserRepository {
@@ -31,18 +29,13 @@ export class UserRepository implements IUserRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async find(criteria: Criteria): Promise<User[]> {
-    const adminId = criteria.filters().find((filter: Filter) => filter.field() === 'owner_id');
-
-    if (!adminId) {
-      throw new Error('must send an admin id');
-    }
-
+  public async find(criteria: any): Promise<User[]> {
     try {
       const results = await this.prisma.user.findMany({
         where: {
-          owner_id: adminId.value(),
-          ...criteria.translate()
+          role: {
+            type: USER_ROLE
+          }
         },
         include: {
           config: true,
@@ -55,8 +48,7 @@ export class UserRepository implements IUserRepository {
       this.prisma.$disconnect();
 
       return results.map((result) => this.mapper.toDomain(result));
-    } catch
-      (error) {
+    } catch (error) {
       this.prisma.$disconnect();
       throw error;
     }

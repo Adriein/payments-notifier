@@ -19,7 +19,7 @@ export class UpdateUserNotificationsHandler implements IHandler<void> {
     const user = await this.repository.findOne(id.value);
 
     if (!user) {
-      throw new UserNotExistError(id.value);
+      throw new UserNotExistError(`User with id: ${id.value} not exists`);
     }
 
     user.acceptWarnings(canSendWarnings);

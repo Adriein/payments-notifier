@@ -5,9 +5,9 @@ import { use } from "../../../../Shared/Infrastructure/Decorators/use";
 import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Middlewares/auth";
 import { NextFunction, Request, Response } from "express";
 import { GetUserQuery } from "../../Domain/Query/GetUserQuery";
-import { GetUserResponse } from "../GetUserResponse";
+import { GetUserResponse } from "../../Application/Find/GetUserResponse";
 import { User } from "../../Domain/User.entity";
-import { GetUserPresenter } from "../GetUserPresenter";
+import { GetUserPresenter } from "../../Application/Find/GetUserPresenter";
 
 @Controller()
 export class GetUserController extends BaseController<User> {

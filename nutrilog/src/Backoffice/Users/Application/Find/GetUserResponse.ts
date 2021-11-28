@@ -2,7 +2,7 @@ export type GetUserResponse = {
   id: string,
   username: string,
   email: string,
-  defaulter: string,
+  defaulter: boolean,
   active: boolean,
   subscription: GetSubscriptionResponse,
   config: GetConfigResponse,

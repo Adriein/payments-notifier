@@ -25,7 +25,7 @@ export class UpdateUserHandler implements IHandler<void> {
     const userOnDb = await this.repository.findOne(id.value);
 
     if (!userOnDb) {
-      throw new UserNotExistError(email.value)
+      throw new UserNotExistError(`User with email: ${email.value} not exists`)
     }
 
     const config = new UserConfig(

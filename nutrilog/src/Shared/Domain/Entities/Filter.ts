@@ -1,13 +1,18 @@
 import { OPERATORS } from "../../../Domain/constants";
+import { GetReturnType } from "../types";
 
-export class Filter {
-  constructor(private _field: string, private _value: string, private _operation: OPERATORS) {}
+export class Filter<T> {
+  constructor(
+    private _field: keyof T,
+    private _operation: OPERATORS,
+    private _value: GetReturnType<T>
+  ) {}
 
-  public field(): string {
+  public field(): keyof T {
     return this._field;
   }
 
-  public value(): string {
+  public value(): GetReturnType<T> {
     return this._value;
   }
 
