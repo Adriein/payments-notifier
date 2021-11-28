@@ -5,7 +5,7 @@ import { Email } from '../../Shared/Domain/VO/Email.vo';
 import { IRepository } from '../../Shared/Domain/Interfaces/IRepository';
 
 export interface IUserRepository extends IRepository<User> {
-  find(adminId: string, criteria?: Criteria): Promise<User[]>;
+  find(adminId: string): Promise<User[]>;
 
   findById(id: string): Promise<User | undefined>;
 

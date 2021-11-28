@@ -1,4 +1,4 @@
-import Database from '../../../Infraestructure/Data/Database';
+import Database from './Database';
 import { Criteria } from "../../Domain/Entities/Criteria";
 import { ColumnMetadata, ConstructorFunc, JSObject, RelationMetadata } from "../../Domain/types";
 import { QueryBuilder } from "./QueryBuilder";

@@ -5,12 +5,10 @@ import { use } from "../../../../Shared/Infrastructure/Decorators/use";
 import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Middlewares/auth";
 import { post } from "../../../../Shared/Infrastructure/Decorators/routes";
 import { GetAllUsersQuery } from "../../Domain/Query/GetAllUsersQuery";
-import { GetUserResponseDto } from "../../Application/GetUserResponseDto";
 import { GetUserResponse } from "../../Application/Find/GetUserResponse";
-import { GetUserPresenter } from "../../Application/Find/GetUserPresenter";
 
 @Controller()
-export class GetAllUsersController extends BaseController<GetUserResponseDto[]> {
+export class GetAllUsersController extends BaseController<GetUserResponse[]> {
   @post('/users')
   @use(requireAuth)
   @use(currentUser)
@@ -18,14 +16,9 @@ export class GetAllUsersController extends BaseController<GetUserResponseDto[]> 
     try {
       const query = new GetAllUsersQuery(req.body.filters, req.currentUser!.id);
 
-      const queryResponses: GetUserResponseDto[] = await this.queryBus.ask(query);
+      const users = await this.queryBus.ask(query);
 
-      const responses = queryResponses.map((queryResponse: GetUserResponseDto) => {
-        const presenter = new GetUserPresenter();
-        return presenter.execute(queryResponse.user)
-      });
-
-      res.status(200).send(responses);
+      res.status(200).send(users);
     } catch (error) {
       next(error);
     }

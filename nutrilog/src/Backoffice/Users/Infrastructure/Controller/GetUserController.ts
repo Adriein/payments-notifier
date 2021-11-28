@@ -7,10 +7,9 @@ import { NextFunction, Request, Response } from "express";
 import { GetUserQuery } from "../../Domain/Query/GetUserQuery";
 import { GetUserResponse } from "../../Application/Find/GetUserResponse";
 import { User } from "../../Domain/User.entity";
-import { GetUserPresenter } from "../../Application/Find/GetUserPresenter";
 
 @Controller()
-export class GetUserController extends BaseController<User> {
+export class GetUserController extends BaseController<GetUserResponse> {
   @get('/user')
   @use(requireAuth)
   @use(currentUser)
@@ -20,9 +19,8 @@ export class GetUserController extends BaseController<User> {
         new GetUserQuery(req.body.id)
       );
 
-      const presenter = new GetUserPresenter();
 
-      res.status(200).send(presenter.execute(user));
+      res.status(200).send(user);
     } catch (error) {
       next(error);
     }

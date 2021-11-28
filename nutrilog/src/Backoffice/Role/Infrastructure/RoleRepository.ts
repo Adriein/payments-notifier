@@ -2,7 +2,7 @@ import { IRoleRepository } from "../Domain/IRoleRepository";
 import { Role } from "../Domain/Role";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 import { RoleMapper } from "./RoleMapper";
-import Database from "../../../Infraestructure/Data/Database";
+import Database from "../../../Shared/Infrastructure/Data/Database";
 import { Log } from "../../../Shared/Domain/Decorators/Log";
 
 export class RoleRepository implements IRoleRepository {

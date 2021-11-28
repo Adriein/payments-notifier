@@ -3,7 +3,7 @@ import { User } from "../../Domain/User.entity";
 import { UserMapper } from "./UserMapper";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { ADMIN_ROLE, USER_ROLE } from "../../../../Domain/constants";
-import Database from "../../../../Infraestructure/Data/Database";
+import Database from "../../../../Shared/Infrastructure/Data/Database";
 
 export class UserRepository implements IUserRepository {
   private mapper = new UserMapper();
@@ -29,13 +29,14 @@ export class UserRepository implements IUserRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async find(criteria: any): Promise<User[]> {
+  public async find(adminId: string): Promise<User[]> {
     try {
       const results = await this.prisma.user.findMany({
         where: {
           role: {
             type: USER_ROLE
-          }
+          },
+          owner_id: adminId
         },
         include: {
           config: true,

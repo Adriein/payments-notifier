@@ -4,7 +4,7 @@ import { AuthMapper } from "./AuthMapper";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 import { PrismaClient } from "@prisma/client";
 import { IAuthModel } from "./IAuthModel";
-import Database from "../../../Infraestructure/Data/Database";
+import Database from "../../../Shared/Infrastructure/Data/Database";
 
 export class AuthRepository implements IAuthRepository {
   private mapper: AuthMapper = new AuthMapper();

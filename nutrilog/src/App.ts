@@ -7,7 +7,7 @@ import fileUpload from 'express-fileupload';
 import path from 'path';
 import fs from 'fs';
 import { errorHandler } from './Shared/Infrastructure/Middlewares';
-import Database from './Infraestructure/Data/Database';
+import Database from './Shared/Infrastructure/Data/Database';
 import { FILES_PATH } from './Domain/constants';
 import { AppRouter } from './Shared/Infrastructure/AppRouter';
 import { ExplorerService } from './ExplorerService';

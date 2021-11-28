@@ -9,6 +9,13 @@ import { GetUserPresenter } from "./GetUserPresenter";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
+import { User } from "../../Domain/User.entity";
+import { CompositeSpecification } from "../../../../Shared/Domain/Specification/CompositeSpecification";
+import { USER_FILTERS, UserFilters } from "../../Domain/constants";
+import { SubscriptionActiveSpecification } from "../../Domain/Specifications/SubscriptionActiveSpecification";
+import { UserNameSpecification } from "../../Domain/Specifications/UserNameSpecification";
+import { UserActiveSpecification } from "../../Domain/Specifications/UserActiveSpecification";
+import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 
 @QueryHandler(GetAllUsersQuery)
 export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
@@ -19,32 +26,63 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
     const presenter = new GetUserPresenter();
     const responses: GetUserResponse[] = [];
 
-    if (this.hasFilters(query.filters)) {
-      const users = await this.repository.find();
+    const { filters, adminId } = query;
+    const id = new ID(adminId);
 
-      for (const user of users) {
-        const pricing = await this.queryBus.ask(new GetPricingQuery(user.pricingId()));
-        const userResponse = presenter.execute(user, pricing);
-
-        responses.push(userResponse);
-      }
-
-      return responses;
-    }
-
-    const users = await this.repository.findUsersWithActiveSubscriptions(query.adminId);
+    const users = await this.repository.find(id.value);
 
     for (const user of users) {
       const pricing = await this.queryBus.ask(new GetPricingQuery(user.pricingId()));
-      const userResponse = presenter.execute(user, pricing);
+      const spec = this.mountSpecification(filters).pop();
 
+      if (spec?.IsSatisfiedBy(user)) {
+        const userResponse = presenter.execute(user, pricing);
+
+        responses.push(userResponse);
+        continue;
+      }
+
+      const userResponse = presenter.execute(user, pricing);
       responses.push(userResponse);
     }
 
     return responses;
+
   }
 
-  private hasFilters(filters: FilterRequestDto[]): boolean {
-    return filters.length > 0;
+  private mountSpecification(filters: FilterRequestDto[]): CompositeSpecification<User>[] {
+    const specList: CompositeSpecification<User>[] = []
+
+    for (const filter of filters) {
+      if (filter.field === USER_FILTERS.ACTIVE) {
+        const activeSpec = new UserActiveSpecification(filter.value as UserFilters[USER_FILTERS.ACTIVE]);
+
+        specList.push(activeSpec);
+      }
+
+      if (filter.field === USER_FILTERS.NAME) {
+        const spec = specList.pop();
+
+        if (spec) {
+          spec.and(new UserNameSpecification(filter.value as UserFilters[USER_FILTERS.NAME]));
+          specList.push(spec)
+        }
+        const nameSpec = new UserNameSpecification(filter.value as UserFilters[USER_FILTERS.NAME]);
+        specList.push(nameSpec)
+      }
+
+      if (filter.field === USER_FILTERS.EXPIRED) {
+        const spec = specList.pop();
+
+        if (spec) {
+          spec.and(new SubscriptionActiveSpecification(filter.value as UserFilters[USER_FILTERS.EXPIRED]));
+          specList.push(spec)
+        }
+        const subscriptionSpec = new SubscriptionActiveSpecification(filter.value as UserFilters[USER_FILTERS.EXPIRED]);
+        specList.push(subscriptionSpec)
+      }
+    }
+
+    return specList;
   }
 }

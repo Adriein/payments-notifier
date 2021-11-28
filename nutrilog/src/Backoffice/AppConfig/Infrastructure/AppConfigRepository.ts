@@ -2,7 +2,7 @@ import { IAppConfigRepository } from "../Domain/IAppConfigRepository";
 import { AppConfig } from "../Domain/AppConfig.entity";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 import { Log } from "../../../Shared/Domain/Decorators/Log";
-import Database from "../../../Infraestructure/Data/Database";
+import Database from "../../../Shared/Infrastructure/Data/Database";
 import { AppConfigMapper } from "./AppConfigMapper";
 
 export class AppConfigRepository implements IAppConfigRepository {
