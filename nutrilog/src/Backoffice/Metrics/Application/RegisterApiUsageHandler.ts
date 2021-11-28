@@ -1,7 +1,7 @@
 import { ApiUsage } from '../Domain/ApiUsage.entity';
 import { DomainEventsHandler } from "../../../Shared/Domain/Decorators/DomainEventsHandler.decorator";
 import { IDomainEventHandler } from "../../../Shared/Domain/Interfaces/IDomainEventHandler";
-import { ApiQueryDomainEvent } from "../../../NutritionContext/Food/Domain/ApiQueryDomainEvent";
+import { ApiQueryDomainEvent } from "../../../Alimentation/Food/Domain/ApiQueryDomainEvent";
 import { ID } from "../../../Shared/Domain/VO/Id.vo";
 import { IApiUsageRepository } from "../Domain/IApiUsageRepository";
 import { Log } from "../../../Shared/Domain/Decorators/Log";

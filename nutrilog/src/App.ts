@@ -18,7 +18,7 @@ import { COMMANDS_HANDLER_METADATA, EVENTS_HANDLER_METADATA, QUERY_HANDLER_METAD
 import { CommandBus } from "./Shared/Infrastructure/Bus/CommandBus";
 import { QueryBus } from "./Shared/Infrastructure/Bus/QueryBus";
 import HandlerFactory from "./Shared/Infrastructure/Factories/Handler.factory";
-import './NutritionContext/Food';
+import './Alimentation/Food';
 import './Backoffice/Metrics';
 import './Auth';
 import './Backoffice/Users';
