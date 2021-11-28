@@ -11,7 +11,7 @@ type InformationSchema = {
 type Hash = { [key: string]: string };
 
 export class CriteriaMapper {
-  private db = Database.getInstance().getConnection();
+  private db = Database.instance().connection();
 
   public async sql(criteria: Criteria, joins?: string[]): Promise<string[]> {
     if (joins) {
@@ -47,7 +47,7 @@ export class CriteriaMapper {
 
   private buildSQL(criteria: Criteria, joinsHash?: Hash): string[] {
     if (joinsHash) {
-      return criteria.filters.map((filter: Filter) => {          
+      return criteria.filters.map((filter: Filter) => {
         return `AND ${
           joinsHash[filter.field]
             ? `${joinsHash[filter.field]}.${filter.field}`

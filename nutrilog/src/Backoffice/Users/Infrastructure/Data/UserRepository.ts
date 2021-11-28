@@ -9,14 +9,14 @@ import Database from "../../../../Infraestructure/Data/Database";
 
 export class UserRepository implements IUserRepository {
   private mapper = new UserMapper();
-  private prisma = Database.getInstance().getConnection();
+  private prisma = Database.instance().connection();
 
   @Log(process.env.LOG_LEVEL)
   public async delete(user: User): Promise<void> {
     try {
       await this.prisma.user.update({
         where: {
-          id: user.id().value
+          id: user.id()
         },
         data: {
           active: false,
@@ -93,46 +93,8 @@ export class UserRepository implements IUserRepository {
   @Log(process.env.LOG_LEVEL)
   public async save(entity: User): Promise<void> {
     try {
-      await this.prisma.user.create({
-        data: {
-          id: entity.id().value,
-          username: entity.name(),
-          email: entity.email(),
-          password: entity.password(),
-          owner_id: entity.ownerId(),
-          active: entity.isActive(),
-          created_at: entity.createdAt(),
-          updated_at: entity.updatedAt(),
-          role: {
-            connect: {
-              id: entity.roleId(),
-            }
-          },
-          config: {
-            create: {
-              id: entity.configId(),
-              send_warnings: entity.sendWarnings(),
-              send_notifications: entity.sendNotifications(),
-              language: entity.language(),
-              created_at: new Date(),
-              updated_at: new Date()
-            }
-          },
-          subscriptions: {
-            create: {
-              id: entity.subscriptionId(),
-              pricing_id: entity.pricingId(),
-              active: entity.isSubscriptionActive(),
-              expired: false,
-              warned: entity.isWarned(),
-              notified: entity.isNotified(),
-              payment_date: entity.paymentDate(),
-              created_at: new Date(),
-              updated_at: new Date()
-            }
-          }
-        }
-      });
+      const data = this.mapper.toSaveDataModel(entity);
+      await this.prisma.user.create({ data });
       this.prisma.$disconnect();
     } catch (error) {
       this.prisma.$disconnect();
@@ -143,47 +105,12 @@ export class UserRepository implements IUserRepository {
   @Log(process.env.LOG_LEVEL)
   public async update(entity: User): Promise<void> {
     try {
+      const data = this.mapper.toUpdateDataModel(entity);
       await this.prisma.user.update({
         where: {
-          id: entity.id().value
+          id: entity.id()
         },
-        data: {
-          username: entity.name(),
-          email: entity.email(),
-          password: entity.password(),
-          owner_id: entity.ownerId(),
-          active: entity.isActive(),
-          created_at: entity.createdAt(),
-          updated_at: entity.updatedAt(),
-          role: {
-            connect: {
-              id: entity.roleId(),
-            }
-          },
-          config: {
-            create: {
-              id: entity.configId(),
-              send_warnings: entity.sendWarnings(),
-              send_notifications: entity.sendNotifications(),
-              language: entity.language(),
-              created_at: new Date(),
-              updated_at: new Date()
-            }
-          },
-          subscriptions: {
-            create: {
-              id: entity.subscriptionId(),
-              pricing_id: entity.pricingId(),
-              active: entity.isSubscriptionActive(),
-              expired: false,
-              warned: entity.isWarned(),
-              notified: entity.isNotified(),
-              payment_date: entity.paymentDate(),
-              created_at: new Date(),
-              updated_at: new Date()
-            }
-          }
-        }
+        data
       });
 
       this.prisma.$disconnect();
@@ -223,7 +150,7 @@ export class UserRepository implements IUserRepository {
         where: {
           owner_id: adminId,
           subscriptions: {
-            every: {
+            some: {
               active: true
             }
           },
@@ -279,10 +206,12 @@ export class UserRepository implements IUserRepository {
     }
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async findUsersWithExpiredSubscriptions(adminId: string): Promise<User[]> {
     throw new Error("Method not implemented.");
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async findUsersNotWarned(adminId: string): Promise<User[]> {
     try {
       const results = await this.prisma.user.findMany({

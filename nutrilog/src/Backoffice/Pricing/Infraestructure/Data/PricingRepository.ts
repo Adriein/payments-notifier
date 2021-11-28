@@ -3,10 +3,11 @@ import { Pricing } from "../../Domain/Pricing.entity";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { PricingMapper } from "./PricingMapper";
 import Database from "../../../../Infraestructure/Data/Database";
+import { Log } from "../../../../Shared/Domain/Decorators/Log";
 
 export class PricingRepository implements IPricingRepository {
   private readonly mapper = new PricingMapper();
-  private prisma = Database.getInstance().getConnection();
+  private prisma = Database.instance().connection();
 
   delete(entity: Pricing): Promise<void> {
     throw new Error('Not implemented yet');
@@ -16,6 +17,7 @@ export class PricingRepository implements IPricingRepository {
     throw new Error('Not implemented yet');
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async findOne(id: string): Promise<Pricing | undefined> {
     const result = await this.prisma.pricing.findUnique({
       where: {
@@ -32,6 +34,7 @@ export class PricingRepository implements IPricingRepository {
     return this.mapper.toDomain(result);
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async save(entity: Pricing): Promise<void> {
     const data = this.mapper.toSaveDataModel(entity);
 
@@ -42,6 +45,7 @@ export class PricingRepository implements IPricingRepository {
     throw new Error('Not implemented yet');
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async search(pricingName: string): Promise<Pricing | undefined> {
     const [ result ] = await this.prisma.pricing.findMany({
       where: {
@@ -58,6 +62,7 @@ export class PricingRepository implements IPricingRepository {
     return this.mapper.toDomain(result);
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async findAll(adminId: string): Promise<Pricing[]> {
     try {
       const results = await this.prisma.pricing.findMany({

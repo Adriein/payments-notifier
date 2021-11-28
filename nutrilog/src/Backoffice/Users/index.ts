@@ -7,3 +7,4 @@ export * from './Infrastructure/Controller/UpdatePaymentController';
 export * from './Infrastructure/Controller/UpdateUserNotificationsController';
 export * from './Infrastructure/Controller/CheckForAboutToExpireSubscriptionsController';
 export * from './Infrastructure/Controller/CheckForExpiredSubscriptionController';
+export * from './Infrastructure/Controller/GenerateExpiredSubscriptionsReportController';

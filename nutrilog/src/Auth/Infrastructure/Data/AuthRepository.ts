@@ -8,7 +8,7 @@ import Database from "../../../Infraestructure/Data/Database";
 
 export class AuthRepository implements IAuthRepository {
   private mapper: AuthMapper = new AuthMapper();
-  private prisma = Database.getInstance().getConnection();
+  private prisma = Database.instance().connection();
 
   public async delete(entity: Auth): Promise<void> {
     return Promise.resolve(undefined);

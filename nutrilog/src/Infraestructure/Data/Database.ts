@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { PrismaClient } from "@prisma/client";
 
 export default class Database {
-  private static instance: Database;
+  private static _instance: Database;
   //private pool?: pg.Pool;
   private prismaClient?: PrismaClient;
 
@@ -37,19 +37,19 @@ export default class Database {
     })();
   }
 
-  public static getInstance(): Database {
+  public static instance(): Database {
     if (!Database.instance) {
-      Database.instance = new Database();
+      Database._instance = new Database();
     }
 
-    return Database.instance;
+    return Database._instance;
   }
 
   /*public getConnection(): pg.Pool {
    return this.pool!;
    }*/
 
-  public getConnection(): PrismaClient {
+  public connection(): PrismaClient {
     return this.prismaClient!;
   }
 }

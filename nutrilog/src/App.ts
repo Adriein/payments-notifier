@@ -38,7 +38,7 @@ export default class App {
 
     console.log(chalk.cyan('> Env variables setted correctly ✨'));
 
-    Database.getInstance();
+    Database.instance();
 
     this.bindDomainEvents();
 

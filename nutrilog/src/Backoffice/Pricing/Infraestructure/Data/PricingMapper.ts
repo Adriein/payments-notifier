@@ -16,7 +16,7 @@ export class PricingMapper implements IMapper<Pricing, Prisma.pricingCreateInput
 
   toSaveDataModel<C extends Prisma.pricingCreateInput>(domain: Pricing): Prisma.pricingCreateInput {
     return {
-      id: domain.id().value,
+      id: domain.id(),
       pricing_name: domain.name(),
       duration: domain.duration(),
       amount: domain.price(),

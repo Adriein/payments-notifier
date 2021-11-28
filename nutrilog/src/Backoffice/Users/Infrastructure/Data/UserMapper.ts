@@ -6,15 +6,91 @@ import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { UserConfig } from "../../Domain/UserConfig.entity";
 import { Subscription } from "../../Domain/Subscription.entity";
 import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
-import { IUserModel } from "./IUserModel";
+import { Prisma } from "@prisma/client";
 
-export class UserMapper implements IMapper<User, IUserModel> {
-
-  toDataModel(entity: User): IUserModel {
-    throw new Error('Not implemented');
+export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma.userUpdateInput> {
+  toSaveDataModel<C extends Prisma.userCreateInput>(domain: User): Prisma.userCreateInput {
+    return {
+      id: domain.id(),
+      username: domain.name(),
+      email: domain.email(),
+      password: domain.password(),
+      owner_id: domain.ownerId(),
+      active: domain.isActive(),
+      created_at: domain.createdAt(),
+      updated_at: domain.updatedAt(),
+      role: {
+        connect: {
+          id: domain.roleId(),
+        }
+      },
+      config: {
+        create: {
+          id: domain.configId(),
+          send_warnings: domain.sendWarnings(),
+          send_notifications: domain.sendNotifications(),
+          language: domain.language(),
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      },
+      subscriptions: {
+        create: {
+          id: domain.subscriptionId(),
+          pricing_id: domain.pricingId(),
+          active: domain.isSubscriptionActive(),
+          expired: false,
+          warned: domain.isWarned(),
+          notified: domain.isNotified(),
+          payment_date: domain.paymentDate(),
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      }
+    }
   }
 
-  public toDomain(dataModel: IUserModel): User {
+  toUpdateDataModel<C extends Prisma.userUpdateInput>(domain: User): Prisma.userUpdateInput {
+    return {
+      username: domain.name(),
+      email: domain.email(),
+      password: domain.password(),
+      owner_id: domain.ownerId(),
+      active: domain.isActive(),
+      created_at: domain.createdAt(),
+      updated_at: domain.updatedAt(),
+      role: {
+        connect: {
+          id: domain.roleId(),
+        }
+      },
+      config: {
+        create: {
+          id: domain.configId(),
+          send_warnings: domain.sendWarnings(),
+          send_notifications: domain.sendNotifications(),
+          language: domain.language(),
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      },
+      subscriptions: {
+        create: {
+          id: domain.subscriptionId(),
+          pricing_id: domain.pricingId(),
+          active: domain.isSubscriptionActive(),
+          expired: false,
+          warned: domain.isWarned(),
+          notified: domain.isNotified(),
+          payment_date: domain.paymentDate(),
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      }
+    }
+  }
+
+  public toDomain(dataModel: any): User {
     const [ subscriptionModel ] = dataModel.subscriptions!;
     const subscription = new Subscription(
       new ID(subscriptionModel.id),

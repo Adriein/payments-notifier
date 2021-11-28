@@ -7,7 +7,7 @@ import { AppConfigMapper } from "./AppConfigMapper";
 
 export class AppConfigRepository implements IAppConfigRepository {
   private mapper = new AppConfigMapper();
-  private prisma = Database.getInstance().getConnection();
+  private prisma = Database.instance().connection();
 
   delete(entity: AppConfig): Promise<void> {
     return Promise.resolve(undefined);
@@ -37,6 +37,7 @@ export class AppConfigRepository implements IAppConfigRepository {
     return Promise.resolve(undefined);
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async findByAdminId(adminId: string): Promise<AppConfig | undefined> {
     try {
       const result = await this.prisma.app_config.findUnique({

@@ -3,10 +3,11 @@ import { Role } from "../Domain/Role";
 import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 import { RoleMapper } from "./RoleMapper";
 import Database from "../../../Infraestructure/Data/Database";
+import { Log } from "../../../Shared/Domain/Decorators/Log";
 
 export class RoleRepository implements IRoleRepository {
   private mapper = new RoleMapper();
-  private prisma = Database.getInstance().getConnection();
+  private prisma = Database.instance().connection();
 
   delete(entity: Role): Promise<void> {
     return Promise.resolve(undefined);
@@ -24,6 +25,7 @@ export class RoleRepository implements IRoleRepository {
     return Promise.resolve(undefined);
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async search(role: string): Promise<Role | undefined> {
     try {
       const [ result ] = await this.prisma.role.findMany({ where: { type: role } });
