@@ -1,4 +1,5 @@
-import { CustomError } from '../../Domain/Errors';
+import { CustomError } from "../../Shared/Domain/CustomError";
+
 
 export class NotAuthorizedError extends CustomError {
   statusCode = 401;
@@ -10,6 +11,6 @@ export class NotAuthorizedError extends CustomError {
   }
 
   serialize() {
-    return [{message: 'Not authorized'}];
+    return [ { message: 'Not authorized' } ];
   }
 }

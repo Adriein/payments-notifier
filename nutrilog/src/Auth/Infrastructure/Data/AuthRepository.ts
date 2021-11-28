@@ -1,9 +1,6 @@
 import { IAuthRepository } from "../../Domain/IAuthRepository";
 import { Auth } from "../../Domain/Auth.entity";
 import { AuthMapper } from "./AuthMapper";
-import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
-import { PrismaClient } from "@prisma/client";
-import { IAuthModel } from "./IAuthModel";
 import Database from "../../../Shared/Infrastructure/Data/Database";
 
 export class AuthRepository implements IAuthRepository {
@@ -14,7 +11,7 @@ export class AuthRepository implements IAuthRepository {
     return Promise.resolve(undefined);
   }
 
-  public async find(criteria: Criteria): Promise<Auth[]> {
+  public async find(criteria: any): Promise<Auth[]> {
     return Promise.resolve([]);
   }
 
@@ -40,7 +37,7 @@ export class AuthRepository implements IAuthRepository {
         subscriptions: true,
         role: true
       }
-    }) as unknown as IAuthModel;
+    });
 
     this.prisma.$disconnect();
 
