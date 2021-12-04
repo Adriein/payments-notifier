@@ -25,7 +25,7 @@ export class SendContactEmailHandler implements IHandler<void> {
       ''
     );
 
-    const email = new NutrilogEmail<string>(ID.generate(), header, command.emailContent);
+    const email = NutrilogEmail.build<string>(header, command.emailContent);
 
     await this.repository.send(email);
   }

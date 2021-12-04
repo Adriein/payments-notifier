@@ -3,6 +3,10 @@ import { AggregateRoot } from "../../../Shared/Domain/Entities/AggregateRoot";
 import { ID } from "../../../Shared/Domain/VO/Id.vo";
 
 export class NutrilogEmail<T> extends AggregateRoot {
+  public static build<T>(header: EmailHeader, body: T) {
+    return new NutrilogEmail(ID.generate(), header, body);
+  }
+
   constructor(_id: ID, private header: EmailHeader, private body: T) {
     super(_id);
   }
