@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { IHttpApi } from "../../Domain/Interfaces/IHttpApi";
 
-export abstract class HttpApi {
+export abstract class HttpApi implements IHttpApi<any> {
   protected abstract BASE_URL: string;
   private config: AxiosRequestConfig = {};
 

@@ -17,11 +17,13 @@ export class SignInHandler implements IHandler<Auth> {
   public async handle(query: SigninQuery): Promise<Auth> {
     const { email, password } = query;
 
-    const auth = await this.repository.findByEmail(email);
+    const result = await this.repository.findByEmail(email);
 
-    if (!auth) {
-      throw new NotAuthorizedError();
+    if (result.isLeft()) {
+      throw result.value;
     }
+    
+    const auth = result.value;
 
     const validated = await this.crypto.compare(auth.password(), password);
 

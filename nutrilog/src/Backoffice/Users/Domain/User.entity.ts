@@ -58,7 +58,7 @@ export class User extends AggregateRoot {
   }
 
   public configId = (): string => {
-    return this._config.id().value;
+    return this._config.id();
   }
 
   public language = (): string => {
@@ -110,7 +110,7 @@ export class User extends AggregateRoot {
   }
 
   public subscriptionId = (): string => {
-    return this._subscription.id().value;
+    return this._subscription.id();
   }
 
   public isSubscriptionExpired = (priceDuration?: number): boolean => {

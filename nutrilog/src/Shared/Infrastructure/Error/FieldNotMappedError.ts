@@ -1,4 +1,4 @@
-import { CustomError } from "../../Domain/CustomError";
+import { CustomError } from "../../Domain/Error/CustomError";
 
 
 export class FieldNotMappedError extends CustomError {

@@ -1,6 +1,8 @@
 import { DomainEvent } from "./Entities/DomainEvent";
 import { ICommand } from "./Interfaces/ICommand";
 import { IQuery } from "./Interfaces/IQuery";
+import { Left } from "./Entities/Left";
+import { Right } from "./Entities/Right";
 
 export type PricingObject = {
   [key: string]: { duration: number; price: number };
@@ -48,3 +50,5 @@ export type ColumnMetadata = { name: string, type: string }
 export type GetReturnType<T> = {
   [K in keyof T]: T[K] extends (...args: any) => any ? ReturnType<T[K]> : never;
 }[keyof T];
+
+export type Either<L, R> = Left<L, R> | Right<L, R>;

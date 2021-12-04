@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { IApi } from "../../Domain/Interfaces/IApi";
 
-export class Api {
+export class Api implements IApi {
   public async get(url: string, params: any): Promise<any> {
     try {
       return (await axios.get(url, params)).data;
