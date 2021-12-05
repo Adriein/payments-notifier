@@ -1,7 +1,7 @@
-import { IHandler } from '../../../Domain/Interfaces';
 import { IQueryBus } from '../../Domain/Bus/IQueryBus';
 import { QueryClass } from '../../Domain/types';
 import { IQuery } from "../../Domain/Interfaces/IQuery";
+import { IHandler } from "../../Domain/Interfaces/IHandler";
 
 export class QueryBus<T> implements IQueryBus<T> {
   private static _instance: QueryBus<any>;
@@ -12,10 +12,10 @@ export class QueryBus<T> implements IQueryBus<T> {
 
   public static instance<T>(): QueryBus<T> {
     if (!QueryBus._instance) {
-      QueryBus._instance = new QueryBus();
+      QueryBus._instance = new QueryBus<T>();
     }
 
-    return QueryBus._instance;
+    return QueryBus._instance as QueryBus<T>;
   }
 
   public static bind = (command: QueryClass, handler: IHandler<any>): void => {

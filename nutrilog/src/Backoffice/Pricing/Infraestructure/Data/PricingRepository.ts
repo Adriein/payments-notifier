@@ -13,7 +13,7 @@ export class PricingRepository implements IPricingRepository {
     throw new Error('Not implemented yet');
   }
 
-  public async find(criteria: Criteria): Promise<Pricing[]> {
+  public async find(criteria: any): Promise<Pricing[]> {
     throw new Error('Not implemented yet');
   }
 

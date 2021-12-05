@@ -8,7 +8,6 @@ import {
   TABLE_NAME_METADATA,
   TABLE_RELATION_METADATA
 } from "../../Domain/constants";
-import { OPERATORS } from "../../../Domain/constants";
 import { StringUtils } from "../../Domain/Helper/String.utils";
 
 interface HasID {

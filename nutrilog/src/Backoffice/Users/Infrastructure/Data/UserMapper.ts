@@ -1,10 +1,10 @@
 import { IMapper } from "../../../../Shared/Domain/Interfaces/IMapper";
-import { User } from "../../Domain/User.entity";
+import { User } from "../../Domain/Entity/User.entity";
 import { Password } from "../../../../Shared/Domain/VO/Password.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
-import { UserConfig } from "../../Domain/UserConfig.entity";
-import { Subscription } from "../../Domain/Subscription.entity";
+import { UserConfig } from "../../Domain/Entity/UserConfig.entity";
+import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
 import { Prisma } from "@prisma/client";
 

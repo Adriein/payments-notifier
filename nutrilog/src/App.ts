@@ -8,7 +8,6 @@ import path from 'path';
 import fs from 'fs';
 import { errorHandler } from './Shared/Infrastructure/Middlewares';
 import Database from './Shared/Infrastructure/Data/Database';
-import { FILES_PATH } from './Domain/constants';
 import { AppRouter } from './Shared/Infrastructure/AppRouter';
 import { ExplorerService } from './ExplorerService';
 import DomainEventHandlerFactory from './Shared/Infrastructure/Factories/DomainEventHandler.factory';
@@ -19,9 +18,10 @@ import { CommandBus } from "./Shared/Infrastructure/Bus/CommandBus";
 import { QueryBus } from "./Shared/Infrastructure/Bus/QueryBus";
 import HandlerFactory from "./Shared/Infrastructure/Factories/Handler.factory";
 import './Alimentation/Food';
-import './Backoffice/Metrics';
 import './Auth';
 import './Backoffice/Users';
+import './Backoffice/Notifications';
+import './Backoffice/Metrics';
 
 
 export default class App {
@@ -45,8 +45,6 @@ export default class App {
     this.bindCommands();
 
     this.bindQueries();
-
-    this.initDirectories();
 
     this.bootstrapHttpServer();
   }
@@ -108,11 +106,11 @@ export default class App {
   }
 
   private initDirectories(): void {
-    if (fs.existsSync(FILES_PATH)) {
+    if (fs.existsSync('')) {
       return;
     }
 
-    fs.mkdirSync(FILES_PATH);
+    fs.mkdirSync('');
 
     console.log(chalk.yellow('> File folders created 📁'));
   }

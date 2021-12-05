@@ -5,11 +5,11 @@ import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { FilterRequestDto } from "./FilterRequestDto";
 import { GetUserResponse } from "./GetUserResponse";
 import { IUserRepository } from "../../Domain/IUserRepository";
-import { GetUserPresenter } from "./GetUserPresenter";
+import { UserResponseBuilder } from "../Service/UserResponseBuilder";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
-import { User } from "../../Domain/User.entity";
+import { User } from "../../Domain/Entity/User.entity";
 import { CompositeSpecification } from "../../../../Shared/Domain/Specification/CompositeSpecification";
 import { USER_FILTERS, UserFilters } from "../../Domain/constants";
 import { SubscriptionActiveSpecification } from "../../Domain/Specifications/SubscriptionActiveSpecification";
@@ -23,7 +23,7 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: GetAllUsersQuery): Promise<GetUserResponse[]> {
-    const presenter = new GetUserPresenter();
+    const presenter = new UserResponseBuilder();
     const responses: GetUserResponse[] = [];
 
     const { filters, adminId } = query;
@@ -36,13 +36,13 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
       const spec = this.mountSpecification(filters).pop();
 
       if (spec?.IsSatisfiedBy(user)) {
-        const userResponse = presenter.execute(user, pricing);
+        const userResponse = presenter.run(user, pricing);
 
         responses.push(userResponse);
         continue;
       }
 
-      const userResponse = presenter.execute(user, pricing);
+      const userResponse = presenter.run(user, pricing);
       responses.push(userResponse);
     }
 

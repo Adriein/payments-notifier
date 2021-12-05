@@ -1,5 +1,5 @@
 import { CompositeSpecification } from "../../../../Shared/Domain/Specification/CompositeSpecification";
-import { User } from "../User.entity";
+import { User } from "../Entity/User.entity";
 
 export class UserNameSpecification extends CompositeSpecification<User> {
   constructor(private name: string) {

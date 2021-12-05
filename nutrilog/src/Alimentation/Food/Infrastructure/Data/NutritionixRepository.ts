@@ -6,7 +6,6 @@ import { FoodSearch, NutritionixApiSearchResponse } from './NutritionixApiSearch
 import { NutritionixApiNutrientsResponse } from './NutritionixApiNutrients.response.api';
 import { NutritionixApiNutrientsRequest } from './NutritionixApiNutrients.request';
 import { Collection } from '../../../../Shared/Domain/Entities/Collection';
-import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 
 export class NutritionixRepository extends HttpApi implements IFoodRepository {
   protected BASE_URL: string = 'https://trackapi.nutritionix.com/v2';
@@ -42,7 +41,7 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
     throw new Error('Method not implemented.');
   }
 
-  find(criteria: Criteria): Promise<Food[]> {
+  find(criteria: any): Promise<Food[]> {
     throw new Error('Method not implemented.');
   }
 

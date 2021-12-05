@@ -1,5 +1,4 @@
 import { Log } from '../../../../Shared/Domain/Decorators/Log';
-import { IHandler } from '../../../../Domain/Interfaces';
 import { ID } from '../../../../Shared/Domain/VO/Id.vo';
 import { GetUserQuery } from '../../Domain/Query/GetUserQuery';
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
@@ -9,7 +8,8 @@ import { PricingResponse } from "../../../Pricing/Application/Find/PricingRespon
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { GetUserResponse } from "./GetUserResponse";
-import { GetUserPresenter } from "./GetUserPresenter";
+import { UserResponseBuilder } from "../Service/UserResponseBuilder";
+import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 
 @QueryHandler(GetUserQuery)
 export class GetUserHandler implements IHandler<GetUserResponse> {
@@ -18,7 +18,7 @@ export class GetUserHandler implements IHandler<GetUserResponse> {
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: GetUserQuery): Promise<GetUserResponse> {
-    const presenter = new GetUserPresenter();
+    const presenter = new UserResponseBuilder();
     const userId = new ID(command.userId);
 
     const user = await this.repository.findOne(userId.value);
@@ -29,6 +29,6 @@ export class GetUserHandler implements IHandler<GetUserResponse> {
 
     const pricing = await this.bus.ask(new GetPricingQuery(user.pricingId()));
 
-    return presenter.execute(user, pricing);
+    return presenter.run(user, pricing);
   }
 }

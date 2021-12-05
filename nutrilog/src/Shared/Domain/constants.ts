@@ -10,3 +10,16 @@ export const PRIMARY_KEY = 'primaryKey';
 
 export const ONE_TO_MANY_RELATION = 'oneToMany';
 export const ONE_TO_ONE_RELATION = 'oneToOne';
+
+export enum OPERATORS {
+  equal = '=',
+  gt = '>',
+  lt = '<',
+  gte = '>=',
+  lte = '<=',
+  ne = '!=',
+  and = 'AND',
+  or = 'OR',
+  like = 'LIKE',
+  ilike = 'ILIKE',
+}

@@ -1,4 +1,4 @@
-import { User } from "../../Users/Domain/User.entity";
+import { User } from "../../Users/Domain/Entity/User.entity";
 import { AppConfig } from "../../AppConfig/Domain/AppConfig.entity";
 
 export abstract class Template {
@@ -32,7 +32,7 @@ export abstract class Template {
   }
 
   protected getUserPricing(): string {
-    return Object.keys(this.user.pricing().value)[0];
+    return '';
   }
 
   protected async parseEmailContent(): Promise<string> {

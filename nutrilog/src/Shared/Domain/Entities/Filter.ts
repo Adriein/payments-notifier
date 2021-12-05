@@ -1,4 +1,4 @@
-import { OPERATORS } from "../../../Domain/constants";
+import { OPERATORS } from "../constants";
 import { GetReturnType } from "../types";
 
 export class Filter<T> {

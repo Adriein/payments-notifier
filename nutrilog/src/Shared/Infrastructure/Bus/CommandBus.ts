@@ -1,14 +1,13 @@
-import { IHandler } from '../../../Domain/Interfaces';
 import { ICommandBus } from '../../Domain/Bus/ICommandBus';
 import { CommandClass, ConstructorFunc } from '../../Domain/types';
 import { ICommand } from "../../Domain/Interfaces/ICommand";
+import { IHandler } from "../../Domain/Interfaces/IHandler";
 
-export class CommandBus implements ICommandBus
-{
+export class CommandBus implements ICommandBus {
   private static _instance: CommandBus;
   private static handlers: Map<string, IHandler<void>> = new Map();
 
-  private constructor(){}
+  private constructor() {}
 
   public static instance(): CommandBus {
     if (!CommandBus._instance) {

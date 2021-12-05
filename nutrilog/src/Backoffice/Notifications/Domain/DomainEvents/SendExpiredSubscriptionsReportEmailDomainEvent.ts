@@ -1,4 +1,5 @@
 import { DomainEvent } from "../../../../Shared/Domain/Entities/DomainEvent";
+import { GetUserResponse } from "../../../Users/Application/Find/GetUserResponse";
 
 export class SendExpiredSubscriptionsReportEmailDomainEvent extends DomainEvent {
   constructor(
@@ -6,8 +7,8 @@ export class SendExpiredSubscriptionsReportEmailDomainEvent extends DomainEvent 
     public readonly totalDefaulters: number,
     public readonly lastReportDate: Date,
     public readonly reportDate: Date,
-    public readonly defaulters: { name: string, email: string }[],
-    public readonly oldDefaulters: { name: string, email: string }[],
+    public readonly defaulters: GetUserResponse[],
+    public readonly oldDefaulters: GetUserResponse[],
   ) {
     super();
   }

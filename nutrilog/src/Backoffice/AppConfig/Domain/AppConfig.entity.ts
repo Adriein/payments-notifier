@@ -1,6 +1,6 @@
 import { AggregateRoot } from "../../../Shared/Domain/Entities/AggregateRoot";
 import { ID } from "../../../Shared/Domain/VO/Id.vo";
-import { DEFAULT_DELAY_DAYS, DEFAULT_EMAIL_CONTENT, DEFAULT_WARNING_DAYS } from "../../../Domain/constants";
+import { DEFAULT_DELAY_DAYS, DEFAULT_EMAIL_CONTENT, DEFAULT_WARNING_DAYS } from "./constants";
 
 export class AppConfig extends AggregateRoot {
   public static build(

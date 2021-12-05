@@ -13,7 +13,7 @@ export class AppConfigRepository implements IAppConfigRepository {
     return Promise.resolve(undefined);
   }
 
-  find(criteria?: Criteria): Promise<AppConfig[]> {
+  find(criteria?: any): Promise<AppConfig[]> {
     return Promise.resolve([]);
   }
 

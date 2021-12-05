@@ -13,7 +13,7 @@ export class RoleRepository implements IRoleRepository {
     return Promise.resolve(undefined);
   }
 
-  find(criteria?: Criteria): Promise<Role[]> {
+  find(criteria?: any): Promise<Role[]> {
     return Promise.resolve([]);
   }
 

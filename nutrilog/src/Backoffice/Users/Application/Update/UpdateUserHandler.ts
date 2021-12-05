@@ -1,9 +1,9 @@
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
 import { IUserRepository } from "../../Domain/IUserRepository";
-import { UserConfig } from "../../Domain/UserConfig.entity";
-import { User } from "../../Domain/User.entity";
-import { Subscription } from "../../Domain/Subscription.entity";
+import { UserConfig } from "../../Domain/Entity/UserConfig.entity";
+import { User } from "../../Domain/Entity/User.entity";
+import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
 import { Password } from "../../../../Shared/Domain/VO/Password.vo";

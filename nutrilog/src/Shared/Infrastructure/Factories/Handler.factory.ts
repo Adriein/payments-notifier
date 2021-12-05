@@ -1,4 +1,3 @@
-import { IHandler } from '../../../Domain/Interfaces';
 import { CreateDietHandler } from '../../../Alimentation/Diet/Application/CreateDietHandler';
 import { CreateNutritionHandler } from '../../../Alimentation/Nutrition/Application/CreateNutritionHandler';
 import { NutritionRepository } from '../../../Alimentation/Nutrition/Infrastructure/Data/NutritionRepository';
@@ -7,7 +6,6 @@ import { GetDietsHandler } from '../../../Alimentation/Diet/Application/GetDiets
 import { ModifyDietHandler } from '../../../Alimentation/Diet/Application/ModifyDietHandler';
 import { DietRepository } from '../../../Alimentation/Diet/Infrastructure/Data/DietRepository';
 import { QueryBus } from '../Bus/QueryBus';
-import { Nutrition } from '../../../Alimentation/Nutrition/Domain/Nutrition.entity';
 import { KcalCalculator } from '../../../Alimentation/Nutrition/Domain/KcalCalculator';
 import { SearchFoodHandler } from '../../../Alimentation/Food/Application/SearchFoodHandler';
 import { FoodRepository } from '../../../Alimentation/Food/Infrastructure/Data/FoodRepository';
@@ -17,7 +15,6 @@ import { SignInHandler } from "../../../Auth/Application/SignInHandler";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
 import { PricingRepository } from "../../../Backoffice/Pricing/Infraestructure/Data/PricingRepository";
-import { CreateUserHandler } from "../../../Backoffice/Users/Application/CreateUserHandler";
 import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
 import { UpdateUserHandler } from "../../../Backoffice/Users/Application/Update/UpdateUserHandler";
 import { UpdatePaymentHandler } from "../../../Backoffice/Users/Application/Update/UpdatePaymentHandler";
@@ -26,8 +23,9 @@ import { GetAllUsersHandler } from "../../../Backoffice/Users/Application/Find/G
 import { SearchRoleHandler } from "../../../Backoffice/Role/Application/SearchRoleHandler";
 import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
 import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/Find/SearchPricingHandler";
-import { DeleteUserHandler } from "../../../Backoffice/Users/Application/DeleteUserHandler";
-
+import { CreateUserHandler } from "../../../Backoffice/Users/Application/Create/CreateUserHandler";
+import { DeleteUserHandler } from "../../../Backoffice/Users/Application/Delete/DeleteUserHandler";
+import { IHandler } from "../../Domain/Interfaces/IHandler";
 
 export default class HandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -70,7 +68,7 @@ export default class HandlerFactory {
     this.handlers.set(
       CreateDietHandler.name,
       new CreateDietHandler(
-        QueryBus.instance<Nutrition>(),
+        QueryBus.instance(),
         this.dietRepository,
         new KcalCalculator()
       )
@@ -123,7 +121,7 @@ export default class HandlerFactory {
 
     this.handlers.set(
       GetAllUsersHandler.name,
-      new GetAllUsersHandler(this.userRepository)
+      new GetAllUsersHandler(this.userRepository, QueryBus.instance())
     );
 
     this.handlers.set(

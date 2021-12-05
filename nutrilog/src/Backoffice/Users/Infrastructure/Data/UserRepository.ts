@@ -1,8 +1,8 @@
 import { IUserRepository } from "../../Domain/IUserRepository";
-import { User } from "../../Domain/User.entity";
+import { User } from "../../Domain/Entity/User.entity";
 import { UserMapper } from "./UserMapper";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
-import { ADMIN_ROLE, USER_ROLE } from "../../../../Domain/constants";
+import { ADMIN_ROLE, USER_ROLE } from "../../Domain/constants";
 import Database from "../../../../Shared/Infrastructure/Data/Database";
 
 export class UserRepository implements IUserRepository {

@@ -6,7 +6,7 @@ import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Midd
 import { NextFunction, Request, Response } from "express";
 import { GetUserQuery } from "../../Domain/Query/GetUserQuery";
 import { GetUserResponse } from "../../Application/Find/GetUserResponse";
-import { User } from "../../Domain/User.entity";
+import { User } from "../../Domain/Entity/User.entity";
 
 @Controller()
 export class GetUserController extends BaseController<GetUserResponse> {
