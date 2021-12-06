@@ -8,7 +8,6 @@ import { Either } from "../../../../Shared/Domain/types";
 import { UserNotExistError } from "../../Domain/UserNotExistError";
 import { Left } from "../../../../Shared/Domain/Entities/Left";
 import { Right } from "../../../../Shared/Domain/Entities/Right";
-import e from "express";
 
 export class UserRepository implements IUserRepository {
   private mapper = new UserMapper();

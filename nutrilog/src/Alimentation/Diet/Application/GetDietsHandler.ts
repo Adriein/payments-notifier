@@ -1,10 +1,10 @@
 import { Log } from '../../../Shared/Domain/Decorators/Log';
 import { Diet } from '../Domain/Diet.entity';
-import { IHandler } from '../../../Domain/Interfaces';
 import { ID } from '../../../Shared/Domain/VO/Id.vo';
 import { IDietRepository } from '../Domain/IDietRepository';
 import { GetDietsQuery } from '../Domain/Query/GetDietsQuery';
 import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
+import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
 
 @QueryHandler(GetDietsQuery)
 export class GetDietsHandler implements IHandler<Diet[]> {

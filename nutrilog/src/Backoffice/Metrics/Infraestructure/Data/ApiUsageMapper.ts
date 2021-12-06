@@ -1,7 +1,7 @@
 import { IMapper } from '../../../../Shared/Domain/Interfaces/IMapper';
 import { ApiUsage } from '../../Domain/ApiUsage.entity';
 
-export class ApiUsageMapper implements IMapper<ApiUsage, ApiUsageDAO> {
+export class ApiUsageMapper {
 
 
 }

@@ -1,10 +1,10 @@
-import { IHandler } from "../../../Domain/Interfaces";
 import { CommandHandler } from "../../../Shared/Domain/Decorators/CommandHandler.decorator";
 import { SaveFoodCommand } from "../Domain/Command/SaveFoodCommand";
 import { IFoodRepository } from "../Domain/IFoodRepository";
 import { Food } from "../Domain/Food.entity";
 import { ID } from "../../../Shared/Domain/VO/Id.vo";
 import { MicroNutrients } from "../Domain/MicroNutrients.entity";
+import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
 
 @CommandHandler(SaveFoodCommand)
 export class SaveFoodHandler implements IHandler<void> {
@@ -12,9 +12,9 @@ export class SaveFoodHandler implements IHandler<void> {
   }
 
   public async handle(command: SaveFoodCommand): Promise<void> {
-    const foodOnDb = await this.repository.findOne(command.id);
+    const result = await this.repository.findOne(command.id);
 
-    if (foodOnDb) {
+    if (result.isLeft()) {
       throw new Error('Food already exists in the db');
     }
 

@@ -1,29 +1,30 @@
 import { Food } from '../../Domain/Food.entity';
 import { IFoodRepository } from '../../Domain/IFoodRepository';
-import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
+import { Either } from "../../../../Shared/Domain/types";
 
 export class FoodRepository implements IFoodRepository {
-  public async search(term: string): Promise<Food[]> {
-    return [];
+  delete(entity: Food): Promise<void> {
+    return Promise.resolve(undefined);
   }
 
-  public async findOne(id: string): Promise<Food | undefined> {
-    throw new Error('Method not implemented.');
+  find(adminId: string): Promise<Either<Error, Food[]>> {
+    throw new Error('not implemented');
   }
 
-  public async find(criteria: Criteria): Promise<Food[]> {
-    throw new Error('Method not implemented.');
+  findOne(id: string): Promise<Either<Error, Food>> {
+    throw new Error('not implemented');
   }
 
-  public async save(entity: Food): Promise<void> {
-    throw new Error('Method not implemented.');
+  save(entity: Food): Promise<void> {
+    return Promise.resolve(undefined);
   }
 
-  public async update(entity: Food): Promise<void> {
-    throw new Error('Method not implemented.');
+  search(term: string, maxSearch?: number): Promise<Food[]> {
+    return Promise.resolve([]);
   }
 
-  public async delete(entity: Food): Promise<void> {
-    throw new Error('Method not implemented.');
+  update(entity: Food): Promise<void> {
+    return Promise.resolve(undefined);
   }
+
 }

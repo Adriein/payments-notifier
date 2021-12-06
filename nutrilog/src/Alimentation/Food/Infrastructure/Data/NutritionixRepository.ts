@@ -6,6 +6,7 @@ import { FoodSearch, NutritionixApiSearchResponse } from './NutritionixApiSearch
 import { NutritionixApiNutrientsResponse } from './NutritionixApiNutrients.response.api';
 import { NutritionixApiNutrientsRequest } from './NutritionixApiNutrients.request';
 import { Collection } from '../../../../Shared/Domain/Entities/Collection';
+import { Either } from "../../../../Shared/Domain/types";
 
 export class NutritionixRepository extends HttpApi implements IFoodRepository {
   protected BASE_URL: string = 'https://trackapi.nutritionix.com/v2';
@@ -29,20 +30,12 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
       const { data: nutrientsResponse } = await this.post<NutritionixApiNutrientsResponse,
         NutritionixApiNutrientsRequest>('/natural/nutrients', { query: result.food_name, locale: 'es_ES' });
 
-      const food = this.mapper.toDomain(nutrientsResponse.foods[0]);
+      const food = {} as any//this.mapper.toDomain(nutrientsResponse.foods[0]);
 
       foods.push(food);
     }
 
     return foods;
-  }
-
-  findOne(id: string): Promise<Food | undefined> {
-    throw new Error('Method not implemented.');
-  }
-
-  find(criteria: any): Promise<Food[]> {
-    throw new Error('Method not implemented.');
   }
 
   save(entity: Food): Promise<void> {
@@ -62,5 +55,13 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
       'x-app-id': process.env.NUTRITIONIX_APPLICATION_ID,
       'x-app-key': process.env.NUTRITIONIX_API_KEY,
     });
+  }
+
+  find(adminId: string): Promise<Either<Error, Food[]>> {
+    throw new Error('not implemented');
+  }
+
+  findOne(id: string): Promise<Either<Error, Food>> {
+    throw new Error('not implemented');
   }
 }

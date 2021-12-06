@@ -1,34 +1,33 @@
 import { IMapper } from '../../../../Shared/Domain/Interfaces/IMapper';
 import { INutritionRepository } from '../../Domain/INutritionRepository';
 import { Nutrition } from '../../Domain/Nutrition.entity';
-import { NutritionDAO } from './Nutrition.dao';
 import { NutritionMapper } from './NutritionMapper';
-import { Criteria } from '../../../../Shared/Domain/Entities/Criteria';
+import { Either } from "../../../../Shared/Domain/types";
+import { NutritionNotExistsError } from "../../Domain/NutritionNotExistsError";
 
 export class NutritionRepository implements INutritionRepository {
-  private mapper: IMapper<Nutrition, NutritionDAO> = new NutritionMapper();
-
-  async findOne(id: string): Promise<Nutrition | undefined> {
-    throw new Error();
+  delete(entity: Nutrition): Promise<void> {
+    return Promise.resolve(undefined);
   }
 
-  async find(criteria: any): Promise<Nutrition[]> {
-    throw new Error('Method not implemented.');
+  find(adminId: string): Promise<Either<Error, Nutrition[]>> {
+    throw new Error('not implemented');
   }
 
-  async save(entity: Nutrition): Promise<void> {
-
+  findByUserId(id: string): Promise<Either<Error | NutritionNotExistsError, Nutrition>> {
+    throw new Error('not implemented');
   }
 
-  async update(entity: Nutrition): Promise<void> {
-    throw new Error('Method not implemented.');
+  findOne(id: string): Promise<Either<Error, Nutrition>> {
+    throw new Error('not implemented');
   }
 
-  async delete(entity: Nutrition): Promise<void> {
-    throw new Error('Method not implemented.');
+  save(entity: Nutrition): Promise<void> {
+    return Promise.resolve(undefined);
   }
 
-  async findByUserId(userId: string): Promise<Nutrition | undefined> {
-    throw new Error();
+  update(entity: Nutrition): Promise<void> {
+    return Promise.resolve(undefined);
   }
+
 }

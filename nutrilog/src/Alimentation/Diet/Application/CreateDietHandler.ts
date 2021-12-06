@@ -1,5 +1,4 @@
 import { Log } from '../../../Shared/Domain/Decorators/Log';
-import { IHandler } from '../../../Domain/Interfaces';
 import { ID } from '../../../Shared/Domain/VO/Id.vo';
 import { CreateDietCommand } from '../Domain/Command/CreateDietCommand';
 import { DietType } from '../Domain/VO/DietType.vo';
@@ -10,6 +9,7 @@ import { IQueryBus } from '../../../Shared/Domain/Bus/IQueryBus';
 import { Nutrition } from '../../Nutrition/Domain/Nutrition.entity';
 import { GetNutritionCommand } from '../../Nutrition/Domain/Commands/GetNutritionCommand';
 import { CommandHandler } from "../../../Shared/Domain/Decorators/CommandHandler.decorator";
+import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
 
 @CommandHandler(CreateDietCommand)
 export class CreateDietHandler implements IHandler<void> {
