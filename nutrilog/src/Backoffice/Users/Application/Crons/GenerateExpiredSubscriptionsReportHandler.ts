@@ -25,14 +25,26 @@ export class GenerateExpiredSubscriptionsReportHandler implements IHandler<void>
   ) {}
 
   public async handle(command: GenerateExpiredSubscriptionsReportQuery): Promise<void> {
-    const admins = await this.repository.findAdmins();
+    const result = await this.repository.findAdmins();
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    const admins = result.value;
 
     for (const admin of admins) {
       const appConfig = await this.appConfigQueryBus.ask(new GetAppConfigQuery(admin.id()));
 
       const pricing = await this.pricingQueryBus.ask(new GetAllPricingQuery(admin.id()));
 
-      const result = await this.repository.findUsersWithExpiredSubscriptions(admin.id());
+      const queryResult = await this.repository.findUsersWithExpiredSubscriptions(admin.id());
+
+      if (queryResult.isLeft()) {
+        continue;
+      }
+
+      const result = queryResult.value;
 
       const users = new UserCollection(result);
 

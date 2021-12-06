@@ -18,8 +18,4 @@ export class ApiUsage extends BaseEntity {
   public apiCalls(): number {
     return this._apiCalls;
   }
-
-  public serialize(): Object {
-    throw new Error('Method not implemented.');
-  }
 }

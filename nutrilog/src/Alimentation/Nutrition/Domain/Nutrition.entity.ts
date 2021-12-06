@@ -1,8 +1,8 @@
-import { BaseEntity } from '../../../Shared/Domain/Entities/BaseEntity';
 import { ID } from '../../../Shared/Domain/VO/Id.vo';
 import { Gender } from './VO/Gender.vo';
+import { AggregateRoot } from "../../../Shared/Domain/Entities/AggregateRoot";
 
-export class Nutrition extends BaseEntity {
+export class Nutrition extends AggregateRoot {
   public static build(
     userId: ID,
     weight: number,
@@ -44,9 +44,5 @@ export class Nutrition extends BaseEntity {
 
   public gender(): string {
     return this._gender.value;
-  }
-
-  public serialize(): Object {
-    return {};
   }
 }

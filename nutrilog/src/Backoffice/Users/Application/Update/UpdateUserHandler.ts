@@ -10,7 +10,6 @@ import { Password } from "../../../../Shared/Domain/VO/Password.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { UpdateUserCommand } from "../../Domain/Command/UpdateUserCommand";
-import { UserNotExistError } from "../../Domain/UserNotExistError";
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements IHandler<void> {
@@ -22,11 +21,13 @@ export class UpdateUserHandler implements IHandler<void> {
     const id = new ID(command.id);
     const email = new Email(command.email);
 
-    const userOnDb = await this.repository.findOne(id.value);
+    const result = await this.repository.findOne(id.value);
 
-    if (!userOnDb) {
-      throw new UserNotExistError(`User with email: ${email.value} not exists`)
+    if (result.isLeft()) {
+      throw result.value;
     }
+
+    const userOnDb = result.value;
 
     const config = new UserConfig(
       new ID(userOnDb.configId()),

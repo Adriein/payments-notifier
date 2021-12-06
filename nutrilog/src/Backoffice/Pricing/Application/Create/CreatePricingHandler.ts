@@ -19,10 +19,10 @@ export class CreatePricingHandler implements IHandler<void> {
     const adminId = new ID(command.adminId);
 
 
-    const pricingInDb = await this.repository.search(name);
+    const result = await this.repository.search(name);
 
-    if (pricingInDb) {
-      throw new PricingAlreadyExistsError(name);
+    if (result.isLeft()) {
+      throw result.value;
     }
 
     const pricing = Pricing.build(name, duration, amount, adminId);

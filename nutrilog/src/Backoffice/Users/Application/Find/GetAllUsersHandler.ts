@@ -29,7 +29,13 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
     const { filters, adminId } = query;
     const id = new ID(adminId);
 
-    const users = await this.repository.find(id.value);
+    const result = await this.repository.find(id.value);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    const users = result.value;
 
     for (const user of users) {
       const pricing = await this.queryBus.ask(new GetPricingQuery(user.pricingId()));
@@ -65,7 +71,8 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
 
         if (spec) {
           spec.and(new UserNameSpecification(filter.value as UserFilters[USER_FILTERS.NAME]));
-          specList.push(spec)
+          specList.push(spec);
+          continue;
         }
         const nameSpec = new UserNameSpecification(filter.value as UserFilters[USER_FILTERS.NAME]);
         specList.push(nameSpec)
@@ -76,7 +83,8 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
 
         if (spec) {
           spec.and(new SubscriptionActiveSpecification(filter.value as UserFilters[USER_FILTERS.EXPIRED]));
-          specList.push(spec)
+          specList.push(spec);
+          continue;
         }
         const subscriptionSpec = new SubscriptionActiveSpecification(filter.value as UserFilters[USER_FILTERS.EXPIRED]);
         specList.push(subscriptionSpec)

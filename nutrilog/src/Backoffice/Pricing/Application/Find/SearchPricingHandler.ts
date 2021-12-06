@@ -13,11 +13,13 @@ export class SearchPricingHandler implements IHandler<PricingResponse> {
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: SearchPricingQuery): Promise<PricingResponse> {
-    const pricing = await this.repository.search(query.pricingName);
+    const result = await this.repository.search(query.pricingName);
 
-    if (!pricing) {
-      throw new PricingNotExistsError(query.pricingName);
+    if (result.isLeft()) {
+      throw result.value;
     }
+
+    const [ pricing ] = result.value;
 
     return new PricingResponse(pricing.id(), pricing.name(), pricing.duration(), pricing.price());
   }

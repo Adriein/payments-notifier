@@ -15,10 +15,23 @@ export class CheckForAboutToExpireSubscriptionsHandler implements IHandler<void>
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: CheckForAboutToExpireSubscriptionsQuery): Promise<void> {
-    const admins = await this.repository.findAdmins();
+    const result = await this.repository.findAdmins();
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    const admins = result.value;
 
     for (const admin of admins) {
-      const users = await this.repository.findUsersNotWarned(admin.id());
+      const usersNotWarned = await this.repository.findUsersNotWarned(admin.id());
+
+      if (usersNotWarned.isLeft()) {
+        continue;
+      }
+
+      const users = usersNotWarned.value;
+
       const appConfig = await this.queryBus.ask(new GetAppConfigQuery(admin.id()));
 
       for (const user of users) {

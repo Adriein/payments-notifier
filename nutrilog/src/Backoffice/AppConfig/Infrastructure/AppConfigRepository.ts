@@ -4,6 +4,10 @@ import { Criteria } from "../../../Shared/Domain/Entities/Criteria";
 import { Log } from "../../../Shared/Domain/Decorators/Log";
 import Database from "../../../Shared/Infrastructure/Data/Database";
 import { AppConfigMapper } from "./AppConfigMapper";
+import { Either } from "../../../Shared/Domain/types";
+import { AppConfigNotExists } from "../Domain/AppConfigNotExists";
+import { Left } from "../../../Shared/Domain/Entities/Left";
+import { Right } from "../../../Shared/Domain/Entities/Right";
 
 export class AppConfigRepository implements IAppConfigRepository {
   private mapper = new AppConfigMapper();
@@ -13,12 +17,12 @@ export class AppConfigRepository implements IAppConfigRepository {
     return Promise.resolve(undefined);
   }
 
-  find(criteria?: any): Promise<AppConfig[]> {
-    return Promise.resolve([]);
+  find(criteria?: any): Promise<Either<Error, AppConfig[]>> {
+    throw new Error('not implemented');
   }
 
-  findOne(id: string): Promise<AppConfig | undefined> {
-    return Promise.resolve(undefined);
+  findOne(id: string): Promise<Either<Error, AppConfig>> {
+    throw new Error('not implemented');
   }
 
   @Log(process.env.LOG_LEVEL)
@@ -38,7 +42,7 @@ export class AppConfigRepository implements IAppConfigRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async findByAdminId(adminId: string): Promise<AppConfig | undefined> {
+  public async findByAdminId(adminId: string): Promise<Either<Error | AppConfigNotExists, AppConfig>> {
     try {
       const result = await this.prisma.app_config.findUnique({
         where: {
@@ -48,10 +52,10 @@ export class AppConfigRepository implements IAppConfigRepository {
       this.prisma.$disconnect();
 
       if (!result) {
-        return undefined;
+        return Left.error(new AppConfigNotExists(adminId));
       }
 
-      return this.mapper.toDomain(result);
+      return Right.success(this.mapper.toDomain(result));
     } catch (error) {
       this.prisma.$disconnect();
       throw error;

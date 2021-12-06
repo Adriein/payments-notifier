@@ -16,11 +16,13 @@ export class GetPricingHandler implements IHandler<PricingResponse> {
   public async handle(query: GetPricingQuery): Promise<PricingResponse> {
     const id = new ID(query.id);
 
-    const pricing = await this.repository.findOne(id.value);
+    const result = await this.repository.findOne(id.value);
 
-    if (!pricing) {
-      throw new PricingNotExistsError(id.value);
+    if (result.isLeft()) {
+      throw result.value;
     }
+
+    const pricing = result.value;
 
     return new PricingResponse(pricing.id(), pricing.name(), pricing.duration(), pricing.price());
   }

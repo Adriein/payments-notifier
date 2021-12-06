@@ -1,14 +1,18 @@
 import { User } from "./Entity/User.entity";
 import { IRepository } from "../../../Shared/Domain/Interfaces/IRepository";
+import { Either } from "../../../Shared/Domain/types";
+import { UserNotExistError } from "./UserNotExistError";
 
 export interface IUserRepository extends IRepository<User> {
-  findByEmail(email: string): Promise<User | undefined>;
+  find(adminId: string): Promise<Either<Error | UserNotExistError, User[]>>;
+  
+  findByEmail(email: string): Promise<Either<Error | UserNotExistError, User>>;
 
-  findUsersWithActiveSubscriptions(adminId: string): Promise<User[]>
+  findUsersWithActiveSubscriptions(adminId: string): Promise<Either<Error | UserNotExistError, User[]>>
 
-  findAdmins(): Promise<User[]>;
+  findAdmins(): Promise<Either<Error | UserNotExistError, User[]>>;
 
-  findUsersWithExpiredSubscriptions(adminId: string): Promise<User[]>;
+  findUsersWithExpiredSubscriptions(adminId: string): Promise<Either<Error | UserNotExistError, User[]>>;
 
-  findUsersNotWarned(adminId: string): Promise<User[]>;
+  findUsersNotWarned(adminId: string): Promise<Either<Error | UserNotExistError, User[]>>;
 }

@@ -15,12 +15,13 @@ export class DeleteUserHandler implements IHandler<void> {
   public async handle(command: DeleteUserCommand): Promise<void> {
     const id = new ID(command.id);
 
-    const user = await this.repository.findOne(id.value);
+    const result = await this.repository.findOne(id.value);
 
-    if (!user) {
-      throw new UserNotExistError(`User with id: ${id.value} not exists`);
+    if (result.isLeft()) {
+      throw result.value;
     }
-
+    const user = result.value;
+    
     user.deactivate();
 
     await this.repository.update(user);

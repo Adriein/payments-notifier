@@ -13,8 +13,13 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: CheckForExpiredSubscriptionsQuery): Promise<void> {
-    const admins = await this.repository.findAdmins();
+    const result = await this.repository.findAdmins();
 
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    const admins = result.value;
 
     for (const admin of admins) {
       const { duration } = await this.queryBus.ask(new GetPricingQuery(admin.id()));
@@ -23,7 +28,13 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
         await this.repository.update(admin);
       }
 
-      const users = await this.repository.findUsersWithActiveSubscriptions(admin.id());
+      const usersWithActiveSubscriptions = await this.repository.findUsersWithActiveSubscriptions(admin.id());
+
+      if (usersWithActiveSubscriptions.isLeft()) {
+        continue;
+      }
+
+      const users = usersWithActiveSubscriptions.value;
 
       for (const user of users) {
         const { duration } = await this.queryBus.ask(new GetPricingQuery(user.id()));

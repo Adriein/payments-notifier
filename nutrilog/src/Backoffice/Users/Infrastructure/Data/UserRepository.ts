@@ -4,6 +4,11 @@ import { UserMapper } from "./UserMapper";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { ADMIN_ROLE, USER_ROLE } from "../../Domain/constants";
 import Database from "../../../../Shared/Infrastructure/Data/Database";
+import { Either } from "../../../../Shared/Domain/types";
+import { UserNotExistError } from "../../Domain/UserNotExistError";
+import { Left } from "../../../../Shared/Domain/Entities/Left";
+import { Right } from "../../../../Shared/Domain/Entities/Right";
+import e from "express";
 
 export class UserRepository implements IUserRepository {
   private mapper = new UserMapper();
@@ -29,7 +34,7 @@ export class UserRepository implements IUserRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async find(adminId: string): Promise<User[]> {
+  public async find(adminId: string): Promise<Either<Error | UserNotExistError, User[]>> {
     try {
       const results = await this.prisma.user.findMany({
         where: {
@@ -48,15 +53,19 @@ export class UserRepository implements IUserRepository {
 
       this.prisma.$disconnect();
 
-      return results.map((result) => this.mapper.toDomain(result));
+      if (results.length === 0) {
+        return Left.error(new UserNotExistError(`Admin with id: ${adminId} has no users`));
+      }
+
+      return Right.success(results.map((result) => this.mapper.toDomain(result)))
     } catch (error) {
       this.prisma.$disconnect();
-      throw error;
+      return Left.error(error);
     }
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async findOne(id: string): Promise<User | undefined> {
+  public async findOne(id: string): Promise<Either<Error | UserNotExistError, User>> {
     try {
       const result = await this.prisma.user.findUnique({
         where: {
@@ -73,13 +82,13 @@ export class UserRepository implements IUserRepository {
       this.prisma.$disconnect();
 
       if (!result) {
-        return undefined;
+        return Left.error(new UserNotExistError(`User with id: ${id} not found`));
       }
 
-      return this.mapper.toDomain(result);
+      return Right.success(this.mapper.toDomain(result));
     } catch (error) {
       this.prisma.$disconnect();
-      throw error;
+      return Left.error(error);
     }
   }
 
@@ -114,30 +123,35 @@ export class UserRepository implements IUserRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async findByEmail(email: string): Promise<User | undefined> {
-    const result = await this.prisma.user.findUnique({
-      where: {
-        email
-      },
-      include: {
-        config: true,
-        subscriptions: true,
-        role: true,
-        app_config: true,
+  public async findByEmail(email: string): Promise<Either<Error | UserNotExistError, User>> {
+    try {
+      const result = await this.prisma.user.findUnique({
+        where: {
+          email
+        },
+        include: {
+          config: true,
+          subscriptions: true,
+          role: true,
+          app_config: true,
+        }
+      });
+
+      this.prisma.$disconnect();
+
+      if (!result) {
+        return Left.error(new UserNotExistError(`User with email: ${email} not exists`));
       }
-    });
 
-    this.prisma.$disconnect();
-
-    if (!result) {
-      return undefined;
+      return Right.success(this.mapper.toDomain(result));
+    } catch (error) {
+      this.prisma.$disconnect();
+      return Left.error(error);
     }
-
-    return this.mapper.toDomain(result);
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async findUsersWithActiveSubscriptions(adminId: string): Promise<User[]> {
+  public async findUsersWithActiveSubscriptions(adminId: string): Promise<Either<Error | UserNotExistError, User[]>> {
     try {
       const results = await this.prisma.user.findMany({
         where: {
@@ -161,15 +175,19 @@ export class UserRepository implements IUserRepository {
 
       this.prisma.$disconnect();
 
-      return results.map((result) => this.mapper.toDomain(result));
+      if (results.length === 0) {
+        return Left.error(new UserNotExistError(`Admin with id: ${adminId} has no users with subscriptions active`));
+      }
+
+      return Right.success(results.map((result) => this.mapper.toDomain(result)));
     } catch (error) {
       this.prisma.$disconnect();
-      throw error;
+      return Left.error(error);
     }
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async findAdmins(): Promise<User[]> {
+  public async findAdmins(): Promise<Either<Error | UserNotExistError, User[]>> {
     try {
       const results = await this.prisma.user.findMany({
         where: {
@@ -192,20 +210,20 @@ export class UserRepository implements IUserRepository {
 
       this.prisma.$disconnect();
 
-      return results.map((result) => this.mapper.toDomain(result));
+      return Right.success(results.map((result) => this.mapper.toDomain(result)));
     } catch (error) {
       this.prisma.$disconnect();
-      throw error;
+      return Left.error(error);
     }
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async findUsersWithExpiredSubscriptions(adminId: string): Promise<User[]> {
+  public async findUsersWithExpiredSubscriptions(adminId: string): Promise<Either<Error | UserNotExistError, User[]>> {
     throw new Error("Method not implemented.");
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async findUsersNotWarned(adminId: string): Promise<User[]> {
+  public async findUsersNotWarned(adminId: string): Promise<Either<Error | UserNotExistError, User[]>> {
     try {
       const results = await this.prisma.user.findMany({
         where: {
@@ -223,10 +241,14 @@ export class UserRepository implements IUserRepository {
 
       this.prisma.$disconnect();
 
-      return results.map((result) => this.mapper.toDomain(result));
+      if (results.length === 0) {
+        return Left.error(new UserNotExistError(`Admin with id: ${adminId} has no users not warned`))
+      }
+
+      return Right.success(results.map((result) => this.mapper.toDomain(result)));
     } catch (error) {
       this.prisma.$disconnect();
-      throw error;
+      return Left.error(error);
     }
   }
 }

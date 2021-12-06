@@ -1,12 +1,12 @@
 import { CustomError } from "../../../Shared/Domain/Error/CustomError";
 
-export class PricingNotExistsError extends CustomError {
+export class NutritionNotExistsError extends CustomError {
   statusCode = 400;
 
   constructor(msg: string) {
     super(msg);
 
-    Object.setPrototypeOf(this, PricingNotExistsError.prototype);
+    Object.setPrototypeOf(this, NutritionNotExistsError.prototype);
   }
 
   serialize() {

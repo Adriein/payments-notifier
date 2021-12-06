@@ -12,11 +12,13 @@ export class GetAppConfigHandler implements IHandler<AppConfigResponse> {
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: GetAppConfigQuery): Promise<AppConfigResponse> {
-    const appConfig = await this.repository.findByAdminId(query.id);
+    const result = await this.repository.findByAdminId(query.id);
 
-    if (!appConfig) {
-      throw new AppConfigNotExists(query.id);
+    if (result.isLeft()) {
+      throw result.value;
     }
+
+    const appConfig = result.value;
 
     return new AppConfigResponse(
       appConfig.id(),

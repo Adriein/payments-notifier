@@ -3,9 +3,9 @@ import { Auth } from "../../Domain/Auth.entity";
 import { AuthMapper } from "./AuthMapper";
 import Database from "../../../Shared/Infrastructure/Data/Database";
 import { Either } from "../../../Shared/Domain/types";
-import { NotAuthorizedError } from "../../Domain/NotAuthorizedError";
 import { Left } from "../../../Shared/Domain/Entities/Left";
 import { Right } from "../../../Shared/Domain/Entities/Right";
+import { NotRegisteredError } from "../../Domain/NotRegisteredError";
 
 export class AuthRepository implements IAuthRepository {
   private mapper: AuthMapper = new AuthMapper();
@@ -15,11 +15,11 @@ export class AuthRepository implements IAuthRepository {
     return Promise.resolve(undefined);
   }
 
-  public async find(criteria: any): Promise<Auth[]> {
-    return Promise.resolve([]);
+  public async find(criteria: any): Promise<Either<Error, Auth[]>> {
+    throw new Error('not implemented');
   }
 
-  public async findOne(id: string): Promise<Auth | undefined> {
+  public async findOne(id: string): Promise<Either<Error, Auth>> {
     const result = await this.prisma.user.findUnique({
       where: {
         id
@@ -34,10 +34,10 @@ export class AuthRepository implements IAuthRepository {
     this.prisma.$disconnect();
 
     if (!result) {
-      return undefined;
+      Left.error(new NotRegisteredError());
     }
 
-    return this.mapper.toDomain(result);
+    return Right.success(this.mapper.toDomain(result));
   }
 
   public async save(entity: Auth): Promise<void> {
@@ -57,7 +57,7 @@ export class AuthRepository implements IAuthRepository {
     this.prisma.$disconnect();
   }
 
-  public async findByEmail(email: string): Promise<Either<NotAuthorizedError | Error, Auth>> {
+  public async findByEmail(email: string): Promise<Either<NotRegisteredError | Error, Auth>> {
     try {
       const result = await this.prisma.user.findUnique({
         where: {
@@ -73,7 +73,7 @@ export class AuthRepository implements IAuthRepository {
       this.prisma.$disconnect();
 
       if (!result) {
-        Left.error(new NotAuthorizedError());
+        Left.error(new NotRegisteredError());
       }
 
       return Right.success(this.mapper.toDomain(result));

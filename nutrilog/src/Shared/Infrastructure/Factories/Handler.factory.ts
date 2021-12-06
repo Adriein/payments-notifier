@@ -1,5 +1,5 @@
 import { CreateDietHandler } from '../../../Alimentation/Diet/Application/CreateDietHandler';
-import { CreateNutritionHandler } from '../../../Alimentation/Nutrition/Application/CreateNutritionHandler';
+import { CreateNutritionHandler } from '../../../Alimentation/Nutrition/Application/Create/CreateNutritionHandler';
 import { NutritionRepository } from '../../../Alimentation/Nutrition/Infrastructure/Data/NutritionRepository';
 import { ConstructorFunc } from '../../Domain/types';
 import { GetDietsHandler } from '../../../Alimentation/Diet/Application/GetDietsHandler';

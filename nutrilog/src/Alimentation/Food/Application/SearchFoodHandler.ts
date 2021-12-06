@@ -1,11 +1,11 @@
 import { Log } from '../../../Shared/Domain/Decorators/Log';
-import { IHandler } from '../../../Domain/Interfaces';
 import { DomainEventsManager } from '../../../Shared/Domain/Entities/DomainEventsManager';
 import { ApiQueryDomainEvent } from '../Domain/ApiQueryDomainEvent';
 import { Food } from '../Domain/Food.entity';
 import { IFoodRepository } from '../Domain/IFoodRepository';
 import { SearchFoodQuery } from '../Domain/Query/SearchFoodQuery';
 import { QueryHandler } from "../../../Shared/Domain/Decorators/QueryHandler.decorator";
+import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
 
 @QueryHandler(SearchFoodQuery)
 export class SearchFoodHandler implements IHandler<Food[]> {

@@ -1,7 +1,9 @@
-export interface IRepository<T> {
-  findOne(id: string): Promise<T | undefined>;
+import { Either } from "../types";
 
-  find(adminId: string): Promise<T[]>;
+export interface IRepository<T> {
+  findOne(id: string): Promise<Either<Error, T>>;
+
+  find(adminId: string): Promise<Either<Error, T[]>>;
 
   save(entity: T): Promise<void>;
 

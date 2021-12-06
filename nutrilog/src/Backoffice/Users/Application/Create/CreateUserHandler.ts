@@ -25,9 +25,9 @@ export class CreateUserHandler implements IHandler<void> {
   public async handle(command: CreateUserCommand): Promise<void> {
     const email = new Email(command.email);
 
-    const userExists = await this.repository.findByEmail(email.value);
+    const result = await this.repository.findByEmail(email.value);
 
-    if (userExists) {
+    if (result.isRight()) {
       throw new UserAlreadyExistsError()
     }
 

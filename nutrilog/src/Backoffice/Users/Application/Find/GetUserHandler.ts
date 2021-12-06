@@ -2,7 +2,6 @@ import { Log } from '../../../../Shared/Domain/Decorators/Log';
 import { ID } from '../../../../Shared/Domain/VO/Id.vo';
 import { GetUserQuery } from '../../Domain/Query/GetUserQuery';
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
-import { UserNotExistError } from "../../Domain/UserNotExistError";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
@@ -21,11 +20,13 @@ export class GetUserHandler implements IHandler<GetUserResponse> {
     const presenter = new UserResponseBuilder();
     const userId = new ID(command.userId);
 
-    const user = await this.repository.findOne(userId.value);
+    const result = await this.repository.findOne(userId.value);
 
-    if (!user) {
-      throw new UserNotExistError(`User with id: ${userId.value} not exists`);
+    if (result.isLeft()) {
+      throw result.value;
     }
+
+    const user = result.value;
 
     const pricing = await this.bus.ask(new GetPricingQuery(user.pricingId()));
 

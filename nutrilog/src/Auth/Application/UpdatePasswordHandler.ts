@@ -18,11 +18,13 @@ export class UpdatePasswordHandler implements IHandler<void> {
   public async handle(command: UpdatePasswordCommand): Promise<void> {
     const userId = new ID(command.userId);
     const { newPassword, oldPassword } = command;
-    const auth = await this.repository.findOne(userId.value);
+    const result = await this.repository.findOne(userId.value);
 
-    if (!auth) {
+    if (result.isLeft()) {
       throw new NotAllowedToChangePasswordError();
     }
+    
+    const auth = result.value;
 
     const allowed = this.crypto.compare(
       auth.password(),

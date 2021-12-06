@@ -12,7 +12,13 @@ export class GetAllPricingHandler implements IHandler<PricingResponse[]> {
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: GetAllPricingQuery): Promise<PricingResponse[]> {
-    const pricingByAdmin = await this.repository.findAll(query.adminId);
+    const result = await this.repository.findAll(query.adminId);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    const pricingByAdmin = result.value;
 
     return pricingByAdmin.map((pricing: Pricing) => new PricingResponse(
       pricing.id(),

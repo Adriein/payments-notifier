@@ -31,9 +31,9 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
 
   @Log(process.env.LOG_LEVEL)
   public async handle(event: AdminRegisteredDomainEvent): Promise<void> {
-    const userExists = await this.repository.findByEmail(event.email);
+    const result = await this.repository.findByEmail(event.email);
 
-    if (userExists) {
+    if (result.isRight()) {
       throw new UserAlreadyExistsError();
     }
 

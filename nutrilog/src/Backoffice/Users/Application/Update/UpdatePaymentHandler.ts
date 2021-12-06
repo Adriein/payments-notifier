@@ -4,7 +4,6 @@ import { IUserRepository } from "../../Domain/IUserRepository";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
-import { UserNotExistError } from "../../Domain/UserNotExistError";
 import { UpdatePaymentCommand } from "../../Domain/Command/UpdatePaymentCommand";
 import { User } from "../../Domain/Entity/User.entity";
 
@@ -19,11 +18,13 @@ export class UpdatePaymentHandler implements IHandler<void> {
     const pricingId = new ID(command.pricingId);
     const paymentDate = new LastPaymentDate(command.paymentDate);
 
-    const user = await this.repository.findOne(id.value);
+    const result = await this.repository.findOne(id.value);
 
-    if (!user) {
-      throw new UserNotExistError(`User with id: ${id.value} not exists`);
+    if (result.isLeft()) {
+      throw result.value;
     }
+
+    const user = result.value;
 
     await this.renew(user, pricingId, paymentDate);
   }

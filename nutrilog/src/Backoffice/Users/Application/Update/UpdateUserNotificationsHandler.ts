@@ -3,7 +3,6 @@ import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHand
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
-import { UserNotExistError } from "../../Domain/UserNotExistError";
 import { UpdateUserNotificationsCommand } from "../../Domain/Command/UpdateUserNotificationsCommand";
 
 @CommandHandler(UpdateUserNotificationsCommand)
@@ -16,11 +15,13 @@ export class UpdateUserNotificationsHandler implements IHandler<void> {
     const id = new ID(command.id);
     const canSendWarnings = Boolean(command.sendWarnings);
 
-    const user = await this.repository.findOne(id.value);
+    const result = await this.repository.findOne(id.value);
 
-    if (!user) {
-      throw new UserNotExistError(`User with id: ${id.value} not exists`);
+    if (result.isLeft()) {
+      throw result.value;
     }
+
+    const user = result.value;
 
     user.acceptWarnings(canSendWarnings);
 

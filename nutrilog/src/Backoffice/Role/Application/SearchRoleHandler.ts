@@ -11,12 +11,14 @@ export class SearchRoleHandler implements IHandler<SearchRoleResponse> {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(query: SearchRoleQuery): Promise<any> {
-    const role = await this.repository.search(query.role);
+  public async handle(query: SearchRoleQuery): Promise<SearchRoleResponse> {
+    const result = await this.repository.search(query.role);
 
-    if (!role) {
-      throw new Error('no role found')
+    if (result.isLeft()) {
+      throw result.value;
     }
+
+    const [ role ] = result.value;
 
     return new SearchRoleResponse(role.type(), role.id());
   }

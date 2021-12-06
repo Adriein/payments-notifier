@@ -17,11 +17,13 @@ export class ModifyAppConfigHandler implements IHandler<void> {
 
     const id = new ID(adminId);
 
-    const appConfigOnDb = await this.repository.findByAdminId(id.value)
+    const result = await this.repository.findByAdminId(id.value)
 
-    if (!appConfigOnDb) {
-      throw new AppConfigNotExists(id.value);
+    if (result.isLeft()) {
+      throw result.value;
     }
+
+    const appConfigOnDb = result.value;
 
     const config = new AppConfig(
       new ID(appConfigOnDb.id()),
