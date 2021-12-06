@@ -6,6 +6,7 @@ import { Either } from "../../../Shared/Domain/types";
 import { Left } from "../../../Shared/Domain/Entities/Left";
 import { Right } from "../../../Shared/Domain/Entities/Right";
 import { NotRegisteredError } from "../../Domain/NotRegisteredError";
+import { Log } from "../../../Shared/Domain/Decorators/Log";
 
 export class AuthRepository implements IAuthRepository {
   private mapper: AuthMapper = new AuthMapper();
@@ -19,6 +20,7 @@ export class AuthRepository implements IAuthRepository {
     throw new Error('not implemented');
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async findOne(id: string): Promise<Either<Error, Auth>> {
     const result = await this.prisma.user.findUnique({
       where: {
@@ -44,6 +46,7 @@ export class AuthRepository implements IAuthRepository {
     return Promise.resolve(undefined);
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async update(entity: Auth): Promise<void> {
     await this.prisma.user.update({
       where: {
@@ -57,6 +60,7 @@ export class AuthRepository implements IAuthRepository {
     this.prisma.$disconnect();
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async findByEmail(email: string): Promise<Either<NotRegisteredError | Error, Auth>> {
     try {
       const result = await this.prisma.user.findUnique({
@@ -73,7 +77,7 @@ export class AuthRepository implements IAuthRepository {
       this.prisma.$disconnect();
 
       if (!result) {
-        Left.error(new NotRegisteredError());
+        return Left.error(new NotRegisteredError());
       }
 
       return Right.success(this.mapper.toDomain(result));

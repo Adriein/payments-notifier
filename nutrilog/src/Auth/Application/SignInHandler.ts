@@ -22,7 +22,7 @@ export class SignInHandler implements IHandler<Auth> {
     if (result.isLeft()) {
       throw result.value;
     }
-    
+
     const auth = result.value;
 
     const validated = await this.crypto.compare(auth.password(), password);
