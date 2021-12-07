@@ -1,0 +1,20 @@
+version: '3.1'
+services:
+  server:
+    container_name: nutrilog
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nutrilog
+    volumes:
+      - /usr/nutrilog/node_modules
+      - ./nutrilog:/usr/nutrilog
+    ports:
+      - '5000:5000'
+    depends_on:
+      - postgre
+  postgre:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./postgre
+    ports:
+      - '5432:5432'
