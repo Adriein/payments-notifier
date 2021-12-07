@@ -22,7 +22,7 @@ export class CreateDietController extends BaseController<void> {
         )
       );
 
-      res.status(200).send({});
+      res.status(201).send();
     } catch (error) {
       next(error);
     }

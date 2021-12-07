@@ -15,6 +15,7 @@ export class NutritionResponseBuilder {
       gender: nutrition.gender(),
       height: nutrition.height(),
       weight: nutrition.weight(),
+      maintenanceKcal: nutrition.maintenanceKcal(),
       createdAt: nutrition.createdAt(),
       updatedAt: nutrition.updatedAt()
     }

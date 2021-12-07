@@ -29,6 +29,7 @@ import { IHandler } from "../../Domain/Interfaces/IHandler";
 import { FindNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/FindNutritionHandler";
 import { NutritionResponseBuilder } from "../../../Alimentation/Nutrition/Application/Services/NutritionResponseBuilder";
 import { GetUserHandler } from "../../../Backoffice/Users/Application/Find/GetUserHandler";
+import { GetNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/GetNutritionHandler";
 
 export default class QueryHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -65,6 +66,11 @@ export default class QueryHandlerFactory {
     this.handlers.set(
       FindNutritionHandler.name,
       new FindNutritionHandler(this.nutritionRepository, QueryBus.instance(), this.nutritionBuilder)
+    );
+
+    this.handlers.set(
+      GetNutritionHandler.name,
+      new GetNutritionHandler(this.nutritionRepository, QueryBus.instance(), this.nutritionBuilder)
     );
 
     this.handlers.set(

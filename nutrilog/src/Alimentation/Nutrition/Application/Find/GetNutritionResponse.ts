@@ -9,6 +9,7 @@ export type GetNutritionResponse = {
   height: number;
   age: number;
   gender: string;
+  maintenanceKcal: number;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,8 +1,11 @@
 import { ID } from '../../../Shared/Domain/VO/Id.vo';
 import { Gender } from './VO/Gender.vo';
 import { AggregateRoot } from "../../../Shared/Domain/Entities/AggregateRoot";
+import { KcalCalculator } from "./KcalCalculator";
 
 export class Nutrition extends AggregateRoot {
+  private readonly kcalCalculator = new KcalCalculator();
+
   public static build(
     userId: ID,
     adminId: ID,
@@ -26,6 +29,10 @@ export class Nutrition extends AggregateRoot {
     _dateUpdated?: Date
   ) {
     super(_id, _dateCreated, _dateUpdated);
+  }
+
+  public maintenanceKcal(): number {
+    return this.kcalCalculator.calculate(this);
   }
 
   public userId(): string {

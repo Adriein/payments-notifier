@@ -4,19 +4,17 @@ import { CreateDietCommand } from '../Domain/Command/CreateDietCommand';
 import { DietType } from '../Domain/VO/DietType.vo';
 import { IDietRepository } from '../Domain/IDietRepository';
 import { Diet } from '../Domain/Diet.entity';
-import { KcalCalculator } from '../../Nutrition/Domain/KcalCalculator';
 import { IQueryBus } from '../../../Shared/Domain/Bus/IQueryBus';
-import { Nutrition } from '../../Nutrition/Domain/Nutrition.entity';
-import { GetNutritionCommand } from '../../Nutrition/Domain/Commands/GetNutritionCommand';
 import { CommandHandler } from "../../../Shared/Domain/Decorators/CommandHandler.decorator";
 import { IHandler } from "../../../Shared/Domain/Interfaces/IHandler";
+import { GetNutritionQuery } from "../../Nutrition/Domain/Query/GetNutritionQuery";
+import { GetNutritionResponse } from "../../Nutrition/Application/Find/GetNutritionResponse";
 
 @CommandHandler(CreateDietCommand)
 export class CreateDietHandler implements IHandler<void> {
   constructor(
-    private queryBus: IQueryBus<Nutrition>,
-    private repository: IDietRepository,
-    private kcalCalc: KcalCalculator
+    private queryBus: IQueryBus<GetNutritionResponse>,
+    private repository: IDietRepository
   ) {
   }
 
@@ -26,7 +24,7 @@ export class CreateDietHandler implements IHandler<void> {
     const objective = new DietType(command.objective);
 
     const nutrition = await this.queryBus.ask(
-      new GetNutritionCommand(nutritionId.value)
+      new GetNutritionQuery(nutritionId.value)
     );
 
     const kcal = this.calcKcal(

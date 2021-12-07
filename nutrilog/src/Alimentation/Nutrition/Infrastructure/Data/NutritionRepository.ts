@@ -6,6 +6,7 @@ import { NutritionNotExistsError } from "../../Domain/NutritionNotExistsError";
 import { Left } from "../../../../Shared/Domain/Entities/Left";
 import { Right } from "../../../../Shared/Domain/Entities/Right";
 import Database from "../../../../Shared/Infrastructure/Data/Database";
+import { Log } from "../../../../Shared/Domain/Decorators/Log";
 
 export class NutritionRepository implements INutritionRepository {
   private prisma = Database.instance().connection();
@@ -15,6 +16,7 @@ export class NutritionRepository implements INutritionRepository {
     return Promise.resolve(undefined);
   }
 
+  @Log(process.env.LOG_LEVEL)
   public async find(adminId: string): Promise<Either<Error, Nutrition[]>> {
     try {
       const results = await this.prisma.nutrition.findMany({
@@ -36,7 +38,30 @@ export class NutritionRepository implements INutritionRepository {
     }
   }
 
-  public async findByUserId(id: string): Promise<Either<Error | NutritionNotExistsError, Nutrition>> {
+  @Log(process.env.LOG_LEVEL)
+  public async findByUserId(userId: string): Promise<Either<Error | NutritionNotExistsError, Nutrition>> {
+    try {
+      const result = await this.prisma.nutrition.findUnique({
+        where: {
+          id: userId
+        }
+      });
+
+      this.prisma.$disconnect();
+
+      if (!result) {
+        return Left.error(new NutritionNotExistsError(`User with id: ${userId} not has nutrition`));
+      }
+
+      return Right.success(this.mapper.toDomain(result));
+    } catch (error) {
+      this.prisma.$disconnect();
+      return Left.error(error);
+    }
+  }
+
+  @Log(process.env.LOG_LEVEL)
+  public async findOne(id: string): Promise<Either<Error, Nutrition>> {
     try {
       const result = await this.prisma.nutrition.findUnique({
         where: {
@@ -47,7 +72,7 @@ export class NutritionRepository implements INutritionRepository {
       this.prisma.$disconnect();
 
       if (!result) {
-        return Left.error(new NutritionNotExistsError(`User with id: ${id} not has nutrition`));
+        return Left.error(new NutritionNotExistsError(`Nutrition with id: ${id} not found`));
       }
 
       return Right.success(this.mapper.toDomain(result));
@@ -57,14 +82,11 @@ export class NutritionRepository implements INutritionRepository {
     }
   }
 
-  findOne(id: string): Promise<Either<Error, Nutrition>> {
-    throw new Error('not implemented');
-  }
-
+  @Log(process.env.LOG_LEVEL)
   public async save(entity: Nutrition): Promise<void> {
     try {
       const data = this.mapper.toSaveDataModel(entity);
-      
+
       await this.prisma.nutrition.create({ data });
 
       this.prisma.$disconnect();

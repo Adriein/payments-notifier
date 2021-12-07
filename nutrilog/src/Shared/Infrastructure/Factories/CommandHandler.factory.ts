@@ -56,8 +56,7 @@ export default class CommandHandlerFactory {
       CreateDietHandler.name,
       new CreateDietHandler(
         QueryBus.instance(),
-        this.dietRepository,
-        new KcalCalculator()
+        this.dietRepository
       )
     );
 

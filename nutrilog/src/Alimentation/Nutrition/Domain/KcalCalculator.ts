@@ -8,12 +8,13 @@ export class KcalCalculator {
       return eval(this.parseFormula(this.femaleFormula(), nutrition));
     }
 
-    return eval(this.parseFormula(this.maleFormula(), nutrition));
+    return eval(this.parseFormula(this.maleFormula(), nutrition)).toFixed(2);
   }
 
   private maleFormula(): string {
     return '13.397*(P) + 4.799*(A) - 5.677*(E) + 88.362';
   }
+
   private femaleFormula(): string {
     return '13.397*(P) + 4.799*(A) - 5.677*(E) + 88.362';
   }

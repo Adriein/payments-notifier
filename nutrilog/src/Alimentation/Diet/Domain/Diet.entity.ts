@@ -1,9 +1,9 @@
 import { ID } from '../../../Shared/Domain/VO/Id.vo';
-import { BaseEntity } from '../../../Shared/Domain/Entities/BaseEntity';
 import { Meal } from './Meal.entity';
 import { DietType } from './VO/DietType.vo';
+import { AggregateRoot } from "../../../Shared/Domain/Entities/AggregateRoot";
 
-export class Diet extends BaseEntity {
+export class Diet extends AggregateRoot {
   public static build(
     name: string,
     nutritionId: ID,
@@ -53,8 +53,4 @@ export class Diet extends BaseEntity {
   }
 
   public kcal = (): number => this._kcal;
-
-  public serialize(): Object {
-    return {};
-  }
 }
