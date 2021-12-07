@@ -26,12 +26,14 @@ import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/Fi
 import { CreateUserHandler } from "../../../Backoffice/Users/Application/Create/CreateUserHandler";
 import { DeleteUserHandler } from "../../../Backoffice/Users/Application/Delete/DeleteUserHandler";
 import { IHandler } from "../../Domain/Interfaces/IHandler";
+import { FindNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/FindNutritionHandler";
+import { NutritionResponseBuilder } from "../../../Alimentation/Nutrition/Application/Services/NutritionResponseBuilder";
+import { GetUserHandler } from "../../../Backoffice/Users/Application/Find/GetUserHandler";
 
-export default class HandlerFactory {
+export default class QueryHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
 
   private authRepository: AuthRepository = new AuthRepository();
-  private nutritionRepository: NutritionRepository = new NutritionRepository();
   private dietRepository: DietRepository = new DietRepository();
   private foodRepository: FoodRepository = new FoodRepository();
   private nutritionixRepository: NutritionixRepository = new NutritionixRepository();
@@ -39,6 +41,8 @@ export default class HandlerFactory {
   private pricingRepository: PricingRepository = new PricingRepository();
   private userRepository: UserRepository = new UserRepository();
   private roleRepository: RoleRepository = new RoleRepository();
+  private nutritionRepository: NutritionRepository = new NutritionRepository();
+  private nutritionBuilder = new NutritionResponseBuilder();
 
   constructor() {
     this.register();
@@ -55,9 +59,12 @@ export default class HandlerFactory {
   }
 
   private register() {
+    //Alimentation BC
+    //Nutrition
+
     this.handlers.set(
-      CreateNutritionHandler.name,
-      new CreateNutritionHandler(this.nutritionRepository)
+      FindNutritionHandler.name,
+      new FindNutritionHandler(this.nutritionRepository, QueryBus.instance(), this.nutritionBuilder)
     );
 
     this.handlers.set(
@@ -65,24 +72,40 @@ export default class HandlerFactory {
       new GetDietsHandler(this.dietRepository)
     );
 
-    this.handlers.set(
-      CreateDietHandler.name,
-      new CreateDietHandler(
-        QueryBus.instance(),
-        this.dietRepository,
-        new KcalCalculator()
-      )
-    );
-
-    this.handlers.set(
-      ModifyDietHandler.name,
-      new ModifyDietHandler(this.dietRepository)
-    );
 
     this.handlers.set(
       SearchFoodHandler.name,
       new SearchFoodHandler(this.foodRepository, this.nutritionixRepository)
     );
+
+    //Auth BC
+
+    this.handlers.set(
+      SignInHandler.name,
+      new SignInHandler(this.authRepository, this.cryptoService)
+    );
+
+    //BackOffice BC
+    //Users
+
+    this.handlers.set(
+      GetUserHandler.name,
+      new GetUserHandler(this.userRepository, QueryBus.instance())
+    );
+
+    this.handlers.set(
+      GetAllUsersHandler.name,
+      new GetAllUsersHandler(this.userRepository, QueryBus.instance())
+    );
+
+    //Role
+
+    this.handlers.set(
+      SearchRoleHandler.name,
+      new SearchRoleHandler(this.roleRepository)
+    );
+
+    //Pricing
 
     this.handlers.set(
       GetPricingHandler.name,
@@ -92,46 +115,6 @@ export default class HandlerFactory {
     this.handlers.set(
       SearchPricingHandler.name,
       new SearchPricingHandler(this.pricingRepository)
-    );
-
-    this.handlers.set(
-      SignInHandler.name,
-      new SignInHandler(this.authRepository, this.cryptoService)
-    );
-
-    this.handlers.set(
-      RegisterAdminHandler.name,
-      new RegisterAdminHandler()
-    );
-
-    this.handlers.set(
-      CreateUserHandler.name,
-      new CreateUserHandler(this.userRepository, QueryBus.instance())
-    );
-
-    this.handlers.set(
-      UpdateUserHandler.name,
-      new UpdateUserHandler(this.userRepository)
-    );
-
-    this.handlers.set(
-      UpdatePaymentHandler.name,
-      new UpdatePaymentHandler(this.userRepository)
-    );
-
-    this.handlers.set(
-      GetAllUsersHandler.name,
-      new GetAllUsersHandler(this.userRepository, QueryBus.instance())
-    );
-
-    this.handlers.set(
-      DeleteUserHandler.name,
-      new DeleteUserHandler(this.userRepository)
-    );
-
-    this.handlers.set(
-      SearchRoleHandler.name,
-      new SearchRoleHandler(this.roleRepository)
     );
 
   }

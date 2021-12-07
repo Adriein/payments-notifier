@@ -15,11 +15,15 @@ import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { USER_ROLE } from "../../Domain/constants";
+import { CryptoService } from "../../../../Shared/Domain/Services/CryptoService";
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements IHandler<void> {
-  constructor(private repository: IUserRepository, private queryBus: IQueryBus<SearchRoleResponse>) {
-  }
+  constructor(
+    private repository: IUserRepository,
+    private queryBus: IQueryBus<SearchRoleResponse>,
+    private readonly crypto: CryptoService
+  ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: CreateUserCommand): Promise<void> {
@@ -28,15 +32,17 @@ export class CreateUserHandler implements IHandler<void> {
     const result = await this.repository.findByEmail(email.value);
 
     if (result.isRight()) {
-      throw new UserAlreadyExistsError()
+      throw new UserAlreadyExistsError();
     }
 
     const role = await this.queryBus.ask(new SearchRoleQuery(USER_ROLE));
 
+    const password = await this.crypto.hash(Password.generate().value);
+
     const user = User.build(
       new ID(command.adminId),
       command.username,
-      Password.generate(),
+      new Password(password),
       email,
       UserConfig.build(),
       Subscription.build(new ID(command.pricingId), new LastPaymentDate(command.lastPaymentDate)),

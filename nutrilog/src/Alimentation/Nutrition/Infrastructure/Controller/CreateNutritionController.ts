@@ -20,6 +20,7 @@ export class CreateNutritionController extends BaseController<void> {
       await this.commandBus.dispatch(
         new CreateNutritionCommand(
           req.body.userId,
+          req.currentUser!.id!,
           req.body.weight,
           req.body.height,
           req.body.age,
@@ -27,7 +28,7 @@ export class CreateNutritionController extends BaseController<void> {
         )
       );
 
-      res.status(200).send({});
+      res.status(201).send();
     } catch (error) {
       next(error);
     }

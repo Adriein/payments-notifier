@@ -9,7 +9,7 @@ export class NutritionResponseBuilder {
         id: user.id,
         name: user.username,
         active: user.active,
-        subscriptionActive: user.defaulter
+        defaulter: user.defaulter
       },
       age: nutrition.age(),
       gender: nutrition.gender(),

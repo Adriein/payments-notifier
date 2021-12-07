@@ -1,10 +1,13 @@
 import { PrismaClient } from '@prisma/client'
 import { ID } from "../src/Shared/Domain/VO/Id.vo";
+import { CryptoService } from "../src/Shared/Domain/Services/CryptoService";
 
 const prisma = new PrismaClient()
+const crypto = new CryptoService();
 
 async function main() {
   const id = ID.generate().value;
+  const password = await crypto.hash(process.env.ADMIN_PASSWORD!);
 
   const pricing = await prisma.pricing.findMany({
     where: {
@@ -56,13 +59,37 @@ async function main() {
     }
   });
 
+  const monthly = await prisma.pricing.create({
+    data: {
+      id: ID.generate().value,
+      pricing_name: 'monthly',
+      amount: 50,
+      duration: 30,
+      user_id: id,
+      created_at: new Date(),
+      updated_at: new Date(),
+    }
+  });
+
+  const quarterly = await prisma.pricing.create({
+    data: {
+      id: ID.generate().value,
+      pricing_name: 'quarterly',
+      amount: 150,
+      duration: 90,
+      user_id: id,
+      created_at: new Date(),
+      updated_at: new Date(),
+    }
+  });
+
 
   const user = await prisma.user.create({
     data: {
       id,
       username: 'Adria Claret',
       email: process.env.ADMIN_EMAIL!,
-      password: '',
+      password: password,
       owner_id: id,
       active: true,
       created_at: new Date(),
@@ -98,7 +125,7 @@ async function main() {
     }
   });
 
-  console.log({ yearly, adminRole, userRole, user })
+  console.log({ yearly, monthly, quarterly, adminRole, userRole, user })
 }
 
 main()

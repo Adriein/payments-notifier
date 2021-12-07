@@ -19,22 +19,23 @@ export class Password extends ValueObject {
   }
 
   public static generate(): Password {
-    const words = ["bakasta", "noelle", "yami", "vanessa", "yuno", "julius"];
+    const words = [ "bakasta", "noelle", "yami", "vanessa", "yuno", "julius", "draken", "mikey", "baji", "chifuyu" ];
     const chars = "!@#$%^&*0123456789";
 
     const randomIndex = Math.floor(Math.random() * words.length);
 
     const basePassword = words[randomIndex];
 
-    const password = ArrayUtils.times<string>(5, () => {
+    const passwordSlug: string[] = [];
+
+    ArrayUtils.times<void>(5, () => {
       const randomNumber = Math.floor(Math.random() * chars.length);
-      const passArray = basePassword.split('');
 
-      passArray.push(chars.split('')[randomNumber]);
+      passwordSlug.push(chars.split('')[randomNumber]);
+    })
 
-      return passArray.join('');
-    });
-
+    const password = basePassword.concat(...passwordSlug);
+    
     return new Password(password);
   }
 }

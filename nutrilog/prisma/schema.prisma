@@ -19,6 +19,8 @@ model user {
     config config?
     app_config app_config?
     active Boolean
+    user_nutrition nutrition[] @relation(name: "user_nutrition")
+    admin_nutrition nutrition[] @relation(name: "admin_nutrition")
     created_at DateTime @db.Timestamp(0)
     updated_at DateTime @db.Timestamp(0)
 }
@@ -80,23 +82,15 @@ model app_config {
     updated_at DateTime @db.Timestamp(0)
 }
 
-model nutritionix_api_metadata {
-    id String @id
-    user user @relation(fields: [user_id], references: [id])
-    user_id  String
-    api_calls Int
-    created_at DateTime @db.Timestamp(0)
-    updated_at DateTime @db.Timestamp(0)
-}
-
 model nutrition {
    id String @id
    weight Int @db.SmallInt
    height Int @db.SmallInt
    age Int @db.SmallInt
    gender String
-   user user @relation(fields: [user_id], references: [id])
+   user user @relation(name: "user_nutrition", fields: [user_id], references: [id])
    user_id  String
+   admin user @relation(name: "admin_nutrition", fields: [admin_id], references: [id])
    admin_id String
    created_at DateTime @db.Timestamp(0)
    updated_at DateTime @db.Timestamp(0)

@@ -5,17 +5,19 @@ import { AggregateRoot } from "../../../Shared/Domain/Entities/AggregateRoot";
 export class Nutrition extends AggregateRoot {
   public static build(
     userId: ID,
+    adminId: ID,
     weight: number,
     height: number,
     age: number,
     gender: Gender
   ): Nutrition {
-    return new Nutrition(ID.generate(), userId, weight, height, age, gender);
+    return new Nutrition(ID.generate(), userId, adminId, weight, height, age, gender);
   }
 
   constructor(
     _id: ID,
     private _userId: ID,
+    private _adminId: ID,
     private _weight: number,
     private _height: number,
     private _age: number,
@@ -28,6 +30,10 @@ export class Nutrition extends AggregateRoot {
 
   public userId(): string {
     return this._userId.value;
+  }
+
+  public adminId(): string {
+    return this._adminId.value;
   }
 
   public weight(): number {

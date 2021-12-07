@@ -16,12 +16,15 @@ import { CommandClass, DomainEventClass, QueryClass } from './Shared/Domain/type
 import { COMMANDS_HANDLER_METADATA, EVENTS_HANDLER_METADATA, QUERY_HANDLER_METADATA } from './Shared/Domain/constants';
 import { CommandBus } from "./Shared/Infrastructure/Bus/CommandBus";
 import { QueryBus } from "./Shared/Infrastructure/Bus/QueryBus";
-import HandlerFactory from "./Shared/Infrastructure/Factories/Handler.factory";
+import QueryHandlerFactory from "./Shared/Infrastructure/Factories/QueryHandler.factory";
+import CommandHandlerFactory from "./Shared/Infrastructure/Factories/CommandHandler.factory";
 import './Alimentation/Food';
+import './Alimentation/Nutrition';
 import './Auth';
 import './Backoffice/Users';
 import './Backoffice/Notifications';
 import './Backoffice/Metrics';
+import './Backoffice/Pricing';
 
 
 export default class App {
@@ -128,7 +131,7 @@ export default class App {
   }
 
   private bindCommands(): void {
-    const factory = new HandlerFactory();
+    const factory = new CommandHandlerFactory();
     for (const handler of factory.getContainer().values()) {
       const commands = ExplorerService.explore<Function, CommandClass>(
         handler.constructor,
@@ -140,7 +143,7 @@ export default class App {
   }
 
   private bindQueries(): void {
-    const factory = new HandlerFactory();
+    const factory = new QueryHandlerFactory();
     for (const handler of factory.getContainer().values()) {
       const queries = ExplorerService.explore<Function, QueryClass>(handler.constructor, QUERY_HANDLER_METADATA);
 

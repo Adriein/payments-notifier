@@ -1,6 +1,6 @@
 import { CommandBus } from './Bus/CommandBus';
 import { QueryBus } from './Bus/QueryBus';
-import HandlerFactory from './Factories/Handler.factory';
+import QueryHandlerFactory from './Factories/QueryHandler.factory';
 
 export abstract class BaseController<T> {
   protected get commandBus() {

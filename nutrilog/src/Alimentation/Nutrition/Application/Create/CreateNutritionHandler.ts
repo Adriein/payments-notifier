@@ -6,6 +6,8 @@ import { CreateNutritionCommand } from '../../Domain/Commands/CreateNutritionCom
 import { Gender } from '../../Domain/VO/Gender.vo';
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
+import { NutritionNotExistsError } from "../../Domain/NutritionNotExistsError";
+import { NutritionAlreadyExists } from "../../Domain/NutritionAlreadyExists";
 
 @CommandHandler(CreateNutritionCommand)
 export class CreateNutritionHandler implements IHandler<void> {
@@ -14,21 +16,24 @@ export class CreateNutritionHandler implements IHandler<void> {
   @Log(process.env.LOG_LEVEL)
   public async handle(command: CreateNutritionCommand): Promise<void> {
     const userId = new ID(command.userId);
+    const adminId = new ID(command.adminId);
     const gender = new Gender(command.gender);
 
     const result = await this.repository.findByUserId(userId.value);
 
-    if (result.isLeft()) {
-      throw result.value;
+    if (result.isRight()) {
+      throw new NutritionAlreadyExists(`User with id: ${userId.value} already has a nutrition`);
     }
 
     const nutrition = Nutrition.build(
-      userId,
-      command.weight,
-      command.height,
-      command.age,
-      gender
-    );
+        userId,
+        adminId,
+        command.weight,
+        command.height,
+        command.age,
+        gender
+      )
+    ;
 
     await this.repository.save(nutrition);
   }

@@ -3,7 +3,7 @@ export type GetNutritionResponse = {
     id: string;
     name: string;
     active: boolean;
-    subscriptionActive: boolean;
+    defaulter: boolean;
   };
   weight: number;
   height: number;
