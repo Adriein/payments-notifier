@@ -28,7 +28,7 @@ export class CreateDietHandler implements IHandler<void> {
     );
 
     const kcal = this.calcKcal(
-      nutrition,
+      nutrition.maintenanceKcal,
       command.lastDietKcal,
       command.newKcal
     );
@@ -45,19 +45,18 @@ export class CreateDietHandler implements IHandler<void> {
   }
 
   private calcKcal(
-    nutrition: Nutrition,
+    maintenanceKcal: number,
     kcal?: number,
     change?: number
   ): number {
     if (change && kcal) {
       return kcal + change;
     }
-    const calcKcal = this.kcalCalc.calculate(nutrition);
 
     if (change) {
-      return calcKcal + change;
+      return maintenanceKcal + change;
     }
 
-    return kcal ? kcal : calcKcal;
+    return kcal ? kcal : maintenanceKcal;
   }
 }
