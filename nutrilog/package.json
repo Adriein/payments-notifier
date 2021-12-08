@@ -11,8 +11,8 @@
     "postinstall": "npm run build",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "db:seed": "ts-node ./prisma/seed.ts",
-    "db:migrate": "npm prisma migrate dev",
-    "db:schema": "npm prisma generate"
+    "db:migrate": "prisma migrate dev",
+    "db:schema": "prisma generate"
   },
   "keywords": [],
   "author": "",

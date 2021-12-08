@@ -2,7 +2,10 @@ FROM node:14.15-alpine3.13
 
 WORKDIR /nutrilog
 
-COPY . .
+COPY package.json .
+COPY prisma .
 RUN npm install
+
+COPY . .
 
 CMD ["npm", "run", "start"]

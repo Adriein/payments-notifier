@@ -10,12 +10,10 @@ services:
       - ./nutrilog:/nutrilog
     ports:
       - '5000:5000'
-    networks:
-      - default
     depends_on:
-      - postgre
-  postgre:
-    container_name: nutrilog-dev-db
+      - postgres
+  postgres:
+    container_name: nutrilog-postgres-dev-db
     image: 'postgres:latest'
     ports:
       - '5432:5432'
@@ -23,7 +21,3 @@ services:
       POSTGRES_DB: nutrilog
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    networks:
-      - default
-networks:
-  default:
