@@ -1,6 +1,6 @@
-FROM postgre:latest
-ENV POSTGRE_DATABASE nutrilog
-ENV POSTGRES_USER postgres
-ENV POSTGRES_PASSWORD postgres
+FROM postgres:latest
+ENV POSTGRES_DB='nutrilog'
+ENV POSTGRES_USER='postgres'
+ENV POSTGRES_PASSWORD='postgres'
 
 

@@ -2,9 +2,7 @@ FROM node:14.15-alpine3.13
 
 WORKDIR /nutrilog
 
-COPY package.json .
-RUN npm install
-
 COPY . .
+RUN npm install
 
 CMD ["npm", "run", "start"]

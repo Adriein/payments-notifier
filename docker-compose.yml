@@ -10,12 +10,20 @@ services:
       - ./nutrilog:/nutrilog
     ports:
       - '5000:5000'
+    networks:
+      - default
     depends_on:
       - postgre
   postgre:
     container_name: nutrilog-dev-db
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./postgre
+    image: 'postgres:latest'
     ports:
       - '5432:5432'
+    environment:
+      POSTGRES_DB: nutrilog
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - default
+networks:
+  default:
