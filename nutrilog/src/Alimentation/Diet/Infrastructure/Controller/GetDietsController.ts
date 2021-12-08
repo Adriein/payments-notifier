@@ -3,20 +3,20 @@ import { Controller } from '../../../../Shared/Infrastructure/Decorators/control
 import { get } from '../../../../Shared/Infrastructure/Decorators/routes';
 import { use } from '../../../../Shared/Infrastructure/Decorators/use';
 import { currentUser, requireAuth } from '../../../../Shared/Infrastructure/Middlewares/auth';
-import { Diet } from '../../Domain/Diet.entity';
 import { GetDietsQuery } from '../../Domain/Query/GetDietsQuery';
 import { BaseController } from '../../../../Shared/Infrastructure/BaseController';
+import { DietResponse } from "../../Application/Find/DietResponse";
 
 @Controller()
-export class GetDietsController extends BaseController<Diet[]> {
+export class GetDietsController extends BaseController<DietResponse[]> {
   @get('/diets')
   @use(requireAuth)
   @use(currentUser)
-  public async getDiets(req: Request, res: Response, next: NextFunction) {
+  public async getDiets(req: Request, res: Response<DietResponse[]>, next: NextFunction) {
     try {
-      await this.queryBus.ask(new GetDietsQuery(req.body.userId));
+      const diets = await this.queryBus.ask(new GetDietsQuery(req.body.nutritionId));
 
-      res.status(200).send({});
+      res.status(200).send(diets);
     } catch (error) {
       next(error);
     }

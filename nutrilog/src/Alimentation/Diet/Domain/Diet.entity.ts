@@ -19,11 +19,17 @@ export class Diet extends AggregateRoot {
     private _nutritionId: ID,
     private _objective: DietType,
     private _kcal: number,
+    private _active: boolean = true,
     private _meals: Meal[] = [],
     _dateCreated?: Date,
     _dateUpdated?: Date
   ) {
     super(_id, _dateCreated, _dateUpdated);
+  }
+
+
+  public active(): boolean {
+    return this._active;
   }
 
   public meals(): Meal[] {

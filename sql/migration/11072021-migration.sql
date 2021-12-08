@@ -57,11 +57,3 @@ CREATE TABLE IF NOT EXISTS nutritionix_api_metadata (
 
 
 
-model nutritionix_api_metadata {
-    id String @id
-    user user @relation(fields: [user_id], references: [id])
-    user_id  String
-    api_calls Int
-    created_at DateTime @db.Timestamp(0)
-    updated_at DateTime @db.Timestamp(0)
-}

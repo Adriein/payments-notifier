@@ -1,8 +1,7 @@
 import { IRepository } from '../../../Shared/Domain/Interfaces/IRepository';
 import { Diet } from './Diet.entity';
+import { Either } from "../../../Shared/Domain/types";
 
 export interface IDietRepository extends IRepository<Diet> {
-  findAll(nutritionId: string): Promise<Diet[]>;
-
-  getLastDiet(): Promise<Diet | undefined>;
+  find(nutritionId: string): Promise<Either<Error, Diet[]>>;
 }

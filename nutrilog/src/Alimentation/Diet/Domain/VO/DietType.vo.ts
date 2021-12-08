@@ -1,7 +1,7 @@
 import { ValueObject } from '../../../../Shared/Domain/VO/ValueObject';
 
 export class DietType extends ValueObject {
-  private _value: string;
+  private readonly _value: string;
 
   constructor(value: string) {
     super();
@@ -15,7 +15,7 @@ export class DietType extends ValueObject {
   protected validate(primitive: string): boolean {
     return (
       typeof primitive === 'string' &&
-      (primitive === 'mantinence' ||
+      (primitive === 'maintenance' ||
         primitive === 'cut' ||
         primitive === 'bulk')
     );

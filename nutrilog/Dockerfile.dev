@@ -1,6 +1,6 @@
 FROM node:14.15-alpine3.13
 
-WORKDIR /usr/nutrilog
+WORKDIR /nutrilog
 
 COPY package.json .
 RUN npm install

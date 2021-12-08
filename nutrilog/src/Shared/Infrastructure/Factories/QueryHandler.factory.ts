@@ -1,9 +1,9 @@
-import { CreateDietHandler } from '../../../Alimentation/Diet/Application/CreateDietHandler';
+import { CreateDietHandler } from '../../../Alimentation/Diet/Application/Create/CreateDietHandler';
 import { CreateNutritionHandler } from '../../../Alimentation/Nutrition/Application/Create/CreateNutritionHandler';
 import { NutritionRepository } from '../../../Alimentation/Nutrition/Infrastructure/Data/NutritionRepository';
 import { ConstructorFunc } from '../../Domain/types';
-import { GetDietsHandler } from '../../../Alimentation/Diet/Application/GetDietsHandler';
-import { ModifyDietHandler } from '../../../Alimentation/Diet/Application/ModifyDietHandler';
+import { GetDietsHandler } from '../../../Alimentation/Diet/Application/Find/GetDietsHandler';
+import { ModifyDietHandler } from '../../../Alimentation/Diet/Application/Update/ModifyDietHandler';
 import { DietRepository } from '../../../Alimentation/Diet/Infrastructure/Data/DietRepository';
 import { QueryBus } from '../Bus/QueryBus';
 import { KcalCalculator } from '../../../Alimentation/Nutrition/Domain/KcalCalculator';
@@ -30,6 +30,7 @@ import { FindNutritionHandler } from "../../../Alimentation/Nutrition/Applicatio
 import { NutritionResponseBuilder } from "../../../Alimentation/Nutrition/Application/Services/NutritionResponseBuilder";
 import { GetUserHandler } from "../../../Backoffice/Users/Application/Find/GetUserHandler";
 import { GetNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/GetNutritionHandler";
+import { GetDietResponseBuilder } from "../../../Alimentation/Diet/Application/Services/GetDietResponseBuilder";
 
 export default class QueryHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -75,7 +76,7 @@ export default class QueryHandlerFactory {
 
     this.handlers.set(
       GetDietsHandler.name,
-      new GetDietsHandler(this.dietRepository)
+      new GetDietsHandler(this.dietRepository, new GetDietResponseBuilder())
     );
 
 

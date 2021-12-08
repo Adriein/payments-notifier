@@ -10,10 +10,10 @@ import { PricingRepository } from "../../../Backoffice/Pricing/Infraestructure/D
 import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
 import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
 import { CreateNutritionHandler } from "../../../Alimentation/Nutrition/Application/Create/CreateNutritionHandler";
-import { CreateDietHandler } from "../../../Alimentation/Diet/Application/CreateDietHandler";
+import { CreateDietHandler } from "../../../Alimentation/Diet/Application/Create/CreateDietHandler";
 import { QueryBus } from "../Bus/QueryBus";
 import { KcalCalculator } from "../../../Alimentation/Nutrition/Domain/KcalCalculator";
-import { ModifyDietHandler } from "../../../Alimentation/Diet/Application/ModifyDietHandler";
+import { ModifyDietHandler } from "../../../Alimentation/Diet/Application/Update/ModifyDietHandler";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
 import { CreateUserHandler } from "../../../Backoffice/Users/Application/Create/CreateUserHandler";
 import { UpdateUserHandler } from "../../../Backoffice/Users/Application/Update/UpdateUserHandler";
@@ -55,7 +55,6 @@ export default class CommandHandlerFactory {
     this.handlers.set(
       CreateDietHandler.name,
       new CreateDietHandler(
-        QueryBus.instance(),
         this.dietRepository
       )
     );

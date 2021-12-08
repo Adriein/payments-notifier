@@ -18,7 +18,7 @@ export class CreateDietController extends BaseController<void> {
           req.body.name,
           req.body.nutritionId,
           req.body.objective,
-          req.body.kcalChange
+          req.body.kcal
         )
       );
 

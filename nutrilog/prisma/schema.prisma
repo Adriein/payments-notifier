@@ -83,15 +83,77 @@ model app_config {
 }
 
 model nutrition {
-   id String @id
-   weight Int @db.SmallInt
-   height Int @db.SmallInt
-   age Int @db.SmallInt
-   gender String
-   user user @relation(name: "user_nutrition", fields: [user_id], references: [id])
-   user_id  String
-   admin user @relation(name: "admin_nutrition", fields: [admin_id], references: [id])
-   admin_id String
-   created_at DateTime @db.Timestamp(0)
-   updated_at DateTime @db.Timestamp(0)
+    id String @id
+    weight Int @db.SmallInt
+    height Int @db.SmallInt
+    age Int @db.SmallInt
+    gender String
+    diets diet[]
+    user user @relation(name: "user_nutrition", fields: [user_id], references: [id])
+    user_id  String
+    admin user @relation(name: "admin_nutrition", fields: [admin_id], references: [id])
+    admin_id String
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}
+
+model diet {
+    id String @id
+    diet_name String
+    objective String
+    kcal Int @db.SmallInt
+    active Boolean
+    meals meal[]
+    nutrition nutrition @relation(fields: [nutrition_id], references: [id])
+    nutrition_id  String
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}
+
+
+model meal {
+    id String @id
+    meal_name String
+    diet diet @relation(fields: [diet_id], references: [id])
+    diet_id  String
+    foods meal_food[]
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}
+
+model food {
+    id String @id
+    food_name String
+    serving_unit Int @db.SmallInt
+    qty Int @db.SmallInt
+    photo String
+    kcal Int @db.SmallInt
+    carbohydrates Int @db.SmallInt
+    total_fat Int @db.SmallInt
+    satured_fat Int @db.SmallInt
+    cholesterol Int @db.SmallInt
+    sodium Int @db.SmallInt
+    protein Int @db.SmallInt
+    sugars Int @db.SmallInt
+    potasium Int @db.SmallInt
+    fiber Int @db.SmallInt
+    meals meal_food[]
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}
+
+model meal_food {
+    id String @id
+    meal_id String
+    food_id String
+    meal meal @relation(fields: [meal_id], references: [id])
+    food food @relation(fields: [food_id], references: [id])
+}
+
+model nutritionix_api_metadata {
+    id String @id
+    admin_id  String
+    api_calls Int
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
 }

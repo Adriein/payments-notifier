@@ -20,6 +20,7 @@ import QueryHandlerFactory from "./Shared/Infrastructure/Factories/QueryHandler.
 import CommandHandlerFactory from "./Shared/Infrastructure/Factories/CommandHandler.factory";
 import './Alimentation/Food';
 import './Alimentation/Nutrition';
+import './Alimentation/Diet';
 import './Auth';
 import './Backoffice/Users';
 import './Backoffice/Notifications';

@@ -1,18 +1,19 @@
 version: '3.1'
 services:
   server:
-    container_name: nutrilog
+    container_name: nutrilog-server
     build:
       dockerfile: Dockerfile.dev
       context: ./nutrilog
     volumes:
-      - /usr/nutrilog/node_modules
-      - ./nutrilog:/usr/nutrilog
+      - /nutrilog/node_modules
+      - ./nutrilog:/nutrilog
     ports:
       - '5000:5000'
     depends_on:
       - postgre
   postgre:
+    container_name: nutrilog-dev-db
     build:
       dockerfile: Dockerfile.dev
       context: ./postgre
