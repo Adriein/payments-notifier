@@ -37,7 +37,7 @@ export class PricingRepository implements IPricingRepository {
       }
 
       return Right.success(this.mapper.toDomain(result));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }
@@ -50,7 +50,7 @@ export class PricingRepository implements IPricingRepository {
 
       await this.prisma.pricing.create({ data });
       this.prisma.$disconnect();
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       throw error;
     }
@@ -76,7 +76,7 @@ export class PricingRepository implements IPricingRepository {
       }
 
       return Right.success(results.map((result) => this.mapper.toDomain(result)));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }
@@ -98,7 +98,7 @@ export class PricingRepository implements IPricingRepository {
       }
 
       return Right.success(results.map((result) => this.mapper.toDomain(result)));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }

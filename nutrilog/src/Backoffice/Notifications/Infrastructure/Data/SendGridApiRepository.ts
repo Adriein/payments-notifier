@@ -34,7 +34,7 @@ export class SendGridApiRepository extends HttpApi implements IEmailServiceApiRe
         result)));
 
       return Right.success(collection);
-    } catch (error) {
+    } catch (error: any) {
       return Left.error(error);
     }
   }

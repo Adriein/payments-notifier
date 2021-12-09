@@ -26,7 +26,7 @@ export class UserRepository implements IUserRepository {
       });
 
       this.prisma.$disconnect();
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       throw error;
     }
@@ -57,7 +57,7 @@ export class UserRepository implements IUserRepository {
       }
 
       return Right.success(results.map((result) => this.mapper.toDomain(result)))
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }
@@ -85,7 +85,7 @@ export class UserRepository implements IUserRepository {
       }
 
       return Right.success(this.mapper.toDomain(result));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }
@@ -97,7 +97,7 @@ export class UserRepository implements IUserRepository {
       const data = this.mapper.toSaveDataModel(entity);
       await this.prisma.user.create({ data });
       this.prisma.$disconnect();
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       throw error;
     }
@@ -115,7 +115,7 @@ export class UserRepository implements IUserRepository {
       });
 
       this.prisma.$disconnect();
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       throw error;
     }
@@ -143,7 +143,7 @@ export class UserRepository implements IUserRepository {
       }
 
       return Right.success(this.mapper.toDomain(result));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }
@@ -179,7 +179,7 @@ export class UserRepository implements IUserRepository {
       }
 
       return Right.success(results.map((result) => this.mapper.toDomain(result)));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }
@@ -210,7 +210,7 @@ export class UserRepository implements IUserRepository {
       this.prisma.$disconnect();
 
       return Right.success(results.map((result) => this.mapper.toDomain(result)));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }
@@ -245,7 +245,7 @@ export class UserRepository implements IUserRepository {
       }
 
       return Right.success(results.map((result) => this.mapper.toDomain(result)));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }

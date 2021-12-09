@@ -32,7 +32,7 @@ export class NutritionRepository implements INutritionRepository {
       }
 
       return Right.success(results.map((result: any) => this.mapper.toDomain(result)));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }
@@ -54,7 +54,7 @@ export class NutritionRepository implements INutritionRepository {
       }
 
       return Right.success(this.mapper.toDomain(result));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }
@@ -76,7 +76,7 @@ export class NutritionRepository implements INutritionRepository {
       }
 
       return Right.success(this.mapper.toDomain(result));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }
@@ -90,7 +90,7 @@ export class NutritionRepository implements INutritionRepository {
       await this.prisma.nutrition.create({ data });
 
       this.prisma.$disconnect();
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       throw error;
     }

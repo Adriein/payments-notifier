@@ -21,7 +21,7 @@ export class DietRepository implements IDietRepository {
       await this.prisma.diet.create({ data });
 
       this.prisma.$disconnect();
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       throw error;
     }
@@ -59,7 +59,7 @@ export class DietRepository implements IDietRepository {
       }
 
       return Right.success(results.map((result: Prisma.dietWhereInput) => this.mapper.toDomain(result)));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }

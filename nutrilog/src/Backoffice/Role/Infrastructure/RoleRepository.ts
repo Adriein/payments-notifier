@@ -33,7 +33,7 @@ export class RoleRepository implements IRoleRepository {
       const results = await this.prisma.role.findMany({ where: { type: role } });
 
       return Right.success(results.map((result) => this.mapper.toDomain(result)));
-    } catch (error) {
+    } catch (error: any) {
       this.prisma.$disconnect();
       return Left.error(error);
     }

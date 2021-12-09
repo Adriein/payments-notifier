@@ -23,7 +23,7 @@ export function Log(level: string = 'info') {
         }
         try {
           return fn.apply(this, args);
-        } catch (error) {
+        } catch (error: any) {
           conlog().call(this, key, error);
           throw error;
         }
@@ -33,7 +33,7 @@ export function Log(level: string = 'info') {
 }
 
 const conlog = function () {
-  return function (this: any, key: any, error = undefined) {
+  return function (this: any, key: any, error: any = undefined) {
     if (!error) {
       console.log(
         chalk.magentaBright(
