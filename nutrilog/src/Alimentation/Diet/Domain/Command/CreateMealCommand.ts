@@ -1,3 +1,3 @@
 export class CreateMealCommand {
-  constructor(public readonly name: string, public readonly foods: any[]) {}
+  constructor(public readonly name: string, public readonly kcal: number, public readonly foods: any[]) {}
 }

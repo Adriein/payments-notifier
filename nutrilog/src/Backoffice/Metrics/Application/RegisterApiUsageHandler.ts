@@ -8,12 +8,11 @@ import { Log } from "../../../Shared/Domain/Decorators/Log";
 
 @DomainEventsHandler(ApiQueryDomainEvent)
 export class RegisterApiUsageHandler implements IDomainEventHandler {
-  constructor(private repository: IApiUsageRepository) {
-  }
+  constructor(private repository: IApiUsageRepository) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(event: ApiQueryDomainEvent): Promise<void> {
-    const usage = ApiUsage.build(new ID(event.userId), event.calls);
+    const usage = ApiUsage.build(new ID(event.adminId), event.calls);
     await this.repository.save(usage);
   }
 }

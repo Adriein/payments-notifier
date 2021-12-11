@@ -2,8 +2,8 @@ import { BaseEntity } from '../../../Shared/Domain/Entities/BaseEntity';
 import { ID } from '../../../Shared/Domain/VO/Id.vo';
 
 export class Meal extends BaseEntity {
-  public static build(name: string, foods: ID[], dietId: ID): Meal {
-    return new Meal(ID.generate(), name, foods, dietId);
+  public static build(name: string, foods: ID[], dietId: ID, kcal: number): Meal {
+    return new Meal(ID.generate(), name, foods, dietId, kcal);
   }
 
   constructor(
@@ -11,6 +11,7 @@ export class Meal extends BaseEntity {
     private _name: string,
     private _foods: ID[],
     private _dietId: ID,
+    private _kcal: number,
     _dateCreated?: Date,
     _dateUpdated?: Date
   ) {
@@ -19,6 +20,11 @@ export class Meal extends BaseEntity {
 
   public add(food: ID): void {
     this._foods.push(food);
+  }
+
+
+  public kcal(): number {
+    return this._kcal;
   }
 
   public name(): string {
@@ -31,9 +37,5 @@ export class Meal extends BaseEntity {
 
   public dietId(): string {
     return this._dietId.value;
-  }
-
-  public serialize(): Object {
-    return {};
   }
 }

@@ -9,8 +9,7 @@ import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 export class ModifyDietHandler implements IHandler<void> {
   constructor(
     private repository: IDietRepository,
-  ) {
-  }
+  ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: ModifyDietCommand): Promise<void> {
@@ -21,7 +20,7 @@ export class ModifyDietHandler implements IHandler<void> {
     const result = await this.repository.findOne(dietId.value);
 
     if (result.isLeft()) {
-      throw new Error('Not diet found');
+      throw result.value;
     }
 
     const diet = result.value;
@@ -29,7 +28,7 @@ export class ModifyDietHandler implements IHandler<void> {
     diet.flush();
 
     command.meals.forEach((meal) => {
-      diet.add(meal.name, meal.foods);
+      diet.add(meal.name, meal.kcal, meal.foods);
     });
 
     await this.repository.update(diet);

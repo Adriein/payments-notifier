@@ -4,6 +4,7 @@ import { IMapper } from '../../../../Shared/Domain/Interfaces/IMapper';
 import { Diet } from '../../Domain/Diet.entity';
 import { MealMapper } from './MealMapper';
 import { Prisma } from "@prisma/client";
+import { MealCollection } from "../../Domain/MealCollection";
 
 export class DietMapper implements IMapper<Diet, Prisma.dietCreateInput | Prisma.dietUpdateInput> {
   toDomain(dataModel: Prisma.dietWhereInput): Diet {
@@ -14,7 +15,7 @@ export class DietMapper implements IMapper<Diet, Prisma.dietCreateInput | Prisma
       new DietType(dataModel.objective as string),
       dataModel.kcal as number,
       dataModel.active as boolean,
-      [],
+      new MealCollection([]),
       new Date(dataModel.created_at as string),
       new Date(dataModel.updated_at as string)
     );

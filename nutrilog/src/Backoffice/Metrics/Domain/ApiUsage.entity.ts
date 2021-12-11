@@ -3,16 +3,16 @@ import { ID } from "../../../Shared/Domain/VO/Id.vo";
 
 
 export class ApiUsage extends BaseEntity {
-  public static build(userId: ID, calls: number): ApiUsage {
-    return new ApiUsage(ID.generate(), userId, calls);
+  public static build(adminId: ID, calls: number): ApiUsage {
+    return new ApiUsage(ID.generate(), adminId, calls);
   }
 
-  constructor(_id: ID, private _userId: ID, private _apiCalls: number, _dateCreated?: Date, _dateUpdated?: Date) {
+  constructor(_id: ID, private _adminId: ID, private _apiCalls: number, _dateCreated?: Date, _dateUpdated?: Date) {
     super(_id, _dateCreated, _dateUpdated);
   }
 
-  public userId(): string {
-    return this._userId.value;
+  public adminId(): string {
+    return this._adminId.value;
   }
 
   public apiCalls(): number {

@@ -18,7 +18,7 @@ export class GetDietResponseBuilder {
   }
 
   private buildMealResponse(diet: Diet): MealsResponse[] {
-    return diet.meals().map((meal: Meal) => {
+    return diet.meals().get().map((meal: Meal) => {
       return {
         id: meal.id(),
         dietId: meal.dietId(),

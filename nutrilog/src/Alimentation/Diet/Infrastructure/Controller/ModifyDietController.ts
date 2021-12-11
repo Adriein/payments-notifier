@@ -8,7 +8,6 @@ import { ModifyDietCommand } from '../../Domain/Command/ModifyDietCommand';
 import { CreateMealCommand } from '../../Domain/Command/CreateMealCommand';
 
 @Controller()
-
 export class ModifyDietController extends BaseController<void> {
   @put('/diet')
   @use(requireAuth)
@@ -20,7 +19,7 @@ export class ModifyDietController extends BaseController<void> {
   ) {
     try {
       const meals = req.body.meals.map(
-        (meal: any) => new CreateMealCommand(meal.name, meal.foods)
+        (meal: any) => new CreateMealCommand(meal.name, meal.kcal, meal.foods)
       );
 
       await this.commandBus.dispatch(

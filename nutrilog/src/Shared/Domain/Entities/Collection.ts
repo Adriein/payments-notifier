@@ -18,6 +18,11 @@ export class Collection<T = any> {
     return this.collection.length;
   }
 
+  public add(item: T): this {
+    this.collection.push(item)
+    return this;
+  }
+
   public static flat<T>(array: T[][]) {
     const flattenedArray = array.reduce((flat: T[], value: T[]) => {
       return [ ...flat, ...value ];

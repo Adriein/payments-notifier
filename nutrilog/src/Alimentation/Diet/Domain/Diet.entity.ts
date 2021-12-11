@@ -2,6 +2,8 @@ import { ID } from '../../../Shared/Domain/VO/Id.vo';
 import { Meal } from './Meal.entity';
 import { DietType } from './VO/DietType.vo';
 import { AggregateRoot } from "../../../Shared/Domain/Entities/AggregateRoot";
+import { MealCollection } from "./MealCollection";
+import { KcalExceedTotalError } from "./KcalExceedTotalError";
 
 export class Diet extends AggregateRoot {
   public static build(
@@ -20,7 +22,7 @@ export class Diet extends AggregateRoot {
     private _objective: DietType,
     private _kcal: number,
     private _active: boolean = true,
-    private _meals: Meal[] = [],
+    private _meals: MealCollection = new MealCollection([]),
     _dateCreated?: Date,
     _dateUpdated?: Date
   ) {
@@ -32,7 +34,7 @@ export class Diet extends AggregateRoot {
     return this._active;
   }
 
-  public meals(): Meal[] {
+  public meals(): MealCollection {
     return this._meals;
   }
 
@@ -48,15 +50,19 @@ export class Diet extends AggregateRoot {
     return this._objective.value;
   }
 
-  public add(name: string, foods: ID[] = []) {
-    this._meals.push(Meal.build(name, foods, new ID(this.id())));
-    this.updated();
+  public add(name: string, kcal: number, foods: ID[] = []) {
+    if (this._meals.totalKcal() < kcal) {
+      this._meals.add(Meal.build(name, foods, new ID(this.id()), kcal));
+      this.updated();
+    }
+    throw new KcalExceedTotalError(`Meal: ${name} exceed maximum kcal permitted of ${this._kcal}`);
   }
 
   public flush(): void {
-    this._meals = [];
+    this._meals = new MealCollection([]);
     this.updated();
   }
 
   public kcal = (): number => this._kcal;
+
 }
