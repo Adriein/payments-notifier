@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
-export const TableBody = styled.section`
-  display: grid;
+export const StyledTable = styled.section`
+  display: flex;
+  flex-direction: column;
 `;

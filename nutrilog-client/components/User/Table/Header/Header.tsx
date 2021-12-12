@@ -1,13 +1,29 @@
+import React from "react";
 import { HeaderProps } from "./HeaderProps";
-import { TableHeader } from './Styles';
-import { FiSearch, FiBell } from 'react-icons/fi';
-import Input from "../../../Shared/Input/Input";
+import { TableHeader, FormElement } from './Styles';
+import { FiSearch, FiMoreVertical } from 'react-icons/fi';
+import Form from "../../../Shared/Form/Form";
 
-const Header = (props: HeaderProps) => {
+
+const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
   return (
     <TableHeader>
-      <Input icon={<FiSearch/>}/>
-      <FiBell/>
+      <Form
+        enableReinitialize
+        initialValues={{
+          search: '',
+        }}
+        onSubmit={(values: any, form: any) => {
+          console.log(values);
+          console.log(form);
+        }}
+      >
+        <FormElement>
+          <Form.Field.Input name="search" placeholder="Search" icon={<FiSearch/>}/>
+          <button type="submit">button</button>
+        </FormElement>
+
+      </Form>
     </TableHeader>
   );
 }

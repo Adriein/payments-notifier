@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { COLORS } from "../Utils/Colors";
+import { ForwardedRef } from "react";
 
 
 export const StyledInput = styled.div`
@@ -9,8 +10,9 @@ export const StyledInput = styled.div`
   width: 100%;
 `;
 
-export const InputElement = styled.input.attrs((props: any) => ({
+export const InputElement = styled.input.attrs((props: { type?: string, hasIcon?: boolean, invalid?: boolean, placeholder?: string }) => ({
   type: props.type || 'text',
+  placeholder: props.placeholder
 }))`
   height: 100%;
   width: 100%;
@@ -19,7 +21,7 @@ export const InputElement = styled.input.attrs((props: any) => ({
   border: 1px solid ${COLORS.borderLightest};
   background: ${COLORS.backgroundLightest};
   transition: background 0.1s;
-  ${(props: any) => props.hasIcon && 'padding-left: 32px;'};
+  ${(props: { type?: string, hasIcon?: boolean, invalid?: boolean }) => props.hasIcon && 'padding-left: 32px;'};
 
   &:hover {
     background: ${COLORS.backgroundLight};
@@ -31,7 +33,7 @@ export const InputElement = styled.input.attrs((props: any) => ({
     box-shadow: 0 0 0 1px ${COLORS.borderInputFocus};
   }
 
-  ${(props: any) =>
+  ${(props: { type?: string, hasIcon?: boolean, invalid?: boolean }) =>
           props.invalid &&
           css`
             &,
