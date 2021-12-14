@@ -1,13 +1,13 @@
 import React from "react";
 import { HeaderProps } from "./HeaderProps";
-import { TableHeader, FormElement } from './Styles';
+import { StyledTableHeader, StyledFormBody } from './Styles';
 import { FiSearch, FiMoreVertical } from 'react-icons/fi';
-import Form from "../../../Shared/Form/Form";
+import Form from "../../../Shared/Form";
 
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
   return (
-    <TableHeader>
+    <StyledTableHeader>
       <Form
         enableReinitialize
         initialValues={{
@@ -18,13 +18,12 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
           console.log(form);
         }}
       >
-        <FormElement>
+        <StyledFormBody>
           <Form.Field.Input name="search" placeholder="Search" icon={<FiSearch/>}/>
           <button type="submit">button</button>
-        </FormElement>
-
+        </StyledFormBody>
       </Form>
-    </TableHeader>
+    </StyledTableHeader>
   );
 }
 

@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import Form from "../../../Shared/Form/Form";
+import Index from "../../../Shared/Form";
 
-export const TableHeader = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+export const StyledTableHeader = styled.div`
+  display: flex;
 `;
 
-export const FormElement = styled(Form.Element)`
+export const StyledFormBody = styled(Index.Element)`
   padding: 25px 40px 35px;
 `;

@@ -51,14 +51,14 @@ Form.Field = mapValues(
   )
 );
 
-/*Form.initialValues = (data: any, getFieldValues: any) => {
+/*Index.initialValues = (data: any, getFieldValues: any) => {
  return getFieldValues((key: any, defaultValue = '') => {
  const value = get(data, key);
  return value === undefined || value === null ? defaultValue : value;
  });
  }*/
 
-/*Form.handleAPIError = (error, form) => {
+/*Index.handleAPIError = (error, form) => {
  if (error.data.fields) {
  form.setErrors(error.data.fields);
  } else {
