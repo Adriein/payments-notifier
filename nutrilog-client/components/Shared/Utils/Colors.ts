@@ -1,9 +1,11 @@
 export const COLORS = {
-  primary: '#0052cc', // Blue
+  primary: '#5065F6', // Blue
   success: '#0B875B', // green
   danger: '#E13C3C', // red
   warning: '#F89C1C', // orange
   secondary: '#F4F5F7', // light grey
+  gray: '#AEAEAE',
+  black: "hsl(0deg 0% 0%)",
 
   textDarkest: '#172b4d',
   textDark: '#42526E',
@@ -15,11 +17,13 @@ export const COLORS = {
   backgroundMedium: '#dfe1e6',
   backgroundLight: '#ebecf0',
   backgroundLightest: '#F4F5F7',
-  backgroundLightPrimary: '#D2E5FE',
+  backgroundLightPrimary: '#8491F7',
   backgroundLightSuccess: '#E4FCEF',
   backgroundWhite: '#fff',
 
   borderLightest: '#dfe1e6',
   borderLight: '#C1C7D0',
   borderInputFocus: '#4c9aff',
+
+  lightGray: '#dfdfdf',
 };

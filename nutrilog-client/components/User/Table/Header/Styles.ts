@@ -1,10 +1,21 @@
 import styled from 'styled-components';
-import Index from "../../../Shared/Form";
 
 export const StyledTableHeader = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
 `;
 
-export const StyledFormBody = styled(Index.Element)`
-  padding: 25px 40px 35px;
+export const StyledInputContainer = styled.div`
+  flex: 1;
+`;
+
+export const StyledButtonContainer = styled.div`
+`;
+
+export const StyledFormBody = styled.div`
+
 `;

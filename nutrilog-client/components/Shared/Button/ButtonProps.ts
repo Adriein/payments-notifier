@@ -1,11 +1,12 @@
 import { ReactElement } from "react";
 
 export interface ButtonProps {
-  children: any;
-  variant: string;
-  icon: ReactElement;
-  iconSize: number;
-  disabled: boolean;
-  loading: boolean;
+  children?: any;
+  icon?: ReactElement;
+  iconSize?: number;
+  disabled?: boolean;
+  isLoading?: boolean;
+  size: 'small' | 'medium' | 'large';
+  variant: 'fill' | 'icon';
   onClick: Function;
 }

@@ -16,7 +16,6 @@ export const InputElement = styled.input.attrs((props: { type?: string, hasIcon?
 }))`
   height: 100%;
   width: 100%;
-  padding: 0 7px;
   border-radius: 3px;
   border: 1px solid ${COLORS.borderLightest};
   background: ${COLORS.backgroundLightest};

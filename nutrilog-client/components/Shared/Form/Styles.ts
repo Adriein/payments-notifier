@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import {COLORS} from "../Utils/Colors";
-import {font} from "../Utils/Font";
+import { COLORS } from "../Utils/Colors";
+import { font } from "../Utils/Font";
 
 
 export const StyledField = styled.div`
-  margin-top: 20px;
+  width: 100%;
 `;
 
 export const FieldLabel = styled.label`
