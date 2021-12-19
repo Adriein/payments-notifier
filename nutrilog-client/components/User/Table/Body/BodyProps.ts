@@ -1,3 +1,6 @@
+import { UserProps } from "../../UserProps";
+
+
 export interface BodyProps {
-  users: any[];
+  users: UserProps[];
 }
