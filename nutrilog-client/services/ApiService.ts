@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { CustomError } from "./Shared/CustomError";
 
 export class ApiService {
   private readonly basePath: string = 'http://localhost:5000/api/v1/';
@@ -15,8 +16,8 @@ export class ApiService {
       const result = await this.api.get<T, AxiosResponse<T>>(path);
 
       return result.data;
-    } catch (error) {
-      throw new Error();
+    } catch (error: any) {
+      throw new CustomError(error.response.status, error.response.data.errors)
     }
   }
 
@@ -25,8 +26,8 @@ export class ApiService {
       const result = await this.api.post<T, AxiosResponse<T>>(path);
 
       return result.data;
-    } catch (error) {
-      throw new Error();
+    } catch (error: any) {
+      throw new CustomError(error.response.status, error.response.data.errors)
     }
   }
 }

@@ -3,8 +3,6 @@ import Table from "../components/User/Table/Table";
 import { MainSection } from "../styles/ClientStyles";
 import { UserApiService } from "../services/User/UserApiService";
 import { ApiService } from "../services/ApiService";
-import { useQuery } from "react-query";
-
 
 export async function getServerSideProps(context: any) {
   try {
@@ -12,7 +10,7 @@ export async function getServerSideProps(context: any) {
     const userApiService = new UserApiService(new ApiService())
 
     const query = await userApiService.findUsers();
-    //const query = useQuery([ 'users' ], userApiService.findUsers);
+
     console.log(query);
     if (!query) {
       return {
@@ -23,10 +21,10 @@ export async function getServerSideProps(context: any) {
     return {
       props: query
     }
-  } catch (error) {
+  } catch (error: any) {
     return {
       redirect: {
-        destination: '/400',
+        destination: '/error/400',
         permanent: false,
       },
     }

@@ -1,10 +1,9 @@
 import { NextPage } from "next";
 
 
-const ClientError: NextPage = (props) => {
-
+const ClientError: NextPage = () => {
   return (
-    <div>400 error</div>
+    <div>prop</div>
   );
 }
 
