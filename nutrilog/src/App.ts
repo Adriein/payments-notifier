@@ -79,10 +79,10 @@ export default class App {
         else next();
       });
 
-      app.use(express.static('client/build'));
+      app.use(express.static('client-deprecated/build'));
 
       app.get('*', (_, res) => {
-        res.sendFile(path.resolve(__dirname, '..', 'client', 'build', 'index.html'));
+        res.sendFile(path.resolve(__dirname, '..', 'client-deprecated', 'build', 'index.html'));
       });
     }
 
