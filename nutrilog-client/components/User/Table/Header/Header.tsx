@@ -2,8 +2,8 @@ import React from "react";
 import { HeaderProps } from "./HeaderProps";
 import { StyledTableHeader, StyledFormBody, StyledInputContainer, StyledButtonContainer } from './Styles';
 import { FiSearch, FiMoreVertical } from 'react-icons/fi';
-import Form from "../../../Shared/Form";
-import Button from "../../../Shared/Button";
+import Form from "../../../../../client/src/Shared/Components/Form";
+import Button from "../../../../../client/src/Shared/Components/Button";
 
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {

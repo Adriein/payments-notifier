@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 import { uniqueId } from 'lodash';
 
-import Input from '../Input/Input';
 
 import { FieldError, FieldLabel, FieldTip, StyledField } from './Styles';
+import Input from "../Input";
 
 
 export interface FieldProps {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Form from '../../shared/components/Form/Form';
-import { useToasts } from 'react-toast-notifications';
+import {useToasts} from 'react-toast-notifications';
 
 import {
   FormHeading,
@@ -19,8 +19,8 @@ const defaultProps = {
   modalClose: undefined,
 };
 
-const Register = ({ modalClose, send, onCreate }) => {
-  const { addToast } = useToasts();
+const Register = ({modalClose, send, onCreate}) => {
+  const {addToast} = useToasts();
   return (
     // <Form
     //   enableReinitialize
@@ -56,14 +56,14 @@ const Register = ({ modalClose, send, onCreate }) => {
     //       tip="Asegúrate de escribir correctamente tu email"
     //     />
     //     <Form.Field.Input name="password" label="Password" />
-    //     <Actions>
+    //     <Action>
     //       <ActionButton type="submit" variant="primary">
     //         Entrar
     //       </ActionButton>
     //       <ActionButton type="button" variant="empty" onClick={modalClose}>
     //         Cancelar
     //       </ActionButton>
-    //     </Actions>
+    //     </Action>
     //   </FormElement>
     // </Form>
     <Form
@@ -80,7 +80,7 @@ const Register = ({ modalClose, send, onCreate }) => {
       }}
       onSubmit={async (values, form) => {
         try {
-          addToast('Mensaje enviado correctamente', { appearance: 'success' });
+          addToast('Mensaje enviado correctamente', {appearance: 'success'});
           send({
             subject: values.subject,
             email: values.email,
@@ -88,7 +88,7 @@ const Register = ({ modalClose, send, onCreate }) => {
           });
           onCreate();
         } catch (error) {
-          addToast('Error enviando el mensaje', { appearance: 'error' });
+          addToast('Error enviando el mensaje', {appearance: 'error'});
           Form.handleAPIError(error, form);
         }
       }}
@@ -97,7 +97,7 @@ const Register = ({ modalClose, send, onCreate }) => {
         <FormHeading>
           Si deseas registrarte contacta para obtener una prueba de 60 días
         </FormHeading>
-        <Form.Field.Input name="subject" label="Asunto" />
+        <Form.Field.Input name="subject" label="Asunto"/>
         <Form.Field.Input
           name="email"
           label="Email"
