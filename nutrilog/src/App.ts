@@ -67,6 +67,7 @@ export default class App {
         secure: false,
         // maxAge: 900000,
         httpOnly: false,
+        name: 'nutrilog-session'
       })
     );
     app.use(fileUpload());

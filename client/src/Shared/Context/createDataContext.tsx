@@ -1,17 +1,16 @@
-import React, { useReducer, createContext, Reducer, Dispatch } from 'react';
-import { AuthStateProps } from "../../Auth/Context/AuthStateProps";
+import React, { useReducer, createContext, Reducer } from 'react';
+import { MappedActions } from "../types";
 
-const createDataContext = (
-    reducer: Reducer<AuthStateProps, any>,
-    actions: any,
-    defaultValue: AuthStateProps
+const createDataContext = <T extends unknown, A extends { [key: string]: any }>(
+    reducer: Reducer<T, any>,
+    actions: A,
+    defaultValue: T
   ) => {
-    const Context = createContext<{ state: AuthStateProps }>({ state: defaultValue });
+    const boundActions: MappedActions<A> = { ...actions };
+    const Context = createContext<{ state: T } & MappedActions<A>>({ state: defaultValue, ...boundActions });
 
     const Provider = ({ children }: any) => {
-      const [ state, dispatch ] = useReducer<Reducer<AuthStateProps, any>>(reducer, defaultValue);
-
-      const boundActions: { [key: string]: Function } = {};
+      const [ state, dispatch ] = useReducer<Reducer<T, any>>(reducer, defaultValue);
 
       for (let key in actions) {
         boundActions[key] = actions[key](dispatch);
