@@ -33,7 +33,7 @@ export class ApiService {
 
   public async post<R, P>(path: string, payload: P): Promise<R> {
     try {
-      const result = await this.api.post<R, AxiosResponse<R>>(path);
+      const result = await this.api.post<R, AxiosResponse<R>>(path, payload);
 
       return result.data;
     } catch (error: any) {
