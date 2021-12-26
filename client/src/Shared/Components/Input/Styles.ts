@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
 import { COLORS } from "../Utils/Colors";
-import { ForwardedRef } from "react";
-
 
 export const StyledInput = styled.div`
   position: relative;

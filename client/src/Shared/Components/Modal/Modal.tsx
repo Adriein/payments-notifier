@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useRef, useState, Fragment } from "react
 import ReactDOM from "react-dom";
 import { FiX } from "react-icons/all";
 import { ScrollOverlay, ClickableOverlay, StyledModal } from './Styles';
+import useOnEscapeKeyDown from "../../Hooks/useOnEscapeKeyDown";
+import useOnOutsideClick from "../../Hooks/useOnOutsideClick";
 
 const Modal = ({
-  className,
   variant,
   width,
   withCloseIcon,
@@ -48,7 +49,6 @@ const Modal = ({
         <ScrollOverlay>
           <ClickableOverlay variant={variant} ref={clickableOverlayRef}>
             <StyledModal
-              className={className}
               variant={variant}
               width={width}
               ref={modalRef}

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css, StyledComponent } from 'styled-components';
 import { MIXIN } from "../Utils/Mixin";
 
 export const ScrollOverlay = styled.div`
@@ -11,7 +11,7 @@ export const ScrollOverlay = styled.div`
   ${MIXIN.scrollableY}
 `;
 
-export const ClickableOverlay = styled.div`
+export const ClickableOverlay: StyledComponent<"div", any, { ref: any, variant: string, }, never> = styled.div`
   min-height: 100%;
   background: rgba(9, 30, 66, 0.54);
   ${(props: any) => clickOverlayStyles[props.variant]}
@@ -27,7 +27,7 @@ const clickOverlayStyles: { [key: string]: any } = {
   aside: '',
 };
 
-export const StyledModal = styled.div`
+export const StyledModal: StyledComponent<"div", any, { ref: any, variant: string, width: number }, never> = styled.div`
   display: inline-block;
   position: relative;
   width: 100%;
