@@ -5,13 +5,14 @@ import { font } from "../Utils/Font";
 
 export const StyledField = styled.div`
   width: 100%;
+  margin-bottom: 10px;
 `;
 
 export const FieldLabel = styled.label`
   display: block;
-  padding-bottom: 5px;
+  padding-bottom: 8px;
   font-weight: 600;
-  ${font.size(13)}
+  ${font.size(12.5)}
   color: ${COLORS.textMedium};
 `;
 

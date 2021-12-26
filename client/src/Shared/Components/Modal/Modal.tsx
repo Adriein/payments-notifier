@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState, Fragment } from "react";
 import ReactDOM from "react-dom";
-import { FiX } from "react-icons/all";
+import { FiX } from "react-icons/fi";
 import { ScrollOverlay, ClickableOverlay, StyledModal } from './Styles';
 import useOnEscapeKeyDown from "../../Hooks/useOnEscapeKeyDown";
 import useOnOutsideClick from "../../Hooks/useOnOutsideClick";
+import { ModalProps } from "./ModalProps";
 
 const Modal = ({
   variant,
@@ -13,21 +14,20 @@ const Modal = ({
   onClose: tellParentToClose,
   renderLink,
   renderContent,
-}: any) => {
+}: ModalProps) => {
   const [ stateIsOpen, setStateOpen ] = useState(false);
-  const isControlled = typeof propsIsOpen === 'boolean';
-  const isOpen = isControlled ? propsIsOpen : stateIsOpen;
+  const isOpen = propsIsOpen ? propsIsOpen : stateIsOpen;
 
   const modalRef = useRef();
   const clickableOverlayRef = useRef();
 
   const closeModal = useCallback(() => {
-    if (!isControlled) {
+    if (!propsIsOpen) {
       setStateOpen(false);
     } else {
       tellParentToClose();
     }
-  }, [ isControlled, tellParentToClose ]);
+  }, [ propsIsOpen, tellParentToClose ]);
 
   useOnOutsideClick(modalRef, isOpen, closeModal, clickableOverlayRef);
   useOnEscapeKeyDown(isOpen, closeModal);
@@ -42,7 +42,7 @@ const Modal = ({
 
   return (
     <Fragment>
-      {!isControlled && renderLink({ open: () => setStateOpen(true) })}
+      {!propsIsOpen && renderLink!({ open: () => setStateOpen(true) })}
 
       {isOpen &&
       ReactDOM.createPortal(
