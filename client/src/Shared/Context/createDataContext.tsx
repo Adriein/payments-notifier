@@ -16,9 +16,10 @@ const createDataContext = <T extends unknown, A extends { [key: string]: any }>(
       for (let key in actions) {
         boundActions[key] = actions[key](dispatch) as MappedActions<A>;
       }
-      const a = { ...boundActions } as MappedActions<A>
+      const actionsWithDispatch = { ...boundActions } as MappedActions<A>
+      
       return (
-        <Context.Provider value={{ state, ...a }}>
+        <Context.Provider value={{ state, ...actionsWithDispatch }}>
           {children}
         </Context.Provider>
       );
