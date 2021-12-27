@@ -6,18 +6,19 @@ const createDataContext = <T extends unknown, A extends { [key: string]: any }>(
     actions: A,
     defaultValue: T
   ) => {
-    const boundActions: MappedActions<A> = { ...actions };
-    const Context = createContext<{ state: T } & MappedActions<A>>({ state: defaultValue, ...boundActions });
+    const Context = createContext<{ state: T } & MappedActions<A>>({ state: defaultValue, ...actions });
 
     const Provider = ({ children }: any) => {
       const [ state, dispatch ] = useReducer<Reducer<T, any>>(reducer, defaultValue);
 
-      for (let key in actions) {
-        boundActions[key] = actions[key](dispatch);
-      }
+      const boundActions: { [key: string]: any } = {};
 
+      for (let key in actions) {
+        boundActions[key] = actions[key](dispatch) as MappedActions<A>;
+      }
+      const a = { ...boundActions } as MappedActions<A>
       return (
-        <Context.Provider value={{ state, ...boundActions }}>
+        <Context.Provider value={{ state, ...a }}>
           {children}
         </Context.Provider>
       );

@@ -8,5 +8,6 @@ export interface ButtonProps {
   isLoading?: boolean;
   size: 'small' | 'medium' | 'large';
   variant: 'fill' | 'icon';
-  onClick: Function;
+  onClick?: Function;
+  type?: string
 }

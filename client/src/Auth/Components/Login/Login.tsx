@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Form from "../../../Shared/Components/Form";
 import {
   StyledFormElement,
@@ -9,11 +9,12 @@ import {
 } from './Styles';
 import Button from "../../../Shared/Components/Button";
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
+import { AuthContext } from "../../Context/AuthContext";
 
 const Login = () => {
   const { t } = useTranslation('login');
-  console.log(t('button'));
+  const { signIn, getToken } = useContext(AuthContext);
+
   return (
     <Form
       enableReinitialize
@@ -25,7 +26,13 @@ const Login = () => {
         email: [ Form.is.email(), Form.is.required() ],
         password: Form.is.required(),
       }}
-      onSubmit={() => console.log('submit')}
+      onSubmit={async ({ email, password }: any, form: any) => {
+        try {
+          await signIn({ email, password });
+        } catch (error: any) {
+
+        }
+      }}
     >
       <StyledFormElement>
         <StyledFormHeading>
@@ -33,7 +40,7 @@ const Login = () => {
         </StyledFormHeading>
         <Form.Field.Input name="email" label="Email"/>
         <Form.Field.Input name="password" label="Password"/>
-        <Button size={'medium'} variant={'fill'} onClick={() => console.log('submit')}>{t('button')}</Button>
+        <Button size={'medium'} variant={'fill'} type={"submit"}>{t('button')}</Button>
       </StyledFormElement>
     </Form>
   );

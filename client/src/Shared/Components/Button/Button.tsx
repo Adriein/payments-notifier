@@ -26,14 +26,14 @@ const TYPE = {
 }
 
 const Button = forwardRef((
-  { children, icon, isLoading, onClick, size, variant }: ButtonProps,
+  { children, icon, isLoading, onClick, size, variant, ...otherProps }: ButtonProps,
   ref: ForwardedRef<ButtonProps>
 ) => {
   const styles = SIZES[size];
   const StyledButton = TYPE[variant];
 
   return (
-    <StyledButton ref={ref} onClick={onClick} style={styles}>
+    <StyledButton ref={ref} onClick={onClick} style={styles} {...otherProps}>
       {icon}
       {children}
     </StyledButton>

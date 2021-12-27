@@ -6,16 +6,9 @@ import { is } from '../Services/Validation';
 
 import Field, { FieldProps } from './Field';
 import { FieldAttributes } from "formik/dist/Field";
+import { ErrorGenerator } from "../Services/ErrorGenerator";
+import { FormProps } from "./FormProps";
 
-interface FormProps {
-  validate?: Function;
-  validations?: Object;
-  validateOnBlur?: boolean;
-  initialValues: any;
-  onSubmit: any;
-  enableReinitialize: boolean;
-  children: ReactElement;
-}
 
 const Form = ({ validate, validations, ...otherProps }: FormProps) => (
   <Formik
@@ -25,7 +18,7 @@ const Form = ({ validate, validations, ...otherProps }: FormProps) => (
         return validate(values);
       }
       if (validations) {
-        //return generateErrors(values, validations);
+        return ErrorGenerator.run(values, validations);
       }
       return {};
     }}

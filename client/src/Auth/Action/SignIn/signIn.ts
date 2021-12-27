@@ -20,7 +20,7 @@ export const signIn = (dispatch: Dispatch<ActionProps>) => {
 
       dispatch({ type: SIGN_IN_ACTION });
     } catch (error) {
-
+      console.log(error)
     }
   };
 };

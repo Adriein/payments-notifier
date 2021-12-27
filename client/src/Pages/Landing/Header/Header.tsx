@@ -4,13 +4,13 @@ import Button from "../../../Shared/Components/Button";
 import { useTranslation } from "react-i18next";
 
 const Header = ({ onClick }: any) => {
-  const { t } = useTranslation('login');
+  const { t } = useTranslation('landing');
   return (
     <header>
       <StyledNav>
         <StyledNavOptions>
           <StyledLink>
-            <Button size={'small'} variant={'fill'} onClick={onClick}>{t('button')}</Button>
+            <Button size={'small'} variant={'fill'} onClick={onClick}>{t('login')}</Button>
           </StyledLink>
         </StyledNavOptions>
       </StyledNav>
