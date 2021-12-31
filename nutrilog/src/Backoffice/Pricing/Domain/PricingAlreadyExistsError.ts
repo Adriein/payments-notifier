@@ -10,6 +10,6 @@ export class PricingAlreadyExistsError extends CustomError {
   }
 
   serialize() {
-    return [ { message: this.message } ];
+    return [ { message: this.message, key: 'pricing_already_exists_error' } ];
   }
 }

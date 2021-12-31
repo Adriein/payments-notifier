@@ -10,6 +10,6 @@ export class UserWithoutPricingError extends CustomError {
   }
 
   serialize() {
-    return [ { message: this.message } ];
+    return [ { message: this.message, key: 'user_without_pricing_error' } ];
   }
 }

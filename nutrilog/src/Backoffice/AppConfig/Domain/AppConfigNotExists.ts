@@ -10,6 +10,6 @@ export class AppConfigNotExists extends CustomError {
   }
 
   serialize() {
-    return [ { message: this.message } ];
+    return [ { message: this.message, key: 'app_config_not_exists_error' } ];
   }
 }

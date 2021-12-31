@@ -1,5 +1,9 @@
 {
   "title": "Enter into Nutri",
   "span": "log",
-  "button": "Log In"
+  "button": "Log In",
+  "subtitle": "You are not a member?",
+  "not_authorized_error": "Not authorized to access to this content",
+  "not_registered_error": "This user not exists",
+  "something_went_wrong_error": "Something went wrong"
 }

@@ -11,6 +11,6 @@ export class NotRegisteredError extends CustomError {
   }
 
   serialize() {
-    return [ { message: 'Not registered' } ];
+    return [ { message: 'Not registered', key: 'not_registered_error' } ];
   }
 }

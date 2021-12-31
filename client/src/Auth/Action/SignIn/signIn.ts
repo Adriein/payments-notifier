@@ -7,20 +7,16 @@ import { ActionProps } from "../../../Shared/Action/ActionProps";
 
 export const signIn = (dispatch: Dispatch<ActionProps>) => {
   return async ({ email, password }: SignInActionProps): Promise<void> => {
-    try {
-      const api = ApiService.instance();
+    const api = ApiService.instance();
 
-      const response = await api.post<SignInApiCall, SignInActionProps>('/signin', {
-        email,
-        password,
-      });
+    const response = await api.post<SignInApiCall, SignInActionProps>('/signin', {
+      email,
+      password,
+    });
 
-      localStorage.setItem(LOCALSTORAGE_USER_ID, response.id);
-      localStorage.setItem(LOCALSTORAGE_USERNAME, response.username);
+    localStorage.setItem(LOCALSTORAGE_USER_ID, response.id);
+    localStorage.setItem(LOCALSTORAGE_USERNAME, response.username);
 
-      dispatch({ type: SIGN_IN_ACTION });
-    } catch (error) {
-      console.log(error)
-    }
+    dispatch({ type: SIGN_IN_ACTION });
   };
 };

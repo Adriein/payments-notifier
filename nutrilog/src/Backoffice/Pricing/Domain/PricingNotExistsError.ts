@@ -10,6 +10,6 @@ export class PricingNotExistsError extends CustomError {
   }
 
   serialize() {
-    return [ { message: this.message } ];
+    return [ { message: this.message, key: 'pricing_not_exists_error' } ];
   }
 }

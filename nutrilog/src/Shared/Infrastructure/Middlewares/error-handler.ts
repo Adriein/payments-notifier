@@ -18,6 +18,6 @@ export const errorHandler = (
 
   console.log(chalk.red.bold(`> Unexpected Application ${err.stack}`));
   res.status(400).send({
-    errors: [ { message: 'Something went wrong' } ],
+    errors: [ { message: 'Something went wrong', key: 'something_went_wrong_error' } ],
   });
 };

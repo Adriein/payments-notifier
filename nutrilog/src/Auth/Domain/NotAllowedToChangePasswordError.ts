@@ -10,6 +10,6 @@ export class NotAllowedToChangePasswordError extends CustomError {
   }
 
   serialize() {
-    return [ { message: 'Not allowed to change password' } ];
+    return [ { message: 'Not allowed to change password', key: 'not_allowed_to_change_password_error' } ];
   }
 }

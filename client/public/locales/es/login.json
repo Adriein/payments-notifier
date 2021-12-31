@@ -1,5 +1,9 @@
 {
   "title": "Entrar en Nutri",
   "span": "log",
-  "button": "Entrar"
+  "button": "Entrar",
+  "subtitle": "¿Aun no tienes una cuenta?",
+  "not_authorized_error": "No estás autorizado a ver este contenido",
+  "not_registered_error": "Este usuario no existe",
+  "something_went_wrong_error": "Ha ocurrido un error inesperado"
 }

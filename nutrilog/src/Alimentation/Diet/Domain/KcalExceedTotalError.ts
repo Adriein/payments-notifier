@@ -10,6 +10,6 @@ export class KcalExceedTotalError extends CustomError {
   }
 
   serialize() {
-    return [ { message: this.message } ];
+    return [ { message: this.message, key: 'kcal_exceed_total_error' } ];
   }
 }

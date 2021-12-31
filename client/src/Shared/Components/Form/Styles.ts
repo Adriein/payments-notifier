@@ -11,7 +11,7 @@ export const StyledField = styled.div`
 export const FieldLabel = styled.label`
   display: block;
   padding-bottom: 8px;
-  font-weight: 600;
+  font-weight: 400;
   ${font.size(12.5)}
   color: ${COLORS.textMedium};
 `;

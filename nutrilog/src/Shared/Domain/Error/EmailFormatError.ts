@@ -10,6 +10,6 @@ export class EmailFormatError extends CustomError {
   }
 
   serialize() {
-    return [ { message: this.message } ];
+    return [ { message: this.message, key: 'email_format_error' } ];
   }
 }

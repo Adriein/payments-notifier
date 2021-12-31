@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Form from "../../../Shared/Components/Form";
 import Button from "../../../Shared/Components/Button";
 import { COLORS } from "../../../Shared/Components/Utils/Colors";
+import { font } from "../../../Shared/Components/Utils/Font";
 
 
 export const StyledFormElement = styled(Form.Element)`
@@ -9,7 +10,11 @@ export const StyledFormElement = styled(Form.Element)`
 `;
 
 export const StyledFormHeading = styled.div`
-  font-size: 32px;
+  ${font.size(32)};
+`;
+
+export const StyledFormSubHeading = styled.p`
+  ${font.size(14)};
   margin-bottom: 20px;
 `;
 

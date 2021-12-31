@@ -10,6 +10,6 @@ export class NutritionNotExistsError extends CustomError {
   }
 
   serialize() {
-    return [ { message: this.message } ];
+    return [ { message: this.message, key: 'nutrition_not_exists_error' } ];
   }
 }

@@ -10,6 +10,6 @@ export class UserNotExistError extends CustomError {
   }
 
   serialize() {
-    return [ { message: this.message } ];
+    return [ { message: this.message, key: 'user_not_exists_error' } ];
   }
 }

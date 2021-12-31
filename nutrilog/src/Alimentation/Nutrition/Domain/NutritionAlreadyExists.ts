@@ -10,6 +10,6 @@ export class NutritionAlreadyExists extends CustomError {
   }
 
   serialize() {
-    return [ { message: this.message } ];
+    return [ { message: this.message, key: 'nutrition_already_exists_error' } ];
   }
 }
