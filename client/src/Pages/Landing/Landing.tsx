@@ -18,7 +18,7 @@ const Landing = (): JSX.Element => {
           withCloseIcon={false}
           onClose={login.close}
           renderContent={(modal) => (
-            <Login/>
+            <Login onSubmit={modal.close}/>
           )}
         />
       )}

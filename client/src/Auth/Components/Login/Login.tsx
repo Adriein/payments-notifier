@@ -7,15 +7,16 @@ import {
   StyledFormSubHeading
 } from './Styles';
 import Button from "../../../Shared/Components/Button";
-import { useTranslation } from "react-i18next";
 import { AuthContext } from "../../Context/AuthContext";
+import { useTranslation } from "react-i18next";
 import useToastError from "../../../Shared/Hooks/useToastError";
+import { LoginProps } from "./LoginProps";
 
-const Login = () => {
+const Login = ({ onSubmit }: LoginProps) => {
   const { notify } = useToastError('login');
   const { t } = useTranslation('login');
-  const { signIn, getToken } = useContext(AuthContext);
-  
+  const { signIn } = useContext(AuthContext);
+
   return (
     <Form
       enableReinitialize
@@ -30,6 +31,7 @@ const Login = () => {
       onSubmit={async ({ email, password }: any) => {
         try {
           await signIn({ email, password });
+          onSubmit();
         } catch (error: unknown) {
           notify(error);
         }
