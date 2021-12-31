@@ -1,19 +1,12 @@
 import React, { useContext } from 'react';
 import Form from "../../../Shared/Components/Form";
-import {
-  StyledFormElement,
-  StyledFormHeading,
-  StyledFormTitleSpan,
-  StyledFormSubHeading,
-  StyledLink
-} from './Styles';
+import { StyledFormHeading, StyledFormSubHeading, StyledLink, StyledFormElement, StyledFormTitleSpan } from './Styles';
 import Button from "../../../Shared/Components/Button";
 import { AuthContext } from "../../Context/AuthContext";
 import { useTranslation } from "react-i18next";
 import useToastError from "../../../Shared/Hooks/useToastError";
-import { LoginProps } from "./LoginProps";
 
-const Login = ({ onSubmit }: LoginProps) => {
+const Register = () => {
   const { notify } = useToastError('login');
   const { t } = useTranslation('login');
   const { signIn } = useContext(AuthContext);
@@ -32,7 +25,6 @@ const Login = ({ onSubmit }: LoginProps) => {
       onSubmit={async ({ email, password }: any) => {
         try {
           await signIn({ email, password });
-          onSubmit();
         } catch (error: unknown) {
           notify(error);
         }
@@ -54,4 +46,4 @@ const Login = ({ onSubmit }: LoginProps) => {
 
 }
 
-export default Login;
+export default Register;

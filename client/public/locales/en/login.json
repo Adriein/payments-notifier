@@ -3,6 +3,7 @@
   "span": "log",
   "button": "Log In",
   "subtitle": "You are not a member?",
+  "create_account": "sign up",
   "not_authorized_error": "Not authorized to access to this content",
   "not_registered_error": "This user not exists",
   "something_went_wrong_error": "Something went wrong"

@@ -35,10 +35,14 @@ export class ApiService {
       const result = await fn();
 
       return result.data;
+      
     } catch (error: any) {
-      const status = error.response.status ?? DEFAULT_STATUS_ERROR;
-      const message = error.response.data.errors ?? [ DEFAULT_ERROR_MESSAGE ];
-      const key = error.response.data.errors[0].key ?? DEFAULT_ERROR_MESSAGE;
+      const axiosError = error?.response;
+
+      const status = axiosError?.status ?? DEFAULT_STATUS_ERROR;
+      const message = axiosError.data?.errors ?? [ DEFAULT_ERROR_MESSAGE ];
+      const key = axiosError.data?.errors ? axiosError.data?.errors[0].key : DEFAULT_ERROR_MESSAGE;
+
       throw new CustomError(status, message, key);
     }
   }

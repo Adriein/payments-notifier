@@ -26,4 +26,5 @@ export const COLORS = {
   borderInputFocus: '#4c9aff',
 
   lightGray: '#dfdfdf',
+  primaryLight: '#8491F7',
 };
