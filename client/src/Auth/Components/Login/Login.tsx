@@ -49,7 +49,7 @@ const Login = ({ onSubmit }: LoginProps) => {
           {t('subtitle')} <StyledLink to={'/?modal-register=true'}>{t('create_account')}</StyledLink>
         </StyledFormSubHeading>
         <Form.Field.Input name="email" label="Email"/>
-        <Form.Field.Input name="password" label="Password"/>
+        <Form.Field.Input name="password" label="Password" type="password"/>
         <Button size={'medium'} variant={'fill'} type={"submit"}>{t('button')}</Button>
       </StyledFormElement>
     </Form>

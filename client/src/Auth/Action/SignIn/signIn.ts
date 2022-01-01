@@ -1,15 +1,15 @@
 import { Dispatch } from "react";
 import { LOCALSTORAGE_USER_ID, LOCALSTORAGE_USERNAME, SIGN_IN_ACTION } from "../../constants";
-import { SignInActionProps } from "./SignInActionProps";
+import { SignInActionPayload } from "./SignInActionPayload";
 import { ApiService } from "../../../Shared/Services/ApiService";
 import { SignInApiCall } from "./SignInApiCall";
 import { ActionProps } from "../../../Shared/Action/ActionProps";
 
 export const signIn = (dispatch: Dispatch<ActionProps>) => {
-  return async ({ email, password }: SignInActionProps): Promise<void> => {
+  return async ({ email, password }: SignInActionPayload): Promise<void> => {
     const api = ApiService.instance();
 
-    const response = await api.post<SignInApiCall, SignInActionProps>('/signin', {
+    const response = await api.post<SignInApiCall, SignInActionPayload>('/signin', {
       email,
       password,
     });

@@ -41,7 +41,7 @@ const Register = () => {
         </StyledFormSubHeading>
         <Form.Field.Input name="name" label={t('username_label')}/>
         <Form.Field.Input name="email" label="Email"/>
-        <Form.Field.Input name="password" label="Password"/>
+        <Form.Field.Input name="password" label="Password" type="password"/>
         <Button size={'medium'} variant={'fill'} type={"submit"}>{t('button')}</Button>
       </StyledFormElement>
     </Form>
