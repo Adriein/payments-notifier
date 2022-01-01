@@ -8,7 +8,6 @@ import { User } from "../../types";
 
 export const fetchUsers = (dispatch: Dispatch<ActionProps<User[]>>) => {
   return async (): Promise<void> => {
-    console.log('fetch');
     const api = ApiService.instance();
 
     const response = await api.post<FetchUsersApiCall, FetchUsersActionProps>('/users', {});

@@ -6,7 +6,6 @@ const Clients = () => {
 
   useEffect(() => {
     (async () => {
-      console.log('fetch');
       await fetchUsers();
     })()
   }, []);
