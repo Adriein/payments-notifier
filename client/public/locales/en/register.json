@@ -1,0 +1,10 @@
+{
+  "title": "Sign up in Nutri",
+  "username_label": "Username",
+  "span": "log",
+  "button": "Sign up",
+  "subtitle": "You already have an account?",
+  "create_account": "log in",
+  "user_already_exists_error": "This user already exists",
+  "something_went_wrong_error": "Something went wrong"
+}

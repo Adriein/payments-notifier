@@ -8,23 +8,25 @@ import useToastError from "../../../Shared/Hooks/useToastError";
 
 const Register = () => {
   const { notify } = useToastError('login');
-  const { t } = useTranslation('login');
-  const { signIn } = useContext(AuthContext);
+  const { t } = useTranslation('register');
+  const { signUp } = useContext(AuthContext);
 
   return (
     <Form
       enableReinitialize
       initialValues={{
+        name: '',
         email: '',
         password: '',
       }}
       validations={{
+        name: Form.is.required(),
         email: [ Form.is.email(), Form.is.required() ],
         password: Form.is.required(),
       }}
-      onSubmit={async ({ email, password }: any) => {
+      onSubmit={async ({ name, email, password }: any) => {
         try {
-          await signIn({ email, password });
+          await signUp({ name, email, password });
         } catch (error: unknown) {
           notify(error);
         }
@@ -35,8 +37,9 @@ const Register = () => {
           {t('title')}<StyledFormTitleSpan>{t('span')}</StyledFormTitleSpan>
         </StyledFormHeading>
         <StyledFormSubHeading>
-          {t('subtitle')} <StyledLink to={'/'}>{t('create_account')}</StyledLink>
+          {t('subtitle')} <StyledLink to={'/?modal-login=true'}>{t('create_account')}</StyledLink>
         </StyledFormSubHeading>
+        <Form.Field.Input name="name" label={t('username_label')}/>
         <Form.Field.Input name="email" label="Email"/>
         <Form.Field.Input name="password" label="Password"/>
         <Button size={'medium'} variant={'fill'} type={"submit"}>{t('button')}</Button>

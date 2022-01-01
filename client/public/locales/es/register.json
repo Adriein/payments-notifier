@@ -1,0 +1,10 @@
+{
+  "title": "Registrate en Nutri",
+  "username_label": "Nombre de usuario",
+  "span": "log",
+  "button": "Registrarse",
+  "subtitle": "¿Ya tienes una cuenta?",
+  "create_account": "entra",
+  "user_already_exists_error": "Este usuario ya existe",
+  "something_went_wrong_error": "Ha ocurrido un error inesperado"
+}

@@ -17,7 +17,6 @@ export const COLORS = {
   backgroundMedium: '#dfe1e6',
   backgroundLight: '#ebecf0',
   backgroundLightest: '#F4F5F7',
-  backgroundLightPrimary: '#8491F7',
   backgroundLightSuccess: '#E4FCEF',
   backgroundWhite: '#fff',
 

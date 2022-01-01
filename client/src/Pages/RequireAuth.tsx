@@ -6,7 +6,7 @@ const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const { getToken } = useContext(AuthContext);
   let location = useLocation();
 
-  if (!getToken) {
+  if (!getToken()) {
     return <Navigate to="/" state={{ from: location }}/>;
   }
 

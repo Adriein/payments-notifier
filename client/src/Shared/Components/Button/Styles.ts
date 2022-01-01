@@ -24,7 +24,7 @@ export const StyledFillButton = styled<StyledComponent<"button", any, any, never
   color: ${COLORS.secondary};
 
   &:hover {
-    background-color: ${COLORS.backgroundLightPrimary};
+    background-color: ${COLORS.primaryLight};
   }
 `;
 

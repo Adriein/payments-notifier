@@ -12,11 +12,13 @@ import { AuthContext } from "../../Context/AuthContext";
 import { useTranslation } from "react-i18next";
 import useToastError from "../../../Shared/Hooks/useToastError";
 import { LoginProps } from "./LoginProps";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ onSubmit }: LoginProps) => {
   const { notify } = useToastError('login');
   const { t } = useTranslation('login');
   const { signIn } = useContext(AuthContext);
+  let navigate = useNavigate();
 
   return (
     <Form
@@ -33,6 +35,7 @@ const Login = ({ onSubmit }: LoginProps) => {
         try {
           await signIn({ email, password });
           onSubmit();
+          navigate('/clients', { replace: true });
         } catch (error: unknown) {
           notify(error);
         }
@@ -43,7 +46,7 @@ const Login = ({ onSubmit }: LoginProps) => {
           {t('title')}<StyledFormTitleSpan>{t('span')}</StyledFormTitleSpan>
         </StyledFormHeading>
         <StyledFormSubHeading>
-          {t('subtitle')} <StyledLink to={'/'}>{t('create_account')}</StyledLink>
+          {t('subtitle')} <StyledLink to={'/?modal-register=true'}>{t('create_account')}</StyledLink>
         </StyledFormSubHeading>
         <Form.Field.Input name="email" label="Email"/>
         <Form.Field.Input name="password" label="Password"/>
