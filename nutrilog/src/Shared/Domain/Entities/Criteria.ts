@@ -1,4 +1,6 @@
 import { Filter } from "./Filter";
+import { KeyReturnType } from "../types";
+import { OPERATORS } from "../constants";
 
 
 export class Criteria<T> {
@@ -13,6 +15,10 @@ export class Criteria<T> {
 
   public add(filter: Filter<T>): void {
     this._filters.push(filter);
+  }
+
+  public equals(field: keyof T, value: KeyReturnType<T>): void {
+    this._filters.push(new Filter<T>(field, OPERATORS.equal, value));
   }
 
   public page(): number | undefined {

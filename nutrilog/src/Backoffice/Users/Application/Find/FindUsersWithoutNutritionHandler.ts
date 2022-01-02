@@ -10,6 +10,8 @@ import { PricingResponse } from "../../../Pricing/Application/Find/PricingRespon
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 import { UserNotExistError } from "../../Domain/UserNotExistError";
 import { UserWithoutNutritionSpecification } from "../../Domain/Specifications/UserWithoutNutritionSpecification";
+import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
+import { UserFilter } from "../../Domain/UserFilter";
 
 export class FindUsersWithoutNutritionHandler implements IHandler<GetUserResponse[]> {
   constructor(
@@ -20,7 +22,10 @@ export class FindUsersWithoutNutritionHandler implements IHandler<GetUserRespons
   ) {}
 
   public async handle(query: FindUsersWithoutNutritionQuery): Promise<GetUserResponse[]> {
-    const result = await this.repository.find(query.adminId);
+    const criteria = new Criteria<UserFilter>();
+    criteria.equals('ownerId', query.adminId);
+
+    const result = await this.repository.find(criteria);
     const response: GetUserResponse[] = [];
 
     if (result.isLeft()) {

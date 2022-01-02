@@ -7,6 +7,8 @@ import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { GetDietResponseBuilder } from "../Services/GetDietResponseBuilder";
 import { DietResponse } from "./DietResponse";
+import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
+import { DietFilter } from "../../Domain/DietFilter";
 
 @QueryHandler(GetDietsQuery)
 export class GetDietsHandler implements IHandler<DietResponse[]> {
@@ -16,7 +18,10 @@ export class GetDietsHandler implements IHandler<DietResponse[]> {
   public async handle(query: GetDietsQuery): Promise<DietResponse[]> {
     const nutritionId = new ID(query.nutritionId);
 
-    const result = await this.repository.find(nutritionId.value);
+    const criteria = new Criteria<DietFilter>();
+    criteria.equals('nutritionId', nutritionId.value)
+
+    const result = await this.repository.find(criteria);
 
     if (result.isLeft()) {
       throw result.value;

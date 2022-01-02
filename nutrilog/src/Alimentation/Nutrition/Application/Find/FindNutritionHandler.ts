@@ -8,6 +8,7 @@ import { NutritionResponseBuilder } from "../Services/NutritionResponseBuilder";
 import { GetNutritionResponse } from "./GetNutritionResponse";
 import { GetUserQuery } from "../../../../Backoffice/Users/Domain/Query/GetUserQuery";
 import { NutritionNotExistsError } from "../../Domain/NutritionNotExistsError";
+import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 
 @QueryHandler(FindNutritionQuery)
 export class FindNutritionHandler implements IHandler<GetNutritionResponse[]> {
@@ -20,7 +21,7 @@ export class FindNutritionHandler implements IHandler<GetNutritionResponse[]> {
   public async handle(query: FindNutritionQuery): Promise<GetNutritionResponse[]> {
     const response: GetNutritionResponse[] = [];
 
-    const result = await this.repository.find(query.adminId);
+    const result = await this.repository.find(new Criteria<any>());
 
     if (result.isLeft()) {
       if (result.value instanceof NutritionNotExistsError) {
