@@ -11,15 +11,25 @@ import { PricingResponse } from "../../../Pricing/Application/Find/PricingRespon
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 import { User } from "../../Domain/Entity/User.entity";
 import { CompositeSpecification } from "../../../../Shared/Domain/Specification/CompositeSpecification";
-import { USER_FILTERS, UserFilters } from "../../Domain/constants";
+import { USER_FILTERS, USER_ROLE, UserFilters } from "../../Domain/constants";
 import { SubscriptionActiveSpecification } from "../../Domain/Specifications/SubscriptionActiveSpecification";
 import { UserNameSpecification } from "../../Domain/Specifications/UserNameSpecification";
 import { UserActiveSpecification } from "../../Domain/Specifications/UserActiveSpecification";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
+import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
+import { UserFilter } from "../../Domain/UserFilter";
+import { Filter } from "../../../../Shared/Domain/Entities/Filter";
+import { OPERATORS } from "../../../../Shared/Domain/constants";
+import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
+import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 
 @QueryHandler(GetAllUsersQuery)
 export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
-  public constructor(private readonly repository: IUserRepository, private queryBus: IQueryBus<PricingResponse>) {}
+  public constructor(
+    private readonly repository: IUserRepository,
+    private readonly pricing: IQueryBus<PricingResponse>,
+    private readonly role: IQueryBus<SearchRoleResponse>
+  ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: GetAllUsersQuery): Promise<GetUserResponse[]> {
@@ -29,7 +39,9 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
     const { filters, adminId } = query;
     const id = new ID(adminId);
 
-    const result = await this.repository.find(id.value);
+    const criteria = await this.createCriteria(id.value, query.page, query.quantity);
+
+    const result = await this.repository.find(criteria);
 
     if (result.isLeft()) {
       throw result.value;
@@ -38,7 +50,7 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
     const users = result.value;
 
     for (const user of users) {
-      const pricing = await this.queryBus.ask(new GetPricingQuery(user.pricingId()));
+      const pricing = await this.pricing.ask(new GetPricingQuery(user.pricingId()));
       const spec = this.mountSpecification(filters).pop();
 
       if (spec?.IsSatisfiedBy(user)) {
@@ -54,6 +66,16 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
 
     return responses;
 
+  }
+
+  private async createCriteria(adminId: string, page: number, quantity: number): Promise<Criteria<UserFilter>> {
+    const userRole = await this.role.ask(new SearchRoleQuery(USER_ROLE));
+    const criteria = new Criteria<UserFilter>(page, quantity);
+
+    criteria.add(new Filter<UserFilter>('ownerId', OPERATORS.equal, adminId));
+    criteria.add(new Filter<UserFilter>('roleId', OPERATORS.equal, userRole.id));
+
+    return criteria;
   }
 
   private mountSpecification(filters: FilterRequestDto[]): CompositeSpecification<User>[] {

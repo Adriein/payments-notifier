@@ -7,7 +7,7 @@ export class FoodRepository implements IFoodRepository {
     return Promise.resolve(undefined);
   }
 
-  find(adminId: string): Promise<Either<Error, Food[]>> {
+  find(adminId: any): Promise<Either<Error, Food[]>> {
     throw new Error('not implemented');
   }
 

@@ -12,14 +12,13 @@ export const ONE_TO_MANY_RELATION = 'oneToMany';
 export const ONE_TO_ONE_RELATION = 'oneToOne';
 
 export enum OPERATORS {
-  equal = '=',
-  gt = '>',
-  lt = '<',
-  gte = '>=',
-  lte = '<=',
-  ne = '!=',
+  equal = 'equals',
+  gt = 'gt',
+  lt = 'lt',
+  gte = 'gte',
+  lte = 'lte',
+  ne = 'notIn',
   and = 'AND',
   or = 'OR',
-  like = 'LIKE',
-  ilike = 'ILIKE',
+  like = 'contains',
 }

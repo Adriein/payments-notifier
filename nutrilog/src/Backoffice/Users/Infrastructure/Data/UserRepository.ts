@@ -8,6 +8,11 @@ import { Either } from "../../../../Shared/Domain/types";
 import { UserNotExistError } from "../../Domain/UserNotExistError";
 import { Left } from "../../../../Shared/Domain/Entities/Left";
 import { Right } from "../../../../Shared/Domain/Entities/Right";
+import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
+import { UserFilter } from "../../Domain/UserFilter";
+import { PrismaQueryBuilder } from "../../../../Shared/Infrastructure/Data/PrismaQueryBuilder";
+import { UserModel } from "./UserModel";
+import { Prisma } from "@prisma/client";
 
 export class UserRepository implements IUserRepository {
   private mapper = new UserMapper();
@@ -33,15 +38,16 @@ export class UserRepository implements IUserRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async find(adminId: string): Promise<Either<Error | UserNotExistError, User[]>> {
+  public async find(criteria: Criteria<UserFilter>): Promise<Either<Error | UserNotExistError, User[]>> {
     try {
+      const queryBuilder = new PrismaQueryBuilder<UserFilter, typeof UserModel>(criteria, UserModel);
+      const query = queryBuilder.build<Prisma.userWhereInput>();
+
+      const pagination = queryBuilder.pagination() || {};
+
       const results = await this.prisma.user.findMany({
-        where: {
-          role: {
-            type: USER_ROLE
-          },
-          owner_id: adminId
-        },
+        ...pagination,
+        where: query,
         include: {
           config: true,
           subscriptions: true,
@@ -53,7 +59,7 @@ export class UserRepository implements IUserRepository {
       this.prisma.$disconnect();
 
       if (results.length === 0) {
-        return Left.error(new UserNotExistError(`Admin with id: ${adminId} has no users`));
+        return Left.error(new UserNotExistError(`user not found`));
       }
 
       return Right.success(results.map((result) => this.mapper.toDomain(result)))
@@ -227,7 +233,7 @@ export class UserRepository implements IUserRepository {
       const results = await this.prisma.user.findMany({
         where: {
           config: {
-            send_warnings: false
+            send_warnings: true
           }
         },
         include: {

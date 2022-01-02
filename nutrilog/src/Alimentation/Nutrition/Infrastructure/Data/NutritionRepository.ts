@@ -17,18 +17,18 @@ export class NutritionRepository implements INutritionRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async find(adminId: string): Promise<Either<Error, Nutrition[]>> {
+  public async find(criteria: any): Promise<Either<Error, Nutrition[]>> {
     try {
       const results = await this.prisma.nutrition.findMany({
         where: {
-          admin_id: adminId
+          admin_id: ''
         }
       });
 
       this.prisma.$disconnect();
 
       if (results.length === 0) {
-        return Left.error(new NutritionNotExistsError(`Admin with id: ${adminId} not has any nutrition`));
+        return Left.error(new NutritionNotExistsError(`Admin with id: a not has any nutrition`));
       }
 
       return Right.success(results.map((result: any) => this.mapper.toDomain(result)));

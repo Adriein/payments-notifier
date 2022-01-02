@@ -14,7 +14,8 @@ export class GetAllUsersController extends BaseController<GetUserResponse[]> {
   @use(currentUser)
   public async getAllUsers(req: Request, res: Response<GetUserResponse[]>, next: NextFunction) {
     try {
-      const query = new GetAllUsersQuery(req.body.filters, req.currentUser!.id);
+      const filters = req.body.filters || [];
+      const query = new GetAllUsersQuery(filters, req.currentUser!.id, req.body.page, req.body.quantity);
 
       const users = await this.queryBus.ask(query);
 

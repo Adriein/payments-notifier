@@ -44,7 +44,7 @@ export class DietRepository implements IDietRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async find(nutritionId: string): Promise<Either<Error, Diet[]>> {
+  public async find(nutritionId: any): Promise<Either<Error, Diet[]>> {
     try {
       const results = await this.prisma.diet.findMany({
         where: {

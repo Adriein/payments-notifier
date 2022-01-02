@@ -4,26 +4,7 @@ import { IQuery } from "./Interfaces/IQuery";
 import { Left } from "./Entities/Left";
 import { Right } from "./Entities/Right";
 
-export type PricingObject = {
-  [key: string]: { duration: number; price: number };
-};
-
-export type CriteriaObject = {
-  [key: string]: { value: string; operation: string };
-};
-
 export type Counter = { [key: string]: number };
-
-export type NutritionPlan = {
-  bulk: 'bulk';
-  cut: 'cut';
-  mantinence: 'mantinence';
-};
-
-export type GenderType = {
-  male: 'male';
-  female: 'female';
-};
 
 export type BindCommandHandler<T> = {
   [key: string]: T;
@@ -47,8 +28,12 @@ export type QueryClass = new (...args: never[]) => IQuery;
 export type RelationMetadata = { prop: string, refTable: string, refPropName: string, dao: ConstructorFunc, type: string }
 export type ColumnMetadata = { name: string, type: string }
 
-export type GetReturnType<T> = {
-  [K in keyof T]: T[K] extends (...args: any) => any ? ReturnType<T[K]> : never;
+export type Either<L, R> = Left<L, R> | Right<L, R>;
+
+export type KeyReturnType<T> = {
+  [K in keyof T]: T[K];
 }[keyof T];
 
-export type Either<L, R> = Left<L, R> | Right<L, R>;
+export type Model = {
+  [key: string]: { field: string, type: string };
+}

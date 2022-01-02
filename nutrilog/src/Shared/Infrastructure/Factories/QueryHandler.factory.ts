@@ -102,7 +102,7 @@ export default class QueryHandlerFactory {
 
     this.handlers.set(
       GetAllUsersHandler.name,
-      new GetAllUsersHandler(this.userRepository, QueryBus.instance())
+      new GetAllUsersHandler(this.userRepository, QueryBus.instance(), QueryBus.instance())
     );
 
     //Role

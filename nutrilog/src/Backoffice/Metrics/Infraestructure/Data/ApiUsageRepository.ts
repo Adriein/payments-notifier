@@ -3,6 +3,7 @@ import { IApiUsageRepository } from '../../Domain/IApiUsageRepository';
 import { ApiUsageMapper } from './ApiUsageMapper';
 import { Either } from "../../../../Shared/Domain/types";
 import Database from "../../../../Shared/Infrastructure/Data/Database";
+import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 
 export class ApiUsageRepository implements IApiUsageRepository {
   private mapper: ApiUsageMapper = new ApiUsageMapper();
@@ -12,7 +13,7 @@ export class ApiUsageRepository implements IApiUsageRepository {
     return Promise.resolve(undefined);
   }
 
-  find(adminId: string): Promise<Either<Error, any[]>> {
+  find(criteria: Criteria<any>): Promise<Either<Error, any[]>> {
     throw new Error('not implemented');
   }
 

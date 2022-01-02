@@ -57,7 +57,7 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
     });
   }
 
-  find(adminId: string): Promise<Either<Error, Food[]>> {
+  find(adminId: any): Promise<Either<Error, Food[]>> {
     throw new Error('not implemented');
   }
 

@@ -1,6 +1,5 @@
 import { IPricingRepository } from "../../Domain/IPricingRepository";
 import { Pricing } from "../../Domain/Pricing.entity";
-import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { PricingMapper } from "./PricingMapper";
 import Database from "../../../../Shared/Infrastructure/Data/Database";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
