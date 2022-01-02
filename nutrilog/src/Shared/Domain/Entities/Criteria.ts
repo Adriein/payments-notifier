@@ -21,6 +21,10 @@ export class Criteria<T> {
     this._filters.push(new Filter<T>(field, OPERATORS.equal, value));
   }
 
+  public like(field: keyof T, value: KeyReturnType<T>): void {
+    this._filters.push(new Filter<T>(field, OPERATORS.like, value));
+  }
+
   public page(): number | undefined {
     return this._page;
   }
