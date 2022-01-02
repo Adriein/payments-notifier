@@ -72,8 +72,8 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
     const userRole = await this.role.ask(new SearchRoleQuery(USER_ROLE));
     const criteria = new Criteria<UserFilter>(page, quantity);
 
-    criteria.add(new Filter<UserFilter>('ownerId', OPERATORS.equal, adminId));
-    criteria.add(new Filter<UserFilter>('roleId', OPERATORS.equal, userRole.id));
+    criteria.equal('ownerId', adminId);
+    criteria.equal('roleId', userRole.id);
 
     return criteria;
   }

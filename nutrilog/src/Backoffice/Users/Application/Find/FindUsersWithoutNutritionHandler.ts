@@ -23,7 +23,7 @@ export class FindUsersWithoutNutritionHandler implements IHandler<GetUserRespons
 
   public async handle(query: FindUsersWithoutNutritionQuery): Promise<GetUserResponse[]> {
     const criteria = new Criteria<UserFilter>();
-    criteria.equals('ownerId', query.adminId);
+    criteria.equal('ownerId', query.adminId);
 
     const result = await this.repository.find(criteria);
     const response: GetUserResponse[] = [];

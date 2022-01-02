@@ -17,7 +17,7 @@ export class Criteria<T> {
     this._filters.push(filter);
   }
 
-  public equals(field: keyof T, value: KeyReturnType<T>): void {
+  public equal(field: keyof T, value: KeyReturnType<T>): void {
     this._filters.push(new Filter<T>(field, OPERATORS.equal, value));
   }
 

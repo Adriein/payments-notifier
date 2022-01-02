@@ -8,6 +8,7 @@ export class Filter<T> {
     private _value: KeyReturnType<T>
   ) {}
 
+
   public field(): string {
     return this._field as unknown as string;
   }

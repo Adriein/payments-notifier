@@ -19,7 +19,7 @@ export class GetDietsHandler implements IHandler<DietResponse[]> {
     const nutritionId = new ID(query.nutritionId);
 
     const criteria = new Criteria<DietFilter>();
-    criteria.equals('nutritionId', nutritionId.value)
+    criteria.equal('nutritionId', nutritionId.value)
 
     const result = await this.repository.find(criteria);
 
