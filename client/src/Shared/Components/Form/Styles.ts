@@ -5,7 +5,6 @@ import { font } from "../Utils/Font";
 
 export const StyledField = styled.div`
   width: 100%;
-  margin-bottom: 10px;
 `;
 
 export const FieldLabel = styled.label`

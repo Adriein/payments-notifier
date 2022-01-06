@@ -1,6 +1,13 @@
 import React, { useContext } from 'react';
 import Form from "../../../Shared/Components/Form";
-import { StyledFormHeading, StyledFormSubHeading, StyledLink, StyledFormElement, StyledFormTitleSpan } from './Styles';
+import {
+  StyledFormHeading,
+  StyledFormSubHeading,
+  StyledLink,
+  StyledFormElement,
+  StyledFormTitleSpan,
+  StyledFormInput
+} from './Styles';
 import Button from "../../../Shared/Components/Button";
 import { AuthContext } from "../../Context/AuthContext";
 import { useTranslation } from "react-i18next";
@@ -39,9 +46,9 @@ const Register = () => {
         <StyledFormSubHeading>
           {t('subtitle')} <StyledLink to={'/?modal-login=true'}>{t('create_account')}</StyledLink>
         </StyledFormSubHeading>
-        <Form.Field.Input name="name" label={t('username_label')}/>
-        <Form.Field.Input name="email" label="Email"/>
-        <Form.Field.Input name="password" label="Password" type="password"/>
+        <StyledFormInput name="name" label={t('username_label')}/>
+        <StyledFormInput name="email" label="Email"/>
+        <StyledFormInput name="password" label="Password" type="password"/>
         <Button size={'medium'} variant={'fill'} type={"submit"}>{t('button')}</Button>
       </StyledFormElement>
     </Form>

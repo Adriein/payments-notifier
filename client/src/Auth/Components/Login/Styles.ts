@@ -29,6 +29,10 @@ export const StyledLink = styled(Link)`
   }
 `;
 
+export const StyledFormInput = styled(Form.Field.Input)`
+  margin-bottom: 10px;
+`;
+
 export const StyledFormActions = styled.div`
   display: flex;
   justify-content: flex-end;

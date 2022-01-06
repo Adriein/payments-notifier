@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { COLORS } from "../Utils/Colors";
+import { InputProps } from "./InputProps";
 
 export const StyledInput = styled.div`
   position: relative;
@@ -8,7 +9,7 @@ export const StyledInput = styled.div`
   width: 100%;
 `;
 
-export const InputElement = styled.input.attrs((props: { type?: string, hasIcon?: boolean, invalid?: boolean, placeholder?: string }) => ({
+const BaseInputElement = styled.input.attrs((props: InputProps) => ({
   type: props.type || 'text',
   placeholder: props.placeholder
 }))`
@@ -30,16 +31,29 @@ export const InputElement = styled.input.attrs((props: { type?: string, hasIcon?
     box-shadow: 0 0 0 1px ${COLORS.borderInputFocus};
   }
 
-  ${(props: { type?: string, hasIcon?: boolean, invalid?: boolean }) =>
-          props.invalid &&
-          css`
-            &,
-            &:focus {
-              border: 1px solid ${COLORS.danger};
-              box-shadow: none;
-            }
-          `}
+  ${(props: { type?: string, hasIcon?: boolean, invalid?: boolean }) => {
+    return props.invalid &&
+            css`
+              &,
+              &:focus {
+                border: 1px solid ${COLORS.danger};
+                box-shadow: none;
+              }
+            `
+  }}
 `;
+
+export const InputElement = styled(BaseInputElement)``;
+
+export const InvertedInputElement = styled(BaseInputElement)`
+  background: ${COLORS.backgroundWhite};
+  color: ${COLORS.textLightGray};
+
+  &:hover {
+    background: ${COLORS.backgroundLight};
+  }
+`;
+
 
 export const StyledIcon = styled.div`
   position: absolute;

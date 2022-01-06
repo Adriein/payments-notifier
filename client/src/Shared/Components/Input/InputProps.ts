@@ -7,4 +7,6 @@ export interface InputProps {
   invalid?: boolean;
   icon?: ReactElement;
   placeholder?: string;
+  type?: string;
+  inverted?: boolean
 }

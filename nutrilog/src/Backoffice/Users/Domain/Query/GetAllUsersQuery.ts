@@ -7,6 +7,5 @@ export class GetAllUsersQuery implements IQuery {
     public adminId: string,
     public page: number,
     public quantity: number
-  ) {
-  };
+  ) {};
 }

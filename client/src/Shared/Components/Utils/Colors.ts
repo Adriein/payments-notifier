@@ -11,6 +11,7 @@ export const COLORS = {
   textDark: '#42526E',
   textMedium: '#5E6C84',
   textLight: '#8993a4',
+  textLightGray: '#A1A7B0',
   textLink: '#0052cc',
 
   backgroundDarkPrimary: '#0747A6',
@@ -19,6 +20,7 @@ export const COLORS = {
   backgroundLightest: '#F4F5F7',
   backgroundLightSuccess: '#E4FCEF',
   backgroundWhite: '#fff',
+  backgroundLightGray: '#F8F9FB',
 
   borderLightest: '#dfe1e6',
   borderLight: '#C1C7D0',

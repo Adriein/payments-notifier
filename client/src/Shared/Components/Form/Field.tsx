@@ -15,7 +15,8 @@ export interface FieldProps {
   label?: string;
   tip?: string;
   error?: string;
-  icon?: ReactElement
+  icon?: ReactElement;
+  inverted?: boolean;
 }
 
 

@@ -1,14 +1,22 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 
-import { StyledInput, InputElement, StyledIcon } from './Styles';
+import { StyledInput, InputElement, StyledIcon, InvertedInputElement } from './Styles';
 import { InputProps } from "./InputProps";
 
+const TYPE = {
+  normal: InputElement,
+  inverted: InvertedInputElement
+};
+
 const Input = forwardRef(
-  ({ icon, className, onChange, ...inputProps }: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
+  ({ icon, className, onChange, inverted, ...inputProps }: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
     const handleChange = (event: any) => {
       onChange(event.target.value);
     };
+    const type = inverted ? 'inverted' : 'normal';
 
+    const InputElement = TYPE[type];
+    
     return (
       <StyledInput className={className}>
         {icon && <StyledIcon>{icon}</StyledIcon>}
