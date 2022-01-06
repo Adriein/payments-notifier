@@ -8,5 +8,6 @@ export interface InputProps {
   icon?: ReactElement;
   placeholder?: string;
   type?: string;
-  inverted?: boolean
+  inverted?: boolean;
+  hasIcon?: boolean;
 }

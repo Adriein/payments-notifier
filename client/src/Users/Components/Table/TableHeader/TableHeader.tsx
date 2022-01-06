@@ -1,9 +1,10 @@
 import React from 'react';
 import { TableHeaderProps } from "./TableHeaderProps";
-import { StyledContainer } from './Styles';
+import { StyledContainer, StyledFilterForm } from './Styles';
 import Form from "../../../../Shared/Components/Form";
 import useToastError from "../../../../Shared/Hooks/useToastError";
-import { FiSearch } from 'react-icons/fi';
+import { FiSearch, FiPlus } from 'react-icons/fi';
+import Button from "../../../../Shared/Components/Button";
 
 const TableHeader = (props: TableHeaderProps) => {
   const { notify } = useToastError('login');
@@ -22,10 +23,13 @@ const TableHeader = (props: TableHeaderProps) => {
           }
         }}
       >
-        <Form.Element>
+        <StyledFilterForm>
           <Form.Field.Input name="search" icon={<FiSearch/>} inverted placeholder={"Search for name..."}/>
-        </Form.Element>
+        </StyledFilterForm>
       </Form>
+      <Button size={'small'} variant={'fill'} icon={<FiPlus/>}>Add Filter</Button>
+      <Button size={'small'} variant={'fill'}>Add Filter</Button>
+      <Button size={'small'} variant={'fill'}>Add Filter</Button>
     </StyledContainer>
   );
 }

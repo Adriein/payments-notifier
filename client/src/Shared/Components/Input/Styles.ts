@@ -13,13 +13,14 @@ const BaseInputElement = styled.input.attrs((props: InputProps) => ({
   type: props.type || 'text',
   placeholder: props.placeholder
 }))`
+  font-family: inherit;
   height: 100%;
   width: 100%;
   border-radius: 3px;
   border: 1px solid ${COLORS.borderLightest};
   background: ${COLORS.backgroundLightest};
   transition: background 0.1s;
-  ${(props: { type?: string, hasIcon?: boolean, invalid?: boolean }) => props.hasIcon && 'padding-left: 32px;'};
+  ${(props: InputProps) => props.hasIcon && 'padding-left: 32px;'};
 
   &:hover {
     background: ${COLORS.backgroundLight};
@@ -31,7 +32,7 @@ const BaseInputElement = styled.input.attrs((props: InputProps) => ({
     box-shadow: 0 0 0 1px ${COLORS.borderInputFocus};
   }
 
-  ${(props: { type?: string, hasIcon?: boolean, invalid?: boolean }) => {
+  ${(props: InputProps) => {
     return props.invalid &&
             css`
               &,
@@ -46,11 +47,17 @@ const BaseInputElement = styled.input.attrs((props: InputProps) => ({
 export const InputElement = styled(BaseInputElement)``;
 
 export const InvertedInputElement = styled(BaseInputElement)`
+  border-radius: 8px;
   background: ${COLORS.backgroundWhite};
-  color: ${COLORS.textLightGray};
+  color: ${COLORS.textMedium};
+  border: 1px solid ${COLORS.backgroundWhite};
 
   &:hover {
-    background: ${COLORS.backgroundLight};
+    background: ${COLORS.backgroundWhite};
+  }
+
+  &::placeholder {
+    color: ${COLORS.textLightGray};
   }
 `;
 
@@ -60,5 +67,5 @@ export const StyledIcon = styled.div`
   top: 8px;
   left: 8px;
   pointer-events: none;
-  color: ${COLORS.textMedium};
+  color: ${COLORS.textLightGray};
 `;

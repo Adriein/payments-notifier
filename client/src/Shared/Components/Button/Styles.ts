@@ -4,8 +4,12 @@ import { font } from "../Utils/Font";
 import { MIXIN } from "../Utils/Mixin";
 
 const ButtonBase = styled.button`
-  display: flex;
+  display: inline-flex;
+  gap: 5px;
   align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
   font-size: var(--fontSize);
   ${font.regular}
   padding: var(--padding);
@@ -21,7 +25,7 @@ const ButtonBase = styled.button`
 
 export const StyledFillButton = styled<StyledComponent<"button", any, any, never>>(ButtonBase)`
   background-color: ${COLORS.primary};
-  color: ${COLORS.secondary};
+  color: ${COLORS.backgroundWhite};
 
   &:hover {
     background-color: ${COLORS.primaryLight};
@@ -42,4 +46,10 @@ export const StyledRadioIconButton = styled<StyledComponent<"button", any, any, 
     background: ${COLORS.lightGray};
     color: ${COLORS.black};
   }
+`;
+
+export const StyledIcon = styled.div`
+  color: ${COLORS.backgroundWhite};
+  position: relative;
+  top: 1px;
 `;
