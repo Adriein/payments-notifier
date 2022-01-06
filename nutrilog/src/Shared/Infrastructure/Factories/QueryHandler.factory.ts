@@ -19,7 +19,7 @@ import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/Us
 import { UpdateUserHandler } from "../../../Backoffice/Users/Application/Update/UpdateUserHandler";
 import { UpdatePaymentHandler } from "../../../Backoffice/Users/Application/Update/UpdatePaymentHandler";
 import { GetPricingHandler } from "../../../Backoffice/Pricing/Application/Find/GetPricingHandler";
-import { GetAllUsersHandler } from "../../../Backoffice/Users/Application/Find/GetAllUsersHandler";
+import { FindUsersHandler } from "../../../Backoffice/Users/Application/Find/FindUsersHandler";
 import { SearchRoleHandler } from "../../../Backoffice/Role/Application/SearchRoleHandler";
 import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
 import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/Find/SearchPricingHandler";
@@ -101,8 +101,8 @@ export default class QueryHandlerFactory {
     );
 
     this.handlers.set(
-      GetAllUsersHandler.name,
-      new GetAllUsersHandler(this.userRepository, QueryBus.instance(), QueryBus.instance())
+      FindUsersHandler.name,
+      new FindUsersHandler(this.userRepository, QueryBus.instance(), QueryBus.instance())
     );
 
     //Role

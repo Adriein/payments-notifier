@@ -1,5 +1,5 @@
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
-import { GetAllUsersQuery } from "../../Domain/Query/GetAllUsersQuery";
+import { FindUsersQuery } from "../../Domain/Query/FindUsersQuery";
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { FilterRequestDto } from "./FilterRequestDto";
@@ -16,8 +16,8 @@ import { UserFilter } from "../../Domain/UserFilter";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 
-@QueryHandler(GetAllUsersQuery)
-export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
+@QueryHandler(FindUsersQuery)
+export class FindUsersHandler implements IHandler<GetUserResponse[]> {
   public constructor(
     private readonly repository: IUserRepository,
     private readonly pricing: IQueryBus<PricingResponse>,
@@ -25,7 +25,7 @@ export class GetAllUsersHandler implements IHandler<GetUserResponse[]> {
   ) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(query: GetAllUsersQuery): Promise<GetUserResponse[]> {
+  public async handle(query: FindUsersQuery): Promise<GetUserResponse[]> {
     const presenter = new UserResponseBuilder();
     const responses: GetUserResponse[] = [];
 
