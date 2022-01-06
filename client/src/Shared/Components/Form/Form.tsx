@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { Formik, Form as FormikForm, Field as FormikField } from 'formik';
 import { get, mapValues } from 'lodash';
 
@@ -43,21 +43,6 @@ Form.Field = mapValues(
     </FormikField>
   )
 );
-
-/*Index.initialValues = (data: any, getFieldValues: any) => {
- return getFieldValues((key: any, defaultValue = '') => {
- const value = get(data, key);
- return value === undefined || value === null ? defaultValue : value;
- });
- }*/
-
-/*Index.handleAPIError = (error, form) => {
- if (error.data.fields) {
- form.setErrors(error.data.fields);
- } else {
- //toast.error(error);
- }
- };*/
 
 Form.is = is;
 
