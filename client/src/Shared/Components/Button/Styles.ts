@@ -32,6 +32,16 @@ export const StyledFillButton = styled<StyledComponent<"button", any, any, never
   }
 `;
 
+export const StyledOutlineButton = styled<StyledComponent<"button", any, any, never>>(ButtonBase)`
+  background-color: ${COLORS.backgroundWhite};
+  color: ${COLORS.textLightGray};
+
+  &:hover {
+    background-color: ${COLORS.primary};
+    color: ${COLORS.backgroundWhite};
+  }
+`;
+
 export const StyledRadioIconButton = styled<StyledComponent<"button", any, any, never>>(ButtonBase)`
   color: ${COLORS.gray};
   background-color: transparent;

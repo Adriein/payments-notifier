@@ -6,8 +6,8 @@ export interface ButtonProps {
   iconSize?: number;
   disabled?: boolean;
   isLoading?: boolean;
-  size: 'xs' | 'small' | 'medium' | 'large';
-  variant: 'fill' | 'icon';
+  size: 'small' | 'medium' | 'large';
+  variant: 'fill' | 'icon' | 'outline';
   onClick?: Function;
   type?: string
 }

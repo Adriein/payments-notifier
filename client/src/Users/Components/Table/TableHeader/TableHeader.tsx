@@ -4,8 +4,9 @@ import { StyledContainer, StyledFilterForm } from './Styles';
 import Form from "../../../../Shared/Components/Form";
 import useToastError from "../../../../Shared/Hooks/useToastError";
 import { FiSearch } from 'react-icons/fi';
-import Button from "../../../../Shared/Components/Button";
+import { IoIosOptions } from 'react-icons/io';
 import { useTranslation } from "react-i18next";
+import MenuButton from "../../../../Shared/Components/MenuButton";
 
 const TableHeader = (props: TableHeaderProps) => {
   const { notify } = useToastError('clients');
@@ -29,8 +30,19 @@ const TableHeader = (props: TableHeaderProps) => {
           <Form.Field.Input inverted name="search" icon={<FiSearch/>} placeholder={t('search_filter_placeholder')}/>
         </StyledFilterForm>
       </Form>
-      <Button size={'small'} variant={'fill'}>{t('active_filter_button')}</Button>
-      <Button size={'small'} variant={'fill'}>{t('expired_filter_button')}</Button>
+      <MenuButton.Menu>
+        <MenuButton size={'sm'}>
+          <IoIosOptions/>
+        </MenuButton>
+        <MenuButton.MenuList>
+          <MenuButton.MenuItem onSelect={() => alert("Download")}>
+
+            aaaaa
+
+          </MenuButton.MenuItem>
+          <MenuButton.MenuItem onSelect={() => alert("Download")}>Subscription Expired</MenuButton.MenuItem>
+        </MenuButton.MenuList>
+      </MenuButton.Menu>
     </StyledContainer>
   );
 }

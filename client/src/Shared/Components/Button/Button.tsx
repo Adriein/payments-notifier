@@ -1,13 +1,8 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import { ButtonProps } from "./ButtonProps";
-import { StyledFillButton, StyledRadioIconButton, StyledIcon } from './Styles';
+import { StyledFillButton, StyledRadioIconButton, StyledIcon, StyledOutlineButton } from './Styles';
 
 const SIZES = {
-  xs: {
-    "--borderRadius": "2px",
-    "--fontSize": "10px",
-    "--padding": "8px"
-  },
   small: {
     "--borderRadius": "2px",
     "--fontSize": "14px",
@@ -27,7 +22,8 @@ const SIZES = {
 
 const TYPE = {
   icon: StyledRadioIconButton,
-  fill: StyledFillButton
+  fill: StyledFillButton,
+  outline: StyledOutlineButton
 }
 
 const Button = forwardRef((

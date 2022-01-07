@@ -13,6 +13,5 @@ export const StyledContainer = styled.div`
 `;
 
 export const StyledFilterForm = styled(Form.Element)`
-  width: 50%;
-
+  width: 100%;
 `;
