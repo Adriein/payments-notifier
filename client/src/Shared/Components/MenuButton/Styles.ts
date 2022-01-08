@@ -44,6 +44,6 @@ export const StyledMenuItem = styled(ReachMenuItem)`
 
   ${MIXIN.clickable}
   &:hover {
-    background-color: ${COLORS.lightGray};
+    background-color: ${COLORS.backgroundLightGray};
   }
 `;
