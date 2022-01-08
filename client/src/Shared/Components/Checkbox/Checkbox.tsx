@@ -1,29 +1,19 @@
-import { StyledInput, StyledLabel, StyledIndicator } from './Styles';
+import React, { useEffect, useState } from "react";
+import { Input, Label, CheckboxContainer } from './Styles';
 
-const Checkbox = ({
-  value,
-  onChange,
-  name,
-  id,
-  disabled,
-  checked,
-  children
-}: any) => {
+const Checkbox = ({ name, onChange }: any) => {
+  //const [ checked, setChecked ] = useState(false);
+
+  const onCheck = (event: any) => {
+    event.preventDefault();
+    console.log('aaaaa')
+  }
+
   return (
-    <StyledLabel htmlFor={id} disabled={disabled}>
-      {children}
-      <StyledInput
-        id={id}
-        type="radio"
-        role="radio"
-        name={name}
-        value={value}
-        disabled={disabled}
-        onChange={onChange}
-        checked={checked}
-      />
-      <StyledIndicator/>
-    </StyledLabel>
+    <CheckboxContainer onClick={(e) => onCheck(e)}>
+      <Input id={name} name={name}/>
+      <Label htmlFor={name} checked={false}>{name}</Label>
+    </CheckboxContainer>
   );
 }
 
