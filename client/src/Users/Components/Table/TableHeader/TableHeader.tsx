@@ -7,6 +7,7 @@ import { FiSearch } from 'react-icons/fi';
 import { IoIosOptions } from 'react-icons/io';
 import { useTranslation } from "react-i18next";
 import MenuButton from "../../../../Shared/Components/MenuButton";
+import Checkbox from "../../../../Shared/Components/Checkbox";
 
 const TableHeader = (props: TableHeaderProps) => {
   const { notify } = useToastError('clients');
@@ -35,12 +36,10 @@ const TableHeader = (props: TableHeaderProps) => {
           <IoIosOptions/>
         </MenuButton>
         <MenuButton.MenuList>
-          <MenuButton.MenuItem onSelect={() => alert("Download")}>
-
-            aaaaa
-
+          <MenuButton.MenuItem onSelect={() => console.log('a')}>
+            <Checkbox>Active</Checkbox>
           </MenuButton.MenuItem>
-          <MenuButton.MenuItem onSelect={() => alert("Download")}>Subscription Expired</MenuButton.MenuItem>
+          <MenuButton.MenuItem onSelect={() => console.log('a')}>Subscription Expired</MenuButton.MenuItem>
         </MenuButton.MenuList>
       </MenuButton.Menu>
     </StyledContainer>

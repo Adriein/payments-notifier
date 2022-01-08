@@ -38,6 +38,7 @@ export const StyledMenuList = styled(ReachMenuList)`
 `;
 
 export const StyledMenuItem = styled(ReachMenuItem)`
+  ${font.size(14)}
   padding: 10px;
   border-radius: 5px;
 
