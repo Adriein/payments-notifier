@@ -1,5 +1,5 @@
 import { Criteria } from "../../Domain/Entities/Criteria";
-import { JSObject, Model } from "../../Domain/types";
+import { JSObject, Model, ModelSchema } from "../../Domain/types";
 import { Filter } from "../../Domain/Entities/Filter";
 import { PrismaPagination } from "../types";
 import { PropertyNotDefinedInModelError } from "./PropertyNotDefinedInModelError";
@@ -14,25 +14,15 @@ export class PrismaQueryBuilder<F, M extends JSObject> {
     for (const filter of filters) {
       const schema = this.model[filter.field()];
 
-      const dbField = schema?.field;
+      this.ensureFilterFieldExistsInSchema(schema, filter);
 
-      if (!dbField) {
-        throw new PropertyNotDefinedInModelError(filter.field());
-      }
-
-      if (this.isJoin(dbField)) {
-        const joinType = schema?.joinType;
-
-        if (!joinType) {
-          throw new PropertyNotDefinedInModelError('joinType');
-        }
-
-        prismaWhereInput = { ...prismaWhereInput, ...this.join(dbField, joinType, filter) }
+      if (this.isJoin(schema.field)) {
+        prismaWhereInput = { ...prismaWhereInput, ...this.join(schema, filter) }
         continue;
       }
       const dbOperation = filter.operation();
 
-      prismaWhereInput[dbField] = { [dbOperation]: filter.value() }
+      prismaWhereInput[schema.field] = { [dbOperation]: filter.value() }
     }
 
     return prismaWhereInput as unknown as R;
@@ -49,14 +39,26 @@ export class PrismaQueryBuilder<F, M extends JSObject> {
     return undefined;
   }
 
+  private ensureFilterFieldExistsInSchema(schema: ModelSchema, filter: Filter<F>): void {
+    const dbField = schema?.field;
+
+    if (!dbField) {
+      throw new PropertyNotDefinedInModelError(filter.field());
+    }
+  }
+
   private isJoin(dbField: string): boolean {
     return dbField.includes('.');
   }
 
-  private join(dbField: string, joinType: string, filter: Filter<F>) {
-    const [ table, field ] = dbField.split('.');
+  private join(schema: ModelSchema, filter: Filter<F>) {
+    const [ table, field ] = schema.field.split('.');
 
-    if (joinType === 'array') {
+    if (!schema?.joinType) {
+      throw new PropertyNotDefinedInModelError('joinType');
+    }
+
+    if (schema.joinType === 'array') {
       return {
         [table]: {
           some: {

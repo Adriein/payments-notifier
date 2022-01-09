@@ -8,7 +8,6 @@ export const UserModel = {
     type: 'string'
   },
   isSubscriptionActive: {
-    join: true,
     joinType: 'array',
     field: 'subscriptions.active',
     type: 'boolean'

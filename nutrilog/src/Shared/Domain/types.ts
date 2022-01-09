@@ -35,5 +35,7 @@ export type KeyReturnType<T> = {
 }[keyof T];
 
 export type Model = {
-  [key: string]: { field: string, type: string, join?: boolean, joinType?: string };
+  [key: string]: ModelSchema;
 }
+
+export type ModelSchema = { field: string, type: string, joinType?: string }
