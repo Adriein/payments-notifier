@@ -24,7 +24,7 @@ const Clients = () => {
 
   return (
     <div>
-      <TableHeader/>
+      <TableHeader addFilter={setFilter} removeFilter={removeFilter}/>
     </div>
   )
 }

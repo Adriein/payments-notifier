@@ -1,1 +1,4 @@
-export interface TableHeaderProps {}
+export interface TableHeaderProps {
+  addFilter: Function;
+  removeFilter: Function;
+}

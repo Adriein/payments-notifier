@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import MenuButton from "../../../../Shared/Components/MenuButton";
 import Checkbox from "../../../../Shared/Components/Checkbox";
 
-const TableHeader = (props: TableHeaderProps) => {
+const TableHeader = ({ addFilter, removeFilter }: TableHeaderProps) => {
   const { notify } = useToastError('clients');
   const { t } = useTranslation('clients');
   return (
