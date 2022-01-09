@@ -57,11 +57,7 @@ export class UserRepository implements IUserRepository {
       });
 
       this.prisma.$disconnect();
-
-      if (results.length === 0) {
-        return Left.error(new UserNotExistError(`user not found`));
-      }
-
+      
       return Right.success(results.map((result) => this.mapper.toDomain(result)))
     } catch (error: any) {
       this.prisma.$disconnect();

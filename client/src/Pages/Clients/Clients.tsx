@@ -10,21 +10,18 @@ const Clients = () => {
   const { state, fetchUsers } = useContext(UsersContext);
   const { notify } = useToastError('login');
   const { pagination } = usePagination();
-  const { filters, setFilter, removeFilter } = useFilters<UserTableFilter>();
+  const { filters, setFilter } = useFilters<UserTableFilter>();
+  console.log(state)
+  console.log(filters)
 
   useEffect(() => {
-    (async () => {
-      try {
-        await fetchUsers({ ...pagination });
-      } catch (error: unknown) {
-        notify(error)
-      }
-    })();
-  }, []);
+    fetchUsers({ ...pagination, filters })
+      .catch(error => notify(error));
+  }, [ filters ]);
 
   return (
     <div>
-      <TableHeader addFilter={setFilter} removeFilter={removeFilter}/>
+      <TableHeader addFilter={setFilter}/>
     </div>
   )
 }

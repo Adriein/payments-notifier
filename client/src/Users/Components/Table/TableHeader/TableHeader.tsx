@@ -9,9 +9,14 @@ import { useTranslation } from "react-i18next";
 import MenuButton from "../../../../Shared/Components/MenuButton";
 import Checkbox from "../../../../Shared/Components/Checkbox";
 
-const TableHeader = ({ addFilter, removeFilter }: TableHeaderProps) => {
+const TableHeader = ({ addFilter }: TableHeaderProps) => {
   const { notify } = useToastError('clients');
   const { t } = useTranslation('clients');
+
+  const onFilterSelection = (filterName: string) => () => {
+    addFilter({ field: filterName });
+  }
+
   return (
     <StyledContainer>
       <Form
@@ -36,10 +41,10 @@ const TableHeader = ({ addFilter, removeFilter }: TableHeaderProps) => {
           <IoIosOptions/>
         </MenuButton>
         <MenuButton.MenuList>
-          <MenuButton.MenuItem onSelect={() => console.log('a')}>
+          <MenuButton.MenuItem onSelect={onFilterSelection('active')}>
             <Checkbox name={t('active_filter_button')}/>
           </MenuButton.MenuItem>
-          <MenuButton.MenuItem onSelect={() => console.log('a')}>
+          <MenuButton.MenuItem onSelect={onFilterSelection('expired')}>
             <Checkbox name={t('expired_filter_button')}/>
           </MenuButton.MenuItem>
         </MenuButton.MenuList>

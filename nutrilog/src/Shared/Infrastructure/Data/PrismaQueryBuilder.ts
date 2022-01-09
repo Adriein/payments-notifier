@@ -2,6 +2,7 @@ import { Criteria } from "../../Domain/Entities/Criteria";
 import { JSObject, Model } from "../../Domain/types";
 import { Filter } from "../../Domain/Entities/Filter";
 import { PrismaPagination } from "../types";
+import { PropertyNotDefinedInModelError } from "./PropertyNotDefinedInModelError";
 
 export class PrismaQueryBuilder<F, M extends JSObject> {
   constructor(private readonly criteria: Criteria<F>, private readonly model: Model) {}
@@ -11,10 +12,22 @@ export class PrismaQueryBuilder<F, M extends JSObject> {
     let prismaWhereInput: JSObject = {};
 
     for (const filter of filters) {
-      const dbField = this.model[filter.field()].field;
+      const schema = this.model[filter.field()];
+
+      const dbField = schema?.field;
+
+      if (!dbField) {
+        throw new PropertyNotDefinedInModelError(filter.field());
+      }
 
       if (this.isJoin(dbField)) {
-        prismaWhereInput = { ...prismaWhereInput, ...this.join(dbField, filter) }
+        const joinType = schema?.joinType;
+
+        if (!joinType) {
+          throw new PropertyNotDefinedInModelError('joinType');
+        }
+
+        prismaWhereInput = { ...prismaWhereInput, ...this.join(dbField, joinType, filter) }
         continue;
       }
       const dbOperation = filter.operation();
@@ -40,8 +53,20 @@ export class PrismaQueryBuilder<F, M extends JSObject> {
     return dbField.includes('.');
   }
 
-  private join(dbField: string, filter: Filter<F>) {
+  private join(dbField: string, joinType: string, filter: Filter<F>) {
     const [ table, field ] = dbField.split('.');
+
+    if (joinType === 'array') {
+      return {
+        [table]: {
+          some: {
+            [field]: {
+              [filter.operation()]: filter.value()
+            }
+          }
+        }
+      }
+    }
 
     return {
       [table]: {

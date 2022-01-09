@@ -8,7 +8,9 @@ export const UserModel = {
     type: 'string'
   },
   isSubscriptionActive: {
-    field: 'subscription.active',
+    join: true,
+    joinType: 'array',
+    field: 'subscriptions.active',
     type: 'boolean'
   },
   sendWarnings: {
@@ -17,6 +19,10 @@ export const UserModel = {
   },
   roleId: {
     field: 'role_id',
+    type: 'string'
+  },
+  active: {
+    field: 'active',
     type: 'string'
   }
 }
