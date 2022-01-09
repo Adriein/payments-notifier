@@ -12,14 +12,14 @@ export class FindUsersController extends BaseController<GetUserResponse[]> {
   @post('/users')
   @use(requireAuth)
   @use(currentUser)
-  public async getAllUsers(req: Request, res: Response<GetUserResponse[]>, next: NextFunction) {
+  public async getAllUsers(req: Request, res: Response<{ users: GetUserResponse[] }>, next: NextFunction) {
     try {
       const filters = req.body.filters || [];
       const query = new FindUsersQuery(filters, req.currentUser!.id, req.body.page, req.body.quantity);
 
       const users = await this.queryBus.ask(query);
 
-      res.status(200).send(users);
+      res.status(200).send({ users });
     } catch (error) {
       next(error);
     }

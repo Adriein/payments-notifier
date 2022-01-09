@@ -1,5 +1,11 @@
 export const COLORS = {
-  primary: '#5065F6', // Blue
+  primary: '#5065F6',
+  primaryLight: '#8491F7',
+  primaryLight1: '#A8B1F9',
+  primaryLight2: '#DBE0FC',
+  primaryLight3: '#EDEFFE',
+
+
   success: '#0B875B', // green
   danger: '#E13C3C', // red
   warning: '#F89C1C', // orange
@@ -27,5 +33,4 @@ export const COLORS = {
   borderInputFocus: '#4c9aff',
 
   lightGray: '#dfdfdf',
-  primaryLight: '#8491F7',
 };

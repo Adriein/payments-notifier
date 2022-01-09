@@ -7,7 +7,6 @@ import RequireAuth from "./Pages/RequireAuth";
 import Clients from "./Pages/Clients";
 import { Toaster } from 'react-hot-toast';
 
-
 function App() {
   return (
     <Suspense fallback={'loading'}>

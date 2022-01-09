@@ -37,10 +37,10 @@ const TableHeader = (props: TableHeaderProps) => {
         </MenuButton>
         <MenuButton.MenuList>
           <MenuButton.MenuItem onSelect={() => console.log('a')}>
-            <Checkbox name={t('active_filter_button')} onChange={() => console.log('changed')}/>
+            <Checkbox name={t('active_filter_button')}/>
           </MenuButton.MenuItem>
           <MenuButton.MenuItem onSelect={() => console.log('a')}>
-            <Checkbox name={t('expired_filter_button')} onChange={() => console.log('changed')}/>
+            <Checkbox name={t('expired_filter_button')}/>
           </MenuButton.MenuItem>
         </MenuButton.MenuList>
       </MenuButton.Menu>

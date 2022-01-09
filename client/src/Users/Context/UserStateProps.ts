@@ -1,3 +1,6 @@
+import { User } from "../types";
+
 export interface UserStateProps {
-  users: any[]
+  isLoading: boolean;
+  users: User[];
 }

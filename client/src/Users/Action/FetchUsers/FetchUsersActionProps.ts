@@ -1,10 +1,10 @@
 export interface FetchUsersActionProps {
   page: number;
   quantity: number;
-  filters?: Filter[];
+  filters?: UserTableFilter[];
 }
 
-interface Filter {
+export interface UserTableFilter {
   field: 'active' | 'name' | 'expired'
 }
 
