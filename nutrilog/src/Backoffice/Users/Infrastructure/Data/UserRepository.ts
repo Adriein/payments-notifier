@@ -11,7 +11,7 @@ import { Right } from "../../../../Shared/Domain/Entities/Right";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { UserFilter } from "../../Domain/UserFilter";
 import { PrismaQueryBuilder } from "../../../../Shared/Infrastructure/Data/PrismaQueryBuilder";
-import { UserModel } from "./UserModel";
+import { UserMysqlMapper } from "./UserMysqlMapper";
 import { Prisma } from "@prisma/client";
 
 export class UserRepository implements IUserRepository {
@@ -40,10 +40,10 @@ export class UserRepository implements IUserRepository {
   @Log(process.env.LOG_LEVEL)
   public async find(criteria: Criteria<UserFilter>): Promise<Either<Error | UserNotExistError, User[]>> {
     try {
-      const queryBuilder = new PrismaQueryBuilder<UserFilter, typeof UserModel>(criteria, UserModel);
+      const queryBuilder = new PrismaQueryBuilder<UserFilter, UserMysqlMapper>(criteria, new UserMysqlMapper());
       const query = queryBuilder.build<Prisma.userWhereInput>();
 
-      const pagination = queryBuilder.pagination() || {};
+      const pagination = queryBuilder.pagination();
 
       const results = await this.prisma.user.findMany({
         ...pagination,
@@ -57,7 +57,7 @@ export class UserRepository implements IUserRepository {
       });
 
       this.prisma.$disconnect();
-      
+
       return Right.success(results.map((result) => this.mapper.toDomain(result)))
     } catch (error: any) {
       this.prisma.$disconnect();

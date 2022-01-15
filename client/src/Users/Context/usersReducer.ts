@@ -13,7 +13,7 @@ const fetchUsers = (state: UserStateProps, action: ActionProps) => {
     ...resolveAsyncAction(),
     users: action.payload as User[]
   };
-}
+};
 
 export const usersReducer = (state: UserStateProps, action: ActionProps): UserStateProps => {
   switch (action.type) {

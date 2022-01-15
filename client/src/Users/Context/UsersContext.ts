@@ -10,5 +10,5 @@ export const {
 } = createDataContext<UserStateProps, UsersActionProps>(
   usersReducer,
   { fetchUsers },
-  { users: [], isLoading: false }
+  { users: [], isLoading: false, filters: [] }
 );

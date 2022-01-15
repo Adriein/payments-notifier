@@ -1,50 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TableHeaderProps } from "./TableHeaderProps";
-import { StyledContainer, StyledFilterForm } from './Styles';
-import Form from "../../../../Shared/Components/Form";
-import useToastError from "../../../../Shared/Hooks/useToastError";
+import { StyledContainer, StyledFilterForm, StyledSearchInput } from './Styles';
 import { FiSearch } from 'react-icons/fi';
 import { IoIosOptions } from 'react-icons/io';
 import { useTranslation } from "react-i18next";
 import MenuButton from "../../../../Shared/Components/MenuButton";
 import Checkbox from "../../../../Shared/Components/Checkbox";
+import useDebounce from "../../../../Shared/Hooks/useDebounce";
+import { ACTIVE_FILTER, EXPIRED_FILTER, NAME_FILTER } from "../../../constants";
 
 const TableHeader = ({ addFilter }: TableHeaderProps) => {
-  const { notify } = useToastError('clients');
   const { t } = useTranslation('clients');
+  const [ query, setQuery ] = useState('');
+  const debouncedSetQuery = useDebounce(setQuery, 1000);
 
-  const onFilterSelection = (filterName: string) => () => {
+  const applyFilter = (filterName: string, value?: string) => () => {
+    if (value) {
+      addFilter({ field: filterName, value })
+      return;
+    }
     addFilter({ field: filterName });
   }
 
+  useEffect(() => {
+    if (query) {
+      applyFilter(NAME_FILTER, query)();
+    }
+  }, [ query ])
+
   return (
     <StyledContainer>
-      <Form
-        enableReinitialize
-        initialValues={{
-          search: '',
-        }}
-        onSubmit={async ({ search }: any) => {
-          try {
-
-          } catch (error: unknown) {
-            notify(error);
-          }
-        }}
-      >
-        <StyledFilterForm>
-          <Form.Field.Input inverted name="search" icon={<FiSearch/>} placeholder={t('search_filter_placeholder')}/>
-        </StyledFilterForm>
-      </Form>
+      <StyledFilterForm>
+        <StyledSearchInput
+          inverted
+          icon={<FiSearch/>}
+          placeholder={t('search_filter_placeholder')}
+          onChange={debouncedSetQuery}
+        />
+      </StyledFilterForm>
       <MenuButton.Menu>
         <MenuButton size={'sm'}>
           <IoIosOptions/>
         </MenuButton>
         <MenuButton.MenuList>
-          <MenuButton.MenuItem onSelect={onFilterSelection('active')}>
+          <MenuButton.MenuItem onSelect={applyFilter(ACTIVE_FILTER)}>
             <Checkbox name={t('active_filter_button')}/>
           </MenuButton.MenuItem>
-          <MenuButton.MenuItem onSelect={onFilterSelection('expired')}>
+          <MenuButton.MenuItem onSelect={applyFilter(EXPIRED_FILTER)}>
             <Checkbox name={t('expired_filter_button')}/>
           </MenuButton.MenuItem>
         </MenuButton.MenuList>

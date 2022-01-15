@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from "../../../../Shared/Components/Utils/Colors";
-import Form from "../../../../Shared/Components/Form";
+import Input from "../../../../Shared/Components/Input";
 
 export const StyledContainer = styled.div`
   width: 100%;
@@ -12,6 +12,9 @@ export const StyledContainer = styled.div`
   gap: 40px;
 `;
 
-export const StyledFilterForm = styled(Form.Element)`
+export const StyledFilterForm = styled.div`
   width: 100%;
+`;
+
+export const StyledSearchInput = styled<any>(Input)`
 `;

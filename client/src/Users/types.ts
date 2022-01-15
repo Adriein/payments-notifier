@@ -28,3 +28,8 @@ type SubscriptionPricing = {
   name: string;
   duration: number;
 }
+
+export type Filter = {
+  field: string;
+  value?: string;
+}

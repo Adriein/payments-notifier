@@ -3,14 +3,14 @@ import { KeyReturnType } from "../types";
 
 export class Filter<T> {
   constructor(
-    private _field: keyof T,
+    private _column: keyof T,
     private _operation: OPERATORS,
     private _value: KeyReturnType<T>
   ) {}
 
 
-  public field(): string {
-    return this._field as unknown as string;
+  public column(): string {
+    return this._column as unknown as string;
   }
 
   public value(): KeyReturnType<T> {
