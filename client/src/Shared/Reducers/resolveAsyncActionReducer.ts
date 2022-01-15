@@ -1,0 +1,1 @@
+export const resolveAsyncAction = () => ({ isLoading: false });

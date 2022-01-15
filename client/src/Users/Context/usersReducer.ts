@@ -1,19 +1,18 @@
 import { ActionProps } from "../../Shared/Action/ActionProps";
 import { UserStateProps } from "./UserStateProps";
-import { User } from "../types";
 import { FETCH_USERS_ACTION } from "../constants";
 import { ASYNC_ACTION } from "../../Shared/constants";
+import { fetchUsers } from "./fetchUsersReducer";
+import { initAsyncAction } from "../../Shared/Reducers/InitAsyncActionReducer";
+import { Filter } from "../types";
 
-const initAsyncAction = (state: UserStateProps) => ({ ...state, isLoading: true });
-const resolveAsyncAction = () => ({ isLoading: false });
 
-const fetchUsers = (state: UserStateProps, action: ActionProps) => {
+const addFilterReducer = (state: UserStateProps, action: ActionProps): UserStateProps => {
   return {
     ...state,
-    ...resolveAsyncAction(),
-    users: action.payload as User[]
+    filters: [ ...state.filters, ...action.payload as Filter[] ]
   };
-};
+}
 
 export const usersReducer = (state: UserStateProps, action: ActionProps): UserStateProps => {
   switch (action.type) {
