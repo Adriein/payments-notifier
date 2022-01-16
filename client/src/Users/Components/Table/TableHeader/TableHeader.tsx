@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TableHeaderProps } from "./TableHeaderProps";
 import { StyledContainer, StyledFilterForm, StyledSearchInput } from './Styles';
 import { FiSearch } from 'react-icons/fi';
@@ -8,19 +8,28 @@ import MenuButton from "../../../../Shared/Components/MenuButton";
 import Checkbox from "../../../../Shared/Components/Checkbox";
 import useDebounce from "../../../../Shared/Hooks/useDebounce";
 import { ACTIVE_FILTER, EXPIRED_FILTER, NAME_FILTER } from "../../../constants";
+import { UsersContext } from "../../../Context/UsersContext";
+import { Filter } from "../../../types";
 
 const TableHeader = ({ addFilter }: TableHeaderProps) => {
   const { t } = useTranslation('clients');
+  const { state } = useContext(UsersContext);
   const [ query, setQuery ] = useState('');
   const debouncedSetQuery = useDebounce(setQuery, 1000);
 
-  const applyFilter = (filterName: string, value?: string) => () => {
+  const applyFilter = (filterName: 'active' | 'name' | 'expired', value?: string) => () => {
     if (value) {
-      addFilter({ field: filterName, value })
+      addFilter({ filter: { field: filterName, value } })
       return;
     }
-    addFilter({ field: filterName });
+    addFilter({ filter: { field: filterName } });
   }
+
+  const isFilterActive = (filterName: 'active' | 'name' | 'expired'): boolean => {
+    const filter = state.filters.find(({ field }: Filter) => field === filterName);
+
+    return !!filter;
+  };
 
   useEffect(() => {
     if (query) {
@@ -44,10 +53,10 @@ const TableHeader = ({ addFilter }: TableHeaderProps) => {
         </MenuButton>
         <MenuButton.MenuList>
           <MenuButton.MenuItem onSelect={applyFilter(ACTIVE_FILTER)}>
-            <Checkbox name={t('active_filter_button')}/>
+            <Checkbox active={isFilterActive(ACTIVE_FILTER)} name={t('active_filter_button')}/>
           </MenuButton.MenuItem>
           <MenuButton.MenuItem onSelect={applyFilter(EXPIRED_FILTER)}>
-            <Checkbox name={t('expired_filter_button')}/>
+            <Checkbox active={isFilterActive(EXPIRED_FILTER)} name={t('expired_filter_button')}/>
           </MenuButton.MenuItem>
         </MenuButton.MenuList>
       </MenuButton.Menu>

@@ -7,6 +7,6 @@ export const fetchUsers = (state: UserStateProps, action: ActionProps): UserStat
   return {
     ...state,
     ...resolveAsyncAction(),
-    users: action.payload as User[]
+    users: (action.payload ? action.payload : []) as User[]
   };
 };

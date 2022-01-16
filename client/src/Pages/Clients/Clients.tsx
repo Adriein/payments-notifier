@@ -4,24 +4,21 @@ import TableHeader from "../../Users/Components/Table/TableHeader";
 import useToastError from "../../Shared/Hooks/useToastError";
 import usePagination from "../../Shared/Hooks/usePagination";
 import useFilters from "../../Shared/Hooks/useFilters";
-import { UserTableFilter } from "../../Users/Action/FetchUsers/FetchUsersActionProps";
 
 const Clients = () => {
-  const { state, fetchUsers } = useContext(UsersContext);
+  const { state, fetchUsers, addFilter } = useContext(UsersContext);
   const { notify } = useToastError('login');
   const { pagination } = usePagination();
-  const { filters, setFilter } = useFilters<UserTableFilter>();
   console.log(state)
-  console.log(filters)
 
   useEffect(() => {
-    fetchUsers({ ...pagination, filters })
+    fetchUsers({ ...pagination, filters: state.filters })
       .catch(error => notify(error));
-  }, [ filters ]);
+  }, [ state.filters ]);
 
   return (
     <div>
-      <TableHeader addFilter={setFilter}/>
+      <TableHeader addFilter={addFilter}/>
     </div>
   )
 }

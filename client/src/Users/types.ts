@@ -30,6 +30,6 @@ type SubscriptionPricing = {
 }
 
 export type Filter = {
-  field: string;
+  field: 'active' | 'name' | 'expired';
   value?: string;
 }
