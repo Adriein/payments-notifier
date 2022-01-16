@@ -28,8 +28,3 @@ type SubscriptionPricing = {
   name: string;
   duration: number;
 }
-
-export type Filter = {
-  field: 'active' | 'name' | 'expired';
-  value?: string;
-}

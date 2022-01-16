@@ -1,12 +1,10 @@
 import { Dispatch } from "react";
 import { ActionProps } from "../ActionProps";
-import { ADD_FILTER_ACTION } from "../../../Users/constants";
-import { Filter } from "../../../Users/types";
-import { AddFilterActionProps } from "./AddFilterActionProps";
+import { ADD_FILTER_ACTION } from "../../constants";
+import { FilterProps } from "./FilterProps";
 
-
-export const addFilter = (dispatch: Dispatch<ActionProps<Filter[]>>) => {
-  return ({ filter }: AddFilterActionProps): void => {
-    dispatch({ type: ADD_FILTER_ACTION, payload: [ filter ] });
+export const addFilter = (dispatch: Dispatch<ActionProps<FilterProps>>) => {
+  return (filter: FilterProps): void => {
+    dispatch({ type: ADD_FILTER_ACTION, payload: filter });
   };
 };

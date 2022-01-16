@@ -1,8 +1,9 @@
-import { Filter } from "../../types";
+import { FilterProps } from "../../../Shared/Action/Filter/FilterProps";
+
 
 export interface FetchUsersActionProps {
   page: number;
   quantity: number;
-  filters?: Filter[];
+  filters?: FilterProps[];
 }
 

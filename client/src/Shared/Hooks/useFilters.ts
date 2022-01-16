@@ -1,26 +1,17 @@
-import { useState } from "react";
+import { FilterProps } from "../Action/Filter/FilterProps";
 
-const useFilters = <T extends { field: string }>() => {
-  const [ state, setState ] = useState<T[]>([]);
+const useFilters = <T extends FilterProps>(filters: T[], fn: (filter: FilterProps) => void) => {
 
-  const exists = ({ field }: T) => state.find((filter: T) => filter.field === field);
+  const isFilterActive = (field: string) => !!filters.find((filter: T) => filter.field === field);
 
-  const removeFilter = (filter: T) => {
-    const filters = state.filter(({ field }: T) => field !== filter.field);
-    setState(filters);
+  const applyFilter = (fieldName: string, value?: string) => () => {
+    fn({ field: fieldName, value })
   }
 
-  const setFilter = (filter: T) => {
-    if (exists(filter)) {
-      removeFilter(filter);
-      return;
-    }
-    setState([ ...state, filter ]);
-  }
 
   return {
-    filters: state,
-    setFilter
+    isFilterActive,
+    applyFilter
   }
 }
 

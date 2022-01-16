@@ -9,32 +9,17 @@ import Checkbox from "../../../../Shared/Components/Checkbox";
 import useDebounce from "../../../../Shared/Hooks/useDebounce";
 import { ACTIVE_FILTER, EXPIRED_FILTER, NAME_FILTER } from "../../../constants";
 import { UsersContext } from "../../../Context/UsersContext";
-import { Filter } from "../../../types";
+import useFilters from "../../../../Shared/Hooks/useFilters";
 
 const TableHeader = ({ addFilter }: TableHeaderProps) => {
   const { t } = useTranslation('clients');
   const { state } = useContext(UsersContext);
   const [ query, setQuery ] = useState('');
   const debouncedSetQuery = useDebounce(setQuery, 1000);
-
-  const applyFilter = (filterName: 'active' | 'name' | 'expired', value?: string) => () => {
-    if (value) {
-      addFilter({ filter: { field: filterName, value } })
-      return;
-    }
-    addFilter({ filter: { field: filterName } });
-  }
-
-  const isFilterActive = (filterName: 'active' | 'name' | 'expired'): boolean => {
-    const filter = state.filters.find(({ field }: Filter) => field === filterName);
-
-    return !!filter;
-  };
+  const { isFilterActive, applyFilter } = useFilters(state.filters, addFilter);
 
   useEffect(() => {
-    if (query) {
-      applyFilter(NAME_FILTER, query)();
-    }
+    applyFilter(NAME_FILTER, query)();
   }, [ query ])
 
   return (
