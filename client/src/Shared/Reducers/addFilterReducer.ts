@@ -9,28 +9,27 @@ export const addFilterReducer = <T extends FilterProps, S extends { filters: Fil
   const filterToAdd = action.payload ?? {} as FilterProps;
   const filterService = new FilterService<FilterProps>(state.filters);
 
-  const repeated = filterService.exists(filterToAdd);
+  const isRepeated = filterService.exists(filterToAdd);
+
+  if (!isRepeated) {
+    return {
+      ...state,
+      filters: [ ...state.filters, filterToAdd ]
+    };
+  }
+
   const isDifferent = filterService.isValueDiff(filterToAdd);
 
-  if (repeated && !isDifferent) {
-    const filtersToKeep = filterService.remove(filterToAdd);
-    return {
-      ...state,
-      filters: [ ...filtersToKeep ]
-    };
-  }
-
   if (isDifferent) {
-    const cleanFilters = filterService.remove(filterToAdd);
-
+    const filters = filterService.remove(filterToAdd);
     return {
       ...state,
-      filters: [ ...cleanFilters, filterToAdd ]
+      filters: [ ...filters, filterToAdd ]
     };
   }
-  
+
   return {
     ...state,
-    filters: [ ...state.filters, filterToAdd ]
+    filters: [ ...filterService.remove(filterToAdd) ]
   };
 }
