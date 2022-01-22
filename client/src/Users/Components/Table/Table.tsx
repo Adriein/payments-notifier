@@ -4,15 +4,15 @@ import React, { useEffect } from "react";
 import { StyledTableContainer } from "./Styles";
 import { TableProps } from "./TableProps";
 
-const Table = <T, >({ addFilter, collection, children }: TableProps<T>) => {
+const Table = <T, >({ addFilter, collection, renderRow, itemPerPage }: TableProps<T>) => {
   useEffect(() => {
 
   }, []);
   return (
     <StyledTableContainer>
       <TableHeader addFilter={addFilter}/>
-      {children}
-      <TableFooter collection={collection} itemPerPage={5}/>
+      {collection.map((item: T, index: number) => index < itemPerPage && renderRow(item))}
+      <TableFooter collection={collection} itemPerPage={itemPerPage}/>
     </StyledTableContainer>
   );
 }

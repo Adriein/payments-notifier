@@ -17,9 +17,13 @@ const Clients = () => {
   }, [ state.filters ]);
 
   return (
-    <Table addFilter={addFilter} collection={state.users} pagination={pagination}>
-      {state.users.map((user: User) => <p>{user.username}</p>)}
-    </Table>
+    <Table
+      itemPerPage={5}
+      addFilter={addFilter}
+      collection={state.users}
+      pagination={pagination}
+      renderRow={(user: User) => <p>{user.username}</p>}
+    />
   )
 }
 

@@ -1,8 +1,10 @@
 import { Pagination } from "../../../Shared/types";
+import React from "react";
 
 export interface TableProps<T> {
   pagination: Pagination;
   collection: T[];
-  children: any;
-  addFilter: any
+  renderRow: (item: T) => React.ReactNode;
+  addFilter: any;
+  itemPerPage: number;
 }
