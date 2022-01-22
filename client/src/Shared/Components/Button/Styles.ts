@@ -59,7 +59,7 @@ export const StyledRadioIconButton = styled<StyledComponent<"button", any, any, 
 `;
 
 export const StyledIcon = styled.div`
-  color: ${COLORS.backgroundWhite};
+  color: inherit;
   position: relative;
   top: 1px;
 `;

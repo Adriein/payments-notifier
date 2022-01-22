@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { UsersContext } from "../../Users/Context/UsersContext";
-import TableHeader from "../../Users/Components/Table/TableHeader";
 import useToastError from "../../Shared/Hooks/useToastError";
 import usePagination from "../../Shared/Hooks/usePagination";
-import useFilters from "../../Shared/Hooks/useFilters";
+import Table from "../../Users/Components/Table";
+import { User } from "../../Users/types";
 
 const Clients = () => {
   const { state, fetchUsers, addFilter } = useContext(UsersContext);
@@ -17,9 +17,9 @@ const Clients = () => {
   }, [ state.filters ]);
 
   return (
-    <div>
-      <TableHeader addFilter={addFilter}/>
-    </div>
+    <Table addFilter={addFilter} collection={state.users} pagination={pagination}>
+      {state.users.map((user: User) => <p>{user.username}</p>)}
+    </Table>
   )
 }
 

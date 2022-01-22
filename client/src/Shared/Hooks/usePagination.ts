@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { Pagination } from "../types";
 
 const usePagination = () => {
-  const [ state, setState ] = useState({ page: 1, quantity: 20 });
+  const [ state, setState ] = useState<Pagination>({ page: 1, quantity: 20 });
 
   return {
     pagination: state,
