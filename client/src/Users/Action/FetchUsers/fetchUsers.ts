@@ -5,10 +5,10 @@ import { FetchUsersApiCall } from "./FetchUsersApiCall";
 import { FetchUsersActionProps } from "./FetchUsersActionProps";
 import { FETCH_USERS_ACTION } from "../../constants";
 import { ASYNC_ACTION } from "../../../Shared/constants";
-import { User } from "../../types";
+import { FetchUsersPayload } from "../../types";
 
 
-export const fetchUsers = (dispatch: Dispatch<ActionProps<{ users: User[], totalUsers: number }>>) => {
+export const fetchUsers = (dispatch: Dispatch<ActionProps<FetchUsersPayload>>) => {
   return async ({ quantity, page, filters }: FetchUsersActionProps): Promise<void> => {
     dispatch({ type: ASYNC_ACTION });
     const api = ApiService.instance();

@@ -9,20 +9,40 @@ import { TableFooterProps } from "./TableFooterProps";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 
-const TableFooter = ({ totalItems, itemPerPage }: TableFooterProps) => {
+const TableFooter = ({ totalItems, itemPerPage, setPage, currentPage }: TableFooterProps) => {
   const { t } = useTranslation('clients');
+
+  const startItemShown = () => {
+    return (currentPage * itemPerPage) - (itemPerPage - 1);
+  }
+
+  const endItemShown = () => {
+    return Math.min(startItemShown() + itemPerPage - 1, totalItems);
+  }
+
+
   return (
     <StyledContainer>
       <StyledPaginationInfo>
-        1 - {itemPerPage} {t('page_filter_info')} {totalItems}
+        {startItemShown()} - {endItemShown()} {t('page_filter_info')} {totalItems}
       </StyledPaginationInfo>
       <StyledPagination>
         <StyledCurrentPage>
-          {t('current_page_info')} 1
+          {t('current_page_info')} {currentPage}
         </StyledCurrentPage>
         <StyledPaginationButtons>
-          <StyledControlPageButton size={'small'} variant={'icon'} icon={<FiArrowLeft/>}/>
-          <StyledControlPageButton size={'small'} variant={'icon'} icon={<FiArrowRight/>}/>
+          <StyledControlPageButton
+            size={'small'}
+            variant={'icon'}
+            icon={<FiArrowLeft/>}
+            onClick={() => setPage(currentPage - 1)}
+          />
+          <StyledControlPageButton
+            size={'small'}
+            variant={'icon'}
+            icon={<FiArrowRight/>}
+            onClick={() => setPage(currentPage + 1)}
+          />
         </StyledPaginationButtons>
       </StyledPagination>
     </StyledContainer>

@@ -28,3 +28,8 @@ type SubscriptionPricing = {
   name: string;
   duration: number;
 }
+
+export type FetchUsersPayload = {
+  users: User[];
+  totalUsers: number;
+}

@@ -4,24 +4,18 @@ import React, { useEffect } from "react";
 import { StyledTableContainer } from "./Styles";
 import { TableProps } from "./TableProps";
 import { ListItemHasId } from "../../../Shared/types";
+import TableBody from "./TableBody";
 
-const Table = <T extends ListItemHasId>({
-  addFilter,
-  collection,
-  renderRow,
-  itemPerPage,
-  totalItems
-}: TableProps<T>) => {
-  useEffect(() => {
-
-  }, []);
+const Table = <T extends ListItemHasId>({ children }: TableProps<T>) => {
   return (
     <StyledTableContainer>
-      <TableHeader addFilter={addFilter}/>
-      {collection.map((item: T) => renderRow(item))}
-      <TableFooter totalItems={totalItems} itemPerPage={itemPerPage}/>
+      {children}
     </StyledTableContainer>
   );
 }
+
+Table.Header = TableHeader;
+Table.Body = TableBody;
+Table.Footer = TableFooter;
 
 export default Table;

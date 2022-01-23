@@ -1,11 +1,11 @@
 import { UserStateProps } from "./UserStateProps";
 import { ActionProps } from "../../Shared/Action/ActionProps";
-import { User } from "../types";
+import { FetchUsersPayload } from "../types";
 import { resolveAsyncAction } from "../../Shared/Reducers/resolveAsyncActionReducer";
 
 export const fetchUsersReducer = (
   state: UserStateProps,
-  action: ActionProps<{ users: User[], totalUsers: number }>
+  action: ActionProps<FetchUsersPayload>
 ): UserStateProps => {
   return {
     ...state,
