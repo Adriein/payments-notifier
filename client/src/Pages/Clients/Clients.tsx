@@ -8,9 +8,7 @@ import { User } from "../../Users/types";
 const Clients = () => {
   const { state, fetchUsers, addFilter } = useContext(UsersContext);
   const { notify } = useToastError('login');
-
   console.log(state)
-  
   const { pagination, setPage } = usePagination({ total: state.totalUsers });
 
   useEffect(() => {
