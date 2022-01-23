@@ -6,20 +6,26 @@ import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Midd
 import { post } from "../../../../Shared/Infrastructure/Decorators/routes";
 import { FindUsersQuery } from "../../Domain/Query/FindUsersQuery";
 import { GetUserResponse } from "../../Application/Find/GetUserResponse";
+import { NutrilogResponse } from "../../../../Shared/Application/NutrilogResponse";
+import { UsersMetadata } from "../../Application/Find/UsersMetadata";
 
 @Controller()
-export class FindUsersController extends BaseController<GetUserResponse[]> {
+export class FindUsersController extends BaseController<NutrilogResponse<GetUserResponse[], UsersMetadata>> {
   @post('/users')
   @use(requireAuth)
   @use(currentUser)
-  public async getAllUsers(req: Request, res: Response<{ users: GetUserResponse[] }>, next: NextFunction) {
+  public async getAllUsers(
+    req: Request,
+    res: Response<NutrilogResponse<GetUserResponse[], UsersMetadata>>,
+    next: NextFunction
+  ) {
     try {
       const filters = req.body.filters || [];
       const query = new FindUsersQuery(filters, req.currentUser!.id, req.body.page, req.body.quantity);
 
-      const users = await this.queryBus.ask(query);
+      const response = await this.queryBus.ask(query);
 
-      res.status(200).send({ users });
+      res.status(200).send(response);
     } catch (error) {
       next(error);
     }

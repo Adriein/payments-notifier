@@ -9,12 +9,12 @@ import { TableFooterProps } from "./TableFooterProps";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 
-const TableFooter = <T, >({ collection, itemPerPage }: TableFooterProps<T>) => {
+const TableFooter = ({ totalItems, itemPerPage }: TableFooterProps) => {
   const { t } = useTranslation('clients');
   return (
     <StyledContainer>
       <StyledPaginationInfo>
-        1 - {itemPerPage} {t('page_filter_info')} {collection.length}
+        1 - {itemPerPage} {t('page_filter_info')} {totalItems}
       </StyledPaginationInfo>
       <StyledPagination>
         <StyledCurrentPage>

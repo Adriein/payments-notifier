@@ -6,3 +6,5 @@ export type Pagination = {
   page: number,
   quantity: number
 }
+
+export type ListItemHasId = { id: string };

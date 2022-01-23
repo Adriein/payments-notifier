@@ -18,11 +18,12 @@ const Clients = () => {
 
   return (
     <Table
-      itemPerPage={5}
+      totalItems={state.totalUsers}
+      itemPerPage={pagination.quantity}
       addFilter={addFilter}
       collection={state.users}
       pagination={pagination}
-      renderRow={(user: User) => <p>{user.username}</p>}
+      renderRow={(user: User) => <p key={user.id}>{user.username}</p>}
     />
   )
 }

@@ -1,5 +1,6 @@
 import { User } from "../../types";
 
 export interface FetchUsersApiCall {
-  users: User[]
+  data: User[]
+  metadata: { totalUsers: number }
 }

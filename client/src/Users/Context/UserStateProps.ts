@@ -5,4 +5,5 @@ export interface UserStateProps {
   isLoading: boolean;
   users: User[];
   filters: FilterProps[];
+  totalUsers: number;
 }

@@ -1,4 +1,4 @@
-export interface TableFooterProps<T> {
+export interface TableFooterProps {
   itemPerPage: number;
-  collection: T[];
+  totalItems: number;
 }

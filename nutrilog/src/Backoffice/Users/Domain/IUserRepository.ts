@@ -17,4 +17,6 @@ export interface IUserRepository extends IRepository<User> {
   findUsersWithExpiredSubscriptions(adminId: string): Promise<Either<Error | UserNotExistError, User[]>>;
 
   findUsersNotWarned(adminId: string): Promise<Either<Error | UserNotExistError, User[]>>;
+
+  countTotalUsers(adminId: string): Promise<Either<Error, number>>;
 }

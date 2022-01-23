@@ -14,7 +14,7 @@ export const usersReducer = (state: UserStateProps, action: ActionProps): UserSt
     case ASYNC_ACTION:
       return initAsyncAction(state);
     case FETCH_USERS_ACTION:
-      return fetchUsersReducer(state, action as ActionProps<User[]>);
+      return fetchUsersReducer(state, action as ActionProps<{ users: User[], totalUsers: number }>);
     case ADD_FILTER_ACTION:
       return addFilterReducer(state, action as ActionProps<FilterProps>)
     default:

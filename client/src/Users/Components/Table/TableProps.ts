@@ -7,4 +7,5 @@ export interface TableProps<T> {
   renderRow: (item: T) => React.ReactNode;
   addFilter: any;
   itemPerPage: number;
+  totalItems: number;
 }

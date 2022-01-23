@@ -252,4 +252,22 @@ export class UserRepository implements IUserRepository {
       return Left.error(error);
     }
   }
+
+  @Log(process.env.LOG_LEVEL)
+  public async countTotalUsers(adminId: string): Promise<Either<Error, number>> {
+    try {
+      const result = await this.prisma.user.count({
+        where: {
+          owner_id: adminId
+        }
+      });
+
+      this.prisma.$disconnect();
+
+      return Right.success(result);
+    } catch (error: any) {
+      this.prisma.$disconnect();
+      return Left.error(error);
+    }
+  }
 }

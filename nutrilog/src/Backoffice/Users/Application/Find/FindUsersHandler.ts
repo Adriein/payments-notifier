@@ -15,9 +15,11 @@ import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { UserFilter } from "../../Domain/UserFilter";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
+import { NutrilogResponse } from "../../../../Shared/Application/NutrilogResponse";
+import { UsersMetadata } from "./UsersMetadata";
 
 @QueryHandler(FindUsersQuery)
-export class FindUsersHandler implements IHandler<GetUserResponse[]> {
+export class FindUsersHandler implements IHandler<NutrilogResponse<GetUserResponse[], UsersMetadata>> {
   public constructor(
     private readonly repository: IUserRepository,
     private readonly pricing: IQueryBus<PricingResponse>,
@@ -25,7 +27,7 @@ export class FindUsersHandler implements IHandler<GetUserResponse[]> {
   ) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(query: FindUsersQuery): Promise<GetUserResponse[]> {
+  public async handle(query: FindUsersQuery): Promise<NutrilogResponse<GetUserResponse[], UsersMetadata>> {
     const presenter = new UserResponseBuilder();
     const responses: GetUserResponse[] = [];
 
@@ -49,7 +51,13 @@ export class FindUsersHandler implements IHandler<GetUserResponse[]> {
       responses.push(userResponse);
     }
 
-    return responses;
+    const totalUsersResponse = await this.repository.countTotalUsers(adminId);
+
+    if (totalUsersResponse.isLeft()) {
+      throw totalUsersResponse.value;
+    }
+    
+    return new NutrilogResponse(responses, new UsersMetadata(totalUsersResponse.value));
   }
 
   private async createCriteria(
