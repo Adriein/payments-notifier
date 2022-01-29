@@ -19,7 +19,7 @@ import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { SearchPricingQuery } from "../../../Pricing/Domain/Query/SearchPricingQuery";
 import { AdminCreatedDomainEvent } from "../../Domain/DomainEvents/AdminCreatedDomainEvent";
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
-import { DateUtils } from "../../../../Shared/Infrastructure/Helper/Date.utils";
+import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
 
 @DomainEventsHandler(AdminRegisteredDomainEvent)
 export class CreateAdminDomainEventHandler implements IDomainEventHandler {
@@ -55,7 +55,7 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
       Subscription.build(
         new ID(pricing.id),
         new DateVo(new Date().toString()),
-        new DateVo(DateUtils.add(new Date(), pricing.duration))
+        new DateVo(Time.add(new Date(), pricing.duration))
       ),
       true
     );

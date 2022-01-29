@@ -7,7 +7,7 @@ import { Left } from "../../../../Shared/Domain/Entities/Left";
 import { IEmailMapper } from "../../Domain/IEmailMapper";
 import { EventTrackingStatMapper } from "./EventTrackingStatMapper";
 import { Right } from "../../../../Shared/Domain/Entities/Right";
-import { DateUtils } from "../../../../Shared/Infrastructure/Helper/Date.utils";
+import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
 import { EventTrackingStatCollection } from "../../Domain/Entity/EventTrackingStatCollection.entity";
 
 export class SendGridApiRepository extends HttpApi implements IEmailServiceApiRepository {
@@ -24,8 +24,8 @@ export class SendGridApiRepository extends HttpApi implements IEmailServiceApiRe
             'Content-Type': 'application/json',
           },
           params: {
-            start_date: DateUtils.format(from, DateUtils.AMERICAN_DATE_FORMAT),
-            end_date: DateUtils.format(to, DateUtils.AMERICAN_DATE_FORMAT),
+            start_date: Time.format(from, Time.AMERICAN_DATE_FORMAT),
+            end_date: Time.format(to, Time.AMERICAN_DATE_FORMAT),
           },
         }
       );

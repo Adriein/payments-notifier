@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { ID } from "../src/Shared/Domain/VO/Id.vo";
 import { CryptoService } from "../src/Shared/Domain/Services/CryptoService";
 import { Password } from "../src/Shared/Domain/VO/Password.vo";
-import { DateUtils } from "../src/Shared/Infrastructure/Helper/Date.utils";
+import { Time } from "../src/Shared/Infrastructure/Helper/Time";
 
 const prisma = new PrismaClient()
 const crypto = new CryptoService();
@@ -18,7 +18,7 @@ async function main() {
     const randomIndex = Math.floor(Math.random());
     const [ pricing ] = await prisma.pricing.findMany({ where: { pricing_name: pricingName[randomIndex] } });
 
-    const validTo = DateUtils.add(new Date(), pricing.duration);
+    const validTo = Time.add(new Date(), pricing.duration);
 
     const id = ID.generate().value;
     const password = await crypto.hash(Password.generate().value);

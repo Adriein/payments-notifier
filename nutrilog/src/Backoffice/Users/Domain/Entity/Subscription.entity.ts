@@ -1,7 +1,7 @@
 import { BaseEntity } from "../../../../Shared/Domain/Entities/BaseEntity";
 import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
-import { DateUtils } from "../../../../Shared/Infrastructure/Helper/Date.utils";
+import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
 
 
 export class Subscription extends BaseEntity {
@@ -45,26 +45,26 @@ export class Subscription extends BaseEntity {
   };
 
   public expirationDate = (pricingDuration: number) => {
-    return DateUtils.add(this._lastPayment.value, pricingDuration);
+    return Time.add(this._lastPayment.value, pricingDuration);
   }
 
   private checkExpired = (pricingDuration: number): void => {
     const expirationDate = this.expirationDate(pricingDuration);
-    if (DateUtils.equal(new Date(), expirationDate)) {
+    if (Time.equal(new Date(), expirationDate)) {
       this._isExpired = true;
     }
   }
 
   public daysExpired = (pricingDuration: number): number => {
-    const expirationDate = DateUtils.add(this._lastPayment.value, pricingDuration)
-    return DateUtils.diff(expirationDate, new Date());
+    const expirationDate = Time.add(this._lastPayment.value, pricingDuration)
+    return Time.diff(expirationDate, new Date());
   };
 
   public isAboutToExpire = (daysToWarn: number | undefined = 5): boolean => {
-    const expirationDate = DateUtils.add(this._lastPayment.value, 5);
-    const warningDate = DateUtils.subtract(expirationDate, daysToWarn)
+    const expirationDate = Time.add(this._lastPayment.value, 5);
+    const warningDate = Time.subtract(expirationDate, daysToWarn)
 
-    return DateUtils.equal(new Date(), warningDate);
+    return Time.equal(new Date(), warningDate);
   };
 
   public deactivate = (): void => {

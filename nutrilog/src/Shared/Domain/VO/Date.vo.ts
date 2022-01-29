@@ -1,6 +1,6 @@
 import { ValueObject } from './ValueObject';
 import { LastPaymentDateError } from "../Error/LastPaymentDateError";
-import { DateUtils } from "../../Infrastructure/Helper/Date.utils";
+import { Time } from "../../Infrastructure/Helper/Time";
 
 export class DateVo extends ValueObject {
   private _date: Date;
@@ -18,7 +18,7 @@ export class DateVo extends ValueObject {
       formattedDate = this.formatStringDate(date);
     }
 
-    const parsedDate = DateUtils.format(new Date(formattedDate), DateUtils.AMERICAN_DATE_FORMAT);
+    const parsedDate = Time.format(new Date(formattedDate), Time.AMERICAN_DATE_FORMAT);
 
     if (this.validate(parsedDate)) {
       throw new LastPaymentDateError();

@@ -16,7 +16,7 @@ import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { USER_ROLE } from "../../Domain/constants";
 import { CryptoService } from "../../../../Shared/Domain/Services/CryptoService";
-import { DateUtils } from "../../../../Shared/Infrastructure/Helper/Date.utils";
+import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 
@@ -56,7 +56,7 @@ export class CreateUserHandler implements IHandler<void> {
       Subscription.build(
         new ID(command.pricingId),
         lastPaymentDate,
-        new DateVo(DateUtils.add(lastPaymentDate.value, duration))
+        new DateVo(Time.add(lastPaymentDate.value, duration))
       ),
       new ID(role.id)
     );
