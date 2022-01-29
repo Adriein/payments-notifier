@@ -5,7 +5,8 @@ import usePagination from "../../Shared/Hooks/usePagination";
 import Table from "../../Users/Components/Table";
 import { User } from "../../Users/types";
 import Avatar from "../../Shared/Components/Avatar";
-import { StyledTableRow } from "../../Users/Components/Table/TableBody/Styles";
+import { StyledTableCell, StyledTableRow } from "../../Users/Components/Table/TableBody/Styles";
+import { FiArrowRight } from "react-icons/fi";
 
 const Clients = () => {
   const { state, fetchUsers, addFilter } = useContext(UsersContext);
@@ -28,9 +29,21 @@ const Clients = () => {
           const isLast = index === state.users.length - 1
           return (
             <StyledTableRow key={user.id} isLast={isLast}>
-              <Avatar name={user.username} size={25}/>
-              {user.username}
-              {user.subscription.lastPayment}
+              <StyledTableCell>
+                <Avatar name={user.username} size={25}/>
+                {user.username}
+              </StyledTableCell>
+              <StyledTableCell>
+                {user.subscription.pricing.name}
+              </StyledTableCell>
+              <StyledTableCell>
+                {user.config.sendWarnings ? 'true' : 'false'}
+              </StyledTableCell>
+              <StyledTableCell>
+                {user.subscription.lastPayment}
+                <FiArrowRight/>
+                {user.subscription.validTo}
+              </StyledTableCell>
             </StyledTableRow>
           );
         }}

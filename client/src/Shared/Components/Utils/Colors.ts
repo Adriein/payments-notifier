@@ -27,6 +27,7 @@ export const COLORS = {
   backgroundLightSuccess: '#E4FCEF',
   backgroundWhite: '#fff',
   backgroundLightGray: '#F8F9FB',
+  backgroundMediumGray: '#F7F9FC',
 
   borderLightest: '#dfe1e6',
   borderLight: '#C1C7D0',
