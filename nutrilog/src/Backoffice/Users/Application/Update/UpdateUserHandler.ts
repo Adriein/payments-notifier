@@ -5,16 +5,18 @@ import { UserConfig } from "../../Domain/Entity/UserConfig.entity";
 import { User } from "../../Domain/Entity/User.entity";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
-import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
+import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { Password } from "../../../../Shared/Domain/VO/Password.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { UpdateUserCommand } from "../../Domain/Command/UpdateUserCommand";
+import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
+import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
+import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements IHandler<void> {
-  constructor(private repository: IUserRepository) {
-  }
+  constructor(private repository: IUserRepository, private readonly queryBus: IQueryBus<PricingResponse>) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: UpdateUserCommand): Promise<void> {
@@ -29,6 +31,11 @@ export class UpdateUserHandler implements IHandler<void> {
 
     const userOnDb = result.value;
 
+    const pricingId = new ID(command.pricingId);
+    const { duration } = await this.queryBus.ask(new GetPricingQuery(command.pricingId));
+
+    const validTo = userOnDb.subscriptionExpirationDate(duration);
+
     const config = new UserConfig(
       new ID(userOnDb.configId()),
       userOnDb.language(),
@@ -38,8 +45,9 @@ export class UpdateUserHandler implements IHandler<void> {
 
     const subscription = new Subscription(
       new ID(userOnDb.subscriptionId()),
-      new ID(command.pricingId),
-      new LastPaymentDate(command.lastPaymentDate),
+      pricingId,
+      new DateVo(command.lastPaymentDate),
+      validTo,
       userOnDb.isWarned(),
       userOnDb.isNotified(),
       userOnDb.isSubscriptionActive(),

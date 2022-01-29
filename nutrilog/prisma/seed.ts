@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { ID } from "../src/Shared/Domain/VO/Id.vo";
 import { CryptoService } from "../src/Shared/Domain/Services/CryptoService";
+import { DateUtils } from "../src/Shared/Infrastructure/Helper/Date.utils";
 
 const prisma = new PrismaClient()
 const crypto = new CryptoService();
@@ -83,6 +84,7 @@ async function main() {
     }
   });
 
+  const validTo = DateUtils.add(new Date(), 365);
 
   const user = await prisma.user.create({
     data: {
@@ -118,6 +120,7 @@ async function main() {
           warned: false,
           notified: false,
           payment_date: new Date(),
+          valid_to: validTo,
           created_at: new Date(),
           updated_at: new Date()
         }

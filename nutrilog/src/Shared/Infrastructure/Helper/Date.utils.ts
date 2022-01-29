@@ -6,6 +6,7 @@ export class DateUtils {
   public static EUROPEAN_DATE_FORMAT = 'DD/MM/YYYY';
   public static STANDARD_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
   public static AMERICAN_DATE_FORMAT = 'YYYY-MM-DD';
+  public static AMERICAN_BEAUTIFIED_DATE_FORMAT = 'ddd-MMM-DD-YYYY';
 
   public static add(date: Date, days: number): Date {
     return dayjs(date).add(days, DateUtils.DAY_UNIT).toDate();

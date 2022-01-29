@@ -6,7 +6,7 @@ import { UserConfig } from "../../Domain/Entity/UserConfig.entity";
 import { User } from "../../Domain/Entity/User.entity";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
-import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
+import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { Password } from "../../../../Shared/Domain/VO/Password.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
@@ -16,12 +16,16 @@ import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { USER_ROLE } from "../../Domain/constants";
 import { CryptoService } from "../../../../Shared/Domain/Services/CryptoService";
+import { DateUtils } from "../../../../Shared/Infrastructure/Helper/Date.utils";
+import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
+import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements IHandler<void> {
   constructor(
     private repository: IUserRepository,
     private queryBus: IQueryBus<SearchRoleResponse>,
+    private pricingQueryBus: IQueryBus<PricingResponse>,
     private readonly crypto: CryptoService
   ) {}
 
@@ -39,13 +43,21 @@ export class CreateUserHandler implements IHandler<void> {
 
     const password = await this.crypto.hash(Password.generate().value);
 
+    const { duration } = await this.pricingQueryBus.ask(new GetPricingQuery(command.pricingId));
+
+    const lastPaymentDate = new DateVo(command.lastPaymentDate);
+
     const user = User.build(
       new ID(command.adminId),
       command.username,
       new Password(password),
       email,
       UserConfig.build(),
-      Subscription.build(new ID(command.pricingId), new LastPaymentDate(command.lastPaymentDate)),
+      Subscription.build(
+        new ID(command.pricingId),
+        lastPaymentDate,
+        new DateVo(DateUtils.add(lastPaymentDate.value, duration))
+      ),
       new ID(role.id)
     );
 

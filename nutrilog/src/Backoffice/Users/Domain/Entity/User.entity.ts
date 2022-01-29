@@ -4,7 +4,7 @@ import { Password } from "../../../../Shared/Domain/VO/Password.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { UserConfig } from "./UserConfig.entity";
 import { Subscription } from "./Subscription.entity";
-import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
+import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 
 
 export class User extends AggregateRoot {
@@ -129,8 +129,8 @@ export class User extends AggregateRoot {
     this._subscription.deactivate();
   }
 
-  public renewSubscription(pricingId: ID, paymentDate: LastPaymentDate): void {
-    this._subscription = Subscription.build(pricingId, paymentDate);
+  public renewSubscription(pricingId: ID, paymentDate: DateVo, validTo: DateVo): void {
+    this._subscription = Subscription.build(pricingId, paymentDate, validTo);
   }
 
   public acceptWarnings(warnings: boolean): void {
@@ -143,6 +143,14 @@ export class User extends AggregateRoot {
 
   public howLongHasSubscriptionExpired(pricingDuration: number): number {
     return this._subscription.daysExpired(pricingDuration);
+  }
+
+  public subscriptionExpirationDate(pricingDuration: number): DateVo {
+    return new DateVo(this._subscription.expirationDate(pricingDuration));
+  }
+
+  public subscriptionValidTo(): Date {
+    return this._subscription.validTo();
   }
 
   public deactivate(): void {

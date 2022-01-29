@@ -10,7 +10,8 @@ export type GetUserResponse = {
 
 type GetSubscriptionResponse = {
   pricing: SubscriptionPricing,
-  lastPayment: Date,
+  lastPayment: string,
+  validTo: string,
   isWarned: boolean,
   isNotified: boolean,
   isActive: boolean,

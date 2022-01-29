@@ -7,7 +7,7 @@ import { User } from "../../Domain/Entity/User.entity";
 import { UserConfig } from "../../Domain/Entity/UserConfig.entity";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { CryptoService } from "../../../../Shared/Domain/Services/CryptoService";
-import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
+import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Password } from "../../../../Shared/Domain/VO/Password.vo";
@@ -19,6 +19,7 @@ import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { SearchPricingQuery } from "../../../Pricing/Domain/Query/SearchPricingQuery";
 import { AdminCreatedDomainEvent } from "../../Domain/DomainEvents/AdminCreatedDomainEvent";
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
+import { DateUtils } from "../../../../Shared/Infrastructure/Helper/Date.utils";
 
 @DomainEventsHandler(AdminRegisteredDomainEvent)
 export class CreateAdminDomainEventHandler implements IDomainEventHandler {
@@ -53,7 +54,8 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
       new ID(role.id),
       Subscription.build(
         new ID(pricing.id),
-        new LastPaymentDate(new Date().toString())
+        new DateVo(new Date().toString()),
+        new DateVo(DateUtils.add(new Date(), pricing.duration))
       ),
       true
     );

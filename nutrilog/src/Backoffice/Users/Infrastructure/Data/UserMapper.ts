@@ -5,7 +5,7 @@ import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { UserConfig } from "../../Domain/Entity/UserConfig.entity";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
-import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
+import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { Prisma } from "@prisma/client";
 
 export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma.userUpdateInput> {
@@ -43,6 +43,7 @@ export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma
           warned: domain.isWarned(),
           notified: domain.isNotified(),
           payment_date: domain.paymentDate(),
+          valid_to: domain.subscriptionValidTo(),
           created_at: new Date(),
           updated_at: new Date()
         }
@@ -78,6 +79,7 @@ export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma
         create: {
           id: domain.subscriptionId(),
           pricing_id: domain.pricingId(),
+          valid_to: domain.subscriptionValidTo(),
           active: domain.isSubscriptionActive(),
           expired: false,
           warned: domain.isWarned(),
@@ -95,7 +97,8 @@ export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma
     const subscription = new Subscription(
       new ID(subscriptionModel.id),
       new ID(subscriptionModel.pricing_id),
-      new LastPaymentDate(subscriptionModel.payment_date.toString()),
+      new DateVo(subscriptionModel.payment_date.toString()),
+      new DateVo(subscriptionModel.valid_to.toString()),
       subscriptionModel.warned,
       subscriptionModel.notified,
       subscriptionModel.active,

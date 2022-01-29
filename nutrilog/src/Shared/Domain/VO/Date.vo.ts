@@ -2,25 +2,28 @@ import { ValueObject } from './ValueObject';
 import { LastPaymentDateError } from "../Error/LastPaymentDateError";
 import { DateUtils } from "../../Infrastructure/Helper/Date.utils";
 
-export class LastPaymentDate extends ValueObject {
+export class DateVo extends ValueObject {
   private _date: Date;
   private regex = new RegExp(
     '([0-9]{4}[-](0[1-9]|1[0-2])[-]([0-2]{1}[0-9]{1}|3[0-1]{1})|([0-2]{1}[0-9]{1}|3[0-1]{1})[-](0[1-9]|1[0-2])[-][0-9]{4})'
   );
 
-  constructor(date: string) {
+  constructor(date: string | Date) {
     super();
-    let formatedDate = date;
+    if (date instanceof Date) {
+      date = date.toString();
+    }
+    let formattedDate = date;
     if (date.includes('/')) {
-      formatedDate = this.formatStringDate(date);
+      formattedDate = this.formatStringDate(date);
     }
 
-    const parsedDate = DateUtils.format(new Date(formatedDate), DateUtils.AMERICAN_DATE_FORMAT);
+    const parsedDate = DateUtils.format(new Date(formattedDate), DateUtils.AMERICAN_DATE_FORMAT);
 
     if (this.validate(parsedDate)) {
       throw new LastPaymentDateError();
     }
-    this._date = new Date(formatedDate);
+    this._date = new Date(formattedDate);
   }
 
   public get value(): Date {

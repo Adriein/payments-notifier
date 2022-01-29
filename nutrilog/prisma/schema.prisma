@@ -39,6 +39,7 @@ model pricing {
 model subscription {
     id String @id
     payment_date DateTime @db.Timestamp(0)
+    valid_to DateTime @db.Timestamp(0)
     warned Boolean
     notified Boolean
     active Boolean

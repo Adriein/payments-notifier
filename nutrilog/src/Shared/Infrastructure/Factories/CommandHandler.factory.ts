@@ -68,17 +68,17 @@ export default class CommandHandlerFactory {
 
     this.handlers.set(
       CreateUserHandler.name,
-      new CreateUserHandler(this.userRepository, QueryBus.instance(), this.cryptoService)
+      new CreateUserHandler(this.userRepository, QueryBus.instance(), QueryBus.instance(), this.cryptoService)
     );
 
     this.handlers.set(
       UpdateUserHandler.name,
-      new UpdateUserHandler(this.userRepository)
+      new UpdateUserHandler(this.userRepository, QueryBus.instance())
     );
 
     this.handlers.set(
       UpdatePaymentHandler.name,
-      new UpdatePaymentHandler(this.userRepository)
+      new UpdatePaymentHandler(this.userRepository, QueryBus.instance())
     );
 
     this.handlers.set(

@@ -1,5 +1,5 @@
 import { BaseEntity } from "../../../../Shared/Domain/Entities/BaseEntity";
-import { LastPaymentDate } from "../../../../Shared/Domain/VO/LastPaymentDate.vo";
+import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { DateUtils } from "../../../../Shared/Infrastructure/Helper/Date.utils";
 
@@ -7,12 +7,14 @@ import { DateUtils } from "../../../../Shared/Infrastructure/Helper/Date.utils";
 export class Subscription extends BaseEntity {
   public static build(
     pricingId: ID,
-    lastPayment: LastPaymentDate,
+    lastPayment: DateVo,
+    validTo: DateVo,
   ): Subscription {
     return new Subscription(
       ID.generate(),
       pricingId,
       lastPayment,
+      validTo,
       false,
       false,
       true,
@@ -23,7 +25,8 @@ export class Subscription extends BaseEntity {
   constructor(
     _id: ID,
     private _pricingId: ID,
-    private _lastPayment: LastPaymentDate,
+    private _lastPayment: DateVo,
+    private _validTo: DateVo,
     private _isWarned: boolean,
     private _isNotified: boolean,
     private _isActive: boolean,
@@ -41,8 +44,12 @@ export class Subscription extends BaseEntity {
     return this._isExpired;
   };
 
+  public expirationDate = (pricingDuration: number) => {
+    return DateUtils.add(this._lastPayment.value, pricingDuration);
+  }
+
   private checkExpired = (pricingDuration: number): void => {
-    const expirationDate = DateUtils.add(this._lastPayment.value, pricingDuration);
+    const expirationDate = this.expirationDate(pricingDuration);
     if (DateUtils.equal(new Date(), expirationDate)) {
       this._isExpired = true;
     }
@@ -72,6 +79,10 @@ export class Subscription extends BaseEntity {
   public paymentDate = (): Date => {
     return this._lastPayment.value;
   };
+
+  public validTo(): Date {
+    return this._validTo.value;
+  }
 
   public isNotified = (): boolean => {
     return this._isNotified;
