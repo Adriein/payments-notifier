@@ -3,5 +3,6 @@
   "active_filter_button": "Activo",
   "expired_filter_button": "Subscripciones Expiradas",
   "page_filter_info": "de",
-  "current_page_info": "Estás en la página"
+  "current_page_info": "Estás en la página",
+  "add_filter_button": "Añadir filtro"
 }

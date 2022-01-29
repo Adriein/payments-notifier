@@ -2,5 +2,5 @@ import React from "react";
 
 export interface TableBodyProps<T> {
   collection: T[];
-  renderRow: (item: T) => React.ReactNode;
+  renderRow: (item: T, index: number) => React.ReactNode;
 }

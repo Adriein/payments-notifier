@@ -13,7 +13,7 @@ export const StyledContainer = styled.div`
 `;
 
 export const StyledFilterForm = styled.div`
-  width: 100%;
+  flex-grow: 1;
 `;
 
 export const StyledSearchInput = styled<any>(Input)`

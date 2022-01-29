@@ -11,10 +11,10 @@ export const COLORS = {
   warning: '#F89C1C', // orange
   secondary: '#F4F5F7', // light grey
   gray: '#AEAEAE',
-  black: "hsl(0deg 0% 0%)",
+  black: '#1c1c24',
 
   textDarkest: '#172b4d',
-  textDark: '#42526E',
+  textDark: '#2B2F3E',
   textMedium: '#5E6C84',
   textLight: '#8993a4',
   textLightGray: '#A1A7B0',

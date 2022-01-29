@@ -20,12 +20,18 @@ export const StyledMenuButton = styled<any>(ReachMenuButton)`
   padding: var(--padding);
   border-radius: var(--borderRadius);
   border: 2px solid transparent;
-
+  background-color: ${COLORS.backgroundWhite};
+  color: ${COLORS.black};
   ${MIXIN.clickable};
 
   &:focus {
     outline-color: ${COLORS.primary};
     outline-offset: 4px;
+  }
+
+  &:hover {
+    background: ${COLORS.lightGray};
+    color: ${COLORS.black};
   }
 `;
 

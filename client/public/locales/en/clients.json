@@ -3,5 +3,6 @@
   "active_filter_button": "Active",
   "expired_filter_button": "Expired subscription",
   "page_filter_info": "of",
-  "current_page_info": "The page you're on"
+  "current_page_info": "The page you're on",
+  "add_filter_button": "Add filter"
 }

@@ -35,6 +35,7 @@ const TableHeader = ({ addFilter }: TableHeaderProps) => {
       <MenuButton.Menu>
         <MenuButton size={'sm'}>
           <IoIosOptions/>
+          <span>{t('add_filter_button')}</span>
         </MenuButton>
         <MenuButton.MenuList>
           <MenuButton.MenuItem onSelect={applyFilter(ACTIVE_FILTER)}>

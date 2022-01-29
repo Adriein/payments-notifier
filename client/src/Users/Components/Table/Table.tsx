@@ -1,6 +1,6 @@
 import TableHeader from "./TableHeader";
 import TableFooter from "./TableFooter";
-import React, { useEffect } from "react";
+import React from "react";
 import { StyledTableContainer } from "./Styles";
 import { TableProps } from "./TableProps";
 import { ListItemHasId } from "../../../Shared/types";

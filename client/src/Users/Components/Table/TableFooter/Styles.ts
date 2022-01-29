@@ -32,6 +32,7 @@ export const StyledPaginationButtons = styled.div`
 `;
 
 export const StyledControlPageButton = styled(Button)`
+  border-radius: 10px;
   background-color: ${COLORS.backgroundWhite};
-  color: #1c1c24;
+  color: ${COLORS.black};
 `

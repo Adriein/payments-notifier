@@ -9,7 +9,7 @@ interface MenuButtonProps {
 
 const SIZES = {
   sm: {
-    "--borderRadius": "50%",
+    "--borderRadius": "4px",
     "--fontSize": "14px",
     "--padding": "8px"
   },

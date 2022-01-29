@@ -19,8 +19,7 @@ const TableFooter = ({ totalItems, itemPerPage, setPage, currentPage }: TableFoo
   const endItemShown = () => {
     return Math.min(startItemShown() + itemPerPage - 1, totalItems);
   }
-
-
+  
   return (
     <StyledContainer>
       <StyledPaginationInfo>
