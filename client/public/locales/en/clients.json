@@ -4,5 +4,9 @@
   "expired_filter_button": "Expired subscription",
   "page_filter_info": "of",
   "current_page_info": "The page you're on",
-  "add_filter_button": "Add filter"
+  "add_filter_button": "Add filter",
+  "username_header": "Name",
+  "pricing_header": "Pricing",
+  "send_warning_notification_header": "Send warnings",
+  "subscription_period_header": "Subscription"
 }

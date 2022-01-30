@@ -21,5 +21,8 @@
     "oct": "oct",
     "nov": "nov",
     "dec": "dec"
-  }
+  },
+  "yearly_pricing": "yearly",
+  "quarterly_pricing": "quarterly",
+  "monthly_pricing": "monthly"
 }

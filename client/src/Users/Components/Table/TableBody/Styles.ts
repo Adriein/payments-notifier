@@ -20,6 +20,14 @@ export const StyledTableRow = styled.li<any>`
   }
 `;
 
+export const StyledTableBodyHeaderRow = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  border-bottom: 2px solid ${COLORS.backgroundMediumGray};
+  padding: 15px;
+`;
+
 export const StyledTableCell = styled.div`
   display: flex;
   gap: 10px;
