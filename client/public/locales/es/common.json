@@ -24,5 +24,7 @@
   },
   "yearly_pricing": "anual",
   "quarterly_pricing": "trimestral",
-  "monthly_pricing": "mensual"
+  "monthly_pricing": "mensual",
+  "enabled": "activado",
+  "disabled": "desactivado"
 }

@@ -20,8 +20,8 @@ const Clients = () => {
   const { beautify: pricingBeautifier } = usePricingBeautifier();
   const { format } = useDateFormatter();
   const { beautify: booleanBeautifier } = useBooleanBeautifier({
-    isTrue: 'enviar avisos',
-    isFalse: 'no enviar avisos'
+    isTrue: 'enabled',
+    isFalse: 'disabled'
   });
 
   useEffect(() => {

@@ -24,5 +24,7 @@
   },
   "yearly_pricing": "yearly",
   "quarterly_pricing": "quarterly",
-  "monthly_pricing": "monthly"
+  "monthly_pricing": "monthly",
+  "enabled": "enabled",
+  "disabled": "disabled"
 }
