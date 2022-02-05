@@ -70,6 +70,8 @@ export const StyledPersonalSubscriptionInfo = styled.div`
 `;
 
 export const StyledPersonalSubscriptionInfoNavigation = styled.div`
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   padding: 15px;
   border-bottom: 2px solid ${COLORS.backgroundMediumGray};

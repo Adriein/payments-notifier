@@ -70,9 +70,8 @@ const UserProfile = ({ user }: UserProfileProps) => {
           </StyledPersonalInfoContainer>
           <StyledPersonalSubscriptionInfo>
             <StyledPersonalSubscriptionInfoNavigation>
-              <Button size={'small'} variant={'fill'}>
-                Overview
-              </Button>
+              <Button size={'small'} variant={'fill'}>Overview</Button>
+              <Button size={'small'} variant={'fill'}>Actions <FiChevronDown/></Button>
             </StyledPersonalSubscriptionInfoNavigation>
 
           </StyledPersonalSubscriptionInfo>
