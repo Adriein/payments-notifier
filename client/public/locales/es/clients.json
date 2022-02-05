@@ -8,5 +8,6 @@
   "username_header": "Nombre",
   "pricing_header": "Tarifa",
   "send_warning_notification_header": "Enviar avisos",
-  "subscription_period_header": "Subscripción"
+  "subscription_period_header": "Subscripción",
+  "renew_subscription": "Renovar subscripción "
 }

@@ -8,5 +8,6 @@
   "username_header": "Name",
   "pricing_header": "Pricing",
   "send_warning_notification_header": "Send warnings",
-  "subscription_period_header": "Subscription"
+  "subscription_period_header": "Subscription",
+  "renew_subscription": "Renew subscription"
 }

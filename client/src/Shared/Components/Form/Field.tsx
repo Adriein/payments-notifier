@@ -8,6 +8,7 @@ import Input from "../Input";
 
 export interface FieldProps {
   name: string;
+  value?: string;
   type?: string;
   placeholder?: string;
   validate?: Function;

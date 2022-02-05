@@ -2,6 +2,7 @@
 
 :root {
     --body-font: 'Roboto', sans-serif;
+    --font-size: 14px;
 }
 
 * {
@@ -13,6 +14,7 @@
 
 body {
     font-family: var(--body-font);
+    font-size: var(--font-size);
 }
 
 

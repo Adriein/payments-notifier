@@ -20,6 +20,7 @@ const BaseInputElement = styled.input.attrs((props: InputProps) => ({
   border: 1px solid ${COLORS.borderLightest};
   background: ${COLORS.backgroundLightest};
   transition: background 0.1s;
+  padding: 5px;
   ${(props: InputProps) => props.hasIcon && 'padding-left: 32px;'};
 
   &:hover {

@@ -16,7 +16,7 @@ export const StyledLetter = styled.div<StyledLetterProps>`
   color: #fff;
   background: ${(props: StyledLetterProps) => props.color};
   font-weight: 600;
-  padding: 20px;
+  padding: ${(props: StyledLetterProps) => props.size - 15}px;
 
   ${(props: StyledLetterProps) => font.size(Math.round(props.size / 1.7))}
   & > span {
