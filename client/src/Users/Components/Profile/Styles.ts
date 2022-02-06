@@ -3,6 +3,7 @@ import { COLORS } from "../../../Shared/Components/Utils/Colors";
 import { MIXIN } from "../../../Shared/Components/Utils/Mixin";
 import Form from "../../../Shared/Components/Form";
 import { font } from "../../../Shared/Components/Utils/Font";
+import Text from "../../../Shared/Components/Text";
 
 export const StyledProfileContainer = styled.div`
   display: flex;
@@ -22,7 +23,7 @@ export const StyledPersonalInfoContainer = styled.div`
   width: 38%;
 `;
 
-export const StyledUserName = styled.h2`
+export const StyledUserName = styled.h1`
   margin: 20px 0 10px 0;
 `;
 
@@ -47,6 +48,16 @@ export const StyledDetailsTag = styled.div`
   justify-items: center;
   align-items: center;
   gap: 5px;
+`;
+
+export const StyledUserDetailsInfoContainer = styled.div`
+`
+
+export const StyledUserDetailTitle = styled(Text)`
+  margin-top: 30px;
+`;
+export const StyledUserDetailInfo = styled.p`
+  margin-top: 10px;
 `;
 
 export const StyledUserProfileForm = styled(Form.Element)`

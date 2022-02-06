@@ -8,6 +8,5 @@ export class UpdateUserCommand implements ICommand {
     public pricingId: string,
     public lastPaymentDate: string,
     public adminId: string,
-  ) {
-  }
+  ) {}
 }

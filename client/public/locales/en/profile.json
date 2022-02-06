@@ -4,5 +4,7 @@
   "username": "Name",
   "email": "Email",
   "save": "Save",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "account_details": "Account details:",
+  "billing_email": "Billing email:"
 }

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   StyledDetailsTag,
   StyledEdit,
@@ -5,25 +6,23 @@ import {
   StyledPersonalInfoContainer,
   StyledProfileContainer,
   StyledUserName,
-  StyledUserProfileForm,
   StyledUserResume,
   StyledUserResumeContainer,
-  StyledFormInput,
-  StyledFormActions,
   StyledPersonalSubscriptionInfo,
-  StyledPersonalSubscriptionInfoNavigation,
-  NavigationItem
+  StyledPersonalSubscriptionInfoNavigation, StyledUserDetailsInfoContainer, StyledUserDetailTitle, StyledUserDetailInfo,
 } from "./Styles";
+
 import { FiChevronDown } from "react-icons/fi";
 import Avatar from "../../../Shared/Components/Avatar";
 import { UserProfileProps } from "./UserProfileProps";
-import Form from "../../../Shared/Components/Form";
 import Button from "../../../Shared/Components/Button";
-import React from "react";
 import { useTranslation } from "react-i18next";
+import ProfileForm from "./ProfileForm";
+import { useToggle } from "../../../Shared/Hooks/useToggle";
 
-const UserProfile = ({ user }: UserProfileProps) => {
+const Profile = ({ user }: UserProfileProps) => {
   const { t } = useTranslation('profile');
+  const [ edit, toggleEdit ] = useToggle();
   return (
     <StyledProfileContainer>
       {user && (
@@ -42,31 +41,17 @@ const UserProfile = ({ user }: UserProfileProps) => {
                 <FiChevronDown/>
                 <p>{t('details')}</p>
               </StyledDetailsTag>
-              <StyledEdit>{t('edit')}</StyledEdit>
+              <StyledEdit onClick={toggleEdit}>{t('edit')}</StyledEdit>
             </StyledEditableUserInfoTitle>
-            <Form
-              enableReinitialize
-              initialValues={{
-                username: '',
-                email: '',
-              }}
-              validations={{
-                email: [ Form.is.email(), Form.is.required() ],
-                username: Form.is.required(),
-              }}
-              onSubmit={async ({ username, email }: any) => {
-
-              }}
-            >
-              <StyledUserProfileForm>
-                <StyledFormInput name="username" label={t('username')} value={user.username}/>
-                <StyledFormInput name="email" label={t('email')} value={user.email}/>
-                <StyledFormActions>
-                  <Button size={'small'} variant={'fill'} type={"submit"}>{t('save')}</Button>
-                  <Button size={'small'} variant={'fill'} type={"submit"}>{t('cancel')}</Button>
-                </StyledFormActions>
-              </StyledUserProfileForm>
-            </Form>
+            {edit ? <ProfileForm user={user}/> : (
+              <StyledUserDetailsInfoContainer>
+                <StyledUserDetailTitle type={"subtitle"} bold>{t('account_details')}</StyledUserDetailTitle>
+                <StyledUserDetailInfo>{user.username}</StyledUserDetailInfo>
+                <StyledUserDetailInfo>{user.email}</StyledUserDetailInfo>
+                <StyledUserDetailTitle type={"subtitle"} bold>{t('billing_email')}</StyledUserDetailTitle>
+                <StyledUserDetailInfo>{user.email}</StyledUserDetailInfo>
+              </StyledUserDetailsInfoContainer>
+            )}
           </StyledPersonalInfoContainer>
           <StyledPersonalSubscriptionInfo>
             <StyledPersonalSubscriptionInfoNavigation>
@@ -81,4 +66,4 @@ const UserProfile = ({ user }: UserProfileProps) => {
   );
 }
 
-export default UserProfile;
+export default Profile;

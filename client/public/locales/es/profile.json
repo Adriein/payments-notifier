@@ -4,5 +4,7 @@
   "username": "Nombre de usuario",
   "email": "Email",
   "save": "Guardar",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "account_details": "Detalles de la cuenta:",
+  "billing_email": "Email de facturación:"
 }
