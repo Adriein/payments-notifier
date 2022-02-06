@@ -3,7 +3,7 @@ import TableFooter from "./TableFooter";
 import React from "react";
 import { StyledTableContainer } from "./Styles";
 import { TableProps } from "./TableProps";
-import { ListItemHasId } from "../../../Shared/types";
+import { ListItemHasId } from "../../types";
 import TableBody from "./TableBody";
 
 const Table = <T extends ListItemHasId>({ children }: TableProps<T>) => {

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { COLORS } from "../../../../Shared/Components/Utils/Colors";
-import { MIXIN } from "../../../../Shared/Components/Utils/Mixin";
+import { COLORS } from "../../Utils/Colors";
+import { MIXIN } from "../../Utils/Mixin";
 
 export const StyledTableContainer = styled.ul`
   border: 2px solid ${COLORS.backgroundMediumGray};

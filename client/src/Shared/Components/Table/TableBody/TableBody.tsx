@@ -1,5 +1,5 @@
 import { TableBodyProps } from "./TableBodyProps";
-import { ListItemHasId } from "../../../../Shared/types";
+import { ListItemHasId } from "../../../types";
 import { StyledTableBodyHeaderRow, StyledTableCell, StyledTableContainer } from "./Styles";
 
 const TableBody = <T extends ListItemHasId>({ collection, renderRow, rows }: TableBodyProps<T>) => {

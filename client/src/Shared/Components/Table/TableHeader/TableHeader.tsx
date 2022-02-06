@@ -4,12 +4,12 @@ import { StyledContainer, StyledFilterForm, StyledSearchInput } from './Styles';
 import { FiSearch } from 'react-icons/fi';
 import { IoIosOptions } from 'react-icons/io';
 import { useTranslation } from "react-i18next";
-import MenuButton from "../../../../Shared/Components/MenuButton";
-import Checkbox from "../../../../Shared/Components/Checkbox";
-import useDebounce from "../../../../Shared/Hooks/useDebounce";
-import { ACTIVE_FILTER, EXPIRED_FILTER, NAME_FILTER } from "../../../constants";
-import { UsersContext } from "../../../Context/UsersContext";
-import useFilters from "../../../../Shared/Hooks/useFilters";
+import MenuButton from "../../MenuButton";
+import Checkbox from "../../Checkbox";
+import useDebounce from "../../../Hooks/useDebounce";
+import { ACTIVE_FILTER, EXPIRED_FILTER, NAME_FILTER } from "../../../../Users/constants";
+import { UsersContext } from "../../../../Users/Context/UsersContext";
+import useFilters from "../../../Hooks/useFilters";
 
 const TableHeader = ({ addFilter }: TableHeaderProps) => {
   const { t } = useTranslation('clients');

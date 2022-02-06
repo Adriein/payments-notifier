@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import useQueryParamModal from "../../Shared/Hooks/useQueryParamModal";
 import Modal from "../../Shared/Components/Modal/Modal";
-import UserTable from "../../Users/Components/UserTable";
-import UserProfile from "../../Users/Components/UserProfile";
+import UserTable from "../../Users/Components/Table";
+import UserProfile from "../../Users/Components/Profile";
 import { User } from "../../Users/types";
 
 const Clients = () => {

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { COLORS } from "../../../../Shared/Components/Utils/Colors";
-import { font } from "../../../../Shared/Components/Utils/Font";
-import Button from "../../../../Shared/Components/Button";
+import { COLORS } from "../../Utils/Colors";
+import { font } from "../../Utils/Font";
+import Button from "../../Button";
 
 export const StyledContainer = styled.div`
   width: 100%;

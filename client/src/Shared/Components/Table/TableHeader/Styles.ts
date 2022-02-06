@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { COLORS } from "../../../../Shared/Components/Utils/Colors";
-import Input from "../../../../Shared/Components/Input";
+import { COLORS } from "../../Utils/Colors";
+import Input from "../../Input";
 
 export const StyledContainer = styled.div`
   width: 100%;

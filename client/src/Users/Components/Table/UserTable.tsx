@@ -1,10 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import Table from "../Table";
+import Table from "../../../Shared/Components/Table";
 import { User } from "../../types";
-import { StyledTableCell, StyledTableRow } from "../Table/TableBody/Styles";
+import { StyledTableCell, StyledTableRow } from "../../../Shared/Components/Table/TableBody/Styles";
 import Avatar from "../../../Shared/Components/Avatar";
 import { FiArrowRight } from "react-icons/fi";
-import { FcMoneyTransfer } from "react-icons/fc";
 import { UsersContext } from "../../Context/UsersContext";
 import useToastError from "../../../Shared/Hooks/useToastError";
 import usePagination from "../../../Shared/Hooks/usePagination";
@@ -13,7 +12,6 @@ import usePricingBeautifier from "../../Hooks/usePricingBeautifier";
 import useDateFormatter from "../../../Shared/Hooks/useDateFormatter";
 import useBooleanBeautifier from "../../../Shared/Hooks/useBooleanBeautifier";
 import { UserTableProps } from "./UserTableProps";
-import Button from "../../../Shared/Components/Button";
 
 const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
   const { state, fetchUsers, addFilter } = useContext(UsersContext);
