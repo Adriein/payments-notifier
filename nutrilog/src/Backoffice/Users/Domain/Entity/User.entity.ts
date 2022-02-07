@@ -5,6 +5,7 @@ import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { UserConfig } from "./UserConfig.entity";
 import { Subscription } from "./Subscription.entity";
 import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
+import { SubscriptionCollection } from "./SubscriptionCollection";
 
 
 export class User extends AggregateRoot {
@@ -17,7 +18,8 @@ export class User extends AggregateRoot {
     subscription: Subscription,
     roleId: ID
   ): User {
-    return new User(ID.generate(), name, password, email, config, ownerId, roleId, subscription, true);
+    const collection = SubscriptionCollection.build(subscription);
+    return new User(ID.generate(), name, password, email, config, ownerId, roleId, collection, true);
   }
 
   constructor(
@@ -28,7 +30,7 @@ export class User extends AggregateRoot {
     private _config: UserConfig,
     private _ownerId: ID,
     private _roleId: ID,
-    private _subscription: Subscription,
+    private _subscriptionList: SubscriptionCollection,
     private _active: boolean,
     private _appConfigId?: ID,
     _createdAt?: Date,
@@ -86,51 +88,52 @@ export class User extends AggregateRoot {
   }
 
   public paymentDate = (): Date => {
-    return this._subscription.paymentDate();
+    return this._subscriptionList.getActiveSubscription().paymentDate();
   };
 
   public isNotified = (): boolean => {
-    return this._subscription.isNotified();
+    return this._subscriptionList.getActiveSubscription().isNotified();
   };
 
   public isWarned = (): boolean => {
-    return this._subscription.isWarned();
+    return this._subscriptionList.getActiveSubscription().isWarned();
   };
 
   public hasBeenWarned(): void {
-    this._subscription.warningIsSent();
+    this._subscriptionList.getActiveSubscription().warningIsSent();
   }
 
   public isSubscriptionActive = (): boolean => {
-    return this._subscription.isActive();
+    return this._subscriptionList.getActiveSubscription().isActive();
   };
 
   public pricingId = (): string => {
-    return this._subscription.pricingId();
+    return this._subscriptionList.getActiveSubscription().pricingId();
   }
 
   public subscriptionId = (): string => {
-    return this._subscription.id();
+    return this._subscriptionList.getActiveSubscription().id();
   }
 
   public isSubscriptionExpired = (priceDuration?: number): boolean => {
-    return this._subscription.hasExpired(priceDuration);
+    return this._subscriptionList.getActiveSubscription().hasExpired(priceDuration);
   }
 
   public subscriptionCreatedAt = (): Date => {
-    return this._subscription.createdAt();
+    return this._subscriptionList.getActiveSubscription().createdAt();
   }
 
   public subscriptionUpdatedAt = (): Date => {
-    return this._subscription.updatedAt();
+    return this._subscriptionList.getActiveSubscription().updatedAt();
   }
 
   public deactivateExpiredSubscription(): void {
-    this._subscription.deactivate();
+    this._subscriptionList.getActiveSubscription().deactivate();
   }
 
   public renewSubscription(pricingId: ID, paymentDate: DateVo, validTo: DateVo): void {
-    this._subscription = Subscription.build(pricingId, paymentDate, validTo);
+    const subscription = Subscription.build(pricingId, paymentDate, validTo);
+    this._subscriptionList.add(subscription);
   }
 
   public acceptWarnings(warnings: boolean): void {
@@ -138,19 +141,19 @@ export class User extends AggregateRoot {
   }
 
   public subscriptionIsAboutToExpire(days: number): boolean {
-    return this._subscription.isAboutToExpire(days)
+    return this._subscriptionList.getActiveSubscription().isAboutToExpire(days)
   }
 
   public howLongHasSubscriptionExpired(pricingDuration: number): number {
-    return this._subscription.daysExpired(pricingDuration);
+    return this._subscriptionList.getActiveSubscription().daysExpired(pricingDuration);
   }
 
   public subscriptionExpirationDate(pricingDuration: number): DateVo {
-    return new DateVo(this._subscription.expirationDate(pricingDuration));
+    return new DateVo(this._subscriptionList.getActiveSubscription().expirationDate(pricingDuration));
   }
 
   public subscriptionValidTo(): Date {
-    return this._subscription.validTo();
+    return this._subscriptionList.getActiveSubscription().validTo();
   }
 
   public deactivate(): void {

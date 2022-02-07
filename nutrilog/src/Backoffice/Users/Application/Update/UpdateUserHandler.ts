@@ -13,6 +13,7 @@ import { UpdateUserCommand } from "../../Domain/Command/UpdateUserCommand";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
+import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements IHandler<void> {
@@ -64,7 +65,7 @@ export class UpdateUserHandler implements IHandler<void> {
       config,
       new ID(command.adminId),
       new ID(userOnDb.roleId()),
-      subscription,
+      SubscriptionCollection.build(subscription),
       userOnDb.isActive(),
       undefined,
       userOnDb.createdAt(),

@@ -20,6 +20,7 @@ import { SearchPricingQuery } from "../../../Pricing/Domain/Query/SearchPricingQ
 import { AdminCreatedDomainEvent } from "../../Domain/DomainEvents/AdminCreatedDomainEvent";
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
 import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
+import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
 
 @DomainEventsHandler(AdminRegisteredDomainEvent)
 export class CreateAdminDomainEventHandler implements IDomainEventHandler {
@@ -44,6 +45,12 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
     const pricing = await this.queryBus.ask(new SearchPricingQuery(YEARLY_PRICING));
     const role = await this.queryBus.ask(new SearchRoleQuery(ADMIN_ROLE));
 
+    const subscription = Subscription.build(
+      new ID(pricing.id),
+      new DateVo(new Date().toString()),
+      new DateVo(Time.add(new Date(), pricing.duration))
+    );
+
     const user = new User(
       id,
       event.name,
@@ -52,11 +59,7 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
       new UserConfig(ID.generate(), LANG_ES),
       id,
       new ID(role.id),
-      Subscription.build(
-        new ID(pricing.id),
-        new DateVo(new Date().toString()),
-        new DateVo(Time.add(new Date(), pricing.duration))
-      ),
+      SubscriptionCollection.build(subscription),
       true
     );
 

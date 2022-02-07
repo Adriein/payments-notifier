@@ -7,6 +7,7 @@ import { UserConfig } from "../../Domain/Entity/UserConfig.entity";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { Prisma } from "@prisma/client";
+import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
 
 export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma.userUpdateInput> {
   toSaveDataModel<C extends Prisma.userCreateInput>(domain: User): Prisma.userCreateInput {
@@ -93,19 +94,23 @@ export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma
   }
 
   public toDomain(dataModel: any): User {
-    const [ subscriptionModel ] = dataModel.subscriptions!;
-    const subscription = new Subscription(
-      new ID(subscriptionModel.id),
-      new ID(subscriptionModel.pricing_id),
-      new DateVo(subscriptionModel.payment_date.toString()),
-      new DateVo(subscriptionModel.valid_to.toString()),
-      subscriptionModel.warned,
-      subscriptionModel.notified,
-      subscriptionModel.active,
-      subscriptionModel.expired,
-      new Date(subscriptionModel.created_at),
-      new Date(subscriptionModel.updated_at)
-    );
+    const subscriptionModel = dataModel.subscriptions!;
+
+    const subscriptionDomainList = subscriptionModel.map((subscriptionModel: any) => {
+      return new Subscription(
+        new ID(subscriptionModel.id),
+        new ID(subscriptionModel.pricing_id),
+        new DateVo(subscriptionModel.payment_date.toString()),
+        new DateVo(subscriptionModel.valid_to.toString()),
+        subscriptionModel.warned,
+        subscriptionModel.notified,
+        subscriptionModel.active,
+        subscriptionModel.expired,
+        new Date(subscriptionModel.created_at),
+        new Date(subscriptionModel.updated_at)
+      );
+    });
+    const subscriptionList = SubscriptionCollection.build(subscriptionDomainList)
 
     const config = new UserConfig(
       new ID(dataModel.config!.id),
@@ -122,7 +127,7 @@ export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma
       config,
       new ID(dataModel.owner_id!),
       dataModel.role.id,
-      subscription,
+      subscriptionList,
       dataModel.active,
       dataModel.app_config ? new ID(dataModel.app_config.id) : undefined,
       new Date(dataModel.created_at),
