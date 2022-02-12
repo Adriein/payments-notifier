@@ -3,7 +3,7 @@ import { DomainEventsHandler } from "../../../../Shared/Domain/Decorators/Domain
 import { AppConfig } from "../../Domain/AppConfig.entity";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { IAppConfigRepository } from "../../Domain/IAppConfigRepository";
-import { AdminCreatedDomainEvent } from "../../../Users/Domain/DomainEvents/AdminCreatedDomainEvent";
+import { AdminCreatedDomainEvent } from "../../../User/Domain/DomainEvents/AdminCreatedDomainEvent";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 
 @DomainEventsHandler(AdminCreatedDomainEvent)
@@ -12,7 +12,7 @@ export class CreateAppConfigDomainEventHandler implements IDomainEventHandler {
 
   @Log(process.env.LOG_LEVEL)
   public async handle(event: AdminCreatedDomainEvent): Promise<void> {
-    const appConfig = AppConfig.build(new ID(event.aggregateId));
+    const appConfig = AppConfig.build(event.aggregateId);
 
     await this.repository.save(appConfig);
   }

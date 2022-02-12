@@ -15,20 +15,20 @@ import { SignInHandler } from "../../../Auth/Application/SignInHandler";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
 import { PricingRepository } from "../../../Backoffice/Pricing/Infraestructure/Data/PricingRepository";
-import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
-import { UpdateUserHandler } from "../../../Backoffice/Users/Application/Update/UpdateUserHandler";
-import { UpdatePaymentHandler } from "../../../Backoffice/Users/Application/Update/UpdatePaymentHandler";
+import { UserRepository } from "../../../Backoffice/User/Infrastructure/Data/UserRepository";
+import { UpdateUserHandler } from "../../../Backoffice/User/Application/Update/UpdateUserHandler";
+import { UpdatePaymentHandler } from "../../../Backoffice/User/Application/Update/UpdatePaymentHandler";
 import { GetPricingHandler } from "../../../Backoffice/Pricing/Application/Find/GetPricingHandler";
-import { FindUsersHandler } from "../../../Backoffice/Users/Application/Find/FindUsersHandler";
+import { FindUsersHandler } from "../../../Backoffice/User/Application/Find/FindUsersHandler";
 import { SearchRoleHandler } from "../../../Backoffice/Role/Application/SearchRoleHandler";
 import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
 import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/Find/SearchPricingHandler";
-import { CreateUserHandler } from "../../../Backoffice/Users/Application/Create/CreateUserHandler";
-import { DeleteUserHandler } from "../../../Backoffice/Users/Application/Delete/DeleteUserHandler";
+import { CreateUserHandler } from "../../../Backoffice/User/Application/Create/CreateUserHandler";
+import { DeleteUserHandler } from "../../../Backoffice/User/Application/Delete/DeleteUserHandler";
 import { IHandler } from "../../Domain/Interfaces/IHandler";
 import { FindNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/FindNutritionHandler";
 import { NutritionResponseBuilder } from "../../../Alimentation/Nutrition/Application/Services/NutritionResponseBuilder";
-import { GetUserHandler } from "../../../Backoffice/Users/Application/Find/GetUserHandler";
+import { GetUserProfileHandler } from "../../../Backoffice/User/Application/Find/GetUserProfileHandler";
 import { GetNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/GetNutritionHandler";
 import { GetDietResponseBuilder } from "../../../Alimentation/Diet/Application/Services/GetDietResponseBuilder";
 
@@ -93,11 +93,11 @@ export default class QueryHandlerFactory {
     );
 
     //BackOffice BC
-    //Users
+    //User
 
     this.handlers.set(
-      GetUserHandler.name,
-      new GetUserHandler(this.userRepository, QueryBus.instance())
+      GetUserProfileHandler.name,
+      new GetUserProfileHandler(this.userRepository, QueryBus.instance())
     );
 
     this.handlers.set(

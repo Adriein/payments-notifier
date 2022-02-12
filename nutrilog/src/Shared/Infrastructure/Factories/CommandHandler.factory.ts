@@ -4,16 +4,16 @@ import { NutritionRepository } from "../../../Alimentation/Nutrition/Infrastruct
 import { DietRepository } from "../../../Alimentation/Diet/Infrastructure/Data/DietRepository";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { PricingRepository } from "../../../Backoffice/Pricing/Infraestructure/Data/PricingRepository";
-import { UserRepository } from "../../../Backoffice/Users/Infrastructure/Data/UserRepository";
+import { UserRepository } from "../../../Backoffice/User/Infrastructure/Data/UserRepository";
 import { CreateNutritionHandler } from "../../../Alimentation/Nutrition/Application/Create/CreateNutritionHandler";
 import { CreateDietHandler } from "../../../Alimentation/Diet/Application/Create/CreateDietHandler";
 import { QueryBus } from "../Bus/QueryBus";
 import { ModifyDietHandler } from "../../../Alimentation/Diet/Application/Update/ModifyDietHandler";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
-import { CreateUserHandler } from "../../../Backoffice/Users/Application/Create/CreateUserHandler";
-import { UpdateUserHandler } from "../../../Backoffice/Users/Application/Update/UpdateUserHandler";
-import { UpdatePaymentHandler } from "../../../Backoffice/Users/Application/Update/UpdatePaymentHandler";
-import { DeleteUserHandler } from "../../../Backoffice/Users/Application/Delete/DeleteUserHandler";
+import { CreateUserHandler } from "../../../Backoffice/User/Application/Create/CreateUserHandler";
+import { UpdateUserHandler } from "../../../Backoffice/User/Application/Update/UpdateUserHandler";
+import { UpdatePaymentHandler } from "../../../Backoffice/User/Application/Update/UpdatePaymentHandler";
+import { DeleteUserHandler } from "../../../Backoffice/User/Application/Delete/DeleteUserHandler";
 import { CreatePricingHandler } from "../../../Backoffice/Pricing/Application/Create/CreatePricingHandler";
 
 export default class CommandHandlerFactory {

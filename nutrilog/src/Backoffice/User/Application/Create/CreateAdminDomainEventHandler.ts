@@ -20,36 +20,49 @@ import { SearchPricingQuery } from "../../../Pricing/Domain/Query/SearchPricingQ
 import { AdminCreatedDomainEvent } from "../../Domain/DomainEvents/AdminCreatedDomainEvent";
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
 import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
-import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
+import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
+import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 
 @DomainEventsHandler(AdminRegisteredDomainEvent)
 export class CreateAdminDomainEventHandler implements IDomainEventHandler {
   constructor(
     private repository: IUserRepository,
+    private subscriptionRepository: ISubscriptionRepository,
     private crypto: CryptoService,
-    private queryBus: IQueryBus<PricingResponse>
-  ) {
-  }
+    private queryBus: IQueryBus
+  ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(event: AdminRegisteredDomainEvent): Promise<void> {
-    const result = await this.repository.findByEmail(event.email);
+    await this.ensureUserNotExists(event.email);
+
+    const user = await this.createAdmin(event);
+
+    await this.createSubscriptionToUser(user)
+  }
+
+  private async ensureUserNotExists(emailInEvent: string): Promise<void> {
+    const email = new Email(emailInEvent);
+    const result = await this.repository.findByEmail(email.value);
 
     if (result.isRight()) {
       throw new UserAlreadyExistsError();
     }
+  }
+
+  private async findYearlyPricing(): Promise<PricingResponse> {
+    return await this.queryBus.ask(new SearchPricingQuery(YEARLY_PRICING));
+  }
+
+  private async findAdminRole(): Promise<SearchRoleResponse> {
+    return await this.queryBus.ask(new SearchRoleQuery(ADMIN_ROLE));
+  }
+
+  private async createAdmin(event: AdminRegisteredDomainEvent): Promise<User> {
+    const role = await this.findAdminRole();
 
     const id = ID.generate();
     const password = await this.crypto.hash(event.password);
-
-    const pricing = await this.queryBus.ask(new SearchPricingQuery(YEARLY_PRICING));
-    const role = await this.queryBus.ask(new SearchRoleQuery(ADMIN_ROLE));
-
-    const subscription = Subscription.build(
-      new ID(pricing.id),
-      new DateVo(new Date().toString()),
-      new DateVo(Time.add(new Date(), pricing.duration))
-    );
 
     const user = new User(
       id,
@@ -59,7 +72,6 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
       new UserConfig(ID.generate(), LANG_ES),
       id,
       new ID(role.id),
-      SubscriptionCollection.build(subscription),
       true
     );
 
@@ -67,6 +79,20 @@ export class CreateAdminDomainEventHandler implements IDomainEventHandler {
 
     user.addEvent(new AdminCreatedDomainEvent(user.id()));
 
-    await DomainEventsManager.publishEvents(user.id());
+    DomainEventsManager.publishEvents(user.id());
+
+    return user;
+  }
+
+  private async createSubscriptionToUser(user: User): Promise<void> {
+    const pricing = await this.findYearlyPricing();
+
+    const subscription = user.createSubscription(
+      new ID(pricing.id),
+      new DateVo(new Date().toString()),
+      new DateVo(Time.add(new Date(), pricing.duration))
+    );
+
+    await this.subscriptionRepository.save(subscription);
   }
 }

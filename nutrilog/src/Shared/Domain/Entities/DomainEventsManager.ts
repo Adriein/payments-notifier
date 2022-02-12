@@ -2,12 +2,7 @@ import { IDomainEventHandler } from '../Interfaces/IDomainEventHandler';
 import { DomainEventClass } from '../types';
 import { AggregateRoot } from './AggregateRoot';
 import { DomainEvent } from './DomainEvent';
-
-export interface EventHandler {
-  subscribeTo(event: DomainEvent): void;
-}
-
-export type EventCallback = (event: DomainEvent) => Promise<void>;
+import { ID } from "../VO/Id.vo";
 
 type EventName = string;
 
@@ -35,7 +30,7 @@ export abstract class DomainEventsManager {
     }
   }
 
-  public static async publishEvents(id: string): Promise<void> {
+  public static async publishEvents(id: ID): Promise<void> {
     const aggregate = this.findAggregateByID(id);
 
     if (aggregate) {
@@ -49,9 +44,9 @@ export abstract class DomainEventsManager {
     }
   }
 
-  private static findAggregateByID(id: string): AggregateRoot | undefined {
+  private static findAggregateByID(id: ID): AggregateRoot | undefined {
     return this.aggregates.find(
-      (aggregate: AggregateRoot) => aggregate.id() === id
+      (aggregate: AggregateRoot) => aggregate.id().value === id.value
     );
   }
 

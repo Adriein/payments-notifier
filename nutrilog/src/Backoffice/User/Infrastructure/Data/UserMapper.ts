@@ -96,7 +96,7 @@ export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma
   public toDomain(dataModel: any): User {
     const subscriptionModel = dataModel.subscriptions!;
 
-    const subscriptionDomainList = subscriptionModel.map((subscriptionModel: any) => {
+    const subscriptionDomainList: Subscription[] = subscriptionModel.map((subscriptionModel: any) => {
       return new Subscription(
         new ID(subscriptionModel.id),
         new ID(subscriptionModel.pricing_id),

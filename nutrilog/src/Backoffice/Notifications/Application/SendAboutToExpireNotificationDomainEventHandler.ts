@@ -5,8 +5,8 @@ import { Log } from "../../../Shared/Domain/Decorators/Log";
 import { ISmtpServiceRepository } from "../Domain/Repository/ISmtpServiceRepository";
 import { NutrilogEmail } from "../Domain/Entity/NutrilogEmail.entity";
 import { IQueryBus } from "../../../Shared/Domain/Bus/IQueryBus";
-import { GetUserResponse } from "../../Users/Application/Find/GetUserResponse";
-import { GetUserQuery } from "../../Users/Domain/Query/GetUserQuery";
+import { GetUserResponse } from "../../User/Application/Find/GetUserResponse";
+import { GetUserQuery } from "../../User/Domain/Query/GetUserQuery";
 import { EmailHeader } from "../Domain/Entity/EmailHeader.entity";
 import { AboutToExpire } from "../Domain/Entity/AboutToExpire.entity";
 import { CLIENT_EMAIL_CONFIG_SUBJECT, NOTIFICATIONS_EMAIL } from "../Domain/constants";
@@ -37,7 +37,7 @@ export class SendAboutToExpireNotificationDomainEventHandler implements IDomainE
     );
 
     const email = NutrilogEmail.build<string>(header, template.generate());
-    
+
     await this.repository.send(email);
 
   }

@@ -1,17 +1,19 @@
-import { BaseEntity } from "../../../../Shared/Domain/Entities/BaseEntity";
 import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
+import { AggregateRoot } from "../../../../Shared/Domain/Entities/AggregateRoot";
 
 
-export class Subscription extends BaseEntity {
+export class Subscription extends AggregateRoot {
   public static build(
+    userId: ID,
     pricingId: ID,
     lastPayment: DateVo,
     validTo: DateVo,
   ): Subscription {
     return new Subscription(
       ID.generate(),
+      userId,
       pricingId,
       lastPayment,
       validTo,
@@ -24,6 +26,7 @@ export class Subscription extends BaseEntity {
 
   constructor(
     _id: ID,
+    private _userId: ID,
     private _pricingId: ID,
     private _lastPayment: DateVo,
     private _validTo: DateVo,
@@ -69,7 +72,7 @@ export class Subscription extends BaseEntity {
 
   public deactivate = (): void => {
     this._isActive = false;
-    this.updated();
+    this.entityUpdated();
   }
 
   public pricingId = (): string => {

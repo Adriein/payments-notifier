@@ -1,5 +1,5 @@
 import { IQuery } from "../Interfaces/IQuery";
 
-export interface IQueryBus<T> {
-  ask(query: IQuery): Promise<T>;
+export interface IQueryBus {
+  ask<T>(query: IQuery): Promise<T>;
 }

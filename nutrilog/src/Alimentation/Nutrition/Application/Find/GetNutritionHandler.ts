@@ -5,8 +5,8 @@ import { INutritionRepository } from "../../Domain/INutritionRepository";
 import { NutritionResponseBuilder } from "../Services/NutritionResponseBuilder";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { GetUserResponse } from "../../../../Backoffice/Users/Application/Find/GetUserResponse";
-import { GetUserQuery } from "../../../../Backoffice/Users/Domain/Query/GetUserQuery";
+import { GetUserResponse } from "../../../../Backoffice/User/Application/Find/GetUserResponse";
+import { GetUserQuery } from "../../../../Backoffice/User/Domain/Query/GetUserQuery";
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 
 @QueryHandler(GetNutritionQuery)

@@ -8,8 +8,8 @@ export abstract class BaseEntity {
   ) {
   }
 
-  public id(): string {
-    return this._id.value;
+  public id(): ID {
+    return this._id;
   }
 
   public createdAt(): Date {
@@ -20,7 +20,7 @@ export abstract class BaseEntity {
     return this._dateUpdated ? this._dateUpdated : new Date();
   }
 
-  public updated(): void {
+  public entityUpdated(): void {
     this._dateUpdated = new Date();
   }
 }

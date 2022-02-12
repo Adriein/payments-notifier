@@ -1,5 +1,5 @@
 import { Nutrition } from "../../Domain/Nutrition.entity";
-import { GetUserResponse } from "../../../../Backoffice/Users/Application/Find/GetUserResponse";
+import { GetUserResponse } from "../../../../Backoffice/User/Application/Find/GetUserResponse";
 import { GetNutritionResponse } from "../Find/GetNutritionResponse";
 
 export class NutritionResponseBuilder {

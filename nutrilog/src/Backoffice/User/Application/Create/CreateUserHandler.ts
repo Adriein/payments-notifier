@@ -4,9 +4,7 @@ import { CreateUserCommand } from "../../Domain/Command/CreateUserCommand";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { UserConfig } from "../../Domain/Entity/UserConfig.entity";
 import { User } from "../../Domain/Entity/User.entity";
-import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
-import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { Password } from "../../../../Shared/Domain/VO/Password.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
@@ -16,36 +14,23 @@ import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { USER_ROLE } from "../../Domain/constants";
 import { CryptoService } from "../../../../Shared/Domain/Services/CryptoService";
-import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
-import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
-import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements IHandler<void> {
   constructor(
     private repository: IUserRepository,
-    private queryBus: IQueryBus<SearchRoleResponse>,
-    private pricingQueryBus: IQueryBus<PricingResponse>,
+    private queryBus: IQueryBus,
     private readonly crypto: CryptoService
   ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: CreateUserCommand): Promise<void> {
     const email = new Email(command.email);
+    await this.ensureUserNotExists(email);
 
-    const result = await this.repository.findByEmail(email.value);
+    const role = await this.getUserRole();
 
-    if (result.isRight()) {
-      throw new UserAlreadyExistsError();
-    }
-
-    const role = await this.queryBus.ask(new SearchRoleQuery(USER_ROLE));
-
-    const password = await this.crypto.hash(Password.generate().value);
-
-    const { duration } = await this.pricingQueryBus.ask(new GetPricingQuery(command.pricingId));
-
-    const lastPaymentDate = new DateVo(command.lastPaymentDate);
+    const password = await this.generatePlaceHolderPassword();
 
     const user = User.build(
       new ID(command.adminId),
@@ -53,14 +38,25 @@ export class CreateUserHandler implements IHandler<void> {
       new Password(password),
       email,
       UserConfig.build(),
-      Subscription.build(
-        new ID(command.pricingId),
-        lastPaymentDate,
-        new DateVo(Time.add(lastPaymentDate.value, duration))
-      ),
       new ID(role.id)
     );
 
     await this.repository.save(user);
+  }
+
+  private async ensureUserNotExists(email: Email): Promise<void> {
+    const result = await this.repository.findByEmail(email.value);
+
+    if (result.isRight()) {
+      throw new UserAlreadyExistsError();
+    }
+  }
+
+  private async getUserRole(): Promise<SearchRoleResponse> {
+    return await this.queryBus.ask(new SearchRoleQuery(USER_ROLE));
+  }
+
+  private async generatePlaceHolderPassword(): Promise<string> {
+    return await this.crypto.hash(Password.generate().value);
   }
 }

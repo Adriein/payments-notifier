@@ -21,13 +21,17 @@ export class UpdatePaymentHandler implements IHandler<void> {
     const pricingId = new ID(command.pricingId);
     const paymentDate = new DateVo(command.paymentDate);
 
-    const result = await this.repository.findOne(id.value);
+    const user = await this.getUser(id);
 
-    if (result.isLeft()) {
-      throw result.value;
-    }
+    const oldSubscription = getOldSubscription();
 
-    const user = result.value;
+    const extradays = oldSubscription.hasLeftDays();
+
+    const subscription = await user.renewSubscription(pricingId, paymentDAte, extraDays)
+    ç
+
+
+    subscriptionRepo.save(subscription);
 
     await this.renew(user, pricingId, paymentDate);
   }
@@ -44,5 +48,15 @@ export class UpdatePaymentHandler implements IHandler<void> {
     user.renewSubscription(pricingId, paymentDate, validTo);
 
     await this.repository.save(user);
+  }
+
+  private async getUser(id: ID): Promise<User> {
+    const result = await this.repository.findOne(id.value);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    return result.value;
   }
 }

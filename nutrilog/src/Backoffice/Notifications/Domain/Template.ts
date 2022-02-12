@@ -1,4 +1,4 @@
-import { User } from "../../Users/Domain/Entity/User.entity";
+import { User } from "../../User/Domain/Entity/User.entity";
 import { AppConfig } from "../../AppConfig/Domain/AppConfig.entity";
 
 export abstract class Template {

@@ -11,8 +11,8 @@ import { UserResponseBuilder } from "../Service/UserResponseBuilder";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 
 @QueryHandler(GetUserQuery)
-export class GetUserHandler implements IHandler<GetUserResponse> {
-  constructor(private readonly repository: IUserRepository, private readonly bus: IQueryBus<PricingResponse>) {
+export class GetUserProfileHandler implements IHandler<GetUserResponse> {
+  constructor(private readonly repository: IUserRepository, private readonly bus: IQueryBus) {
   }
 
   @Log(process.env.LOG_LEVEL)
@@ -28,8 +28,12 @@ export class GetUserHandler implements IHandler<GetUserResponse> {
 
     const user = result.value;
 
-    const pricing = await this.bus.ask(new GetPricingQuery(user.pricingId()));
+    const pricing = await this.bus.ask(new GetPricingQuery(user));
 
     return presenter.run(user, pricing);
+  }
+
+  private buildResponse(): any {
+
   }
 }

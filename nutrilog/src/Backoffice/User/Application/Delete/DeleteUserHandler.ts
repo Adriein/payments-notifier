@@ -21,8 +21,8 @@ export class DeleteUserHandler implements IHandler<void> {
       throw result.value;
     }
     const user = result.value;
-    
-    user.deactivate();
+
+    await user.deactivate();
 
     await this.repository.update(user);
   }

@@ -52,6 +52,19 @@ const Profile = ({ user }: UserProfileProps) => {
                 <StyledUserDetailInfo>{user.email}</StyledUserDetailInfo>
               </StyledUserDetailsInfoContainer>
             )}
+            <StyledEditableUserInfoTitle>
+              <StyledDetailsTag>
+                <FiChevronDown/>
+                <p>Configuración</p>
+              </StyledDetailsTag>
+              <StyledEdit onClick={toggleEdit}>{t('edit')}</StyledEdit>
+            </StyledEditableUserInfoTitle>
+            <StyledUserDetailsInfoContainer>
+              <StyledUserDetailTitle type={"subtitle"} bold>Detalles de la configuración</StyledUserDetailTitle>
+              <StyledUserDetailInfo>{user.config.language}</StyledUserDetailInfo>
+              <StyledUserDetailInfo>{user.config.role}</StyledUserDetailInfo>
+              <StyledUserDetailInfo>{user.config.sendWarnings}</StyledUserDetailInfo>
+            </StyledUserDetailsInfoContainer>
           </StyledPersonalInfoContainer>
           <StyledPersonalSubscriptionInfo>
             <StyledPersonalSubscriptionInfoNavigation>

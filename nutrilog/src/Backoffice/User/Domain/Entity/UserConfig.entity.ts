@@ -30,6 +30,6 @@ export class UserConfig extends BaseEntity {
 
   public warnings(warnings: boolean): void {
     this._sendWarnings = warnings;
-    this.updated()
+    this.entityUpdated()
   }
 }

@@ -8,7 +8,7 @@ import { ExpiredSubscriptionsReport } from "../Domain/Entity/ExpiredSubscription
 import { EmailHeader } from "../Domain/Entity/EmailHeader.entity";
 import { ADMIN_EMAIL_CONFIG_SUBJECT, NOTIFICATIONS_EMAIL, REPORT_DYNAMIC_TEMPLATE } from "../Domain/constants";
 import { Email } from "../../../Shared/Domain/VO/Email.vo";
-import { GetUserResponse } from "../../Users/Application/Find/GetUserResponse";
+import { GetUserResponse } from "../../User/Application/Find/GetUserResponse";
 import { Defaulter } from "../Domain/VO/Defaulter.vo";
 import { Summary } from "../Domain/VO/Summary.vo";
 import { IEmailServiceApiRepository } from "../Domain/Repository/IEmailServiceApiRepository";

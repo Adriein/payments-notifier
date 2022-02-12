@@ -23,7 +23,7 @@ export class UpdatePasswordHandler implements IHandler<void> {
     if (result.isLeft()) {
       throw new NotAllowedToChangePasswordError();
     }
-    
+
     const auth = result.value;
 
     const allowed = this.crypto.compare(
@@ -37,7 +37,7 @@ export class UpdatePasswordHandler implements IHandler<void> {
 
     const password = await this.crypto.hash(newPassword);
 
-    const updatedAuth = new Auth(new ID(auth.id()), auth.name(), new Email(auth.email()), new Password(password));
+    const updatedAuth = new Auth(auth.id(), auth.name(), new Email(auth.email()), new Password(password));
 
     await this.repository.update(updatedAuth);
   }

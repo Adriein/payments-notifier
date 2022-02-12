@@ -3,10 +3,10 @@ import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.
 import { FindNutritionQuery } from "../../Domain/Query/FindNutritionQuery";
 import { INutritionRepository } from "../../Domain/INutritionRepository";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { GetUserResponse } from "../../../../Backoffice/Users/Application/Find/GetUserResponse";
+import { GetUserResponse } from "../../../../Backoffice/User/Application/Find/GetUserResponse";
 import { NutritionResponseBuilder } from "../Services/NutritionResponseBuilder";
 import { GetNutritionResponse } from "./GetNutritionResponse";
-import { GetUserQuery } from "../../../../Backoffice/Users/Domain/Query/GetUserQuery";
+import { GetUserQuery } from "../../../../Backoffice/User/Domain/Query/GetUserQuery";
 import { NutritionNotExistsError } from "../../Domain/NutritionNotExistsError";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 

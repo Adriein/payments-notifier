@@ -22,7 +22,7 @@ import './Alimentation/Food';
 import './Alimentation/Nutrition';
 import './Alimentation/Diet';
 import './Auth';
-import './Backoffice/Users';
+import './Backoffice/User';
 import './Backoffice/Notifications';
 import './Backoffice/Metrics';
 import './Backoffice/Pricing';

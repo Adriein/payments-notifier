@@ -3,8 +3,8 @@ import { Subscription } from "./Subscription.entity";
 import { NoActiveSubscriptionError } from "../NoActiveSubscriptionError";
 
 export class SubscriptionCollection extends Collection<Subscription> {
-  public static build(subscription: Subscription): SubscriptionCollection {
-    return new SubscriptionCollection([ subscription ]);
+  public static build(subscriptionList: Subscription[]): SubscriptionCollection {
+    return new SubscriptionCollection(subscriptionList);
   }
 
   constructor(data: Subscription[]) {

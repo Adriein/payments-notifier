@@ -1,5 +1,5 @@
 import { DomainEvent } from "../../../../Shared/Domain/Entities/DomainEvent";
-import { GetUserResponse } from "../../../Users/Application/Find/GetUserResponse";
+import { GetUserResponse } from "../../../User/Application/Find/GetUserResponse";
 
 export class SendExpiredSubscriptionsReportEmailDomainEvent extends DomainEvent {
   constructor(
