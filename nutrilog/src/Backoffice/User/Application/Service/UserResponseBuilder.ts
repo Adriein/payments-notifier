@@ -1,10 +1,11 @@
-import { GetUserResponse } from "../Find/GetUserResponse";
+import { FindUserResponse } from "../Find/FindUserResponse";
 import { User } from "../../Domain/Entity/User.entity";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
+import { Subscription } from "../../Domain/Entity/Subscription.entity";
 
 export class UserResponseBuilder {
-  public run(user: User, pricing: PricingResponse): GetUserResponse {
+  public run(user: User, pricing: PricingResponse, subscriptionList: Subscription[]): FindUserResponse {
     return {
       id: user.id(),
       username: user.name(),
@@ -17,18 +18,20 @@ export class UserResponseBuilder {
         role: user.roleId(),
         language: user.language()
       },
-      subscription: {
-        pricing: {
-          price: pricing.price,
-          name: pricing.name,
-          duration: pricing.duration
-        },
-        isNotified: user.isNotified(),
-        isWarned: user.isWarned(),
-        lastPayment: Time.format(user.paymentDate(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
-        validTo: Time.format(user.subscriptionValidTo(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
-        isActive: user.isSubscriptionActive()
-      },
+      subscription: subscriptionList.map((subscription: Subscription) => {
+        return {
+          pricing: {
+            price: pricing.price,
+            name: pricing.name,
+            duration: pricing.duration
+          },
+          isNotified: subscription.isNotified(),
+          isWarned: subscription.isWarned(),
+          lastPayment: Time.format(subscription.paymentDate(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
+          validTo: Time.format(subscription.validTo(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
+          isActive: subscription.isActive()
+        }
+      }),
     }
   }
 }

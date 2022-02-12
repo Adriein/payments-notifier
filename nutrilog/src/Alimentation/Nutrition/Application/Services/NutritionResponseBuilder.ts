@@ -1,9 +1,9 @@
 import { Nutrition } from "../../Domain/Nutrition.entity";
-import { GetUserResponse } from "../../../../Backoffice/User/Application/Find/GetUserResponse";
+import { FindUserResponse } from "../../../../Backoffice/User/Application/Find/FindUserResponse";
 import { GetNutritionResponse } from "../Find/GetNutritionResponse";
 
 export class NutritionResponseBuilder {
-  public run(nutrition: Nutrition, user: GetUserResponse): GetNutritionResponse {
+  public run(nutrition: Nutrition, user: FindUserResponse): GetNutritionResponse {
     return {
       user: {
         id: user.id,

@@ -5,7 +5,7 @@ import { Log } from "../../../Shared/Domain/Decorators/Log";
 import { ISmtpServiceRepository } from "../Domain/Repository/ISmtpServiceRepository";
 import { NutrilogEmail } from "../Domain/Entity/NutrilogEmail.entity";
 import { IQueryBus } from "../../../Shared/Domain/Bus/IQueryBus";
-import { GetUserResponse } from "../../User/Application/Find/GetUserResponse";
+import { FindUserResponse } from "../../User/Application/Find/FindUserResponse";
 import { GetUserQuery } from "../../User/Domain/Query/GetUserQuery";
 import { EmailHeader } from "../Domain/Entity/EmailHeader.entity";
 import { AboutToExpire } from "../Domain/Entity/AboutToExpire.entity";
@@ -17,7 +17,7 @@ export class SendAboutToExpireNotificationDomainEventHandler implements IDomainE
 
   constructor(
     private readonly repository: ISmtpServiceRepository<NutrilogEmail<string>>,
-    private readonly queryBus: IQueryBus<GetUserResponse>
+    private readonly queryBus: IQueryBus<FindUserResponse>
   ) {}
 
   @Log(process.env.LOG_LEVEL)

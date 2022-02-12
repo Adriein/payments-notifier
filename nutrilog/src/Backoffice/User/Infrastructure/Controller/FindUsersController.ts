@@ -5,18 +5,18 @@ import { use } from "../../../../Shared/Infrastructure/Decorators/use";
 import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Middlewares/auth";
 import { post } from "../../../../Shared/Infrastructure/Decorators/routes";
 import { FindUsersQuery } from "../../Domain/Query/FindUsersQuery";
-import { GetUserResponse } from "../../Application/Find/GetUserResponse";
+import { FindUserResponse } from "../../Application/Find/FindUserResponse";
 import { NutrilogResponse } from "../../../../Shared/Application/NutrilogResponse";
 import { UsersMetadata } from "../../Application/Find/UsersMetadata";
 
 @Controller()
-export class FindUsersController extends BaseController<NutrilogResponse<GetUserResponse[], UsersMetadata>> {
+export class FindUsersController extends BaseController<NutrilogResponse<FindUserResponse[], UsersMetadata>> {
   @post('/users')
   @use(requireAuth)
   @use(currentUser)
   public async getAllUsers(
     req: Request,
-    res: Response<NutrilogResponse<GetUserResponse[], UsersMetadata>>,
+    res: Response<NutrilogResponse<FindUserResponse[], UsersMetadata>>,
     next: NextFunction
   ) {
     try {

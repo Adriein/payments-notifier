@@ -3,7 +3,7 @@ import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.
 import { FindNutritionQuery } from "../../Domain/Query/FindNutritionQuery";
 import { INutritionRepository } from "../../Domain/INutritionRepository";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { GetUserResponse } from "../../../../Backoffice/User/Application/Find/GetUserResponse";
+import { FindUserResponse } from "../../../../Backoffice/User/Application/Find/FindUserResponse";
 import { NutritionResponseBuilder } from "../Services/NutritionResponseBuilder";
 import { GetNutritionResponse } from "./GetNutritionResponse";
 import { GetUserQuery } from "../../../../Backoffice/User/Domain/Query/GetUserQuery";
@@ -14,7 +14,7 @@ import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 export class FindNutritionHandler implements IHandler<GetNutritionResponse[]> {
   constructor(
     private readonly repository: INutritionRepository,
-    private readonly queryBus: IQueryBus<GetUserResponse>,
+    private readonly queryBus: IQueryBus<FindUserResponse>,
     private readonly builder: NutritionResponseBuilder
   ) {}
 

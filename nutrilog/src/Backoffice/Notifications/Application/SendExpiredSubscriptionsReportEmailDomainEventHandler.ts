@@ -8,7 +8,7 @@ import { ExpiredSubscriptionsReport } from "../Domain/Entity/ExpiredSubscription
 import { EmailHeader } from "../Domain/Entity/EmailHeader.entity";
 import { ADMIN_EMAIL_CONFIG_SUBJECT, NOTIFICATIONS_EMAIL, REPORT_DYNAMIC_TEMPLATE } from "../Domain/constants";
 import { Email } from "../../../Shared/Domain/VO/Email.vo";
-import { GetUserResponse } from "../../User/Application/Find/GetUserResponse";
+import { FindUserResponse } from "../../User/Application/Find/FindUserResponse";
 import { Defaulter } from "../Domain/VO/Defaulter.vo";
 import { Summary } from "../Domain/VO/Summary.vo";
 import { IEmailServiceApiRepository } from "../Domain/Repository/IEmailServiceApiRepository";
@@ -56,7 +56,7 @@ export class SendExpiredSubscriptionsReportEmailDomainEventHandler implements ID
     await this.smtpRepository.send(email);
   }
 
-  private buildDefaulterList(users: GetUserResponse[]): Defaulter[] {
-    return users.map((user: GetUserResponse) => new Defaulter(user.username, new Email(user.email)));
+  private buildDefaulterList(users: FindUserResponse[]): Defaulter[] {
+    return users.map((user: FindUserResponse) => new Defaulter(user.username, new Email(user.email)));
   }
 }

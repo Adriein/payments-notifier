@@ -5,15 +5,15 @@ import { use } from "../../../../Shared/Infrastructure/Decorators/use";
 import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Middlewares/auth";
 import { NextFunction, Request, Response } from "express";
 import { GetUserQuery } from "../../Domain/Query/GetUserQuery";
-import { GetUserResponse } from "../../Application/Find/GetUserResponse";
+import { FindUserResponse } from "../../Application/Find/FindUserResponse";
 import { User } from "../../Domain/Entity/User.entity";
 
 @Controller()
-export class GetUserController extends BaseController<GetUserResponse> {
+export class GetUserController extends BaseController<FindUserResponse> {
   @get('/user')
   @use(requireAuth)
   @use(currentUser)
-  public async getUser(req: Request, res: Response<GetUserResponse>, next: NextFunction): Promise<void> {
+  public async getUser(req: Request, res: Response<FindUserResponse>, next: NextFunction): Promise<void> {
     try {
       const user = await this.queryBus.ask(
         new GetUserQuery(req.body.id)

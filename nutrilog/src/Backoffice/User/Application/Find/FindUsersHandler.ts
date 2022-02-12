@@ -3,7 +3,7 @@ import { FindUsersQuery } from "../../Domain/Query/FindUsersQuery";
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { FilterRequestDto } from "./FilterRequestDto";
-import { GetUserResponse } from "./GetUserResponse";
+import { FindUserResponse } from "./FindUserResponse";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { UserResponseBuilder } from "../Service/UserResponseBuilder";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
@@ -19,7 +19,7 @@ import { NutrilogResponse } from "../../../../Shared/Application/NutrilogRespons
 import { UsersMetadata } from "./UsersMetadata";
 
 @QueryHandler(FindUsersQuery)
-export class FindUsersHandler implements IHandler<NutrilogResponse<GetUserResponse[], UsersMetadata>> {
+export class FindUsersHandler implements IHandler<NutrilogResponse<FindUserResponse[], UsersMetadata>> {
   public constructor(
     private readonly repository: IUserRepository,
     private readonly pricing: IQueryBus<PricingResponse>,
@@ -27,9 +27,9 @@ export class FindUsersHandler implements IHandler<NutrilogResponse<GetUserRespon
   ) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(query: FindUsersQuery): Promise<NutrilogResponse<GetUserResponse[], UsersMetadata>> {
+  public async handle(query: FindUsersQuery): Promise<NutrilogResponse<FindUserResponse[], UsersMetadata>> {
     const presenter = new UserResponseBuilder();
-    const responses: GetUserResponse[] = [];
+    const responses: FindUserResponse[] = [];
 
     const { filters, adminId, page, quantity } = query;
     const id = new ID(adminId);
@@ -56,7 +56,7 @@ export class FindUsersHandler implements IHandler<NutrilogResponse<GetUserRespon
     if (totalUsersResponse.isLeft()) {
       throw totalUsersResponse.value;
     }
-    
+
     return new NutrilogResponse(responses, new UsersMetadata(totalUsersResponse.value));
   }
 

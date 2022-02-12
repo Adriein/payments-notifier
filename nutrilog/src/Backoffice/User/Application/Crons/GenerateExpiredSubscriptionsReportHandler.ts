@@ -11,7 +11,7 @@ import { User } from "../../Domain/Entity/User.entity";
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
 import { GetAllPricingQuery } from "../../../Pricing/Domain/Query/GetAllPricingQuery";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
-import { GetUserResponse } from "../Find/GetUserResponse";
+import { FindUserResponse } from "../Find/FindUserResponse";
 import { UserResponseBuilder } from "../Service/UserResponseBuilder";
 import { UserWithoutPricingError } from "../../Domain/UserWithoutPricingError";
 
@@ -88,7 +88,7 @@ export class GenerateExpiredSubscriptionsReportHandler implements IHandler<void>
     return result;
   }
 
-  private buildDefaulterQueryPart(users: User[], pricingList: PricingResponse[]): GetUserResponse[] {
+  private buildDefaulterQueryPart(users: User[], pricingList: PricingResponse[]): FindUserResponse[] {
     return users.map((user: User) => {
       const pricing = pricingList.find((pricing: PricingResponse) => pricing.id === user.pricingId());
 

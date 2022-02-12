@@ -1,10 +1,10 @@
-export type GetUserProfileResponse = {
+export type FindUserResponse = {
   id: string,
   username: string,
   email: string,
   defaulter: boolean,
   active: boolean,
-  subscription: GetSubscriptionResponse,
+  subscription: GetSubscriptionResponse[],
   config: GetConfigResponse,
 };
 
