@@ -9,20 +9,19 @@ import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { User } from "../../Domain/Entity/User.entity";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { UserFilter } from "../../Domain/UserFilter";
-import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
-import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
-import { ADMIN_ROLE } from "../../Domain/constants";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { SubscriptionFilter } from "../../Domain/SubscriptionFilter";
 import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
+import { AdminFinder } from "../Service/AdminFinder";
 
 @QueryHandler(CheckForExpiredSubscriptionsQuery)
 export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly subscriptionRepository: ISubscriptionRepository,
+    private readonly finder: AdminFinder,
     private readonly queryBus: IQueryBus
   ) {}
 
@@ -70,24 +69,11 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
   }
 
   private async findNutriLogAdminList(): Promise<User[]> {
-    const criteria = new Criteria<UserFilter>();
-    const adminRole = await this.queryBus.ask<SearchRoleResponse>(new SearchRoleQuery(ADMIN_ROLE));
-
-    criteria.equal('roleId', adminRole.id);
-    criteria.equal('active', true);
-
-    const result = await this.userRepository.find(criteria);
-
-    if (result.isLeft()) {
-      throw result.value;
-    }
-
-    return result.value;
+    return await this.finder.execute();
   }
 
   private async findActiveUserListByAdmin(adminId: ID): Promise<User[]> {
     const criteria = new Criteria<UserFilter>();
-    const adminRole = await this.queryBus.ask<SearchRoleResponse>(new SearchRoleQuery(ADMIN_ROLE));
 
     criteria.equal('ownerId', adminId.value);
     criteria.equal('active', true);

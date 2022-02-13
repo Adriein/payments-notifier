@@ -8,22 +8,25 @@ import { GetAppConfigQuery } from "../../../AppConfig/Domain/Query/GetAppConfigQ
 import { SendAboutToExpireEmailDomainEvent } from "../../../Notifications/Domain/DomainEvents/SendAboutToExpireEmailDomainEvent";
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
 import { CheckForAboutToExpireSubscriptionsQuery } from "../../Domain/Query/CheckForAboutToExpireSubscriptionsQuery";
+import { AdminFinder } from "../Service/AdminFinder";
+import { User } from "../../Domain/Entity/User.entity";
+import { ID } from "../../../../Shared/Domain/VO/Id.vo";
+import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
+import { UserFilter } from "../../Domain/UserFilter";
 
 @QueryHandler(CheckForAboutToExpireSubscriptionsQuery)
 export class CheckForAboutToExpireSubscriptionsHandler implements IHandler<void> {
-  constructor(private readonly repository: IUserRepository, private readonly queryBus: IQueryBus<AppConfigResponse>) {}
+  constructor(
+    private readonly repository: IUserRepository,
+    private readonly finder: AdminFinder,
+    private readonly queryBus: IQueryBus
+  ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: CheckForAboutToExpireSubscriptionsQuery): Promise<void> {
-    const result = await this.repository.findAdmins();
+    const adminList = await this.findNutriLogAdminList();
 
-    if (result.isLeft()) {
-      throw result.value;
-    }
-
-    const admins = result.value;
-
-    for (const admin of admins) {
+    for (const admin of adminList) {
       const usersNotWarned = await this.repository.findUsersNotWarned(admin.id());
 
       if (usersNotWarned.isLeft()) {
@@ -49,5 +52,13 @@ export class CheckForAboutToExpireSubscriptionsHandler implements IHandler<void>
         await this.repository.update(user);
       }
     }
+  }
+
+  private findNotWarnedUserList(adminId: ID): Promise<User[]> {
+    const criteria = new Criteria<UserFilter>();
+  }
+
+  private async findNutriLogAdminList(): Promise<User[]> {
+    return await this.finder.execute();
   }
 }
