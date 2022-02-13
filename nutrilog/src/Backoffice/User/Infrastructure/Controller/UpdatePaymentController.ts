@@ -18,6 +18,7 @@ export class UpdateUserPaymentController extends BaseController<void> {
           req.body.id,
           req.body.pricingId,
           req.body.lastPaymentDate,
+          req.body.pricingDuration
         )
       );
 

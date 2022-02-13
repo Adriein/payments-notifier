@@ -15,11 +15,8 @@ export class GetUserController extends BaseController<FindUserResponse> {
   @use(currentUser)
   public async getUser(req: Request, res: Response<FindUserResponse>, next: NextFunction): Promise<void> {
     try {
-      const user = await this.queryBus.ask(
-        new GetUserQuery(req.body.id)
-      );
-
-
+      const user = await this.queryBus.ask<FindUserResponse>(new GetUserQuery(req.body.id));
+      
       res.status(200).send(user);
     } catch (error) {
       next(error);

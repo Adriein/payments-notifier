@@ -19,8 +19,8 @@ import { UserWithoutPricingError } from "../../Domain/UserWithoutPricingError";
 export class GenerateExpiredSubscriptionsReportHandler implements IHandler<void> {
   constructor(
     private readonly repository: IUserRepository,
-    private readonly pricingQueryBus: IQueryBus<PricingResponse[]>,
-    private readonly appConfigQueryBus: IQueryBus<AppConfigResponse>,
+    private readonly pricingQueryBus: IQueryBus,
+    private readonly appConfigQueryBus: IQueryBus,
     private readonly builder: UserResponseBuilder
   ) {}
 

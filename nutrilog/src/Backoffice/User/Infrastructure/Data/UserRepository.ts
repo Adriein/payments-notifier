@@ -150,74 +150,7 @@ export class UserRepository implements IUserRepository {
       return Left.error(error);
     }
   }
-
-  @Log(process.env.LOG_LEVEL)
-  public async findUsersWithActiveSubscriptions(adminId: string): Promise<Either<Error | UserNotExistError, User[]>> {
-    try {
-      const results = await this.prisma.user.findMany({
-        where: {
-          owner_id: adminId,
-          subscriptions: {
-            some: {
-              active: true
-            }
-          },
-          role: {
-            type: USER_ROLE
-          }
-        },
-        include: {
-          config: true,
-          subscriptions: true,
-          role: true,
-          app_config: true,
-        }
-      });
-
-      this.prisma.$disconnect();
-
-      if (results.length === 0) {
-        return Left.error(new UserNotExistError(`Admin with id: ${adminId} has no users with subscriptions active`));
-      }
-
-      return Right.success(results.map((result) => this.mapper.toDomain(result)));
-    } catch (error: any) {
-      this.prisma.$disconnect();
-      return Left.error(error);
-    }
-  }
-
-  @Log(process.env.LOG_LEVEL)
-  public async findAdmins(): Promise<Either<Error | UserNotExistError, User[]>> {
-    try {
-      const results = await this.prisma.user.findMany({
-        where: {
-          role: {
-            type: ADMIN_ROLE
-          },
-          subscriptions: {
-            some: {
-              active: true
-            }
-          }
-        },
-        include: {
-          config: true,
-          subscriptions: true,
-          role: true,
-          app_config: true,
-        }
-      });
-
-      this.prisma.$disconnect();
-
-      return Right.success(results.map((result) => this.mapper.toDomain(result)));
-    } catch (error: any) {
-      this.prisma.$disconnect();
-      return Left.error(error);
-    }
-  }
-
+  
   @Log(process.env.LOG_LEVEL)
   public async findUsersWithExpiredSubscriptions(adminId: string): Promise<Either<Error | UserNotExistError, User[]>> {
     throw new Error("Method not implemented.");

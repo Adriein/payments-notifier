@@ -14,6 +14,8 @@ import { CreateUserHandler } from "../../../Backoffice/User/Application/Create/C
 import { UpdatePaymentHandler } from "../../../Backoffice/User/Application/Update/UpdatePaymentHandler";
 import { DeleteUserHandler } from "../../../Backoffice/User/Application/Delete/DeleteUserHandler";
 import { CreatePricingHandler } from "../../../Backoffice/Pricing/Application/Create/CreatePricingHandler";
+import { UserFinder } from "../../../Backoffice/User/Application/Service/UserFinder";
+import { SubscriptionRepository } from "../../../Backoffice/User/Infrastructure/Data/SubscriptionRepository";
 
 export default class CommandHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -22,7 +24,10 @@ export default class CommandHandlerFactory {
   private dietRepository: DietRepository = new DietRepository();
   private pricingRepository: PricingRepository = new PricingRepository();
   private userRepository: UserRepository = new UserRepository();
+  private subscriptionRepository: SubscriptionRepository = new SubscriptionRepository();
   private cryptoService: CryptoService = new CryptoService();
+
+  private userFinder = new UserFinder(this.userRepository);
 
 
   constructor() {
@@ -67,12 +72,12 @@ export default class CommandHandlerFactory {
 
     this.handlers.set(
       CreateUserHandler.name,
-      new CreateUserHandler(this.userRepository, QueryBus.instance(), this.cryptoService)
+      new CreateUserHandler(this.userRepository, this.subscriptionRepository, QueryBus.instance(), this.cryptoService)
     );
 
     this.handlers.set(
       UpdatePaymentHandler.name,
-      new UpdatePaymentHandler(this.userRepository, QueryBus.instance())
+      new UpdatePaymentHandler(this.userFinder, this.subscriptionRepository)
     );
 
     this.handlers.set(

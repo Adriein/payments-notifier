@@ -18,6 +18,7 @@ export class CreateUserController extends BaseController<void> {
           req.body.username,
           req.body.email,
           req.body.pricingId,
+          req.body.pricingDuration,
           req.body.lastPaymentDate,
           req.currentUser!.id!
         )

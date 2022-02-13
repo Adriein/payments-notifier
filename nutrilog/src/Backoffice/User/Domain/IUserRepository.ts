@@ -10,10 +10,6 @@ export interface IUserRepository extends IRepository<User> {
 
   findByEmail(email: string): Promise<Either<Error | UserNotExistError, User>>;
 
-  findUsersWithActiveSubscriptions(adminId: string): Promise<Either<Error | UserNotExistError, User[]>>
-
-  findAdmins(): Promise<Either<Error | UserNotExistError, User[]>>;
-
   findUsersWithExpiredSubscriptions(adminId: string): Promise<Either<Error | UserNotExistError, User[]>>;
 
   findUsersNotWarned(adminId: string): Promise<Either<Error | UserNotExistError, User[]>>;

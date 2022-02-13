@@ -23,6 +23,7 @@ import { GetUserProfileHandler } from "../../../Backoffice/User/Application/Find
 import { GetNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/GetNutritionHandler";
 import { GetDietResponseBuilder } from "../../../Alimentation/Diet/Application/Services/GetDietResponseBuilder";
 import { SubscriptionRepository } from "../../../Backoffice/User/Infrastructure/Data/SubscriptionRepository";
+import { UserFinder } from "../../../Backoffice/User/Application/Service/UserFinder";
 
 export default class QueryHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -38,6 +39,8 @@ export default class QueryHandlerFactory {
   private roleRepository: RoleRepository = new RoleRepository();
   private nutritionRepository: NutritionRepository = new NutritionRepository();
   private nutritionBuilder = new NutritionResponseBuilder();
+
+  private userFinder = new UserFinder(this.userRepository);
 
   constructor() {
     this.register();
@@ -90,7 +93,7 @@ export default class QueryHandlerFactory {
 
     this.handlers.set(
       GetUserProfileHandler.name,
-      new GetUserProfileHandler(this.userRepository, this.subscriptionRepository, QueryBus.instance())
+      new GetUserProfileHandler(this.userRepository, this.userFinder, this.subscriptionRepository, QueryBus.instance())
     );
 
     this.handlers.set(

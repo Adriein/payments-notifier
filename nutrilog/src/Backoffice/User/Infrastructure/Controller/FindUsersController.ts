@@ -23,7 +23,7 @@ export class FindUsersController extends BaseController<NutrilogResponse<FindUse
       const filters = req.body.filters || [];
       const query = new FindUsersQuery(filters, req.currentUser!.id, req.body.page, req.body.quantity);
 
-      const response = await this.queryBus.ask(query);
+      const response = await this.queryBus.ask<NutrilogResponse<FindUserResponse[], UsersMetadata>>(query);
 
       res.status(200).send(response);
     } catch (error) {
