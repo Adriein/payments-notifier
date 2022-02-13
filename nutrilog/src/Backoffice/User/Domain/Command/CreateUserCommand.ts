@@ -6,6 +6,7 @@ export class CreateUserCommand implements ICommand {
     public username: string,
     public email: string,
     public pricingId: string,
+    public pricingDuration: number,
     public lastPaymentDate: string,
     public adminId: string,
   ) {

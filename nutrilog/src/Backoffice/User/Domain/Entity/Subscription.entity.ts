@@ -9,14 +9,14 @@ export class Subscription extends AggregateRoot {
     userId: ID,
     pricingId: ID,
     lastPayment: DateVo,
-    validTo: DateVo,
+    pricingDuration: number,
   ): Subscription {
     return new Subscription(
       ID.generate(),
       userId,
       pricingId,
       lastPayment,
-      validTo,
+      Subscription.expirationDate(lastPayment, pricingDuration),
       false,
       false,
       true,
@@ -75,27 +75,31 @@ export class Subscription extends AggregateRoot {
     return this._isExpired;
   };
 
-  public expirationDate = (pricingDuration: number) => {
-    return Time.add(this._lastPayment.value, pricingDuration);
+  public static expirationDate = (lastPaymentDate: DateVo, pricingDuration: number): DateVo => {
+    return new DateVo(Time.add(lastPaymentDate.value, pricingDuration));
   }
 
   private checkExpired = (pricingDuration: number): void => {
-    const expirationDate = this.expirationDate(pricingDuration);
-    if (Time.equal(new Date(), expirationDate)) {
+    const expirationDate = Subscription.expirationDate(this._lastPayment, pricingDuration);
+    if (Time.equal(Time.now(), expirationDate.value)) {
       this._isExpired = true;
+      this.entityUpdated();
     }
   }
 
-  public daysExpired = (pricingDuration: number): number => {
-    const expirationDate = Time.add(this._lastPayment.value, pricingDuration)
-    return Time.diff(expirationDate, new Date());
+  public daysExpired = (): number => {
+    return Time.diff(this._validTo.value, Time.now());
   };
+
+  public daysToExpire = (): number => {
+    return Time.diff(this._validTo.value, Time.now());
+  }
 
   public isAboutToExpire = (daysToWarn: number | undefined = 5): boolean => {
     const expirationDate = Time.add(this._lastPayment.value, 5);
     const warningDate = Time.subtract(expirationDate, daysToWarn)
 
-    return Time.equal(new Date(), warningDate);
+    return Time.equal(Time.now(), warningDate);
   };
 
   public deactivate = (): void => {
@@ -105,6 +109,7 @@ export class Subscription extends AggregateRoot {
 
   public warningIsSent(): void {
     this._isWarned = true;
+    this.entityUpdated();
   }
 
 }

@@ -6,7 +6,7 @@ import { RegisteredAdminDomainEventHandler } from "../../../Backoffice/User/Appl
 import { UserRepository } from "../../../Backoffice/User/Infrastructure/Data/UserRepository";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { QueryBus } from "../Bus/QueryBus";
-import { CreateAppConfigDomainEventHandler } from "../../../Backoffice/AppConfig/Application/Create/CreateAppConfigDomainEventHandler";
+import { AdminCreatedDomainEventHandler } from "../../../Backoffice/AppConfig/Application/Create/AdminCreatedDomainEventHandler";
 import { AppConfigRepository } from "../../../Backoffice/AppConfig/Infrastructure/AppConfigRepository";
 
 export default class DomainEventHandlerFactory {
@@ -39,8 +39,8 @@ export default class DomainEventHandlerFactory {
     );
 
     this.handlers.set(
-      CreateAppConfigDomainEventHandler.name,
-      new CreateAppConfigDomainEventHandler(this.appConfigRepository)
+      AdminCreatedDomainEventHandler.name,
+      new AdminCreatedDomainEventHandler(this.appConfigRepository)
     );
   }
 

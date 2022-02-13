@@ -14,11 +14,14 @@ import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { USER_ROLE } from "../../Domain/constants";
 import { CryptoService } from "../../../../Shared/Domain/Services/CryptoService";
+import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
+import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements IHandler<void> {
   constructor(
-    private repository: IUserRepository,
+    private userRepository: IUserRepository,
+    private subscriptionRepository: ISubscriptionRepository,
     private queryBus: IQueryBus,
     private readonly crypto: CryptoService
   ) {}
@@ -41,11 +44,19 @@ export class CreateUserHandler implements IHandler<void> {
       new ID(role.id)
     );
 
-    await this.repository.save(user);
+    await this.userRepository.save(user);
+
+    const subscription = user.createSubscription(
+      new ID(command.pricingId),
+      new DateVo(command.lastPaymentDate),
+      command.pricingDuration
+    );
+
+    await this.subscriptionRepository.save(subscription);
   }
 
   private async ensureUserNotExists(email: Email): Promise<void> {
-    const result = await this.repository.findByEmail(email.value);
+    const result = await this.userRepository.findByEmail(email.value);
 
     if (result.isRight()) {
       throw new UserAlreadyExistsError();

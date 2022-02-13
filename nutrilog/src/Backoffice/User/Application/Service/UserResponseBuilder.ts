@@ -18,7 +18,7 @@ export class UserResponseBuilder {
       config: {
         sendNotifications: user.sendNotifications(),
         sendWarnings: user.sendWarnings(),
-        role: user.roleId(),
+        role: user.roleId().value,
         language: user.language()
       },
       subscription: await this.addPricingToSubscriptionList(subscriptionList)

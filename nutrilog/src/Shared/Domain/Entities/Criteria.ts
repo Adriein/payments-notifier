@@ -21,6 +21,10 @@ export class Criteria<T> {
     this._filters.push(new Filter<T>(field, OPERATORS.equal, value));
   }
 
+  public orderBy(field: keyof T, value: KeyReturnType<T>): void {
+    this._filters.push(new Filter<T>(field, OPERATORS.order, value));
+  }
+
   public like(field: keyof T, value: KeyReturnType<T>): void {
     this._filters.push(new Filter<T>(field, OPERATORS.like, value));
   }

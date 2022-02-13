@@ -5,7 +5,7 @@ import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { UserConfig } from "./UserConfig.entity";
 import { Subscription } from "./Subscription.entity";
 import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
-import { DeactivatedSubscriptionDomainEvent } from "../DomainEvents/DeactivatedSubscriptionDomainEvent";
+import { RenewedSubscriptionDomainEvent } from "../DomainEvents/RenewedSubscriptionDomainEvent";
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
 
 export class User extends AggregateRoot {
@@ -76,14 +76,14 @@ export class User extends AggregateRoot {
     return this._config.sendWarnings();
   }
 
-  public async renewSubscription(pricingId: ID, paymentDate: DateVo, validTo: DateVo): Promise<Subscription> {
-    this.addEvent(new DeactivatedSubscriptionDomainEvent(this.id()));
+  public async renewSubscription(pricingId: ID, paymentDate: DateVo, pricingDuration: number): Promise<Subscription> {
+    this.addEvent(new RenewedSubscriptionDomainEvent(this.id()));
     await DomainEventsManager.publishEvents(this.id());
-    return Subscription.build(this.id(), pricingId, paymentDate, validTo);
+    return Subscription.build(this.id(), pricingId, paymentDate, pricingDuration);
   }
 
-  public createSubscription(pricingId: ID, paymentDate: DateVo, validTo: DateVo): Subscription {
-    return Subscription.build(this.id(), pricingId, paymentDate, validTo);
+  public createSubscription(pricingId: ID, paymentDate: DateVo, pricingDuration: number): Subscription {
+    return Subscription.build(this.id(), pricingId, paymentDate, pricingDuration);
   }
 
   public acceptWarnings(warnings: boolean): void {
@@ -92,7 +92,7 @@ export class User extends AggregateRoot {
 
   public async deactivate(): Promise<void> {
     this._active = false;
-    this.addEvent(new DeactivatedSubscriptionDomainEvent(this.id()));
+    this.addEvent(new RenewedSubscriptionDomainEvent(this.id()));
     await DomainEventsManager.publishEvents(this.id());
   }
 }

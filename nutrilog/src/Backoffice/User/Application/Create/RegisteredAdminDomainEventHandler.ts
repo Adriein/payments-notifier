@@ -90,7 +90,7 @@ export class RegisteredAdminDomainEventHandler implements IDomainEventHandler {
     const subscription = user.createSubscription(
       new ID(pricing.id),
       new DateVo(new Date().toString()),
-      new DateVo(Time.add(new Date(), pricing.duration))
+      pricing.duration
     );
 
     await this.subscriptionRepository.save(subscription);

@@ -103,6 +103,7 @@ export class FindUsersHandler implements IHandler<NutrilogResponse<FindUserRespo
     const criteria = new Criteria<SubscriptionFilter>(1, 1);
 
     criteria.equal('userId', userId);
+    criteria.equal('isActive', true);
 
     const result = await this.subscriptionRepository.find(criteria);
 

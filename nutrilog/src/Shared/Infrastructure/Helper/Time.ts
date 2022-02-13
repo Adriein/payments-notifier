@@ -31,4 +31,8 @@ export class Time {
   public static format(date: Date, format: string): string {
     return dayjs(date).format(format)
   }
+
+  public static now(): Date {
+    return new Date();
+  }
 }

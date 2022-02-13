@@ -21,4 +21,5 @@ export enum OPERATORS {
   and = 'AND',
   or = 'OR',
   like = 'contains',
+  order = 'orderBy'
 }
