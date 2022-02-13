@@ -2,13 +2,12 @@ export type FindUserResponse = {
   id: string,
   username: string,
   email: string,
-  defaulter: boolean,
   active: boolean,
   subscription: GetSubscriptionResponse[],
   config: GetConfigResponse,
 };
 
-type GetSubscriptionResponse = {
+export type GetSubscriptionResponse = {
   pricing: SubscriptionPricing,
   lastPayment: string,
   validTo: string,

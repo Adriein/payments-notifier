@@ -40,6 +40,34 @@ export class Subscription extends AggregateRoot {
     super(_id, _createdAt, _updatedAt);
   }
 
+  public pricingId = (): string => {
+    return this._pricingId.value;
+  }
+
+  public paymentDate = (): Date => {
+    return this._lastPayment.value;
+  };
+
+  public validTo(): Date {
+    return this._validTo.value;
+  }
+
+  public isNotified = (): boolean => {
+    return this._isNotified;
+  };
+
+  public isWarned = (): boolean => {
+    return this._isWarned;
+  };
+
+  public isActive = (): boolean => {
+    return this._isActive;
+  };
+
+  public userId = (): ID => {
+    return this._userId;
+  }
+
   public hasExpired = (pricingDuration?: number): boolean => {
     if (pricingDuration) {
       this.checkExpired(pricingDuration);
@@ -75,31 +103,8 @@ export class Subscription extends AggregateRoot {
     this.entityUpdated();
   }
 
-  public pricingId = (): string => {
-    return this._pricingId.value;
-  }
-
-  public paymentDate = (): Date => {
-    return this._lastPayment.value;
-  };
-
-  public validTo(): Date {
-    return this._validTo.value;
-  }
-
-  public isNotified = (): boolean => {
-    return this._isNotified;
-  };
-
-  public isWarned = (): boolean => {
-    return this._isWarned;
-  };
-
-  public isActive = (): boolean => {
-    return this._isActive;
-  };
-
   public warningIsSent(): void {
     this._isWarned = true;
   }
+
 }

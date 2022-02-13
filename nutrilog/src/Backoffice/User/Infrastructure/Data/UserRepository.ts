@@ -23,7 +23,7 @@ export class UserRepository implements IUserRepository {
     try {
       await this.prisma.user.update({
         where: {
-          id: user.id()
+          id: user.id().value
         },
         data: {
           active: false,
@@ -111,7 +111,7 @@ export class UserRepository implements IUserRepository {
       const data = this.mapper.toUpdateDataModel(entity);
       await this.prisma.user.update({
         where: {
-          id: entity.id()
+          id: entity.id().value
         },
         data
       });

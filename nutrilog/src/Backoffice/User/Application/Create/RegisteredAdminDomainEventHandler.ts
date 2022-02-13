@@ -24,7 +24,7 @@ import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 
 @DomainEventsHandler(AdminRegisteredDomainEvent)
-export class CreateAdminDomainEventHandler implements IDomainEventHandler {
+export class RegisteredAdminDomainEventHandler implements IDomainEventHandler {
   constructor(
     private repository: IUserRepository,
     private subscriptionRepository: ISubscriptionRepository,

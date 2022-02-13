@@ -7,51 +7,47 @@ import { FindUserResponse } from "./FindUserResponse";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { UserResponseBuilder } from "../Service/UserResponseBuilder";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
-import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 import { USER_FILTERS, USER_ROLE } from "../../Domain/constants";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { UserFilter } from "../../Domain/UserFilter";
-import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { NutrilogResponse } from "../../../../Shared/Application/NutrilogResponse";
 import { UsersMetadata } from "./UsersMetadata";
+import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
+import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
+import { SubscriptionFilter } from "../../Domain/SubscriptionFilter";
+import { User } from "../../Domain/Entity/User.entity";
+import { Subscription } from "../../Domain/Entity/Subscription.entity";
 
 @QueryHandler(FindUsersQuery)
 export class FindUsersHandler implements IHandler<NutrilogResponse<FindUserResponse[], UsersMetadata>> {
   public constructor(
-    private readonly repository: IUserRepository,
-    private readonly pricing: IQueryBus<PricingResponse>,
-    private readonly role: IQueryBus<SearchRoleResponse>
+    private readonly userRepository: IUserRepository,
+    private readonly subscriptionRepository: ISubscriptionRepository,
+    private readonly queryBus: IQueryBus,
   ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: FindUsersQuery): Promise<NutrilogResponse<FindUserResponse[], UsersMetadata>> {
-    const presenter = new UserResponseBuilder();
+    const presenter = new UserResponseBuilder(this.queryBus);
     const responses: FindUserResponse[] = [];
 
     const { filters, adminId, page, quantity } = query;
     const id = new ID(adminId);
 
-    const criteria = await this.createCriteria(id.value, page, quantity, filters);
+    const userCriteria = await this.createUserCriteria(id.value, page, quantity, filters);
 
-    const result = await this.repository.find(criteria);
+    const userList = await this.findUsersByCriteria(userCriteria);
 
-    if (result.isLeft()) {
-      throw result.value;
+    for (const user of userList) {
+      const subscriptionList = await this.findSubscriptionByUser(user.id());
+
+      responses.push(await presenter.run(user, subscriptionList));
     }
 
-    const users = result.value;
 
-    for (const user of users) {
-      const pricing = await this.pricing.ask(new GetPricingQuery(user.pricingId()));
-
-      const userResponse = presenter.run(user, pricing);
-      responses.push(userResponse);
-    }
-
-    const totalUsersResponse = await this.repository.countTotalUsers(adminId);
+    const totalUsersResponse = await this.userRepository.countTotalUsers(adminId);
 
     if (totalUsersResponse.isLeft()) {
       throw totalUsersResponse.value;
@@ -60,22 +56,22 @@ export class FindUsersHandler implements IHandler<NutrilogResponse<FindUserRespo
     return new NutrilogResponse(responses, new UsersMetadata(totalUsersResponse.value));
   }
 
-  private async createCriteria(
+  private async createUserCriteria(
     adminId: string,
     page: number,
     quantity: number,
     filters: FilterRequestDto[]
   ): Promise<Criteria<UserFilter>> {
-    const userRole = await this.role.ask(new SearchRoleQuery(USER_ROLE));
+    const userRole = await this.queryBus.ask<SearchRoleResponse>(new SearchRoleQuery(USER_ROLE));
     const criteria = new Criteria<UserFilter>(page, quantity);
 
     criteria.equal('ownerId', adminId);
     criteria.equal('roleId', userRole.id);
 
-    return this.mountSpecification(filters, criteria);
+    return this.mountUserSpecification(filters, criteria);
   }
 
-  private mountSpecification(filters: FilterRequestDto[], criteria: Criteria<UserFilter>): Criteria<UserFilter> {
+  private mountUserSpecification(filters: FilterRequestDto[], criteria: Criteria<UserFilter>): Criteria<UserFilter> {
     for (const filter of filters) {
       if (filter.field === USER_FILTERS.ACTIVE) {
         criteria.equal('active', true);
@@ -91,5 +87,29 @@ export class FindUsersHandler implements IHandler<NutrilogResponse<FindUserRespo
     }
 
     return criteria;
+  }
+
+  private async findUsersByCriteria(criteria: Criteria<UserFilter>): Promise<User[]> {
+    const result = await this.userRepository.find(criteria);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    return result.value;
+  }
+
+  private async findSubscriptionByUser(userId: ID): Promise<Subscription[]> {
+    const criteria = new Criteria<SubscriptionFilter>(1, 1);
+
+    criteria.equal('userId', userId);
+
+    const result = await this.subscriptionRepository.find(criteria);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    return result.value;
   }
 }

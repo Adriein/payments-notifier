@@ -2,7 +2,7 @@ import { RegisterApiUsageHandler } from '../../../Backoffice/Metrics';
 import { ApiUsageRepository } from '../../../Backoffice/Metrics/Infraestructure/Data/ApiUsageRepository';
 import { IDomainEventHandler } from '../../Domain/Interfaces/IDomainEventHandler';
 import { ConstructorFunc } from '../../Domain/types';
-import { CreateAdminDomainEventHandler } from "../../../Backoffice/User/Application/Create/CreateAdminDomainEventHandler";
+import { RegisteredAdminDomainEventHandler } from "../../../Backoffice/User/Application/Create/RegisteredAdminDomainEventHandler";
 import { UserRepository } from "../../../Backoffice/User/Infrastructure/Data/UserRepository";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { QueryBus } from "../Bus/QueryBus";
@@ -34,8 +34,8 @@ export default class DomainEventHandlerFactory {
   private register(): void {
     this.handlers.set(RegisterApiUsageHandler.name, new RegisterApiUsageHandler(this.apiUsageRepo));
     this.handlers.set(
-      CreateAdminDomainEventHandler.name,
-      new CreateAdminDomainEventHandler(this.userRepository, this.crypto, QueryBus.instance())
+      RegisteredAdminDomainEventHandler.name,
+      new RegisteredAdminDomainEventHandler(this.userRepository, this.crypto, QueryBus.instance())
     );
 
     this.handlers.set(

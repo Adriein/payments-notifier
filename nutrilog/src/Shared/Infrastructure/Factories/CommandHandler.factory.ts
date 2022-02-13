@@ -11,7 +11,6 @@ import { QueryBus } from "../Bus/QueryBus";
 import { ModifyDietHandler } from "../../../Alimentation/Diet/Application/Update/ModifyDietHandler";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
 import { CreateUserHandler } from "../../../Backoffice/User/Application/Create/CreateUserHandler";
-import { UpdateUserHandler } from "../../../Backoffice/User/Application/Update/UpdateUserHandler";
 import { UpdatePaymentHandler } from "../../../Backoffice/User/Application/Update/UpdatePaymentHandler";
 import { DeleteUserHandler } from "../../../Backoffice/User/Application/Delete/DeleteUserHandler";
 import { CreatePricingHandler } from "../../../Backoffice/Pricing/Application/Create/CreatePricingHandler";
@@ -68,12 +67,7 @@ export default class CommandHandlerFactory {
 
     this.handlers.set(
       CreateUserHandler.name,
-      new CreateUserHandler(this.userRepository, QueryBus.instance(), QueryBus.instance(), this.cryptoService)
-    );
-
-    this.handlers.set(
-      UpdateUserHandler.name,
-      new UpdateUserHandler(this.userRepository, QueryBus.instance())
+      new CreateUserHandler(this.userRepository, QueryBus.instance(), this.cryptoService)
     );
 
     this.handlers.set(

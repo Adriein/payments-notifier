@@ -1,36 +1,28 @@
-import { CreateDietHandler } from '../../../Alimentation/Diet/Application/Create/CreateDietHandler';
-import { CreateNutritionHandler } from '../../../Alimentation/Nutrition/Application/Create/CreateNutritionHandler';
 import { NutritionRepository } from '../../../Alimentation/Nutrition/Infrastructure/Data/NutritionRepository';
 import { ConstructorFunc } from '../../Domain/types';
 import { GetDietsHandler } from '../../../Alimentation/Diet/Application/Find/GetDietsHandler';
-import { ModifyDietHandler } from '../../../Alimentation/Diet/Application/Update/ModifyDietHandler';
 import { DietRepository } from '../../../Alimentation/Diet/Infrastructure/Data/DietRepository';
 import { QueryBus } from '../Bus/QueryBus';
-import { KcalCalculator } from '../../../Alimentation/Nutrition/Domain/KcalCalculator';
 import { SearchFoodHandler } from '../../../Alimentation/Food/Application/SearchFoodHandler';
 import { FoodRepository } from '../../../Alimentation/Food/Infrastructure/Data/FoodRepository';
 import { NutritionixRepository } from '../../../Alimentation/Food/Infrastructure/Data/NutritionixRepository';
 import { AuthRepository } from "../../../Auth/Infrastructure/Data/AuthRepository";
 import { SignInHandler } from "../../../Auth/Application/SignInHandler";
 import { CryptoService } from "../../Domain/Services/CryptoService";
-import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
 import { PricingRepository } from "../../../Backoffice/Pricing/Infraestructure/Data/PricingRepository";
 import { UserRepository } from "../../../Backoffice/User/Infrastructure/Data/UserRepository";
-import { UpdateUserHandler } from "../../../Backoffice/User/Application/Update/UpdateUserHandler";
-import { UpdatePaymentHandler } from "../../../Backoffice/User/Application/Update/UpdatePaymentHandler";
 import { GetPricingHandler } from "../../../Backoffice/Pricing/Application/Find/GetPricingHandler";
 import { FindUsersHandler } from "../../../Backoffice/User/Application/Find/FindUsersHandler";
 import { SearchRoleHandler } from "../../../Backoffice/Role/Application/SearchRoleHandler";
 import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
 import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/Find/SearchPricingHandler";
-import { CreateUserHandler } from "../../../Backoffice/User/Application/Create/CreateUserHandler";
-import { DeleteUserHandler } from "../../../Backoffice/User/Application/Delete/DeleteUserHandler";
 import { IHandler } from "../../Domain/Interfaces/IHandler";
 import { FindNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/FindNutritionHandler";
 import { NutritionResponseBuilder } from "../../../Alimentation/Nutrition/Application/Services/NutritionResponseBuilder";
 import { GetUserProfileHandler } from "../../../Backoffice/User/Application/Find/GetUserProfileHandler";
 import { GetNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/GetNutritionHandler";
 import { GetDietResponseBuilder } from "../../../Alimentation/Diet/Application/Services/GetDietResponseBuilder";
+import { SubscriptionRepository } from "../../../Backoffice/User/Infrastructure/Data/SubscriptionRepository";
 
 export default class QueryHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -42,6 +34,7 @@ export default class QueryHandlerFactory {
   private cryptoService: CryptoService = new CryptoService();
   private pricingRepository: PricingRepository = new PricingRepository();
   private userRepository: UserRepository = new UserRepository();
+  private subscriptionRepository: SubscriptionRepository = new SubscriptionRepository();
   private roleRepository: RoleRepository = new RoleRepository();
   private nutritionRepository: NutritionRepository = new NutritionRepository();
   private nutritionBuilder = new NutritionResponseBuilder();
@@ -97,12 +90,12 @@ export default class QueryHandlerFactory {
 
     this.handlers.set(
       GetUserProfileHandler.name,
-      new GetUserProfileHandler(this.userRepository, QueryBus.instance())
+      new GetUserProfileHandler(this.userRepository, this.subscriptionRepository, QueryBus.instance())
     );
 
     this.handlers.set(
       FindUsersHandler.name,
-      new FindUsersHandler(this.userRepository, QueryBus.instance(), QueryBus.instance())
+      new FindUsersHandler(this.userRepository, this.subscriptionRepository, QueryBus.instance())
     );
 
     //Role

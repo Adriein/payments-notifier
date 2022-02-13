@@ -64,8 +64,8 @@ export class User extends AggregateRoot {
     return this._config.lang();
   }
 
-  public roleId = (): string => {
-    return this._roleId.value;
+  public roleId = (): ID => {
+    return this._roleId;
   }
 
   public sendNotifications = (): boolean => {
