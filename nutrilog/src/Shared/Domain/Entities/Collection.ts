@@ -1,4 +1,6 @@
-export class Collection<T = any> {
+import { BaseEntity } from "./BaseEntity";
+
+export class Collection<T extends BaseEntity> {
   constructor(private collection: T[]) {}
 
   public isEmpty(): boolean {
@@ -10,7 +12,7 @@ export class Collection<T = any> {
     return this;
   }
 
-  public get(): T[] {
+  public data(): T[] {
     return this.collection;
   }
 
@@ -21,13 +23,5 @@ export class Collection<T = any> {
   public add(item: T): this {
     this.collection.push(item)
     return this;
-  }
-
-  public static flat<T>(array: T[][]) {
-    const flattenedArray = array.reduce((flat: T[], value: T[]) => {
-      return [ ...flat, ...value ];
-    }, []);
-
-    return new Collection<T>(flattenedArray);
   }
 }

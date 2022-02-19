@@ -1,4 +1,4 @@
-import { CustomError } from "../../../Shared/Domain/Error/CustomError";
+import { CustomError } from "../../../../Shared/Domain/Error/CustomError";
 
 export class UserAlreadyExistsError extends CustomError {
   statusCode = 400;

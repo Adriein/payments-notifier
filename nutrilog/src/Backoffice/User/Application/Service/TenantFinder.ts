@@ -1,20 +1,20 @@
-import { User } from "../../Domain/Entity/User.entity";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { UserFilter } from "../../Domain/Filter/UserFilter";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
-import { ADMIN_ROLE } from "../../Domain/constants";
+import { TENANT_ROLE } from "../../Domain/constants";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
+import { Tenant } from "../../Domain/Entity/Tenant.entity";
 
-export class AdminFinder {
+export class TenantFinder {
   constructor(private readonly repository: IUserRepository, private readonly queryBus: IQueryBus) {}
 
-  public async execute(): Promise<User> {
+  public async execute(): Promise<Tenant[]> {
     const criteria = new Criteria<UserFilter>();
-    const adminRole = await this.queryBus.ask<SearchRoleResponse>(new SearchRoleQuery(ADMIN_ROLE));
+    const tenantRole = await this.queryBus.ask<SearchRoleResponse>(new SearchRoleQuery(TENANT_ROLE));
 
-    criteria.equal('roleId', adminRole.id);
+    criteria.equal('roleId', tenantRole.id);
     criteria.equal('active', true);
 
     const result = await this.repository.find(criteria);
@@ -23,6 +23,6 @@ export class AdminFinder {
       throw result.value;
     }
 
-    return result.value[0];
+    return result.value as Tenant[];
   }
 }

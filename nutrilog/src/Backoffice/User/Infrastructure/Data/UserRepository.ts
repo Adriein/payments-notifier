@@ -2,14 +2,14 @@ import { IUserRepository } from "../../Domain/IUserRepository";
 import { User } from "../../Domain/Entity/User.entity";
 import { UserMapper } from "./UserMapper";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
-import { ADMIN_ROLE, USER_ROLE } from "../../Domain/constants";
+import { ADMIN_ROLE, CLIENT_ROLE } from "../../Domain/constants";
 import Database from "../../../../Shared/Infrastructure/Data/Database";
 import { Either } from "../../../../Shared/Domain/types";
-import { UserNotExistError } from "../../Domain/UserNotExistError";
+import { UserNotExistError } from "../../Domain/Error/UserNotExistError";
 import { Left } from "../../../../Shared/Domain/Entities/Left";
 import { Right } from "../../../../Shared/Domain/Entities/Right";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { UserFilter } from "../../Domain/UserFilter";
+import { UserFilter } from "../../Domain/Filter/UserFilter";
 import { PrismaQueryBuilder } from "../../../../Shared/Infrastructure/Data/PrismaQueryBuilder";
 import { UserMysqlMapper } from "./UserMysqlMapper";
 import { Prisma } from "@prisma/client";
@@ -150,7 +150,7 @@ export class UserRepository implements IUserRepository {
       return Left.error(error);
     }
   }
-  
+
   @Log(process.env.LOG_LEVEL)
   public async findUsersWithExpiredSubscriptions(adminId: string): Promise<Either<Error | UserNotExistError, User[]>> {
     throw new Error("Method not implemented.");

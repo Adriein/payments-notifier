@@ -3,7 +3,7 @@ import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHand
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
-import { UserNotExistError } from "../../Domain/UserNotExistError";
+import { UserNotExistError } from "../../Domain/Error/UserNotExistError";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 
 

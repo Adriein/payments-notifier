@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateUserCommand } from "../../Domain/Command/CreateUserCommand";
+import { CreateClientCommand } from "../../Application/CreateClient/CreateClientCommand";
 import { BaseController } from "../../../../Shared/Infrastructure/BaseController";
 import { Controller } from "../../../../Shared/Infrastructure/Decorators/controller";
 import { post } from "../../../../Shared/Infrastructure/Decorators/routes";
@@ -14,7 +14,7 @@ export class CreateUserController extends BaseController<void> {
   public async createUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       await this.commandBus.dispatch(
-        new CreateUserCommand(
+        new CreateClientCommand(
           req.body.username,
           req.body.email,
           req.body.pricingId,

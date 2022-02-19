@@ -7,16 +7,16 @@ import { FindUserResponse } from "./FindUserResponse";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { UserResponseBuilder } from "../Service/UserResponseBuilder";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { USER_FILTERS, USER_ROLE } from "../../Domain/constants";
+import { USER_FILTERS, CLIENT_ROLE } from "../../Domain/constants";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { UserFilter } from "../../Domain/UserFilter";
+import { UserFilter } from "../../Domain/Filter/UserFilter";
 import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { NutrilogResponse } from "../../../../Shared/Application/NutrilogResponse";
 import { UsersMetadata } from "./UsersMetadata";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
-import { SubscriptionFilter } from "../../Domain/SubscriptionFilter";
+import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { User } from "../../Domain/Entity/User.entity";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
 
@@ -62,10 +62,10 @@ export class FindUsersHandler implements IHandler<NutrilogResponse<FindUserRespo
     quantity: number,
     filters: FilterRequestDto[]
   ): Promise<Criteria<UserFilter>> {
-    const userRole = await this.queryBus.ask<SearchRoleResponse>(new SearchRoleQuery(USER_ROLE));
+    const userRole = await this.queryBus.ask<SearchRoleResponse>(new SearchRoleQuery(CLIENT_ROLE));
     const criteria = new Criteria<UserFilter>(page, quantity);
 
-    criteria.equal('ownerId', adminId);
+    criteria.equal('tenantId', adminId);
     criteria.equal('roleId', userRole.id);
 
     return this.mountUserSpecification(filters, criteria);

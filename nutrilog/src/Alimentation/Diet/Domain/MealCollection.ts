@@ -7,7 +7,7 @@ export class MealCollection extends Collection<Meal> {
   }
 
   public totalKcal(): number {
-    return this.get().reduce((kcal: number, meal: Meal) => {
+    return this.data().reduce((kcal: number, meal: Meal) => {
       return kcal + meal.kcal();
     }, 0);
   }

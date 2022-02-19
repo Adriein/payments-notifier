@@ -2,7 +2,11 @@ import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
 import { AggregateRoot } from "../../../../Shared/Domain/Entities/AggregateRoot";
-
+import { SubscriptionHistory } from "./SubscriptionHistory.entity";
+import { SUBSCRIPTION_STATUS } from "../constants";
+import { SubscriptionHistoryCollection } from "./SubscriptionHistoryCollection";
+import { SendAboutToExpireEmailDomainEvent } from "../../../Notifications/Domain/DomainEvents/SendAboutToExpireEmailDomainEvent";
+import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
 
 export class Subscription extends AggregateRoot {
   public static build(
@@ -11,16 +15,16 @@ export class Subscription extends AggregateRoot {
     lastPayment: DateVo,
     pricingDuration: number,
   ): Subscription {
+    const event = SubscriptionHistory.build(SUBSCRIPTION_STATUS.CREATED);
     return new Subscription(
       ID.generate(),
       userId,
       pricingId,
       lastPayment,
       Subscription.expirationDate(lastPayment, pricingDuration),
-      false,
-      false,
       true,
       false,
+      SubscriptionHistoryCollection.build([ event ])
     );
   }
 
@@ -30,10 +34,9 @@ export class Subscription extends AggregateRoot {
     private _pricingId: ID,
     private _lastPayment: DateVo,
     private _validTo: DateVo,
-    private _isWarned: boolean,
-    private _isNotified: boolean,
     private _isActive: boolean,
     private _isExpired: boolean,
+    private _history: SubscriptionHistoryCollection,
     _createdAt?: Date,
     _updatedAt?: Date
   ) {
@@ -52,14 +55,6 @@ export class Subscription extends AggregateRoot {
     return this._validTo.value;
   }
 
-  public isNotified = (): boolean => {
-    return this._isNotified;
-  };
-
-  public isWarned = (): boolean => {
-    return this._isWarned;
-  };
-
   public isActive = (): boolean => {
     return this._isActive;
   };
@@ -68,10 +63,7 @@ export class Subscription extends AggregateRoot {
     return this._userId;
   }
 
-  public hasExpired = (pricingDuration?: number): boolean => {
-    if (pricingDuration) {
-      this.checkExpired(pricingDuration);
-    }
+  public isExpired = (): boolean => {
     return this._isExpired;
   };
 
@@ -79,37 +71,39 @@ export class Subscription extends AggregateRoot {
     return new DateVo(Time.add(lastPaymentDate.value, pricingDuration));
   }
 
-  private checkExpired = (pricingDuration: number): void => {
+  private addEventToHistory(history: SubscriptionHistory): void {
+    this.entityUpdated();
+    this._history.add(history);
+  }
+
+  public checkIsExpired = (pricingDuration: number): void => {
     const expirationDate = Subscription.expirationDate(this._lastPayment, pricingDuration);
     if (Time.equal(Time.now(), expirationDate.value)) {
       this._isExpired = true;
-      this.entityUpdated();
+      this.addEventToHistory(SubscriptionHistory.build(SUBSCRIPTION_STATUS.EXPIRED));
     }
   }
 
-  public daysExpired = (): number => {
-    return Time.diff(this._validTo.value, Time.now());
-  };
-
-  public daysToExpire = (): number => {
-    return Time.diff(this._validTo.value, Time.now());
-  }
-
-  public isAboutToExpire = (daysToWarn: number | undefined = 5): boolean => {
+  public checkIsAboutToExpire = (daysToWarn: number | undefined = 5): void => {
     const expirationDate = Time.add(this._lastPayment.value, 5);
     const warningDate = Time.subtract(expirationDate, daysToWarn)
 
-    return Time.equal(Time.now(), warningDate);
+    const isAboutToExpire = Time.equal(Time.now(), warningDate);
+
+    if (isAboutToExpire) {
+      this.addEvent(new SendAboutToExpireEmailDomainEvent(this.id(), this.userId()));
+      this.addEventToHistory(SubscriptionHistory.build(SUBSCRIPTION_STATUS.ABOUT_TO_EXPIRE));
+      DomainEventsManager.publishEvents(this.id());
+    }
   };
+
+  public isAboutToExpire(): boolean {
+    return this._history.containsAboutToExpireEvent();
+  }
 
   public deactivate = (): void => {
     this._isActive = false;
     this.entityUpdated();
+    this.addEventToHistory(SubscriptionHistory.build(SUBSCRIPTION_STATUS.INACTIVE));
   }
-
-  public warningIsSent(): void {
-    this._isWarned = true;
-    this.entityUpdated();
-  }
-
 }

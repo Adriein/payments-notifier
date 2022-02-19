@@ -3,8 +3,8 @@ import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { LANG_ES } from "../constants";
 
 export class UserConfig extends BaseEntity {
-  public static build() {
-    return new UserConfig(ID.generate(), LANG_ES);
+  public static build(sendNotifications: boolean = false, sendWarnings: boolean = false) {
+    return new UserConfig(ID.generate(), LANG_ES, sendNotifications, sendWarnings);
   }
 
   constructor(
@@ -28,8 +28,23 @@ export class UserConfig extends BaseEntity {
     return this._sendWarnings;
   }
 
-  public warnings(warnings: boolean): void {
-    this._sendWarnings = warnings;
+  public activateWarnings(): void {
+    this._sendWarnings = true;
+    this.entityUpdated()
+  }
+
+  public deactivateWarnings(): void {
+    this._sendWarnings = false;
+    this.entityUpdated()
+  }
+
+  public activateNotifications(): void {
+    this._sendNotifications = true;
+    this.entityUpdated()
+  }
+
+  public deactivateNotifications(): void {
+    this._sendNotifications = false;
     this.entityUpdated()
   }
 }

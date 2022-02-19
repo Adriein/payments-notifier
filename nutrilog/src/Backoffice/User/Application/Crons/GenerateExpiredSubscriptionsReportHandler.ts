@@ -13,7 +13,7 @@ import { GetAllPricingQuery } from "../../../Pricing/Domain/Query/GetAllPricingQ
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { FindUserResponse } from "../Find/FindUserResponse";
 import { UserResponseBuilder } from "../Service/UserResponseBuilder";
-import { UserWithoutPricingError } from "../../Domain/UserWithoutPricingError";
+import { UserWithoutPricingError } from "../../Domain/Error/UserWithoutPricingError";
 
 @QueryHandler(GenerateExpiredSubscriptionsReportQuery)
 export class GenerateExpiredSubscriptionsReportHandler implements IHandler<void> {

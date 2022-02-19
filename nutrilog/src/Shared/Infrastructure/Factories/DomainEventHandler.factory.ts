@@ -2,11 +2,11 @@ import { RegisterApiUsageHandler } from '../../../Backoffice/Metrics';
 import { ApiUsageRepository } from '../../../Backoffice/Metrics/Infraestructure/Data/ApiUsageRepository';
 import { IDomainEventHandler } from '../../Domain/Interfaces/IDomainEventHandler';
 import { ConstructorFunc } from '../../Domain/types';
-import { RegisteredAdminDomainEventHandler } from "../../../Backoffice/User/Application/Create/RegisteredAdminDomainEventHandler";
+import { RegisteredTenantDomainEventHandler } from "../../../Backoffice/User/Application/CreateTenant/RegisteredTenantDomainEventHandler";
 import { UserRepository } from "../../../Backoffice/User/Infrastructure/Data/UserRepository";
 import { CryptoService } from "../../Domain/Services/CryptoService";
 import { QueryBus } from "../Bus/QueryBus";
-import { AdminCreatedDomainEventHandler } from "../../../Backoffice/AppConfig/Application/Create/AdminCreatedDomainEventHandler";
+import { TenantCreatedDomainEventHandler } from "../../../Backoffice/AppConfig/Application/Create/TenantCreatedDomainEventHandler";
 import { AppConfigRepository } from "../../../Backoffice/AppConfig/Infrastructure/AppConfigRepository";
 
 export default class DomainEventHandlerFactory {
@@ -34,13 +34,13 @@ export default class DomainEventHandlerFactory {
   private register(): void {
     this.handlers.set(RegisterApiUsageHandler.name, new RegisterApiUsageHandler(this.apiUsageRepo));
     this.handlers.set(
-      RegisteredAdminDomainEventHandler.name,
-      new RegisteredAdminDomainEventHandler(this.userRepository, this.crypto, QueryBus.instance())
+      RegisteredTenantDomainEventHandler.name,
+      new RegisteredTenantDomainEventHandler(this.userRepository, this.crypto, QueryBus.instance())
     );
 
     this.handlers.set(
-      AdminCreatedDomainEventHandler.name,
-      new AdminCreatedDomainEventHandler(this.appConfigRepository)
+      TenantCreatedDomainEventHandler.name,
+      new TenantCreatedDomainEventHandler(this.appConfigRepository)
     );
   }
 

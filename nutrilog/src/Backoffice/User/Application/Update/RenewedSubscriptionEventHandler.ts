@@ -3,7 +3,7 @@ import { DomainEventsHandler } from "../../../../Shared/Domain/Decorators/Domain
 import { RenewedSubscriptionDomainEvent } from "../../Domain/DomainEvents/RenewedSubscriptionDomainEvent";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { SubscriptionFilter } from "../../Domain/SubscriptionFilter";
+import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
 
 @DomainEventsHandler(RenewedSubscriptionDomainEvent)
@@ -17,7 +17,7 @@ export class RenewedSubscriptionEventHandler implements IDomainEventHandler {
     const subscriptionList = await this.findActiveSubscriptionList(event);
 
     const activeSubscription = await subscriptionList.getActiveSubscription();
-    
+
     activeSubscription.deactivate();
 
     await this.subscriptionRepository.update(activeSubscription);

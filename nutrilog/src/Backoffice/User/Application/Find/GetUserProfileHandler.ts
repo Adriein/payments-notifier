@@ -10,7 +10,7 @@ import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { SubscriptionFilter } from "../../Domain/SubscriptionFilter";
+import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { UserFinder } from "../Service/UserFinder";
 
 @QueryHandler(GetUserQuery)

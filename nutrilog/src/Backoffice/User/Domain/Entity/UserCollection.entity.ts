@@ -1,6 +1,6 @@
 import { Collection } from "../../../../Shared/Domain/Entities/Collection";
 import { User } from "./User.entity";
-import { UserWithoutPricingError } from "../UserWithoutPricingError";
+import { UserWithoutPricingError } from "../Error/UserWithoutPricingError";
 
 export class UserCollection extends Collection<User> {
   private readonly _defaulters: User[];
@@ -21,7 +21,7 @@ export class UserCollection extends Collection<User> {
   public longTermDefaulters(pricing: Map<string, number>): User[] {
     const result: User[] = [];
 
-    for (const user of this.get()) {
+    for (const user of this.data()) {
       const duration = pricing.get(user.pricingId());
 
       if (!duration) {
@@ -41,7 +41,7 @@ export class UserCollection extends Collection<User> {
   private checkDefaulters(): User[] {
     const result: User[] = [];
 
-    for (const user of this.get()) {
+    for (const user of this.data()) {
       if (user.isSubscriptionExpired()) {
         result.push(user);
       }

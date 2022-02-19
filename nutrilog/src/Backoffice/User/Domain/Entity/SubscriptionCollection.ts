@@ -1,6 +1,6 @@
 import { Collection } from "../../../../Shared/Domain/Entities/Collection";
 import { Subscription } from "./Subscription.entity";
-import { NoActiveSubscriptionError } from "../NoActiveSubscriptionError";
+import { NoActiveSubscriptionError } from "../Error/NoActiveSubscriptionError";
 
 export class SubscriptionCollection extends Collection<Subscription> {
   public static build(subscriptionList: Subscription[]): SubscriptionCollection {
@@ -12,7 +12,7 @@ export class SubscriptionCollection extends Collection<Subscription> {
   }
 
   public getActiveSubscription(): Subscription {
-    const subscription = this.get().find((subscription: Subscription) => subscription.isActive());
+    const subscription = this.data().find((subscription: Subscription) => subscription.isActive());
 
     if (!subscription) {
       throw new NoActiveSubscriptionError();

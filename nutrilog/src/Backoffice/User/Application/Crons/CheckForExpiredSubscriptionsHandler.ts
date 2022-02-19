@@ -8,11 +8,11 @@ import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { User } from "../../Domain/Entity/User.entity";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { UserFilter } from "../../Domain/UserFilter";
+import { UserFilter } from "../../Domain/Filter/UserFilter";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
-import { SubscriptionFilter } from "../../Domain/SubscriptionFilter";
+import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
 import { AdminFinder } from "../Service/AdminFinder";
 
@@ -34,7 +34,7 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
 
       const activeSubscription = await this.findActiveSubscription(admin.id());
 
-      if (activeSubscription.hasExpired(duration)) {
+      if (activeSubscription.isExpired(duration)) {
         await this.subscriptionRepository.update(activeSubscription);
       }
 
@@ -45,7 +45,7 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
 
         const activeSubscription = await this.findActiveSubscription(user.id());
 
-        if (activeSubscription.hasExpired(duration)) {
+        if (activeSubscription.isExpired(duration)) {
           await this.subscriptionRepository.update(activeSubscription);
         }
       }
@@ -75,7 +75,7 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
   private async findActiveUserListByAdmin(adminId: ID): Promise<User[]> {
     const criteria = new Criteria<UserFilter>();
 
-    criteria.equal('ownerId', adminId.value);
+    criteria.equal('tenantId', adminId.value);
     criteria.equal('active', true);
 
     const result = await this.userRepository.find(criteria);

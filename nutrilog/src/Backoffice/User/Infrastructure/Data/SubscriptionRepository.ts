@@ -9,7 +9,7 @@ import { Prisma } from "@prisma/client";
 import { SubscriptionMapper } from "./SubscriptionMapper";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
-import { SubscriptionFilter } from "../../Domain/SubscriptionFilter";
+import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { SubscriptionMysqlMapper } from "./SubscriptionMysqlMapper";
 
 export class SubscriptionRepository implements ISubscriptionRepository {

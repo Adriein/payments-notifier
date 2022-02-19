@@ -2,7 +2,7 @@ export interface UserFilter {
   name: string;
   active: boolean;
   roleId: string;
-  ownerId: string;
+  tenantId: string;
   email: string;
   isSubscriptionActive: boolean;
   sendWarnings: boolean;

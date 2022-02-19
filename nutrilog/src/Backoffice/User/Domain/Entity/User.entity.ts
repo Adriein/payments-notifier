@@ -9,27 +9,15 @@ import { RenewedSubscriptionDomainEvent } from "../DomainEvents/RenewedSubscript
 import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEventsManager";
 
 export class User extends AggregateRoot {
-  public static build(
-    ownerId: ID,
-    name: string,
-    password: Password,
-    email: Email,
-    config: UserConfig,
-    roleId: ID
-  ): User {
-    return new User(ID.generate(), name, password, email, config, ownerId, roleId, true);
-  }
-
   constructor(
     _id: ID,
     private _name: string,
     private _password: Password,
     private _email: Email,
     private _config: UserConfig,
-    private _ownerId: ID,
+    private _tenantId: ID,
     private _roleId: ID,
     private _active: boolean,
-    private _appConfigId?: ID,
     _createdAt?: Date,
     _updatedAt?: Date
   ) {
@@ -48,8 +36,8 @@ export class User extends AggregateRoot {
     return this._password.value;
   }
 
-  public ownerId(): string {
-    return this._ownerId.value;
+  public tenantId(): string {
+    return this._tenantId.value;
   }
 
   public isActive(): boolean {
@@ -85,11 +73,7 @@ export class User extends AggregateRoot {
   public createSubscription(pricingId: ID, paymentDate: DateVo, pricingDuration: number): Subscription {
     return Subscription.build(this.id(), pricingId, paymentDate, pricingDuration);
   }
-
-  public acceptWarnings(warnings: boolean): void {
-    this._config.warnings(warnings);
-  }
-
+  
   public async deactivate(): Promise<void> {
     this._active = false;
     this.addEvent(new RenewedSubscriptionDomainEvent(this.id()));
