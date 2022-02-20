@@ -12,18 +12,17 @@ import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { UserFilter } from "../../Domain/Filter/UserFilter";
 import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { NutrilogResponse } from "../../../../Shared/Application/NutrilogResponse";
-import { UsersMetadata } from "../Find/UsersMetadata";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { User } from "../../Domain/Entity/User.entity";
 import { FindTenantClientsResponseBuilder } from "./FindTenantClientsResponseBuilder";
 import { Client } from "../../Domain/Entity/Client.entity";
 
 @QueryHandler(FindTenantClientsQuery)
-export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindTenantClientsResponse[], UsersMetadata>> {
+export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindTenantClientsResponse[]>> {
   public constructor(private readonly userRepository: IUserRepository, private readonly queryBus: IQueryBus) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(query: FindTenantClientsQuery): Promise<NutrilogResponse<FindTenantClientsResponse[], UsersMetadata>> {
+  public async handle(query: FindTenantClientsQuery): Promise<NutrilogResponse<FindTenantClientsResponse[]>> {
     const presenter = new FindTenantClientsResponseBuilder();
 
     const { filters, tenantId, page, quantity } = query;
@@ -34,14 +33,8 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
     const clientList = await this.findClientsByCriteria(clientCriteria);
 
     const responses = clientList.map((client: Client) => presenter.run(client))
-
-    const totalUsersResponse = await this.userRepository.countTotalUsers(tenantId);
-
-    if (totalUsersResponse.isLeft()) {
-      throw totalUsersResponse.value;
-    }
-
-    return new NutrilogResponse(responses, new UsersMetadata(totalUsersResponse.value));
+    
+    return new NutrilogResponse(responses);
   }
 
   private async createClientCriteria(

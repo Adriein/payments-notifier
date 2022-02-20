@@ -1,14 +1,14 @@
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
-import { GetTotalUsersNumberQuery } from "../../Domain/Query/GetTotalUsersNumberQuery";
+import { GetTotalClientsQuery } from "./GetTotalClientsQuery";
 
-@QueryHandler(GetTotalUsersNumberQuery)
-export class GetTotalUsersNumberHandler implements IHandler<number> {
+@QueryHandler(GetTotalClientsQuery)
+export class GetTotalClientsHandler implements IHandler<number> {
   constructor(private repository: IUserRepository) {}
 
-  public async handle({ adminId }: GetTotalUsersNumberQuery): Promise<number> {
-    const result = await this.repository.countTotalUsers(adminId);
+  public async handle({ tenantId }: GetTotalClientsQuery): Promise<number> {
+    const result = await this.repository.countTotalUsers(tenantId);
 
     if (result.isLeft()) {
       throw result.value;
