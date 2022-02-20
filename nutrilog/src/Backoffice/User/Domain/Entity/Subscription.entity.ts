@@ -101,6 +101,12 @@ export class Subscription extends AggregateRoot {
     return this._history.containsAboutToExpireEvent();
   }
 
+  public isExpirationDateOlderThan(days: number) {
+    const diff = Time.diff(Time.now(), this.validTo());
+
+    return diff >= days;
+  }
+
   public deactivate = (): void => {
     this._isActive = false;
     this.entityUpdated();

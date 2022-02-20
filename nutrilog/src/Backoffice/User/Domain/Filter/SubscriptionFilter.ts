@@ -8,4 +8,5 @@ export interface SubscriptionFilter {
   validTo: DateVo;
   isActive: boolean;
   isWarned: boolean;
+  isExpired: boolean;
 }

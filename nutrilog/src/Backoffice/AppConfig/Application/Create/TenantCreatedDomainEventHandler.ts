@@ -2,7 +2,7 @@ import { IDomainEventHandler } from "../../../../Shared/Domain/Interfaces/IDomai
 import { DomainEventsHandler } from "../../../../Shared/Domain/Decorators/DomainEventsHandler.decorator";
 import { AppConfig } from "../../Domain/AppConfig.entity";
 import { IAppConfigRepository } from "../../Domain/IAppConfigRepository";
-import { TenantCreatedDomainEvent } from "../../../User/Application/CreateTenant/TenantCreatedDomainEvent";
+import { TenantCreatedDomainEvent } from "../../../User/Domain/DomainEvents/TenantCreatedDomainEvent";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 
 @DomainEventsHandler(TenantCreatedDomainEvent)

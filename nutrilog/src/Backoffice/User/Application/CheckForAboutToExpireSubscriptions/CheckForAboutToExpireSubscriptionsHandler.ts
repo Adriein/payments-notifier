@@ -1,5 +1,4 @@
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
-import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
@@ -15,8 +14,9 @@ import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { TenantFinder } from "../Service/TenantFinder";
 import { Tenant } from "../../Domain/Entity/Tenant.entity";
 import { Client } from "../../Domain/Entity/Client.entity";
+import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
 
-@QueryHandler(CheckForAboutToExpireSubscriptionsCommand)
+@CommandHandler(CheckForAboutToExpireSubscriptionsCommand)
 export class CheckForAboutToExpireSubscriptionsHandler implements IHandler<void> {
   constructor(
     private readonly userRepository: IUserRepository,

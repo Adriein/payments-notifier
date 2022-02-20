@@ -1,6 +1,5 @@
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
-import { CheckForExpiredSubscriptionsQuery } from "../../Domain/Query/CheckForExpiredSubscriptionsQuery";
-import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
+import { CheckForExpiredSubscriptionsCommand } from "./CheckForExpiredSubscriptionsCommand";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
@@ -14,38 +13,45 @@ import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
-import { AdminFinder } from "../Service/AdminFinder";
+import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
+import { Tenant } from "../../Domain/Entity/Tenant.entity";
+import { TenantFinder } from "../Service/TenantFinder";
+import { Client } from "../../Domain/Entity/Client.entity";
 
-@QueryHandler(CheckForExpiredSubscriptionsQuery)
+@CommandHandler(CheckForExpiredSubscriptionsCommand)
 export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly subscriptionRepository: ISubscriptionRepository,
-    private readonly finder: AdminFinder,
+    private readonly finder: TenantFinder,
     private readonly queryBus: IQueryBus
   ) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(command: CheckForExpiredSubscriptionsQuery): Promise<void> {
-    const adminList = await this.findNutriLogAdminList();
+  public async handle(command: CheckForExpiredSubscriptionsCommand): Promise<void> {
+    const tenantList = await this.findTenants();
 
-    for (const admin of adminList) {
-      const { duration } = await this.queryBus.ask<PricingResponse>(new GetPricingQuery(admin.id().value));
+    for (const tenant of tenantList) {
+      const { duration } = await this.queryBus.ask<PricingResponse>(new GetPricingQuery(tenant.id().value));
 
-      const activeSubscription = await this.findActiveSubscription(admin.id());
+      const activeSubscription = await this.findActiveSubscription(tenant.id());
 
-      if (activeSubscription.isExpired(duration)) {
+      activeSubscription.checkIsExpired(duration);
+
+      if (activeSubscription.isExpired()) {
         await this.subscriptionRepository.update(activeSubscription);
       }
 
-      const userList = await this.findActiveUserListByAdmin(admin.id());
+      const clientList = await this.findActiveClientListByTenant(tenant.id());
 
-      for (const user of userList) {
-        const { duration } = await this.queryBus.ask(new GetPricingQuery(user.id().value));
+      for (const client of clientList) {
+        const { duration } = await this.queryBus.ask(new GetPricingQuery(client.id().value));
 
-        const activeSubscription = await this.findActiveSubscription(user.id());
+        const activeSubscription = await this.findActiveSubscription(client.id());
 
-        if (activeSubscription.isExpired(duration)) {
+        activeSubscription.checkIsExpired(duration);
+
+        if (activeSubscription.isExpired()) {
           await this.subscriptionRepository.update(activeSubscription);
         }
       }
@@ -68,14 +74,14 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
     return subscriptionList.getActiveSubscription();
   }
 
-  private async findNutriLogAdminList(): Promise<User[]> {
+  private async findTenants(): Promise<Tenant[]> {
     return await this.finder.execute();
   }
 
-  private async findActiveUserListByAdmin(adminId: ID): Promise<User[]> {
+  private async findActiveClientListByTenant(tenantId: ID): Promise<Client[]> {
     const criteria = new Criteria<UserFilter>();
 
-    criteria.equal('tenantId', adminId.value);
+    criteria.equal('tenantId', tenantId.value);
     criteria.equal('active', true);
 
     const result = await this.userRepository.find(criteria);
