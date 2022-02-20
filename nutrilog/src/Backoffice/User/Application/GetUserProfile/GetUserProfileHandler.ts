@@ -1,10 +1,9 @@
 import { Log } from '../../../../Shared/Domain/Decorators/Log';
 import { ID } from '../../../../Shared/Domain/VO/Id.vo';
-import { GetUserQuery } from '../../Domain/Query/GetUserQuery';
+import { GetUserProfileQuery } from './GetUserProfileQuery';
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { IUserRepository } from "../../Domain/IUserRepository";
-import { FindUserResponse } from "./FindUserResponse";
 import { UserResponseBuilder } from "../Service/UserResponseBuilder";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
@@ -12,9 +11,10 @@ import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { UserFinder } from "../Service/UserFinder";
+import { GetUserProfileResponse } from "./GetUserProfileResponse";
 
-@QueryHandler(GetUserQuery)
-export class GetUserProfileHandler implements IHandler<FindUserResponse> {
+@QueryHandler(GetUserProfileQuery)
+export class GetUserProfileHandler implements IHandler<GetUserProfileResponse> {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly finder: UserFinder,
@@ -23,7 +23,7 @@ export class GetUserProfileHandler implements IHandler<FindUserResponse> {
   ) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(command: GetUserQuery): Promise<FindUserResponse> {
+  public async handle(command: GetUserProfileQuery): Promise<GetUserProfileResponse> {
     const user = await this.finder.execute(new ID(command.userId));
 
     const subscriptionList = await this.findSubscriptionsByUser(user.id());

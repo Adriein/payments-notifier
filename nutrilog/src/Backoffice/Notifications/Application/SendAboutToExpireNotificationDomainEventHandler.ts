@@ -5,8 +5,8 @@ import { Log } from "../../../Shared/Domain/Decorators/Log";
 import { ISmtpServiceRepository } from "../Domain/Repository/ISmtpServiceRepository";
 import { NutrilogEmail } from "../Domain/Entity/NutrilogEmail.entity";
 import { IQueryBus } from "../../../Shared/Domain/Bus/IQueryBus";
-import { FindUserResponse } from "../../User/Application/Find/FindUserResponse";
-import { GetUserQuery } from "../../User/Domain/Query/GetUserQuery";
+import { FindTenantClientsResponse } from "../../User/Application/FindTenantClients/FindTenantClientsResponse";
+import { GetUserProfileQuery } from "../../User/Application/GetUserProfile/GetUserProfileQuery";
 import { EmailHeader } from "../Domain/Entity/EmailHeader.entity";
 import { AboutToExpire } from "../Domain/Entity/AboutToExpire.entity";
 import { CLIENT_EMAIL_CONFIG_SUBJECT, NOTIFICATIONS_EMAIL } from "../Domain/constants";
@@ -17,12 +17,12 @@ export class SendAboutToExpireNotificationDomainEventHandler implements IDomainE
 
   constructor(
     private readonly repository: ISmtpServiceRepository<NutrilogEmail<string>>,
-    private readonly queryBus: IQueryBus<FindUserResponse>
+    private readonly queryBus: IQueryBus<FindTenantClientsResponse>
   ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(event: SendAboutToExpireEmailDomainEvent): Promise<void> {
-    const user = await this.queryBus.ask(new GetUserQuery(event.aggregateId));
+    const user = await this.queryBus.ask(new GetUserProfileQuery(event.aggregateId));
 
     const header = new EmailHeader(
       CLIENT_EMAIL_CONFIG_SUBJECT,

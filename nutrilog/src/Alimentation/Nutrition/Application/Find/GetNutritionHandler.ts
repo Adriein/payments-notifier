@@ -5,15 +5,15 @@ import { INutritionRepository } from "../../Domain/INutritionRepository";
 import { NutritionResponseBuilder } from "../Services/NutritionResponseBuilder";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { FindUserResponse } from "../../../../Backoffice/User/Application/Find/FindUserResponse";
-import { GetUserQuery } from "../../../../Backoffice/User/Domain/Query/GetUserQuery";
+import { FindTenantClientsResponse } from "../../../../Backoffice/User/Application/FindTenantClients/FindTenantClientsResponse";
+import { GetUserProfileQuery } from "../../../../Backoffice/User/Application/GetUserProfile/GetUserProfileQuery";
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 
 @QueryHandler(GetNutritionQuery)
 export class GetNutritionHandler implements IHandler<GetNutritionResponse> {
   constructor(
     private readonly repository: INutritionRepository,
-    private readonly queryBus: IQueryBus<FindUserResponse>,
+    private readonly queryBus: IQueryBus<FindTenantClientsResponse>,
     private readonly builder: NutritionResponseBuilder
   ) {}
 
@@ -26,7 +26,7 @@ export class GetNutritionHandler implements IHandler<GetNutritionResponse> {
     }
     const nutrition = result.value;
 
-    const user = await this.queryBus.ask(new GetUserQuery(nutrition.userId()))
+    const user = await this.queryBus.ask(new GetUserProfileQuery(nutrition.userId()))
 
     return this.builder.run(nutrition, user);
   }

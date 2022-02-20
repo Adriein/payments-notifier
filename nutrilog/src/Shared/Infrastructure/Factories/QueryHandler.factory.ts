@@ -12,14 +12,14 @@ import { CryptoService } from "../../Domain/Services/CryptoService";
 import { PricingRepository } from "../../../Backoffice/Pricing/Infraestructure/Data/PricingRepository";
 import { UserRepository } from "../../../Backoffice/User/Infrastructure/Data/UserRepository";
 import { GetPricingHandler } from "../../../Backoffice/Pricing/Application/Find/GetPricingHandler";
-import { FindUsersHandler } from "../../../Backoffice/User/Application/Find/FindUsersHandler";
+import { FindTenantClientsHandler } from "../../../Backoffice/User/Application/FindTenantClients/FindTenantClientsHandler";
 import { SearchRoleHandler } from "../../../Backoffice/Role/Application/SearchRoleHandler";
 import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
 import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/Find/SearchPricingHandler";
 import { IHandler } from "../../Domain/Interfaces/IHandler";
 import { FindNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/FindNutritionHandler";
 import { NutritionResponseBuilder } from "../../../Alimentation/Nutrition/Application/Services/NutritionResponseBuilder";
-import { GetUserProfileHandler } from "../../../Backoffice/User/Application/Find/GetUserProfileHandler";
+import { GetUserProfileHandler } from "../../../Backoffice/User/Application/GetUserProfile/GetUserProfileHandler";
 import { GetNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/GetNutritionHandler";
 import { GetDietResponseBuilder } from "../../../Alimentation/Diet/Application/Services/GetDietResponseBuilder";
 import { SubscriptionRepository } from "../../../Backoffice/User/Infrastructure/Data/SubscriptionRepository";
@@ -97,8 +97,8 @@ export default class QueryHandlerFactory {
     );
 
     this.handlers.set(
-      FindUsersHandler.name,
-      new FindUsersHandler(this.userRepository, this.subscriptionRepository, QueryBus.instance())
+      FindTenantClientsHandler.name,
+      new FindTenantClientsHandler(this.userRepository, this.subscriptionRepository, QueryBus.instance())
     );
 
     //Role

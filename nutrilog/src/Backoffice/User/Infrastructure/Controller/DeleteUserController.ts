@@ -3,7 +3,7 @@ import { Controller } from "../../../../Shared/Infrastructure/Decorators/control
 import { del } from "../../../../Shared/Infrastructure/Decorators/routes";
 import { use } from "../../../../Shared/Infrastructure/Decorators/use";
 import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Middlewares/auth";
-import { DeleteUserCommand } from "../../Domain/Command/DeleteUserCommand";
+import { DeactivateClientCommand } from "../../Application/DeactivateClient/DeactivateClientCommand";
 import { NextFunction, Request, Response } from "express";
 
 
@@ -13,7 +13,7 @@ export class DeleteUserController extends BaseController<void> {
   @use(requireAuth)
   public async deleteUser(req: Request, res: Response<void>, next: NextFunction) {
     try {
-      const command = new DeleteUserCommand(req.params.id)
+      const command = new DeactivateClientCommand(req.params.id)
 
       await this.commandBus.dispatch(command);
 

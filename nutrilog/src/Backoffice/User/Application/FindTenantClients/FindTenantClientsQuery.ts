@@ -1,10 +1,10 @@
 import { IQuery } from "../../../../Shared/Domain/Interfaces/IQuery";
-import { FilterRequestDto } from "../../Application/Find/FilterRequestDto";
+import { FilterRequestDto } from "./FilterRequestDto";
 
-export class FindUsersQuery implements IQuery {
+export class FindTenantClientsQuery implements IQuery {
   constructor(
     public filters: FilterRequestDto[],
-    public adminId: string,
+    public tenantId: string,
     public page: number,
     public quantity: number
   ) {};

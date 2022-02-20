@@ -11,8 +11,8 @@ import { QueryBus } from "../Bus/QueryBus";
 import { ModifyDietHandler } from "../../../Alimentation/Diet/Application/Update/ModifyDietHandler";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
 import { CreateClientHandler } from "../../../Backoffice/User/Application/CreateClient/CreateClientHandler";
-import { UpdatePaymentHandler } from "../../../Backoffice/User/Application/Update/UpdatePaymentHandler";
-import { DeleteUserHandler } from "../../../Backoffice/User/Application/Delete/DeleteUserHandler";
+import { RenewSubscriptionHandler } from "../../../Backoffice/User/Application/RenewSubscription/RenewSubscriptionHandler";
+import { DeactivateClientHandler } from "../../../Backoffice/User/Application/DeactivateClient/DeactivateClientHandler";
 import { CreatePricingHandler } from "../../../Backoffice/Pricing/Application/Create/CreatePricingHandler";
 import { UserFinder } from "../../../Backoffice/User/Application/Service/UserFinder";
 import { SubscriptionRepository } from "../../../Backoffice/User/Infrastructure/Data/SubscriptionRepository";
@@ -76,13 +76,13 @@ export default class CommandHandlerFactory {
     );
 
     this.handlers.set(
-      UpdatePaymentHandler.name,
-      new UpdatePaymentHandler(this.userFinder, this.subscriptionRepository)
+      RenewSubscriptionHandler.name,
+      new RenewSubscriptionHandler(this.userFinder, this.subscriptionRepository)
     );
 
     this.handlers.set(
-      DeleteUserHandler.name,
-      new DeleteUserHandler(this.userRepository)
+      DeactivateClientHandler.name,
+      new DeactivateClientHandler(this.userRepository)
     );
 
     //Pricing Module

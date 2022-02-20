@@ -7,7 +7,7 @@ import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
 
 @DomainEventsHandler(RenewedSubscriptionDomainEvent)
-export class RenewedSubscriptionEventHandler implements IDomainEventHandler {
+export class DeactivateOldSubscriptionEventHandler implements IDomainEventHandler {
   constructor(
     private readonly subscriptionRepository: ISubscriptionRepository,
   ) {}

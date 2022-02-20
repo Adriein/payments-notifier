@@ -1,4 +1,4 @@
-import { FindUserResponse, GetSubscriptionResponse } from "../Find/FindUserResponse";
+import { FindTenantClientsResponse, GetSubscriptionResponse } from "../FindTenantClients/FindTenantClientsResponse";
 import { User } from "../../Domain/Entity/User.entity";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
@@ -9,7 +9,7 @@ import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 export class UserResponseBuilder {
   constructor(private readonly queryBus: IQueryBus) {}
 
-  public async run(user: User, subscriptionList: Subscription[]): Promise<FindUserResponse> {
+  public async run(user: User, subscriptionList: Subscription[]): Promise<FindTenantClientsResponse> {
     return {
       id: user.id().value,
       username: user.name(),
@@ -21,11 +21,14 @@ export class UserResponseBuilder {
         role: user.roleId().value,
         language: user.language()
       },
-      subscription: await this.addPricingToSubscriptionList(subscriptionList)
+      subscription: await this.addPricingToSubscriptionList(user, subscriptionList)
     }
   }
 
-  private async addPricingToSubscriptionList(subscriptionList: Subscription[]): Promise<GetSubscriptionResponse[]> {
+  private async addPricingToSubscriptionList(
+    user: User,
+    subscriptionList: Subscription[]
+  ): Promise<GetSubscriptionResponse[]> {
     const result: GetSubscriptionResponse[] = [];
 
     for (const subscription of subscriptionList) {
@@ -37,8 +40,8 @@ export class UserResponseBuilder {
           name: pricing.name,
           duration: pricing.duration
         },
-        isNotified: subscription.isNotified(),
-        isWarned: subscription.isWarned(),
+        isNotified: false,
+        isWarned: false,
         lastPayment: Time.format(subscription.paymentDate(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
         validTo: Time.format(subscription.validTo(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
         isActive: subscription.isActive()

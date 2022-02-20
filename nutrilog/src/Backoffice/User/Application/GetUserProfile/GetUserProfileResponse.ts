@@ -1,4 +1,4 @@
-export type FindUserResponse = {
+export type GetUserProfileResponse = {
   id: string,
   username: string,
   email: string,

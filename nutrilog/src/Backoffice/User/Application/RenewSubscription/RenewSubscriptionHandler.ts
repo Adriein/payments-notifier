@@ -2,17 +2,17 @@ import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
-import { UpdatePaymentCommand } from "../../Domain/Command/UpdatePaymentCommand";
+import { RenewSubscriptionCommand } from "./RenewSubscriptionCommand";
 import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { UserFinder } from "../Service/UserFinder";
 
-@CommandHandler(UpdatePaymentCommand)
-export class UpdatePaymentHandler implements IHandler<void> {
+@CommandHandler(RenewSubscriptionCommand)
+export class RenewSubscriptionHandler implements IHandler<void> {
   constructor(private finder: UserFinder, private subscriptionRepository: ISubscriptionRepository) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(command: UpdatePaymentCommand): Promise<void> {
+  public async handle(command: RenewSubscriptionCommand): Promise<void> {
     const user = await this.finder.execute(new ID(command.userId));
 
     const subscription = await user.renewSubscription(

@@ -3,7 +3,7 @@ import { Controller } from "../../../../Shared/Infrastructure/Decorators/control
 import { BaseController } from "../../../../Shared/Infrastructure/BaseController";
 import { use } from "../../../../Shared/Infrastructure/Decorators/use";
 import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Middlewares/auth";
-import { UpdatePaymentCommand } from "../../Domain/Command/UpdatePaymentCommand";
+import { RenewSubscriptionCommand } from "../../Application/RenewSubscription/RenewSubscriptionCommand";
 import { put } from "../../../../Shared/Infrastructure/Decorators/routes";
 
 @Controller()
@@ -14,7 +14,7 @@ export class UpdateUserPaymentController extends BaseController<void> {
   public async updatePayment(req: Request, res: Response, next: NextFunction) {
     try {
       await this.commandBus.dispatch(
-        new UpdatePaymentCommand(
+        new RenewSubscriptionCommand(
           req.body.id,
           req.body.pricingId,
           req.body.lastPaymentDate,

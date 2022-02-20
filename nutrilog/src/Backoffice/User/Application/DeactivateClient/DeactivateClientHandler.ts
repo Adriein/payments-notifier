@@ -1,18 +1,17 @@
-import { DeleteUserCommand } from "../../Domain/Command/DeleteUserCommand";
+import { DeactivateClientCommand } from "./DeactivateClientCommand";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
-import { UserNotExistError } from "../../Domain/Error/UserNotExistError";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 
 
-@CommandHandler(DeleteUserCommand)
-export class DeleteUserHandler implements IHandler<void> {
+@CommandHandler(DeactivateClientCommand)
+export class DeactivateClientHandler implements IHandler<void> {
   constructor(private repository: IUserRepository) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(command: DeleteUserCommand): Promise<void> {
+  public async handle(command: DeactivateClientCommand): Promise<void> {
     const id = new ID(command.id);
 
     const result = await this.repository.findOne(id.value);

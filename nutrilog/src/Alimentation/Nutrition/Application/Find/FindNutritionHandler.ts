@@ -3,10 +3,10 @@ import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.
 import { FindNutritionQuery } from "../../Domain/Query/FindNutritionQuery";
 import { INutritionRepository } from "../../Domain/INutritionRepository";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { FindUserResponse } from "../../../../Backoffice/User/Application/Find/FindUserResponse";
+import { FindTenantClientsResponse } from "../../../../Backoffice/User/Application/FindTenantClients/FindTenantClientsResponse";
 import { NutritionResponseBuilder } from "../Services/NutritionResponseBuilder";
 import { GetNutritionResponse } from "./GetNutritionResponse";
-import { GetUserQuery } from "../../../../Backoffice/User/Domain/Query/GetUserQuery";
+import { GetUserProfileQuery } from "../../../../Backoffice/User/Application/GetUserProfile/GetUserProfileQuery";
 import { NutritionNotExistsError } from "../../Domain/NutritionNotExistsError";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 
@@ -14,7 +14,7 @@ import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 export class FindNutritionHandler implements IHandler<GetNutritionResponse[]> {
   constructor(
     private readonly repository: INutritionRepository,
-    private readonly queryBus: IQueryBus<FindUserResponse>,
+    private readonly queryBus: IQueryBus<FindTenantClientsResponse>,
     private readonly builder: NutritionResponseBuilder
   ) {}
 
@@ -32,7 +32,7 @@ export class FindNutritionHandler implements IHandler<GetNutritionResponse[]> {
     }
 
     for (const nutrition of result.value) {
-      const user = await this.queryBus.ask(new GetUserQuery(nutrition.userId()));
+      const user = await this.queryBus.ask(new GetUserProfileQuery(nutrition.userId()));
 
       response.push(this.builder.run(nutrition, user));
     }
