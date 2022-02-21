@@ -3,20 +3,25 @@ export type GetUserProfileResponse = {
   username: string,
   email: string,
   active: boolean,
-  subscription: GetSubscriptionResponse[],
-  config: GetConfigResponse,
+  subscription: SubscriptionResponse[],
+  config: ConfigResponse,
 };
 
-export type GetSubscriptionResponse = {
+export type SubscriptionResponse = {
   pricing: SubscriptionPricing,
   lastPayment: string,
   validTo: string,
-  isWarned: boolean,
-  isNotified: boolean,
+  isExpired: boolean,
   isActive: boolean,
+  history: SubscriptionHistoryResponse[]
 }
 
-type GetConfigResponse = {
+export type SubscriptionHistoryResponse = {
+  event: string,
+  createdAt: string
+}
+
+type ConfigResponse = {
   sendNotifications: boolean,
   sendWarnings: boolean,
   language: string,

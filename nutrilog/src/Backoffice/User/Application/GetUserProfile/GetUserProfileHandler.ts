@@ -12,6 +12,7 @@ import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { UserFinder } from "../Service/UserFinder";
 import { GetUserProfileResponse } from "./GetUserProfileResponse";
+import { GetUserProfilePresenter } from "./GetUserProfilePresenter";
 
 @QueryHandler(GetUserProfileQuery)
 export class GetUserProfileHandler implements IHandler<GetUserProfileResponse> {
@@ -28,7 +29,7 @@ export class GetUserProfileHandler implements IHandler<GetUserProfileResponse> {
 
     const subscriptionList = await this.findSubscriptionsByUser(user.id());
 
-    const presenter = new UserResponseBuilder(this.queryBus);
+    const presenter = new GetUserProfilePresenter(this.queryBus);
     return presenter.run(user, subscriptionList);
   }
 

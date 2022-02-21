@@ -67,6 +67,10 @@ export class Subscription extends AggregateRoot {
     return this._isExpired;
   };
 
+  public history(): SubscriptionHistoryCollection {
+    return this._history;
+  }
+
   public static expirationDate = (lastPaymentDate: DateVo, pricingDuration: number): DateVo => {
     return new DateVo(Time.add(lastPaymentDate.value, pricingDuration));
   }
