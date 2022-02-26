@@ -2,7 +2,6 @@ import { IDomainEventHandler } from "../../../../Shared/Domain/Interfaces/IDomai
 import { DomainEventsHandler } from "../../../../Shared/Domain/Decorators/DomainEventsHandler.decorator";
 import { TenantRegisteredDomainEvent } from "../../../../Auth/Domain/TenantRegisteredDomainEvent";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
-import { IUserRepository } from "../../Domain/IUserRepository";
 import { User } from "../../Domain/Entity/User.entity";
 import { CryptoService } from "../../../../Shared/Domain/Services/CryptoService";
 import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
@@ -19,11 +18,12 @@ import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { Tenant } from "../../Domain/Entity/Tenant.entity";
 import { AdminFinder } from "../Service/AdminFinder";
+import { ITenantRepository } from "../../Domain/ITenantRepository";
 
 @DomainEventsHandler(TenantRegisteredDomainEvent)
 export class RegisteredTenantDomainEventHandler implements IDomainEventHandler {
   constructor(
-    private repository: IUserRepository,
+    private repository: ITenantRepository,
     private subscriptionRepository: ISubscriptionRepository,
     private crypto: CryptoService,
     private queryBus: IQueryBus,

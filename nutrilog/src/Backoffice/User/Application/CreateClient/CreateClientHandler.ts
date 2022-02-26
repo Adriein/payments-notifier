@@ -1,7 +1,6 @@
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
 import { CreateClientCommand } from "./CreateClientCommand";
-import { IUserRepository } from "../../Domain/IUserRepository";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
@@ -14,14 +13,16 @@ import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { UserFinder } from "../Service/UserFinder";
 import { Tenant } from "../../Domain/Entity/Tenant.entity";
+import { IClientRepository } from "../../Domain/IClientRepository";
+import { TenantFinder } from "../Service/TenantFinder";
 
 @CommandHandler(CreateClientCommand)
 export class CreateClientHandler implements IHandler<void> {
   constructor(
-    private readonly userRepository: IUserRepository,
+    private readonly clientRepository: IClientRepository,
     private readonly subscriptionRepository: ISubscriptionRepository,
     private readonly queryBus: IQueryBus,
-    private readonly finder: UserFinder,
+    private readonly finder: TenantFinder,
   ) {}
 
   @Log(process.env.LOG_LEVEL)
@@ -35,7 +36,7 @@ export class CreateClientHandler implements IHandler<void> {
 
     const client = tenant.registerClient(command.username, email, new ID(role.id));
 
-    await this.userRepository.save(client);
+    await this.clientRepository.save(client);
 
     const subscription = client.createSubscription(
       new ID(command.pricingId),
@@ -47,11 +48,11 @@ export class CreateClientHandler implements IHandler<void> {
   }
 
   private async findTenant(id: string): Promise<Tenant> {
-    return await this.finder.execute(new ID(id)) as Tenant;
+    return await this.finder.execute(new ID(id));
   }
 
   private async ensureUserNotExists(email: Email): Promise<void> {
-    const result = await this.userRepository.findByEmail(email.value);
+    const result = await this.clientRepository.findByEmail(email.value);
 
     if (result.isRight()) {
       throw new UserAlreadyExistsError();

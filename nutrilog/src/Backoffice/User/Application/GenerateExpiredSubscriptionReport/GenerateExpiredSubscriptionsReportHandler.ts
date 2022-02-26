@@ -1,8 +1,7 @@
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { GenerateExpiredSubscriptionsReportCommand } from "./GenerateExpiredSubscriptionsReportCommand";
-import { IUserRepository } from "../../Domain/IUserRepository";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
-import { TenantFinder } from "../Service/TenantFinder";
+import { TenantCollectionFinder } from "../Service/TenantCollectionFinder";
 import { Tenant } from "../../Domain/Entity/Tenant.entity";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
@@ -11,13 +10,14 @@ import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { Client } from "../../Domain/Entity/Client.entity";
 import { UserFilter } from "../../Domain/Filter/UserFilter";
 import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
+import { IClientRepository } from "../../Domain/IClientRepository";
 
 @CommandHandler(GenerateExpiredSubscriptionsReportCommand)
 export class GenerateExpiredSubscriptionsReportHandler implements IHandler<void> {
   constructor(
-    private readonly userRepository: IUserRepository,
+    private readonly clientRepository: IClientRepository,
     private readonly subscriptionRepository: ISubscriptionRepository,
-    private readonly finder: TenantFinder,
+    private readonly finder: TenantCollectionFinder,
   ) {}
 
   public async handle(command: GenerateExpiredSubscriptionsReportCommand): Promise<void> {
@@ -42,7 +42,7 @@ export class GenerateExpiredSubscriptionsReportHandler implements IHandler<void>
     criteria.equal('tenantId', tenantId.value);
     criteria.equal('active', true);
 
-    const result = await this.userRepository.find(criteria);
+    const result = await this.clientRepository.find(criteria);
 
     if (result.isLeft()) {
       throw result.value;

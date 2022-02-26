@@ -1,0 +1,100 @@
+import { Log } from '../../../../Shared/Domain/Decorators/Log';
+import { ID } from '../../../../Shared/Domain/VO/Id.vo';
+import { GetClientProfileQuery } from './GetClientProfileQuery';
+import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
+import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
+import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
+import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
+import { Subscription } from "../../Domain/Entity/Subscription.entity";
+import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
+import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
+import {
+  GetClientProfileResponse,
+  SubscriptionHistoryResponse,
+  SubscriptionResponse
+} from "./GetClientProfileResponse";
+import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
+import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
+import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
+import { SubscriptionHistory } from "../../Domain/Entity/SubscriptionHistory.entity";
+import { User } from "../../Domain/Entity/User.entity";
+import { ClientFinder } from "../Service/ClientFinder";
+
+@QueryHandler(GetClientProfileQuery)
+export class GetClientProfileHandler implements IHandler<GetClientProfileResponse> {
+  constructor(
+    private readonly finder: ClientFinder,
+    private readonly subscriptionRepository: ISubscriptionRepository,
+    private readonly queryBus: IQueryBus
+  ) {}
+
+  @Log(process.env.LOG_LEVEL)
+  public async handle(command: GetClientProfileQuery): Promise<GetClientProfileResponse> {
+    const client = await this.finder.execute(new ID(command.userId));
+
+    const subscriptionList = await this.findSubscriptionsByUser(client.id());
+
+    return await this.responseBuilder(client, subscriptionList);
+  }
+
+  private async findSubscriptionsByUser(userId: ID): Promise<Subscription[]> {
+    const criteria = new Criteria<SubscriptionFilter>();
+
+    criteria.equal('userId', userId);
+
+    const result = await this.subscriptionRepository.find(criteria);
+
+    if (result.isLeft()) {
+      throw result;
+    }
+
+    return result.value;
+  }
+
+  private async responseBuilder(user: User, subscriptionList: Subscription[]): Promise<GetClientProfileResponse> {
+    return {
+      id: user.id().value,
+      username: user.name(),
+      email: user.email(),
+      active: user.isActive(),
+      config: {
+        sendWarnings: user.sendWarnings(),
+        language: user.language(),
+        sendNotifications: user.sendNotifications(),
+        role: user.roleId().value
+      },
+      subscription: await this.subscriptionBuilder(subscriptionList)
+    }
+  }
+
+  private async subscriptionBuilder(subscriptionList: Subscription[]): Promise<SubscriptionResponse[]> {
+    const response = [];
+
+    for (const subscription of subscriptionList) {
+      const pricing = await this.queryBus.ask<PricingResponse>(new GetPricingQuery(subscription.pricingId()));
+      response.push({
+        pricing: {
+          price: pricing.price,
+          name: pricing.name,
+          duration: pricing.duration
+        },
+        lastPayment: Time.format(subscription.paymentDate(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
+        validTo: Time.format(subscription.validTo(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
+        isExpired: subscription.isExpired(),
+        isActive: subscription.isActive(),
+        history: this.subscriptionHistoryBuilder(subscription)
+      });
+    }
+
+    return response;
+  }
+
+  private subscriptionHistoryBuilder(subscription: Subscription): SubscriptionHistoryResponse[] {
+    return subscription.history().data().map((history: SubscriptionHistory) => {
+      return {
+        event: history.event(),
+        createdAt: Time.format(history.createdAt(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT)
+      }
+    });
+  }
+}

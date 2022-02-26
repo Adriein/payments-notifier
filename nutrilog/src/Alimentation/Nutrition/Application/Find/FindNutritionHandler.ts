@@ -6,7 +6,7 @@ import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { FindTenantClientsResponse } from "../../../../Backoffice/User/Application/FindTenantClients/FindTenantClientsResponse";
 import { NutritionResponseBuilder } from "../Services/NutritionResponseBuilder";
 import { GetNutritionResponse } from "./GetNutritionResponse";
-import { GetUserProfileQuery } from "../../../../Backoffice/User/Application/GetUserProfile/GetUserProfileQuery";
+import { GetClientProfileQuery } from "../../../../Backoffice/User/Application/GetClientProfile/GetClientProfileQuery";
 import { NutritionNotExistsError } from "../../Domain/NutritionNotExistsError";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 
@@ -32,7 +32,7 @@ export class FindNutritionHandler implements IHandler<GetNutritionResponse[]> {
     }
 
     for (const nutrition of result.value) {
-      const user = await this.queryBus.ask(new GetUserProfileQuery(nutrition.userId()));
+      const user = await this.queryBus.ask(new GetClientProfileQuery(nutrition.userId()));
 
       response.push(this.builder.run(nutrition, user));
     }

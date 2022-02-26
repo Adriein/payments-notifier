@@ -11,17 +11,18 @@ import { UserFilter } from "../../Domain/Filter/UserFilter";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
-import { TenantFinder } from "../Service/TenantFinder";
+import { TenantCollectionFinder } from "../Service/TenantCollectionFinder";
 import { Tenant } from "../../Domain/Entity/Tenant.entity";
 import { Client } from "../../Domain/Entity/Client.entity";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
+import { IClientRepository } from "../../Domain/IClientRepository";
 
 @CommandHandler(CheckForAboutToExpireSubscriptionsCommand)
 export class CheckForAboutToExpireSubscriptionsHandler implements IHandler<void> {
   constructor(
-    private readonly userRepository: IUserRepository,
+    private readonly clientRepository: IClientRepository,
     private readonly subscriptionRepository: ISubscriptionRepository,
-    private readonly finder: TenantFinder,
+    private readonly finder: TenantCollectionFinder,
     private readonly queryBus: IQueryBus
   ) {}
 
@@ -72,7 +73,7 @@ export class CheckForAboutToExpireSubscriptionsHandler implements IHandler<void>
     criteria.equal('sendWarnings', true);
     criteria.equal('tenantId', tenantId.value);
 
-    const result = await this.userRepository.find(criteria);
+    const result = await this.clientRepository.find(criteria);
 
     if (result.isLeft()) {
       throw result.value;

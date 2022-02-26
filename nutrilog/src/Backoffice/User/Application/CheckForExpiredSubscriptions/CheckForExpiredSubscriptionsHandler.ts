@@ -1,11 +1,9 @@
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { CheckForExpiredSubscriptionsCommand } from "./CheckForExpiredSubscriptionsCommand";
-import { IUserRepository } from "../../Domain/IUserRepository";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
-import { User } from "../../Domain/Entity/User.entity";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { UserFilter } from "../../Domain/Filter/UserFilter";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
@@ -15,15 +13,16 @@ import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
 import { Tenant } from "../../Domain/Entity/Tenant.entity";
-import { TenantFinder } from "../Service/TenantFinder";
+import { TenantCollectionFinder } from "../Service/TenantCollectionFinder";
 import { Client } from "../../Domain/Entity/Client.entity";
+import { IClientRepository } from "../../Domain/IClientRepository";
 
 @CommandHandler(CheckForExpiredSubscriptionsCommand)
 export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
   constructor(
-    private readonly userRepository: IUserRepository,
+    private readonly clientRepository: IClientRepository,
     private readonly subscriptionRepository: ISubscriptionRepository,
-    private readonly finder: TenantFinder,
+    private readonly finder: TenantCollectionFinder,
     private readonly queryBus: IQueryBus
   ) {}
 
@@ -84,7 +83,7 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
     criteria.equal('tenantId', tenantId.value);
     criteria.equal('active', true);
 
-    const result = await this.userRepository.find(criteria);
+    const result = await this.clientRepository.find(criteria);
 
     if (result.isRight()) {
       return result.value;

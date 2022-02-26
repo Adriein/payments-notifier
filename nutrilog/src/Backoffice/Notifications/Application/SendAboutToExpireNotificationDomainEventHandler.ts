@@ -6,7 +6,7 @@ import { ISmtpServiceRepository } from "../Domain/Repository/ISmtpServiceReposit
 import { NutrilogEmail } from "../Domain/Entity/NutrilogEmail.entity";
 import { IQueryBus } from "../../../Shared/Domain/Bus/IQueryBus";
 import { FindTenantClientsResponse } from "../../User/Application/FindTenantClients/FindTenantClientsResponse";
-import { GetUserProfileQuery } from "../../User/Application/GetUserProfile/GetUserProfileQuery";
+import { GetClientProfileQuery } from "../../User/Application/GetClientProfile/GetClientProfileQuery";
 import { EmailHeader } from "../Domain/Entity/EmailHeader.entity";
 import { AboutToExpire } from "../Domain/Entity/AboutToExpire.entity";
 import { CLIENT_EMAIL_CONFIG_SUBJECT, NOTIFICATIONS_EMAIL } from "../Domain/constants";
@@ -22,7 +22,7 @@ export class SendAboutToExpireNotificationDomainEventHandler implements IDomainE
 
   @Log(process.env.LOG_LEVEL)
   public async handle(event: SendAboutToExpireEmailDomainEvent): Promise<void> {
-    const user = await this.queryBus.ask(new GetUserProfileQuery(event.aggregateId));
+    const user = await this.queryBus.ask(new GetClientProfileQuery(event.aggregateId));
 
     const header = new EmailHeader(
       CLIENT_EMAIL_CONFIG_SUBJECT,

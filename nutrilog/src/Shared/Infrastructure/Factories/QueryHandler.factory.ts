@@ -19,7 +19,7 @@ import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/Fi
 import { IHandler } from "../../Domain/Interfaces/IHandler";
 import { FindNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/FindNutritionHandler";
 import { NutritionResponseBuilder } from "../../../Alimentation/Nutrition/Application/Services/NutritionResponseBuilder";
-import { GetUserProfileHandler } from "../../../Backoffice/User/Application/GetUserProfile/GetUserProfileHandler";
+import { GetClientProfileHandler } from "../../../Backoffice/User/Application/GetClientProfile/GetClientProfileHandler";
 import { GetNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/GetNutritionHandler";
 import { GetDietResponseBuilder } from "../../../Alimentation/Diet/Application/Services/GetDietResponseBuilder";
 import { SubscriptionRepository } from "../../../Backoffice/User/Infrastructure/Data/SubscriptionRepository";
@@ -92,8 +92,13 @@ export default class QueryHandlerFactory {
     //User
 
     this.handlers.set(
-      GetUserProfileHandler.name,
-      new GetUserProfileHandler(this.userRepository, this.userFinder, this.subscriptionRepository, QueryBus.instance())
+      GetClientProfileHandler.name,
+      new GetClientProfileHandler(
+        this.userRepository,
+        this.userFinder,
+        this.subscriptionRepository,
+        QueryBus.instance()
+      )
     );
 
     this.handlers.set(

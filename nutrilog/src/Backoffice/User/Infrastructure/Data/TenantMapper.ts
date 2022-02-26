@@ -1,13 +1,13 @@
 import { IMapper } from "../../../../Shared/Domain/Interfaces/IMapper";
-import { User } from "../../Domain/Entity/User.entity";
 import { Password } from "../../../../Shared/Domain/VO/Password.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { UserConfig } from "../../Domain/Entity/UserConfig.entity";
 import { Prisma } from "@prisma/client";
+import { Tenant } from "../../Domain/Entity/Tenant.entity";
 
-export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma.userUpdateInput> {
-  toSaveDataModel<C extends Prisma.userCreateInput>(domain: User): Prisma.userCreateInput {
+export class TenantMapper implements IMapper<Tenant, Prisma.userCreateInput | Prisma.userUpdateInput> {
+  toSaveDataModel<C extends Prisma.userCreateInput>(domain: Tenant): Prisma.userCreateInput {
     return {
       id: domain.id().value,
       username: domain.name(),
@@ -35,7 +35,7 @@ export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma
     }
   }
 
-  toUpdateDataModel<C extends Prisma.userUpdateInput>(domain: User): Prisma.userUpdateInput {
+  toUpdateDataModel<C extends Prisma.userUpdateInput>(domain: Tenant): Prisma.userUpdateInput {
     return {
       username: domain.name(),
       email: domain.email(),
@@ -62,7 +62,7 @@ export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma
     }
   }
 
-  public toDomain(dataModel: any): User {
+  public toDomain(dataModel: any): Tenant {
     const config = new UserConfig(
       new ID(dataModel.config!.id),
       dataModel.config!.language,
@@ -70,7 +70,7 @@ export class UserMapper implements IMapper<User, Prisma.userCreateInput | Prisma
       dataModel.config!.send_warnings
     );
 
-    return new User(
+    return new Tenant(
       new ID(dataModel.id!),
       dataModel.username!,
       new Password(dataModel.password!),

@@ -1,28 +1,17 @@
-import { IUserRepository } from "../../Domain/IUserRepository";
-import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { UserFilter } from "../../Domain/Filter/UserFilter";
-import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
-import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
-import { TENANT_ROLE } from "../../Domain/constants";
-import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
+import { ID } from "../../../../Shared/Domain/VO/Id.vo";
+import { ITenantRepository } from "../../Domain/ITenantRepository";
 import { Tenant } from "../../Domain/Entity/Tenant.entity";
 
 export class TenantFinder {
-  constructor(private readonly repository: IUserRepository, private readonly queryBus: IQueryBus) {}
+  constructor(private readonly repository: ITenantRepository) {}
 
-  public async execute(): Promise<Tenant[]> {
-    const criteria = new Criteria<UserFilter>();
-    const tenantRole = await this.queryBus.ask<SearchRoleResponse>(new SearchRoleQuery(TENANT_ROLE));
-
-    criteria.equal('roleId', tenantRole.id);
-    criteria.equal('active', true);
-
-    const result = await this.repository.find(criteria);
+  public async execute(id: ID): Promise<Tenant> {
+    const result = await this.repository.findOne(id.value);
 
     if (result.isLeft()) {
       throw result.value;
     }
 
-    return result.value as Tenant[];
+    return result.value;
   }
 }

@@ -6,7 +6,7 @@ import { NutritionResponseBuilder } from "../Services/NutritionResponseBuilder";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { FindTenantClientsResponse } from "../../../../Backoffice/User/Application/FindTenantClients/FindTenantClientsResponse";
-import { GetUserProfileQuery } from "../../../../Backoffice/User/Application/GetUserProfile/GetUserProfileQuery";
+import { GetClientProfileQuery } from "../../../../Backoffice/User/Application/GetClientProfile/GetClientProfileQuery";
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 
 @QueryHandler(GetNutritionQuery)
@@ -26,7 +26,7 @@ export class GetNutritionHandler implements IHandler<GetNutritionResponse> {
     }
     const nutrition = result.value;
 
-    const user = await this.queryBus.ask(new GetUserProfileQuery(nutrition.userId()))
+    const user = await this.queryBus.ask(new GetClientProfileQuery(nutrition.userId()))
 
     return this.builder.run(nutrition, user);
   }
