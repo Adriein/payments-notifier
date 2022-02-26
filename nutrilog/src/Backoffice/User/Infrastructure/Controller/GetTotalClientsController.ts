@@ -4,19 +4,23 @@ import { get } from "../../../../Shared/Infrastructure/Decorators/routes";
 import { use } from "../../../../Shared/Infrastructure/Decorators/use";
 import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Middlewares/auth";
 import { NextFunction, Request, Response } from "express";
-import { GetClientProfileQuery } from "../../Application/GetClientProfile/GetClientProfileQuery";
-import { FindTenantClientsResponse } from "../../Application/FindTenantClients/FindTenantClientsResponse";
+import { NutrilogResponse } from "../../../../Shared/Application/NutrilogResponse";
+import { GetTotalClientsQuery } from "../../Application/GetTotalClients/GetTotalClientsQuery";
 
 @Controller()
-export class GetUserController extends BaseController<FindTenantClientsResponse> {
-  @get('/user')
+export class GetTotalClientsController extends BaseController {
+  @get('/client/total')
   @use(requireAuth)
   @use(currentUser)
-  public async getUser(req: Request, res: Response<FindTenantClientsResponse>, next: NextFunction): Promise<void> {
+  public async getTotalClients(
+    req: Request,
+    res: Response<NutrilogResponse<number>>,
+    next: NextFunction
+  ): Promise<void> {
     try {
-      const user = await this.queryBus.ask<FindTenantClientsResponse>(new GetClientProfileQuery(req.body.id));
+      const result = await this.queryBus.ask<NutrilogResponse<number>>(new GetTotalClientsQuery(req.currentUser!.id));
 
-      res.status(200).send(user);
+      res.status(200).send(result);
     } catch (error) {
       next(error);
     }

@@ -18,11 +18,3 @@ export const fetchUsers = (dispatch: Dispatch<ActionProps<FetchUsersPayload>>) =
     dispatch({ type: FETCH_USERS_ACTION, payload: { users: response.data, totalUsers: 100 } });
   };
 };
-
-const buildUserType = (response: FetchTenantApiResponse[]): User[] => {
-  return response.map((client: FetchTenantApiResponse) => {
-    return {
-      id:
-    }
-  });
-}

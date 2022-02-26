@@ -7,3 +7,4 @@ export * from '../../Auth/Infrastructure/Controller/UpdatePasswordController';
 export * from './Infrastructure/Controller/CheckForAboutToExpireSubscriptionsController';
 export * from './Infrastructure/Controller/CheckForExpiredSubscriptionController';
 export * from './Infrastructure/Controller/GenerateExpiredSubscriptionsReportController';
+export * from './Infrastructure/Controller/GetTotalClientsController';

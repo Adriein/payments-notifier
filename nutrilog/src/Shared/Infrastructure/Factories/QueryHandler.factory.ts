@@ -27,6 +27,8 @@ import { UserFinder } from "../../../Backoffice/User/Application/Service/UserFin
 import { TenantRepository } from "../../../Backoffice/User/Infrastructure/Data/TenantRepository";
 import { ClientRepository } from "../../../Backoffice/User/Infrastructure/Data/ClientRepository";
 import { ClientFinder } from "../../../Backoffice/User/Application/Service/ClientFinder";
+import { GetTotalClientsQuery } from "../../../Backoffice/User/Application/GetTotalClients/GetTotalClientsQuery";
+import { GetTotalClientsHandler } from "../../../Backoffice/User/Application/GetTotalClients/GetTotalClientsHandler";
 
 export default class QueryHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -111,6 +113,11 @@ export default class QueryHandlerFactory {
     this.handlers.set(
       FindTenantClientsHandler.name,
       new FindTenantClientsHandler(this.clientRepository, this.subscriptionRepository, QueryBus.instance())
+    );
+
+    this.handlers.set(
+      GetTotalClientsQuery.name,
+      new GetTotalClientsHandler(this.userRepository)
     );
 
     //Role
