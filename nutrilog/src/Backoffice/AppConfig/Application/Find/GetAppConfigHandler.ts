@@ -21,7 +21,7 @@ export class GetAppConfigHandler implements IHandler<AppConfigResponse> {
     const appConfig = result.value;
 
     return new AppConfigResponse(
-      appConfig.id(),
+      appConfig.id().value,
       appConfig.warningDelay(),
       appConfig.notificationDelay(),
       appConfig.emailContent(),

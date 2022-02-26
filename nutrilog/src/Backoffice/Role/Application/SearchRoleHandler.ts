@@ -20,7 +20,7 @@ export class SearchRoleHandler implements IHandler<SearchRoleResponse> {
 
     const [ role ] = result.value;
 
-    return new SearchRoleResponse(role.type(), role.id());
+    return new SearchRoleResponse(role.type(), role.id().value);
   }
 
 }

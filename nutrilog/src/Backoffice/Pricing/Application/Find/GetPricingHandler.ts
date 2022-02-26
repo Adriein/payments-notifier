@@ -24,7 +24,7 @@ export class GetPricingHandler implements IHandler<PricingResponse> {
 
     const pricing = result.value;
 
-    return new PricingResponse(pricing.id(), pricing.name(), pricing.duration(), pricing.price());
+    return new PricingResponse(pricing.id().value, pricing.name(), pricing.duration(), pricing.price());
   }
 
 }

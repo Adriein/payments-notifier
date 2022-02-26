@@ -40,14 +40,22 @@ model subscription {
     id String @id
     payment_date DateTime @db.Timestamp(0)
     valid_to DateTime @db.Timestamp(0)
-    warned Boolean
-    notified Boolean
     active Boolean
     expired Boolean
     pricing pricing  @relation(fields: [pricing_id], references: [id])
     pricing_id String
     user user @relation(fields: [user_id], references: [id])
     user_id  String
+    history subscription_history []
+    created_at DateTime @db.Timestamp(0)
+    updated_at DateTime @db.Timestamp(0)
+}
+
+model subscription_history {
+    id String @id
+    event String
+    subscription_id String
+    subscription subscription @relation(fields: [subscription_id], references: [id])
     created_at DateTime @db.Timestamp(0)
     updated_at DateTime @db.Timestamp(0)
 }

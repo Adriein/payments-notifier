@@ -50,7 +50,7 @@ export class AuthRepository implements IAuthRepository {
   public async update(entity: Auth): Promise<void> {
     await this.prisma.user.update({
       where: {
-        id: entity.id()
+        id: entity.id().value
       },
       data: {
         password: entity.password()

@@ -22,7 +22,7 @@ export class NutritionMapper implements IMapper<Nutrition, Prisma.nutritionCreat
 
   toSaveDataModel(domain: Nutrition): Prisma.nutritionCreateInput {
     return {
-      id: domain.id(),
+      id: domain.id().value,
       height: domain.height(),
       weight: domain.weight(),
       gender: domain.gender(),

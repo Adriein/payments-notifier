@@ -23,7 +23,7 @@ export class DietMapper implements IMapper<Diet, Prisma.dietCreateInput | Prisma
 
   toSaveDataModel(domain: Diet): Prisma.dietCreateInput {
     return {
-      id: domain.id(),
+      id: domain.id().value,
       kcal: domain.kcal(),
       active: domain.active(),
       objective: domain.objective(),

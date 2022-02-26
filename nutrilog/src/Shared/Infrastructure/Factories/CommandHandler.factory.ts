@@ -16,6 +16,16 @@ import { DeactivateClientHandler } from "../../../Backoffice/User/Application/De
 import { CreatePricingHandler } from "../../../Backoffice/Pricing/Application/Create/CreatePricingHandler";
 import { UserFinder } from "../../../Backoffice/User/Application/Service/UserFinder";
 import { SubscriptionRepository } from "../../../Backoffice/User/Infrastructure/Data/SubscriptionRepository";
+import { TenantFinder } from "../../../Backoffice/User/Application/Service/TenantFinder";
+import { ClientRepository } from "../../../Backoffice/User/Infrastructure/Data/ClientRepository";
+import { TenantRepository } from "../../../Backoffice/User/Infrastructure/Data/TenantRepository";
+import { CheckForAboutToExpireSubscriptionsCommand } from "../../../Backoffice/User/Application/CheckForAboutToExpireSubscriptions/CheckForAboutToExpireSubscriptionsCommand";
+import { CheckForAboutToExpireSubscriptionsHandler } from "../../../Backoffice/User/Application/CheckForAboutToExpireSubscriptions/CheckForAboutToExpireSubscriptionsHandler";
+import { TenantCollectionFinder } from "../../../Backoffice/User/Application/Service/TenantCollectionFinder";
+import { CheckForExpiredSubscriptionsCommand } from "../../../Backoffice/User/Application/CheckForExpiredSubscriptions/CheckForExpiredSubscriptionsCommand";
+import { CheckForExpiredSubscriptionsHandler } from "../../../Backoffice/User/Application/CheckForExpiredSubscriptions/CheckForExpiredSubscriptionsHandler";
+import { GenerateExpiredSubscriptionsReportCommand } from "../../../Backoffice/User/Application/GenerateExpiredSubscriptionReport/GenerateExpiredSubscriptionsReportCommand";
+import { GenerateExpiredSubscriptionsReportHandler } from "../../../Backoffice/User/Application/GenerateExpiredSubscriptionReport/GenerateExpiredSubscriptionsReportHandler";
 
 export default class CommandHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -25,9 +35,12 @@ export default class CommandHandlerFactory {
   private pricingRepository: PricingRepository = new PricingRepository();
   private userRepository: UserRepository = new UserRepository();
   private subscriptionRepository: SubscriptionRepository = new SubscriptionRepository();
-  private cryptoService: CryptoService = new CryptoService();
+  private clientRepository = new ClientRepository();
+  private tenantRepository = new TenantRepository();
 
   private userFinder = new UserFinder(this.userRepository);
+  private tenantFinder = new TenantFinder(this.tenantRepository);
+  private tenantCollectionFinder = new TenantCollectionFinder(this.userRepository, QueryBus.instance());
 
 
   constructor() {
@@ -72,7 +85,41 @@ export default class CommandHandlerFactory {
 
     this.handlers.set(
       CreateClientHandler.name,
-      new CreateClientHandler(this.userRepository, this.subscriptionRepository, QueryBus.instance(), this.cryptoService)
+      new CreateClientHandler(
+        this.clientRepository,
+        this.subscriptionRepository,
+        QueryBus.instance(),
+        this.tenantFinder
+      )
+    );
+
+    this.handlers.set(
+      CheckForAboutToExpireSubscriptionsCommand.name,
+      new CheckForAboutToExpireSubscriptionsHandler(
+        this.clientRepository,
+        this.subscriptionRepository,
+        this.tenantCollectionFinder,
+        QueryBus.instance()
+      )
+    );
+
+    this.handlers.set(
+      CheckForExpiredSubscriptionsCommand.name,
+      new CheckForExpiredSubscriptionsHandler(
+        this.clientRepository,
+        this.subscriptionRepository,
+        this.tenantCollectionFinder,
+        QueryBus.instance()
+      )
+    );
+
+    this.handlers.set(
+      GenerateExpiredSubscriptionsReportCommand.name,
+      new GenerateExpiredSubscriptionsReportHandler(
+        this.clientRepository,
+        this.subscriptionRepository,
+        this.tenantCollectionFinder
+      )
     );
 
     this.handlers.set(

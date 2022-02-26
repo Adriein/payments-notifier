@@ -9,12 +9,13 @@ import { GetNutritionResponse } from "./GetNutritionResponse";
 import { GetClientProfileQuery } from "../../../../Backoffice/User/Application/GetClientProfile/GetClientProfileQuery";
 import { NutritionNotExistsError } from "../../Domain/NutritionNotExistsError";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
+import { GetClientProfileResponse } from "../../../../Backoffice/User/Application/GetClientProfile/GetClientProfileResponse";
 
 @QueryHandler(FindNutritionQuery)
 export class FindNutritionHandler implements IHandler<GetNutritionResponse[]> {
   constructor(
     private readonly repository: INutritionRepository,
-    private readonly queryBus: IQueryBus<FindTenantClientsResponse>,
+    private readonly queryBus: IQueryBus,
     private readonly builder: NutritionResponseBuilder
   ) {}
 
@@ -32,7 +33,7 @@ export class FindNutritionHandler implements IHandler<GetNutritionResponse[]> {
     }
 
     for (const nutrition of result.value) {
-      const user = await this.queryBus.ask(new GetClientProfileQuery(nutrition.userId()));
+      const user = await this.queryBus.ask<GetClientProfileResponse>(new GetClientProfileQuery(nutrition.userId()));
 
       response.push(this.builder.run(nutrition, user));
     }

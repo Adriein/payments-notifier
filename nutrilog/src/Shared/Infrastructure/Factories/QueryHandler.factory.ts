@@ -24,6 +24,9 @@ import { GetNutritionHandler } from "../../../Alimentation/Nutrition/Application
 import { GetDietResponseBuilder } from "../../../Alimentation/Diet/Application/Services/GetDietResponseBuilder";
 import { SubscriptionRepository } from "../../../Backoffice/User/Infrastructure/Data/SubscriptionRepository";
 import { UserFinder } from "../../../Backoffice/User/Application/Service/UserFinder";
+import { TenantRepository } from "../../../Backoffice/User/Infrastructure/Data/TenantRepository";
+import { ClientRepository } from "../../../Backoffice/User/Infrastructure/Data/ClientRepository";
+import { ClientFinder } from "../../../Backoffice/User/Application/Service/ClientFinder";
 
 export default class QueryHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -32,15 +35,20 @@ export default class QueryHandlerFactory {
   private dietRepository: DietRepository = new DietRepository();
   private foodRepository: FoodRepository = new FoodRepository();
   private nutritionixRepository: NutritionixRepository = new NutritionixRepository();
-  private cryptoService: CryptoService = new CryptoService();
   private pricingRepository: PricingRepository = new PricingRepository();
   private userRepository: UserRepository = new UserRepository();
   private subscriptionRepository: SubscriptionRepository = new SubscriptionRepository();
   private roleRepository: RoleRepository = new RoleRepository();
   private nutritionRepository: NutritionRepository = new NutritionRepository();
+  private tenantRepository = new TenantRepository();
+  private clientRepository = new ClientRepository();
+
+  private cryptoService: CryptoService = new CryptoService();
   private nutritionBuilder = new NutritionResponseBuilder();
 
   private userFinder = new UserFinder(this.userRepository);
+  private clientFinder = new ClientFinder(this.clientRepository);
+
 
   constructor() {
     this.register();
@@ -94,8 +102,7 @@ export default class QueryHandlerFactory {
     this.handlers.set(
       GetClientProfileHandler.name,
       new GetClientProfileHandler(
-        this.userRepository,
-        this.userFinder,
+        this.clientFinder,
         this.subscriptionRepository,
         QueryBus.instance()
       )
@@ -103,7 +110,7 @@ export default class QueryHandlerFactory {
 
     this.handlers.set(
       FindTenantClientsHandler.name,
-      new FindTenantClientsHandler(this.userRepository, this.subscriptionRepository, QueryBus.instance())
+      new FindTenantClientsHandler(this.clientRepository, QueryBus.instance())
     );
 
     //Role

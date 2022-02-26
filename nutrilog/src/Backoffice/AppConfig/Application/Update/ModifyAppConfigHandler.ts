@@ -3,7 +3,6 @@ import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { ModifyAppConfigCommand } from "../../Domain/Command/ModifyAppConfigCommand";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
 import { AppConfig } from "../../Domain/AppConfig.entity";
-import { AppConfigNotExists } from "../../Domain/AppConfigNotExists";
 import { IAppConfigRepository } from "../../Domain/IAppConfigRepository";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 
@@ -26,7 +25,7 @@ export class ModifyAppConfigHandler implements IHandler<void> {
     const appConfigOnDb = result.value;
 
     const config = new AppConfig(
-      new ID(appConfigOnDb.id()),
+      appConfigOnDb.id(),
       Number(warningDelay),
       appConfigOnDb.notificationDelay(),
       emailContent,

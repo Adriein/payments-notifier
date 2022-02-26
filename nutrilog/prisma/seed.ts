@@ -117,8 +117,6 @@ async function main() {
           pricing_id: yearly.id,
           active: true,
           expired: false,
-          warned: false,
-          notified: false,
           payment_date: new Date(),
           valid_to: validTo,
           created_at: new Date(),

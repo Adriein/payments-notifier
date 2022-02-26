@@ -21,7 +21,7 @@ export class GetAllPricingHandler implements IHandler<PricingResponse[]> {
     const pricingByAdmin = result.value;
 
     return pricingByAdmin.map((pricing: Pricing) => new PricingResponse(
-      pricing.id(),
+      pricing.id().value,
       pricing.name(),
       pricing.duration(),
       pricing.price()

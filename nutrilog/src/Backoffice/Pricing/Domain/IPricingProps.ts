@@ -1,7 +1,7 @@
 import { ID } from "../../../Shared/Domain/VO/Id.vo";
 
 export interface IPricingProps {
-  id(): string;
+  id(): ID;
 
   name(): string;
 

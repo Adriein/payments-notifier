@@ -13,7 +13,7 @@ export class SignInController extends BaseController<Auth> {
     try {
       const { email, password } = req.body;
 
-      const auth = await this.queryBus.ask(new SigninQuery(email, password));
+      const auth = await this.queryBus.ask<Auth>(new SigninQuery(email, password));
 
       const userJwt = jwt.sign(
         {

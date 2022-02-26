@@ -19,7 +19,7 @@ export class AppConfigMapper implements IMapper<AppConfig, Prisma.app_configCrea
 
   toSaveDataModel<C extends Prisma.app_configCreateInput>(domain: AppConfig): Prisma.app_configCreateInput {
     return {
-      id: domain.id(),
+      id: domain.id().value,
       warning_delay: domain.warningDelay(),
       notification_delay: domain.notificationDelay(),
       last_sent_report: domain.lastSentReport(),

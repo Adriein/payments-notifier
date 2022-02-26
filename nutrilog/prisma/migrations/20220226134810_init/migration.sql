@@ -31,8 +31,6 @@ CREATE TABLE "subscription" (
     "id" TEXT NOT NULL,
     "payment_date" TIMESTAMP(0) NOT NULL,
     "valid_to" TIMESTAMP(0) NOT NULL,
-    "warned" BOOLEAN NOT NULL,
-    "notified" BOOLEAN NOT NULL,
     "active" BOOLEAN NOT NULL,
     "expired" BOOLEAN NOT NULL,
     "pricing_id" TEXT NOT NULL,
@@ -41,6 +39,17 @@ CREATE TABLE "subscription" (
     "updated_at" TIMESTAMP(0) NOT NULL,
 
     CONSTRAINT "subscription_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "subscription_history" (
+    "id" TEXT NOT NULL,
+    "event" TEXT NOT NULL,
+    "subscription_id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(0) NOT NULL,
+    "updated_at" TIMESTAMP(0) NOT NULL,
+
+    CONSTRAINT "subscription_history_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -180,6 +189,9 @@ ALTER TABLE "subscription" ADD CONSTRAINT "subscription_pricing_id_fkey" FOREIGN
 
 -- AddForeignKey
 ALTER TABLE "subscription" ADD CONSTRAINT "subscription_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "subscription_history" ADD CONSTRAINT "subscription_history_subscription_id_fkey" FOREIGN KEY ("subscription_id") REFERENCES "subscription"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "config" ADD CONSTRAINT "config_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

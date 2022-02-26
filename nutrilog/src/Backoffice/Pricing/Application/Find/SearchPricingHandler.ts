@@ -2,7 +2,6 @@ import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { PricingResponse } from "./PricingResponse";
 import { SearchPricingQuery } from "../../Domain/Query/SearchPricingQuery";
 import { IPricingRepository } from "../../Domain/IPricingRepository";
-import { PricingNotExistsError } from "../../Domain/PricingNotExistsError";
 import { QueryHandler } from "../../../../Shared/Domain/Decorators/QueryHandler.decorator";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 
@@ -21,7 +20,7 @@ export class SearchPricingHandler implements IHandler<PricingResponse> {
 
     const [ pricing ] = result.value;
 
-    return new PricingResponse(pricing.id(), pricing.name(), pricing.duration(), pricing.price());
+    return new PricingResponse(pricing.id().value, pricing.name(), pricing.duration(), pricing.price());
   }
 
 }

@@ -5,7 +5,7 @@ import { Meal } from "../../Domain/Meal.entity";
 export class GetDietResponseBuilder {
   public run(diet: Diet): DietResponse {
     return {
-      id: diet.id(),
+      id: diet.id().value,
       name: diet.name(),
       active: diet.active(),
       kcal: diet.kcal(),
@@ -20,7 +20,7 @@ export class GetDietResponseBuilder {
   private buildMealResponse(diet: Diet): MealsResponse[] {
     return diet.meals().data().map((meal: Meal) => {
       return {
-        id: meal.id(),
+        id: meal.id().value,
         dietId: meal.dietId(),
         name: meal.name(),
         foods: [],

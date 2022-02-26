@@ -24,7 +24,7 @@ export class NutritionixRepository extends HttpApi implements IFoodRepository {
 
     const foods: Food[] = [];
 
-    const results = new Collection<FoodSearch>(searchResponse.common).cut(maxSearch);
+    const results = new Collection<any>(searchResponse.common).cut(maxSearch);
 
     for (const result of results.data()) {
       const { data: nutrientsResponse } = await this.post<NutritionixApiNutrientsResponse,

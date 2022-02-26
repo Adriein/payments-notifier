@@ -16,7 +16,7 @@ export class RegisterAdminController extends BaseController<Auth> {
         new RegisterAdminCommand(req.body.name, req.body.email, req.body.password)
       );
 
-      const auth = await this.queryBus.ask(new SigninQuery(req.body.email, req.body.password));
+      const auth = await this.queryBus.ask<Auth>(new SigninQuery(req.body.email, req.body.password));
 
       const userJwt = jwt.sign(
         {

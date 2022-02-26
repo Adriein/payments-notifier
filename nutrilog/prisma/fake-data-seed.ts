@@ -4,6 +4,7 @@ import { ID } from "../src/Shared/Domain/VO/Id.vo";
 import { CryptoService } from "../src/Shared/Domain/Services/CryptoService";
 import { Password } from "../src/Shared/Domain/VO/Password.vo";
 import { Time } from "../src/Shared/Infrastructure/Helper/Time";
+import { SUBSCRIPTION_STATUS } from "../src/Backoffice/User/Domain/constants";
 
 const prisma = new PrismaClient()
 const crypto = new CryptoService();
@@ -55,10 +56,20 @@ async function main() {
             pricing_id: pricing!.id,
             active: true,
             expired: false,
-            warned: false,
-            notified: false,
             payment_date: new Date(),
             valid_to: validTo,
+            history: {
+              createMany: {
+                data: [
+                  {
+                    id: ID.generate().value,
+                    event: SUBSCRIPTION_STATUS.CREATED,
+                    created_at: new Date(),
+                    updated_at: new Date()
+                  }
+                ]
+              }
+            },
             created_at: new Date(),
             updated_at: new Date()
           }

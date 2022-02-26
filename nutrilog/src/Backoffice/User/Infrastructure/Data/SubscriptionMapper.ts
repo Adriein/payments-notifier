@@ -3,19 +3,22 @@ import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Prisma } from "@prisma/client";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
 import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
+import { SubscriptionHistory } from "../../Domain/Entity/SubscriptionHistory.entity";
+import { SubscriptionHistoryCollection } from "../../Domain/Entity/SubscriptionHistoryCollection";
 
 export class SubscriptionMapper implements IMapper<Subscription, Prisma.subscriptionCreateInput | Prisma.subscriptionUpdateInput> {
-  toSaveDataModel<C extends Prisma.userCreateInput>(domain: Subscription): Prisma.subscriptionCreateInput {
+  public toSaveDataModel<C extends Prisma.userCreateInput>(domain: Subscription): Prisma.subscriptionCreateInput {
     return {
       id: domain.id().value,
       valid_to: domain.validTo(),
-      warned: domain.isWarned(),
-      notified: domain.isNotified(),
       active: domain.isActive(),
       expired: domain.isExpired(),
       payment_date: domain.paymentDate(),
       created_at: domain.createdAt(),
       updated_at: domain.updatedAt(),
+      history: {
+        connectOrCreate: this.subscriptionHistoryCreate(domain)
+      },
       pricing: {
         connect: {
           id: domain.pricingId()
@@ -29,12 +32,10 @@ export class SubscriptionMapper implements IMapper<Subscription, Prisma.subscrip
     }
   }
 
-  toUpdateDataModel<C extends Prisma.userUpdateInput>(domain: Subscription): Prisma.subscriptionUpdateInput {
+  public toUpdateDataModel<C extends Prisma.userUpdateInput>(domain: Subscription): Prisma.subscriptionUpdateInput {
     return {
       id: domain.id().value,
       valid_to: domain.validTo(),
-      warned: domain.isWarned(),
-      notified: domain.isNotified(),
       active: domain.isActive(),
       expired: domain.isExpired(),
       payment_date: domain.paymentDate(),
@@ -60,12 +61,31 @@ export class SubscriptionMapper implements IMapper<Subscription, Prisma.subscrip
       new ID(dataModel.pricing_id!),
       new DateVo(dataModel.payment_date!),
       new DateVo(dataModel.valid_to!),
-      dataModel.warned!,
-      dataModel.notified!,
       dataModel.active!,
       dataModel.expired!,
+      this.subscriptionHistoryToDomain(dataModel),
       new Date(dataModel.created_at),
       new Date(dataModel.updated_at)
     );
+  }
+
+  private subscriptionHistoryToDomain(dataModel: any): SubscriptionHistoryCollection {
+    return new SubscriptionHistoryCollection([]);
+  }
+
+  private subscriptionHistoryCreate(domain: Subscription) {
+    return domain.history().data().map((history: SubscriptionHistory) => {
+      return {
+        create: {
+          id: history.id().value,
+          event: history.event(),
+          created_at: history.createdAt(),
+          updated_at: history.updatedAt()
+        },
+        where: {
+          id: history.id().value
+        }
+      }
+    });
   }
 }

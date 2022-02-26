@@ -6,7 +6,6 @@ import { CreateNutritionCommand } from '../../Domain/Commands/CreateNutritionCom
 import { Gender } from '../../Domain/VO/Gender.vo';
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
-import { NutritionNotExistsError } from "../../Domain/NutritionNotExistsError";
 import { NutritionAlreadyExists } from "../../Domain/NutritionAlreadyExists";
 
 @CommandHandler(CreateNutritionCommand)

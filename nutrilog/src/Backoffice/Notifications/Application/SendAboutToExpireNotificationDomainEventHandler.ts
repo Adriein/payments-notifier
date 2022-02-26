@@ -11,18 +11,19 @@ import { EmailHeader } from "../Domain/Entity/EmailHeader.entity";
 import { AboutToExpire } from "../Domain/Entity/AboutToExpire.entity";
 import { CLIENT_EMAIL_CONFIG_SUBJECT, NOTIFICATIONS_EMAIL } from "../Domain/constants";
 import { Email } from "../../../Shared/Domain/VO/Email.vo";
+import { GetClientProfileResponse } from "../../User/Application/GetClientProfile/GetClientProfileResponse";
 
 @DomainEventsHandler(SendAboutToExpireEmailDomainEvent)
 export class SendAboutToExpireNotificationDomainEventHandler implements IDomainEventHandler {
 
   constructor(
     private readonly repository: ISmtpServiceRepository<NutrilogEmail<string>>,
-    private readonly queryBus: IQueryBus<FindTenantClientsResponse>
+    private readonly queryBus: IQueryBus
   ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(event: SendAboutToExpireEmailDomainEvent): Promise<void> {
-    const user = await this.queryBus.ask(new GetClientProfileQuery(event.aggregateId));
+    const user = await this.queryBus.ask<GetClientProfileResponse>(new GetClientProfileQuery(event.aggregateId.value));
 
     const header = new EmailHeader(
       CLIENT_EMAIL_CONFIG_SUBJECT,
@@ -33,7 +34,7 @@ export class SendAboutToExpireNotificationDomainEventHandler implements IDomainE
     const template = new AboutToExpire(
       user.username,
       Number(process.env.DAYS_BEFORE_EXPIRATION!),
-      user.subscription.pricing.name
+      user.subscription[0].pricing.name
     );
 
     const email = NutrilogEmail.build<string>(header, template.generate());

@@ -12,9 +12,9 @@ export class GetDietsController extends BaseController<DietResponse[]> {
   @get('/diets')
   @use(requireAuth)
   @use(currentUser)
-  public async getDiets(req: Request, res: Response<DietResponse[]>, next: NextFunction) {
+  public async getDiets(req: Request, res: Response<DietResponse>, next: NextFunction) {
     try {
-      const diets = await this.queryBus.ask(new GetDietsQuery(req.body.nutritionId));
+      const diets = await this.queryBus.ask<DietResponse>(new GetDietsQuery(req.body.nutritionId));
 
       res.status(200).send(diets);
     } catch (error) {

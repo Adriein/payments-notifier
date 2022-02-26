@@ -18,7 +18,7 @@ export class GetAllNutritionController extends BaseController<GetNutritionRespon
     next: NextFunction
   ) {
     try {
-      const response = await this.queryBus.ask(new FindNutritionQuery(req.currentUser!.id!));
+      const response = await this.queryBus.ask<GetNutritionResponse>(new FindNutritionQuery(req.currentUser!.id!));
 
       res.status(200).send(response);
     } catch (error) {

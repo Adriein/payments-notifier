@@ -9,7 +9,7 @@ export class ApiUsageMapper implements IMapper<ApiUsage, Prisma.nutritionix_api_
 
   toSaveDataModel(domain: ApiUsage): Prisma.nutritionix_api_metadataCreateInput {
     return {
-      id: domain.id(),
+      id: domain.id().value,
       admin_id: domain.adminId(),
       api_calls: domain.apiCalls(),
       created_at: domain.createdAt(),

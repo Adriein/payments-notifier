@@ -52,7 +52,7 @@ export class Diet extends AggregateRoot {
 
   public add(name: string, kcal: number, foods: ID[] = []) {
     if (this._meals.totalKcal() < kcal) {
-      this._meals.add(Meal.build(name, foods, new ID(this.id()), kcal));
+      this._meals.add(Meal.build(name, foods, this.id(), kcal));
       this.entityUpdated();
     }
     throw new KcalExceedTotalError(`Meal: ${name} exceed maximum kcal permitted of ${this._kcal}`);
