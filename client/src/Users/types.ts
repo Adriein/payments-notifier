@@ -30,12 +30,11 @@ type SubscriptionPricing = {
   duration: number;
 }
 
-export type FetchUsersPayload = {
-  users: User[];
-  totalUsers: number;
+export type FetchClientListPayload = {
+  clientList: FetchClientListResponse[];
 }
 
-export type FetchTenantApiResponse = {
+export type FetchClientListResponse = {
   id: string,
   username: string,
   email: string,

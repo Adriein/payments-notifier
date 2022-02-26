@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useQueryParamModal from "../../Shared/Hooks/useQueryParamModal";
 import Modal from "../../Shared/Components/Modal/Modal";
 import UserTable from "../../Users/Components/Table";
 import Profile from "../../Users/Components/Profile";
-import { User } from "../../Users/types";
 
 const Clients = () => {
   const { open, isOpen, close } = useQueryParamModal('profile');
-  const [ selected, setSelected ] = useState<User>();
+  const [ selected, setSelected ] = useState<string>();
 
   return (
     <>
@@ -19,7 +18,7 @@ const Clients = () => {
           withCloseIcon={false}
           onClose={close}
           renderContent={(modal) => (
-            <Profile user={selected}/>
+            <Profile id={selected}/>
           )}
         />
       )}

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import Table from "../../../Shared/Components/Table";
-import { User } from "../../types";
+import { FetchClientListResponse } from "../../types";
 import { StyledTableCell, StyledTableRow } from "../../../Shared/Components/Table/TableBody/Styles";
 import Avatar from "../../../Shared/Components/Avatar";
 import { FiArrowRight } from "react-icons/fi";
@@ -14,7 +14,7 @@ import useBooleanBeautifier from "../../../Shared/Hooks/useBooleanBeautifier";
 import { UserTableProps } from "./UserTableProps";
 
 const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
-  const { state, fetchUsers, addFilter } = useContext(UsersContext);
+  const { state, fetchClientList, addFilter } = useContext(UsersContext);
   const { notify } = useToastError('login');
   const { pagination, setPage } = usePagination({ total: state.totalUsers });
   const { t } = useTranslation([ 'clients', 'common' ]);
@@ -26,13 +26,13 @@ const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
   });
 
   useEffect(() => {
-    fetchUsers({ ...pagination, filters: state.filters })
+    fetchClientList({ ...pagination, filters: state.filters })
       .catch(error => notify(error));
   }, [ state.filters, pagination ]);
 
-  const onUserSelection = (user: User) => {
+  const onClientSelection = (id: string) => {
     openProfileModal();
-    selectUser(user);
+    selectUser(id);
   }
 
   return (
@@ -41,31 +41,31 @@ const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
         addFilter={addFilter}
       />
       <Table.Body
-        collection={state.users}
+        collection={state.clientList}
         rows={[
           t('username_header'),
           t('pricing_header'),
           t('send_warning_notification_header'),
           t('subscription_period_header')
         ]}
-        renderRow={(user: User, index: number) => {
-          const isLast = index === state.users.length - 1
+        renderRow={(client: FetchClientListResponse, index: number) => {
+          const isLast = index === state.clientList.length - 1
           return (
-            <StyledTableRow key={user.id} isLast={isLast} onClick={() => onUserSelection(user)}>
+            <StyledTableRow key={client.id} isLast={isLast} onClick={() => onClientSelection(client.id)}>
               <StyledTableCell>
-                <Avatar name={user.username} size={35}/>
-                {user.username}
+                <Avatar name={client.username} size={35}/>
+                {client.username}
               </StyledTableCell>
               <StyledTableCell>
-                {pricingBeautifier(user.subscription.pricing.name)}
+                {pricingBeautifier(client.pricingName)}
               </StyledTableCell>
               <StyledTableCell>
-                {booleanBeautifier(user.config.sendWarnings)}
+                {booleanBeautifier(client.sendWarnings)}
               </StyledTableCell>
               <StyledTableCell>
-                {format(user.subscription.lastPayment)}
+                {format(client.lastPaymentDate)}
                 <FiArrowRight/>
-                {format(user.subscription.validTo)}
+                {format(client.validTo)}
               </StyledTableCell>
             </StyledTableRow>
           );

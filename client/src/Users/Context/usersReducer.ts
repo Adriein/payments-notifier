@@ -1,11 +1,11 @@
 import { ActionProps } from "../../Shared/Action/ActionProps";
 import { UserStateProps } from "./UserStateProps";
-import { FETCH_USERS_ACTION } from "../constants";
+import { FETCH_CLIENT_LIST_ACTION } from "../constants";
 import { ADD_FILTER_ACTION, ASYNC_ACTION } from "../../Shared/constants";
 import { fetchUsersReducer } from "./fetchUsersReducer";
 import { initAsyncAction } from "../../Shared/Reducers/InitAsyncActionReducer";
 import { addFilterReducer } from "../../Shared/Reducers/addFilterReducer";
-import { FetchUsersPayload } from "../types";
+import { FetchClientListPayload } from "../types";
 import { FilterProps } from "../../Shared/Action/Filter/FilterProps";
 
 
@@ -13,8 +13,8 @@ export const usersReducer = (state: UserStateProps, action: ActionProps): UserSt
   switch (action.type) {
     case ASYNC_ACTION:
       return initAsyncAction(state);
-    case FETCH_USERS_ACTION:
-      return fetchUsersReducer(state, action as ActionProps<FetchUsersPayload>);
+    case FETCH_CLIENT_LIST_ACTION:
+      return fetchUsersReducer(state, action as ActionProps<FetchClientListPayload>);
     case ADD_FILTER_ACTION:
       return addFilterReducer(state, action as ActionProps<FilterProps>)
     default:

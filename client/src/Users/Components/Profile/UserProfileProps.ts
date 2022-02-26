@@ -1,5 +1,5 @@
 import { User } from "../../types";
 
 export interface UserProfileProps {
-  user: User | undefined;
+  id: string | undefined;
 }

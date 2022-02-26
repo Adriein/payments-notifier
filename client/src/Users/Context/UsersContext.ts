@@ -2,7 +2,7 @@ import createDataContext from "../../Shared/Context/createDataContext";
 import { UserStateProps } from "./UserStateProps";
 import { usersReducer } from "./usersReducer";
 import { UsersActionProps } from "../Action/UsersActionProps";
-import { fetchUsers } from '../Action/FetchUsers/fetchUsers';
+import { fetchClientList } from '../Action/FetchClientList/fetchClientList';
 import { addFilter } from "../../Shared/Action/Filter/addFilter";
 
 export const {
@@ -10,6 +10,6 @@ export const {
   Context: UsersContext
 } = createDataContext<UserStateProps, UsersActionProps>(
   usersReducer,
-  { fetchUsers, addFilter },
-  { users: [], isLoading: false, filters: [], totalUsers: 0 }
+  { fetchClientList: fetchClientList, addFilter },
+  { clientList: [], isLoading: false, filters: [], totalUsers: 0 }
 );

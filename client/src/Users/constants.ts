@@ -1,4 +1,4 @@
-export const FETCH_USERS_ACTION = 'FETCH_USERS_ACTION';
+export const FETCH_CLIENT_LIST_ACTION = 'FETCH_CLIENT_LIST_ACTION';
 
 export const EXPIRED_FILTER = 'expired';
 export const ACTIVE_FILTER = 'active';
