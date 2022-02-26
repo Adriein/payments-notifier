@@ -15,10 +15,19 @@ import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse
 import { FindTenantClientsResponseBuilder } from "./FindTenantClientsResponseBuilder";
 import { Client } from "../../Domain/Entity/Client.entity";
 import { IClientRepository } from "../../Domain/IClientRepository";
+import { Subscription } from "../../Domain/Entity/Subscription.entity";
+import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
+import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
+import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
+import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 
 @QueryHandler(FindTenantClientsQuery)
 export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindTenantClientsResponse[]>> {
-  public constructor(private readonly clientRepository: IClientRepository, private readonly queryBus: IQueryBus) {}
+  public constructor(
+    private readonly clientRepository: IClientRepository,
+    private subscriptionRepository: ISubscriptionRepository,
+    private readonly queryBus: IQueryBus
+  ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(query: FindTenantClientsQuery): Promise<NutrilogResponse<FindTenantClientsResponse[]>> {
@@ -31,13 +40,22 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
 
     const clientList = await this.findClientsByCriteria(clientCriteria);
 
-    const responses = clientList.map((client: Client) => responseBuilder.run(client))
+
+    const responses = [];
+
+    for (const client of clientList) {
+      const subscription = await this.findClientActiveSubscription(client.id());
+
+      const pricing = await this.queryBus.ask<PricingResponse>(new GetPricingQuery(subscription.pricingId()));
+
+      responses.push(responseBuilder.run(client, pricing, subscription))
+    }
 
     return new NutrilogResponse(responses);
   }
 
   private async createClientCriteria(
-    adminId: string,
+    tenantId: string,
     page: number,
     quantity: number,
     filters: FilterRequestDto[]
@@ -45,7 +63,7 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
     const userRole = await this.queryBus.ask<SearchRoleResponse>(new SearchRoleQuery(CLIENT_ROLE));
     const criteria = new Criteria<UserFilter>(page, quantity);
 
-    criteria.equal('tenantId', adminId);
+    criteria.equal('tenantId', tenantId);
     criteria.equal('roleId', userRole.id);
 
     return this.mountUserSpecification(filters, criteria);
@@ -73,5 +91,18 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
     }
 
     return result.value;
+  }
+
+  private async findClientActiveSubscription(clientId: ID): Promise<Subscription> {
+    const criteria = new Criteria<SubscriptionFilter>();
+    criteria.equal('isActive', true);
+    criteria.equal('userId', clientId);
+    const result = await this.subscriptionRepository.find(criteria);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    return result.value[0];
   }
 }

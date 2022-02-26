@@ -55,7 +55,6 @@ export class CheckForAboutToExpireSubscriptionsHandler implements IHandler<void>
 
     const criteria = new Criteria<SubscriptionFilter>();
     criteria.equal('isActive', true);
-    criteria.equal('isWarned', false);
     criteria.in('userId', clientIdList);
 
     const result = await this.subscriptionRepository.find(criteria);

@@ -20,7 +20,7 @@ export class RegisterAdminController extends BaseController<Auth> {
 
       const userJwt = jwt.sign(
         {
-          id: auth.id(),
+          id: auth.id().value,
           username: auth.name(),
         },
         process.env.JWT_KEY!
@@ -31,7 +31,7 @@ export class RegisterAdminController extends BaseController<Auth> {
         jwt: userJwt,
       };
 
-      res.status(201).send({ id: auth.id(), username: auth.name() });
+      res.status(201).send({ id: auth.id().value, username: auth.name() });
     } catch (error) {
       next(error);
     }

@@ -17,7 +17,7 @@ export class SignInController extends BaseController<Auth> {
 
       const userJwt = jwt.sign(
         {
-          id: auth.id(),
+          id: auth.id().value,
           username: auth.name(),
         },
         process.env.JWT_KEY!
@@ -27,7 +27,7 @@ export class SignInController extends BaseController<Auth> {
         jwt: userJwt,
       };
 
-      res.status(200).send({ id: auth.id(), username: auth.name() });
+      res.status(200).send({ id: auth.id().value, username: auth.name() });
     } catch (error) {
       next(error);
     }

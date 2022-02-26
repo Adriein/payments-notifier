@@ -4,6 +4,7 @@ import { Filter } from "../../Domain/Entities/Filter";
 import { PrismaPagination } from "../types";
 import { MysqlMapper } from "./MysqlMapper";
 import { JoinTypeMissingError } from "./JoinTypeMissingError";
+import { ID } from "../../Domain/VO/Id.vo";
 
 export class PrismaQueryBuilder<F, M extends MysqlMapper> {
   private prismaWhereInput: JSObject = {};
@@ -39,7 +40,14 @@ export class PrismaQueryBuilder<F, M extends MysqlMapper> {
     }
     const dbOperation = filter.operation();
 
-    this.prismaWhereInput = { ...this.prismaWhereInput, [schema.field]: { [dbOperation]: filter.value() } };
+    const fieldValue = filter.value();
+
+    if (fieldValue instanceof ID) {
+      this.prismaWhereInput = { ...this.prismaWhereInput, [schema.field]: { [dbOperation]: fieldValue.value } };
+      return;
+    }
+
+    this.prismaWhereInput = { ...this.prismaWhereInput, [schema.field]: { [dbOperation]: fieldValue } };
   }
 
   private isJoin(column: string): boolean {

@@ -1,8 +1,10 @@
+import { ID } from "../../../../Shared/Domain/VO/Id.vo";
+
 export interface UserFilter {
   name: string;
   active: boolean;
-  roleId: string;
-  tenantId: string;
+  roleId: ID;
+  tenantId: ID;
   email: string;
   isSubscriptionActive: boolean;
   sendWarnings: boolean;

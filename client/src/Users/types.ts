@@ -34,3 +34,14 @@ export type FetchUsersPayload = {
   users: User[];
   totalUsers: number;
 }
+
+export type FetchTenantApiResponse = {
+  id: string,
+  username: string,
+  email: string,
+  active: boolean,
+  lastPaymentDate: string,
+  validTo: string,
+  sendWarnings: boolean,
+  pricingName: string
+};

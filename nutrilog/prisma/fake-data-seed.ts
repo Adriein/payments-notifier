@@ -12,7 +12,7 @@ const crypto = new CryptoService();
 async function main() {
   const pricingName = [ 'monthly', 'quarterly' ];
   const admin = await prisma.user.findUnique({ where: { email: process.env.ADMIN_EMAIL! } });
-  const [ role ] = await prisma.role.findMany({ where: { type: 'user' } });
+  const [ role ] = await prisma.role.findMany({ where: { type: 'client' } });
 
 
   for (const data of fakeData) {

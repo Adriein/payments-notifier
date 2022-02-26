@@ -2,18 +2,13 @@ import { MysqlMapper } from "../../../../Shared/Infrastructure/Data/MysqlMapper"
 
 export class UserMysqlMapper extends MysqlMapper {
   protected filterableColumnsMapping = {
-    ownerId: {
+    tenantId: {
       field: 'owner_id',
       type: 'string'
     },
     email: {
       field: 'email',
       type: 'string'
-    },
-    isSubscriptionActive: {
-      joinType: 'array',
-      field: 'subscriptions.active',
-      type: 'boolean'
     },
     sendWarnings: {
       field: 'config.send_warnings',

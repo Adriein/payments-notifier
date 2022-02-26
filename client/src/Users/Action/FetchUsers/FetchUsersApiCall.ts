@@ -1,6 +1,6 @@
-import { User } from "../../types";
+import { FetchTenantApiResponse } from "../../types";
 
 export interface FetchUsersApiCall {
-  data: User[]
+  data: FetchTenantApiResponse[]
   metadata: { totalUsers: number }
 }

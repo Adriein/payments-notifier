@@ -3,4 +3,8 @@ export type FindTenantClientsResponse = {
   username: string,
   email: string,
   active: boolean,
+  lastPaymentDate: string,
+  validTo: string,
+  sendWarnings: boolean,
+  pricingName: string
 };

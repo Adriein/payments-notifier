@@ -7,6 +7,5 @@ export interface SubscriptionFilter {
   lastPayment: DateVo;
   validTo: DateVo;
   isActive: boolean;
-  isWarned: boolean;
   isExpired: boolean;
 }

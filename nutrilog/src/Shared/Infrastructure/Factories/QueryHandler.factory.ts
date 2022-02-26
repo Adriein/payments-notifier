@@ -110,7 +110,7 @@ export default class QueryHandlerFactory {
 
     this.handlers.set(
       FindTenantClientsHandler.name,
-      new FindTenantClientsHandler(this.clientRepository, QueryBus.instance())
+      new FindTenantClientsHandler(this.clientRepository, this.subscriptionRepository, QueryBus.instance())
     );
 
     //Role

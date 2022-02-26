@@ -5,7 +5,7 @@ import { FetchUsersApiCall } from "./FetchUsersApiCall";
 import { FetchUsersActionProps } from "./FetchUsersActionProps";
 import { FETCH_USERS_ACTION } from "../../constants";
 import { ASYNC_ACTION } from "../../../Shared/constants";
-import { FetchUsersPayload } from "../../types";
+import { FetchTenantApiResponse, FetchUsersPayload, User } from "../../types";
 
 
 export const fetchUsers = (dispatch: Dispatch<ActionProps<FetchUsersPayload>>) => {
@@ -15,6 +15,14 @@ export const fetchUsers = (dispatch: Dispatch<ActionProps<FetchUsersPayload>>) =
 
     const response = await api.post<FetchUsersApiCall, FetchUsersActionProps>('/users', { quantity, page, filters });
 
-    dispatch({ type: FETCH_USERS_ACTION, payload: { users: response.data, totalUsers: response.metadata.totalUsers } });
+    dispatch({ type: FETCH_USERS_ACTION, payload: { users: response.data, totalUsers: 100 } });
   };
 };
+
+const buildUserType = (response: FetchTenantApiResponse[]): User[] => {
+  return response.map((client: FetchTenantApiResponse) => {
+    return {
+      id:
+    }
+  });
+}

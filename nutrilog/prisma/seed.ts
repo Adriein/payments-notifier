@@ -30,10 +30,19 @@ async function main() {
     throw new Error('No seeding needed');
   }
 
-  const userRole = await prisma.role.create({
+  const clientRole = await prisma.role.create({
     data: {
       id: ID.generate().value,
-      type: 'user',
+      type: 'client',
+      created_at: new Date(),
+      updated_at: new Date(),
+    }
+  });
+
+  const tenantRole = await prisma.role.create({
+    data: {
+      id: ID.generate().value,
+      type: 'tenant',
       created_at: new Date(),
       updated_at: new Date(),
     }
@@ -126,7 +135,7 @@ async function main() {
     }
   });
 
-  console.log({ yearly, monthly, quarterly, adminRole, userRole, user })
+  console.log({ yearly, monthly, quarterly, adminRole, clientRole, tenantRole, user })
 }
 
 main()
