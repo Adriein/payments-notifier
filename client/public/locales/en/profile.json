@@ -1,10 +1,13 @@
 {
   "details": "Personal details",
+  "config": "Configuration",
   "edit": "Edit",
   "username": "Name",
   "email": "Email",
   "save": "Save",
   "cancel": "Cancel",
   "account_details": "Account details:",
-  "billing_email": "Billing email:"
+  "billing_email": "Billing email:",
+  "config_language": "Language:",
+  "config_notifications": "Notifications:"
 }

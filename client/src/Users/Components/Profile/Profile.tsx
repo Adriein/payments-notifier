@@ -20,12 +20,14 @@ import { useTranslation } from "react-i18next";
 import ProfileForm from "./ProfileForm";
 import { useToggle } from "../../../Shared/Hooks/useToggle";
 import { UsersContext } from "../../Context/UsersContext";
+import useBooleanBeautifier from "../../../Shared/Hooks/useBooleanBeautifier";
+import ProfileClientInfo from "./ProfileClientInfo/ProfileClientInfo";
 
 const Profile = ({ id }: UserProfileProps) => {
   const { state, fetchClientProfile } = useContext(UsersContext);
   const { t } = useTranslation('profile');
   const [ edit, toggleEdit ] = useToggle();
-
+  
   useEffect(() => {
     (async () => {
       await fetchClientProfile({ clientId: id });
@@ -45,35 +47,7 @@ const Profile = ({ id }: UserProfileProps) => {
 
               </StyledUserResume>
             </StyledUserResumeContainer>
-            <StyledEditableUserInfoTitle>
-              <StyledDetailsTag>
-                <FiChevronDown/>
-                <p>{t('details')}</p>
-              </StyledDetailsTag>
-              <StyledEdit onClick={toggleEdit}>{t('edit')}</StyledEdit>
-            </StyledEditableUserInfoTitle>
-            {edit ? <ProfileForm user={state.clientProfile}/> : (
-              <StyledUserDetailsInfoContainer>
-                <StyledUserDetailTitle type={"subtitle"} bold>{t('account_details')}</StyledUserDetailTitle>
-                <StyledUserDetailInfo>{state.clientProfile.username}</StyledUserDetailInfo>
-                <StyledUserDetailInfo>{state.clientProfile.email}</StyledUserDetailInfo>
-                <StyledUserDetailTitle type={"subtitle"} bold>{t('billing_email')}</StyledUserDetailTitle>
-                <StyledUserDetailInfo>{state.clientProfile.email}</StyledUserDetailInfo>
-              </StyledUserDetailsInfoContainer>
-            )}
-            <StyledEditableUserInfoTitle>
-              <StyledDetailsTag>
-                <FiChevronDown/>
-                <p>Configuración</p>
-              </StyledDetailsTag>
-              <StyledEdit onClick={toggleEdit}>{t('edit')}</StyledEdit>
-            </StyledEditableUserInfoTitle>
-            <StyledUserDetailsInfoContainer>
-              <StyledUserDetailTitle type={"subtitle"} bold>Detalles de la configuración</StyledUserDetailTitle>
-              <StyledUserDetailInfo>{state.clientProfile.config.language}</StyledUserDetailInfo>
-              <StyledUserDetailInfo>{state.clientProfile.config.role}</StyledUserDetailInfo>
-              <StyledUserDetailInfo>{state.clientProfile.config.sendWarnings}</StyledUserDetailInfo>
-            </StyledUserDetailsInfoContainer>
+            <ProfileClientInfo client={state.clientProfile}/>
           </StyledPersonalInfoContainer>
           <StyledPersonalSubscriptionInfo>
             <StyledPersonalSubscriptionInfoNavigation>
