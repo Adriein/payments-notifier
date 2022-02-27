@@ -19,9 +19,10 @@ import { Time } from "../../../../Shared/Infrastructure/Helper/Time";
 import { SubscriptionHistory } from "../../Domain/Entity/SubscriptionHistory.entity";
 import { User } from "../../Domain/Entity/User.entity";
 import { ClientFinder } from "../Service/ClientFinder";
+import { NutrilogResponse } from "../../../../Shared/Application/NutrilogResponse";
 
 @QueryHandler(GetClientProfileQuery)
-export class GetClientProfileHandler implements IHandler<GetClientProfileResponse> {
+export class GetClientProfileHandler implements IHandler<NutrilogResponse<GetClientProfileResponse>> {
   constructor(
     private readonly finder: ClientFinder,
     private readonly subscriptionRepository: ISubscriptionRepository,
@@ -29,12 +30,14 @@ export class GetClientProfileHandler implements IHandler<GetClientProfileRespons
   ) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(command: GetClientProfileQuery): Promise<GetClientProfileResponse> {
+  public async handle(command: GetClientProfileQuery): Promise<NutrilogResponse<GetClientProfileResponse>> {
     const client = await this.finder.execute(new ID(command.userId));
 
     const subscriptionList = await this.findSubscriptionsByUser(client.id());
 
-    return await this.responseBuilder(client, subscriptionList);
+    const response = await this.responseBuilder(client, subscriptionList);
+
+    return new NutrilogResponse<GetClientProfileResponse>(response);
   }
 
   private async findSubscriptionsByUser(userId: ID): Promise<Subscription[]> {
@@ -93,7 +96,8 @@ export class GetClientProfileHandler implements IHandler<GetClientProfileRespons
     return subscription.history().data().map((history: SubscriptionHistory) => {
       return {
         event: history.event(),
-        createdAt: Time.format(history.createdAt(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT)
+        createdAt: Time.format(history.createdAt(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
+        updatedAt: Time.format(history.updatedAt(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
       }
     });
   }

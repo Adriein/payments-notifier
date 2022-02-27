@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import Table from "../../../Shared/Components/Table";
-import { FetchClientListResponse } from "../../types";
+import { ClientList } from "../../types";
 import { StyledTableCell, StyledTableRow } from "../../../Shared/Components/Table/TableBody/Styles";
 import Avatar from "../../../Shared/Components/Avatar";
 import { FiArrowRight } from "react-icons/fi";
@@ -48,7 +48,7 @@ const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
           t('send_warning_notification_header'),
           t('subscription_period_header')
         ]}
-        renderRow={(client: FetchClientListResponse, index: number) => {
+        renderRow={(client: ClientList, index: number) => {
           const isLast = index === state.clientList.length - 1
           return (
             <StyledTableRow key={client.id} isLast={isLast} onClick={() => onClientSelection(client.id)}>

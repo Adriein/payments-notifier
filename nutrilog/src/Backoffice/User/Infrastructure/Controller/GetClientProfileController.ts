@@ -5,18 +5,23 @@ import { use } from "../../../../Shared/Infrastructure/Decorators/use";
 import { currentUser, requireAuth } from "../../../../Shared/Infrastructure/Middlewares/auth";
 import { NextFunction, Request, Response } from "express";
 import { GetClientProfileQuery } from "../../Application/GetClientProfile/GetClientProfileQuery";
-import { FindTenantClientsResponse } from "../../Application/FindTenantClients/FindTenantClientsResponse";
+import { NutrilogResponse } from "../../../../Shared/Application/NutrilogResponse";
+import { GetClientProfileResponse } from "../../Application/GetClientProfile/GetClientProfileResponse";
 
 @Controller()
-export class GetUserController extends BaseController<FindTenantClientsResponse> {
-  @get('/user')
+export class GetClientProfileController extends BaseController {
+  @get('/client/profile/:id')
   @use(requireAuth)
   @use(currentUser)
-  public async getUser(req: Request, res: Response<FindTenantClientsResponse>, next: NextFunction): Promise<void> {
+  public async getUser(
+    req: Request,
+    res: Response<NutrilogResponse<GetClientProfileResponse>>,
+    next: NextFunction
+  ): Promise<void> {
     try {
-      const user = await this.queryBus.ask<FindTenantClientsResponse>(new GetClientProfileQuery(req.body.id));
+      const profile = await this.queryBus.ask<NutrilogResponse<GetClientProfileResponse>>(new GetClientProfileQuery(req.params.id));
 
-      res.status(200).send(user);
+      res.status(200).send(profile);
     } catch (error) {
       next(error);
     }

@@ -48,7 +48,10 @@ export class SubscriptionRepository implements ISubscriptionRepository {
 
       const results = await this.prisma.subscription.findMany({
         ...pagination,
-        where: query
+        where: query,
+        include: {
+          history: true
+        }
       });
 
       this.prisma.$disconnect();
@@ -66,6 +69,9 @@ export class SubscriptionRepository implements ISubscriptionRepository {
       const result = await this.prisma.subscription.findUnique({
         where: {
           id
+        },
+        include: {
+          history: true
         }
       });
 

@@ -1,5 +1,5 @@
-import { FetchClientListResponse } from "../../types";
+import { ClientList } from "../../types";
 
 export interface FetchClientListApiCall {
-  data: FetchClientListResponse[]
+  data: ClientList[]
 }

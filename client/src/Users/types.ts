@@ -12,9 +12,14 @@ type GetSubscriptionResponse = {
   pricing: SubscriptionPricing,
   lastPayment: string,
   validTo: string
-  isWarned: boolean,
-  isNotified: boolean,
   isActive: boolean,
+  history: SubscriptionHistoryResponse
+}
+
+type SubscriptionHistoryResponse = {
+  event: string,
+  createdAt: string,
+  updatedAt: string,
 }
 
 type GetConfigResponse = {
@@ -31,10 +36,14 @@ type SubscriptionPricing = {
 }
 
 export type FetchClientListPayload = {
-  clientList: FetchClientListResponse[];
+  clientList: ClientList[];
 }
 
-export type FetchClientListResponse = {
+export type FetchClientProfilePayload = {
+  clientProfile: User;
+}
+
+export type ClientList = {
   id: string,
   username: string,
   email: string,

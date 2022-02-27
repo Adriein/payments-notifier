@@ -63,14 +63,22 @@ export class SubscriptionMapper implements IMapper<Subscription, Prisma.subscrip
       new DateVo(dataModel.valid_to!),
       dataModel.active!,
       dataModel.expired!,
-      this.subscriptionHistoryToDomain(dataModel),
+      this.subscriptionHistoryToDomain(dataModel.history),
       new Date(dataModel.created_at),
       new Date(dataModel.updated_at)
     );
   }
 
-  private subscriptionHistoryToDomain(dataModel: any): SubscriptionHistoryCollection {
-    return new SubscriptionHistoryCollection([]);
+  private subscriptionHistoryToDomain(historyDataModelList: any): SubscriptionHistoryCollection {
+    const history = historyDataModelList.map((historyDataModel: any) => {
+      return new SubscriptionHistory(
+        new ID(historyDataModel.id),
+        historyDataModel.event,
+        historyDataModel.created_at,
+        historyDataModel.updated_at,
+      );
+    });
+    return new SubscriptionHistoryCollection(history);
   }
 
   private subscriptionHistoryCreate(domain: Subscription) {
