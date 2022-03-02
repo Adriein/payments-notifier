@@ -1,15 +1,12 @@
 import React, { useContext, useEffect } from "react";
 import {
-  StyledDetailsTag,
-  StyledEdit,
-  StyledEditableUserInfoTitle,
   StyledPersonalInfoContainer,
   StyledProfileContainer,
   StyledUserName,
   StyledUserResume,
   StyledUserResumeContainer,
   StyledPersonalSubscriptionInfo,
-  StyledPersonalSubscriptionInfoNavigation, StyledUserDetailsInfoContainer, StyledUserDetailTitle, StyledUserDetailInfo,
+  StyledPersonalSubscriptionInfoNavigation
 } from "./Styles";
 
 import { FiChevronDown } from "react-icons/fi";
@@ -17,17 +14,15 @@ import Avatar from "../../../Shared/Components/Avatar";
 import { UserProfileProps } from "./UserProfileProps";
 import Button from "../../../Shared/Components/Button";
 import { useTranslation } from "react-i18next";
-import ProfileForm from "./ProfileForm";
 import { useToggle } from "../../../Shared/Hooks/useToggle";
 import { UsersContext } from "../../Context/UsersContext";
-import useBooleanBeautifier from "../../../Shared/Hooks/useBooleanBeautifier";
 import ProfileClientInfo from "./ProfileClientInfo/ProfileClientInfo";
 
 const Profile = ({ id }: UserProfileProps) => {
   const { state, fetchClientProfile } = useContext(UsersContext);
   const { t } = useTranslation('profile');
   const [ edit, toggleEdit ] = useToggle();
-  
+
   useEffect(() => {
     (async () => {
       await fetchClientProfile({ clientId: id });

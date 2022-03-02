@@ -6,7 +6,7 @@ import Profile from "../../Users/Components/Profile";
 
 const Clients = () => {
   const { open, isOpen, close } = useQueryParamModal('profile');
-  const [ selected, setSelected ] = useState<string>('');
+  const [ selectedClient, setSelectedClient ] = useState<string>('');
 
   return (
     <>
@@ -18,11 +18,11 @@ const Clients = () => {
           withCloseIcon={false}
           onClose={close}
           renderContent={(modal) => (
-            <Profile id={selected}/>
+            <Profile id={selectedClient}/>
           )}
         />
       )}
-      <UserTable openProfileModal={open} selectUser={setSelected}/>
+      <UserTable openProfileModal={open} selectUser={setSelectedClient}/>
     </>
   )
 }

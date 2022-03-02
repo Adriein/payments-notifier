@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { COLORS } from "../../../Shared/Components/Utils/Colors";
 import { MIXIN } from "../../../Shared/Components/Utils/Mixin";
 import Form from "../../../Shared/Components/Form";
-import { font } from "../../../Shared/Components/Utils/Font";
-import Text from "../../../Shared/Components/Text";
 
 export const StyledProfileContainer = styled.div`
   display: flex;
@@ -29,35 +27,9 @@ export const StyledUserName = styled.h1`
 
 export const StyledUserResume = styled.div``;
 
-export const StyledEditableUserInfoTitle = styled.div`
-  margin-top: 40px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  border-bottom: 2px solid ${COLORS.backgroundMediumGray};
-  padding-bottom: 5px;
-`;
-
 export const StyledEdit = styled.p`
   color: ${COLORS.primary};
   ${MIXIN.clickable}
-`;
-
-export const StyledDetailsTag = styled.div`
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  gap: 5px;
-`;
-
-export const StyledUserDetailsInfoContainer = styled.div`
-`
-
-export const StyledUserDetailTitle = styled(Text)`
-  margin-top: 30px;
-`;
-export const StyledUserDetailInfo = styled.p`
-  margin-top: 10px;
 `;
 
 export const StyledUserProfileForm = styled(Form.Element)`
@@ -86,8 +58,4 @@ export const StyledPersonalSubscriptionInfoNavigation = styled.div`
   width: 100%;
   padding: 15px;
   border-bottom: 2px solid ${COLORS.backgroundMediumGray};
-`;
-
-export const NavigationItem = styled.p`
-  ${font.size(16)}
 `;

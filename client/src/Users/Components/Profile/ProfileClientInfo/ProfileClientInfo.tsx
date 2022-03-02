@@ -1,15 +1,15 @@
-import { ProfileClientInfoProps } from "./ProfileClientInfoProps";
-import * as Accordion from '@radix-ui/react-accordion';
-import { FiChevronDown } from "react-icons/fi";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { ProfileClientInfoProps } from "./ProfileClientInfoProps";
+import { FiChevronDown } from "react-icons/fi";
+import { StyledEdit } from "../Styles";
 import {
   StyledAccordionContent,
   StyledAccordionHeader, StyledAccordionRoot, StyledAccordionTrigger, StyledContent, StyledContentTitle,
 } from "./Styles";
-import { StyledEdit } from "../Styles";
+import { useTranslation } from "react-i18next";
 import { useToggle } from "../../../../Shared/Hooks/useToggle";
 import useBooleanBeautifier from "../../../../Shared/Hooks/useBooleanBeautifier";
+import Accordion from "../../../../Shared/Components/Accordion";
 
 const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
   const { t } = useTranslation('profile');
@@ -53,6 +53,5 @@ const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
     </StyledAccordionRoot>
   );
 }
-
 
 export default ProfileClientInfo;

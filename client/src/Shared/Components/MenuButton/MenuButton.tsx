@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { StyledMenuButton, StyledMenuList, StyledMenuItem } from './Styles';
 import { Menu as ReachMenu } from "@reach/menu-button";
 

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Text from "../../../../Shared/Components/Text";
 import { COLORS } from "../../../../Shared/Components/Utils/Colors";
-import * as Accordion from '@radix-ui/react-accordion';
+import Accordion from "../../../../Shared/Components/Accordion";
 import { MIXIN } from "../../../../Shared/Components/Utils/Mixin";
 
 export const StyledAccordionRoot = styled(Accordion.Root)`
