@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@radix-ui/react-accordion": "^0.1.6",
+    "@radix-ui/react-separator": "^0.1.4",
     "@reach/checkbox": "^0.16.0",
     "@reach/menu-button": "^0.16.2",
     "@testing-library/jest-dom": "^5.14.1",

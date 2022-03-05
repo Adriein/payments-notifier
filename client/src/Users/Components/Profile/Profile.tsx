@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { useToggle } from "../../../Shared/Hooks/useToggle";
 import { UsersContext } from "../../Context/UsersContext";
 import ProfileClientInfo from "./ProfileClientInfo/ProfileClientInfo";
+import SubscriptionInfo from "./SubscriptionInfo";
 
 const Profile = ({ id }: UserProfileProps) => {
   const { state, fetchClientProfile } = useContext(UsersContext);
@@ -28,7 +29,7 @@ const Profile = ({ id }: UserProfileProps) => {
       await fetchClientProfile({ clientId: id });
     })();
   }, []);
-
+  console.log(state.clientProfile)
   return (
     <StyledProfileContainer>
       {state.clientProfile && (
@@ -49,6 +50,7 @@ const Profile = ({ id }: UserProfileProps) => {
               <Button size={'small'} variant={'fill'}>Overview</Button>
               <Button size={'small'} variant={'fill'}>Actions <FiChevronDown/></Button>
             </StyledPersonalSubscriptionInfoNavigation>
+            <SubscriptionInfo subscription={state.clientProfile.subscription}/>
           </StyledPersonalSubscriptionInfo>
         </>
       )}

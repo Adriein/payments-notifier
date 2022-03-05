@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useToggle } from "../../../../Shared/Hooks/useToggle";
 import useBooleanBeautifier from "../../../../Shared/Hooks/useBooleanBeautifier";
 import Accordion from "../../../../Shared/Components/Accordion";
+import ProfileForm from "../ProfileForm";
 
 const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
   const { t } = useTranslation('profile');
@@ -30,9 +31,13 @@ const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
           <StyledEdit onClick={toggleEdit}>{t('edit')}</StyledEdit>
         </StyledAccordionHeader>
         <StyledAccordionContent>
-          <StyledContentTitle type={"subtitle"} bold>{t('account_details')}</StyledContentTitle>
-          <StyledContent>{client.username}</StyledContent>
-          <StyledContent>{client.email}</StyledContent>
+          {edit ? <ProfileForm user={client}/> :
+            <>
+              <StyledContentTitle type={"subtitle"} bold>{t('account_details')}</StyledContentTitle>
+              <StyledContent>{client.username}</StyledContent>
+              <StyledContent>{client.email}</StyledContent>
+            </>
+          }
         </StyledAccordionContent>
       </Accordion.Item>
       <Accordion.Item value="item-2">

@@ -33,7 +33,6 @@ export const StyledEdit = styled.p`
 `;
 
 export const StyledUserProfileForm = styled(Form.Element)`
-  margin-top: 30px;
 `;
 
 export const StyledFormInput = styled(Form.Field.Input)`
