@@ -45,9 +45,11 @@ export class SubscriptionRepository implements ISubscriptionRepository {
       const query = queryBuilder.build<Prisma.subscriptionWhereInput>();
 
       const pagination = queryBuilder.pagination();
+      const order = queryBuilder.orderBy();
 
       const results = await this.prisma.subscription.findMany({
         ...pagination,
+        ...order,
         where: query,
         include: {
           history: true

@@ -46,4 +46,8 @@ export class Criteria<T> {
   public filters(): Filter<T>[] {
     return this._filters;
   }
+
+  public containsOrderBy(): Filter<T> | undefined {
+    return this._filters.find((filter: Filter<T>) => filter.operation() === OPERATORS.order);
+  }
 }

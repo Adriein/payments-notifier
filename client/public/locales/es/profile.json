@@ -9,5 +9,9 @@
   "account_details": "Detalles de la cuenta:",
   "billing_email": "Email de facturación:",
   "config_language": "Idioma:",
-  "config_notifications": "Notificaciones:"
+  "config_notifications": "Notificaciones:",
+  "subscription_active": "Subscripción activa",
+  "subscription_duration": "Duración",
+  "subscription_price": "Precio",
+  "subscription_valid_to": "Válido hasta"
 }

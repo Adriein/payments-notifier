@@ -16,7 +16,7 @@ export type Subscription = {
   history: SubscriptionHistory[]
 }
 
-type SubscriptionHistory = {
+export type SubscriptionHistory = {
   event: string,
   createdAt: string,
   updatedAt: string,

@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@radix-ui/react-accordion": "^0.1.6",
+    "@radix-ui/react-dropdown-menu": "^0.1.6",
+    "@radix-ui/react-scroll-area": "^0.1.4",
     "@radix-ui/react-separator": "^0.1.4",
     "@reach/checkbox": "^0.16.0",
     "@reach/menu-button": "^0.16.2",

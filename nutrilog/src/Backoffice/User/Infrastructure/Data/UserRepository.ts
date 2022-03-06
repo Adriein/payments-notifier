@@ -43,9 +43,11 @@ export class UserRepository implements IUserRepository {
       const query = queryBuilder.build<Prisma.userWhereInput>();
 
       const pagination = queryBuilder.pagination();
+      const order = queryBuilder.orderBy();
 
       const results = await this.prisma.user.findMany({
         ...pagination,
+        ...order,
         where: query,
         include: {
           config: true,

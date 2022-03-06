@@ -17,6 +17,10 @@ export class SubscriptionMysqlMapper extends MysqlMapper {
     isExpired: {
       field: 'expired',
       type: 'boolean'
+    },
+    createdAt: {
+      field: 'created_at',
+      type: 'string'
     }
   };
 }

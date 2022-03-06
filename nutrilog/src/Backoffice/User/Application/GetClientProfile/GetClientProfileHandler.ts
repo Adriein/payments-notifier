@@ -44,11 +44,12 @@ export class GetClientProfileHandler implements IHandler<NutrilogResponse<GetCli
     const criteria = new Criteria<SubscriptionFilter>();
 
     criteria.equal('userId', userId);
+    criteria.orderBy('createdAt', 'desc')
 
     const result = await this.subscriptionRepository.find(criteria);
 
     if (result.isLeft()) {
-      throw result;
+      throw result.value;
     }
 
     return result.value;
