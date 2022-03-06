@@ -96,6 +96,8 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
   private async findClientActiveSubscription(clientId: ID): Promise<Subscription> {
     const criteria = new Criteria<SubscriptionFilter>();
     criteria.equal('userId', clientId);
+    criteria.orderBy('createdAt', 'desc');
+
     const result = await this.subscriptionRepository.find(criteria);
 
     if (result.isLeft()) {

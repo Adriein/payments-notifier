@@ -11,7 +11,10 @@
   "config_language": "Language:",
   "config_notifications": "Notifications:",
   "subscription_active": "Active subscription",
+  "subscription_badge_active": "Active",
   "subscription_duration": "Duration",
   "subscription_price": "Price",
-  "subscription_valid_to": "Valid to"
+  "subscription_valid_to": "Valid to",
+  "subscription_days": "days",
+  "subscription_history": "History"
 }

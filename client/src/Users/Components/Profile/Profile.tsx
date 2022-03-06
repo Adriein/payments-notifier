@@ -13,23 +13,20 @@ import { FiChevronDown } from "react-icons/fi";
 import Avatar from "../../../Shared/Components/Avatar";
 import { UserProfileProps } from "./UserProfileProps";
 import Button from "../../../Shared/Components/Button";
-import { useTranslation } from "react-i18next";
-import { useToggle } from "../../../Shared/Hooks/useToggle";
 import { UsersContext } from "../../Context/UsersContext";
 import ProfileClientInfo from "./ProfileClientInfo/ProfileClientInfo";
-import SubscriptionInfo from "./SubscriptionInfo";
+import ActiveSubscription from "./ActiveSubscription";
+import HistorySubscription from "./SubscriptionHistory";
 
 const Profile = ({ id }: UserProfileProps) => {
   const { state, fetchClientProfile } = useContext(UsersContext);
-  const { t } = useTranslation('profile');
-  const [ edit, toggleEdit ] = useToggle();
 
   useEffect(() => {
     (async () => {
       await fetchClientProfile({ clientId: id });
     })();
   }, []);
-  console.log(state.clientProfile)
+
   return (
     <StyledProfileContainer>
       {state.clientProfile && (
@@ -50,7 +47,8 @@ const Profile = ({ id }: UserProfileProps) => {
               <Button size={'small'} variant={'fill'}>Overview</Button>
               <Button size={'small'} variant={'fill'}>Actions <FiChevronDown/></Button>
             </StyledPersonalSubscriptionInfoNavigation>
-            <SubscriptionInfo subscription={state.clientProfile.subscription}/>
+            <ActiveSubscription subscription={state.clientProfile.subscription[0]}/>
+            <HistorySubscription inactiveSubscriptions={state.clientProfile.subscription}/>
           </StyledPersonalSubscriptionInfo>
         </>
       )}
