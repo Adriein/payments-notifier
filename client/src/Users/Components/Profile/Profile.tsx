@@ -6,7 +6,7 @@ import {
   StyledUserResume,
   StyledUserResumeContainer,
   StyledPersonalSubscriptionInfo,
-  StyledPersonalSubscriptionInfoNavigation
+  StyledPersonalSubscriptionInfoNavigation, StyledSubscriptionContainer
 } from "./Styles";
 
 import { FiChevronDown } from "react-icons/fi";
@@ -47,8 +47,10 @@ const Profile = ({ id }: UserProfileProps) => {
               <Button size={'small'} variant={'fill'}>Overview</Button>
               <Button size={'small'} variant={'fill'}>Actions <FiChevronDown/></Button>
             </StyledPersonalSubscriptionInfoNavigation>
-            <ActiveSubscription subscription={state.clientProfile.subscription[0]}/>
-            <HistorySubscription inactiveSubscriptions={state.clientProfile.subscription}/>
+            <StyledSubscriptionContainer>
+              <ActiveSubscription subscription={state.clientProfile.subscription[0]}/>
+              <HistorySubscription inactiveSubscriptions={state.clientProfile.subscription}/>
+            </StyledSubscriptionContainer>
           </StyledPersonalSubscriptionInfo>
         </>
       )}

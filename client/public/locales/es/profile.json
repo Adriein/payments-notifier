@@ -12,6 +12,7 @@
   "config_notifications": "Notificaciones:",
   "subscription_active": "Subscripción activa",
   "subscription_badge_active": "Activa",
+  "subscription_badge_expired": "Expirada",
   "subscription_duration": "Duración",
   "subscription_price": "Precio",
   "subscription_valid_to": "Válido hasta",

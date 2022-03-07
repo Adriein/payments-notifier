@@ -3,4 +3,5 @@ export interface SubscriptionResumeProps {
   duration: number;
   price: number;
   validTo: string;
+  expired: boolean;
 }

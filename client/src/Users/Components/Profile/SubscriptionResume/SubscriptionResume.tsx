@@ -3,7 +3,6 @@ import React from "react";
 import useDateFormatter from "../../../../Shared/Hooks/useDateFormatter";
 import { useTranslation } from "react-i18next";
 
-import Badge from "../../../../Shared/Components/Badge";
 import Text from "../../../../Shared/Components/Text";
 
 import {
@@ -12,7 +11,7 @@ import {
   StyledOptionContainer,
   StyledTitleContainer,
   StyledOptionsIcon,
-  StyledSeparator,
+  StyledSeparator, ActiveBadge, ExpiredBadge,
 } from './Styles'
 import { SubscriptionResumeProps } from "./SubscriptionResumeProps";
 
@@ -20,15 +19,16 @@ const firstLetterUpperCase = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-const SubscriptionResume = ({ name, price, validTo, duration }: SubscriptionResumeProps) => {
+const SubscriptionResume = ({ name, price, validTo, duration, expired }: SubscriptionResumeProps) => {
   const { format } = useDateFormatter();
   const { t } = useTranslation('profile');
-
+  console.log(expired)
   return (
     <StyledActiveSubscription>
       <StyledTitleContainer>
         <Text type={"h3"}>{firstLetterUpperCase(name)}</Text>
-        <Badge text={t('subscription_badge_active')}/>
+        {expired ? <ExpiredBadge text={t('subscription_badge_expired')}/> :
+          <ActiveBadge text={t('subscription_badge_active')}/>}
         <StyledOptionContainer>
           <StyledOptionsIcon/>
         </StyledOptionContainer>

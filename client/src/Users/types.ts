@@ -13,6 +13,7 @@ export type Subscription = {
   lastPayment: string,
   validTo: string
   isActive: boolean,
+  isExpired: boolean,
   history: SubscriptionHistory[]
 }
 

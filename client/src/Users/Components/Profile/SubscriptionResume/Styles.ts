@@ -3,6 +3,7 @@ import { COLORS } from "../../../../Shared/Components/Utils/Colors";
 import Separator from "../../../../Shared/Components/Separator";
 import { FiMoreVertical } from "react-icons/fi";
 import { MIXIN } from "../../../../Shared/Components/Utils/Mixin";
+import Badge from "../../../../Shared/Components/Badge";
 
 export const StyledActiveSubscription = styled.div`
   display: flex;
@@ -40,4 +41,14 @@ export const StyledSeparator = styled(Separator)`
   background-color: ${COLORS.borderLight};
   width: 1px;
   margin: 0 8px;
+`;
+
+export const ActiveBadge = styled(Badge)`
+  background-color: #E6F8EB;
+  color: #28C453;
+`;
+
+export const ExpiredBadge = styled(Badge)`
+  background-color: #f8e6e6;
+  color: #c42828;
 `;

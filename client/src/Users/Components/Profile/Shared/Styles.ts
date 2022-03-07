@@ -10,7 +10,7 @@ export const StyledSubscriptionInfoContainer = styled.div`
 
 export const StyledScrollArea = styled(ScrollArea)`
   width: 100%;
-  height: 50%;
+  max-height: 300px;
   overflow: hidden;
   border-radius: 4px;
 `;

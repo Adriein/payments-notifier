@@ -58,3 +58,10 @@ export const StyledPersonalSubscriptionInfoNavigation = styled.div`
   padding: 15px;
   border-bottom: 2px solid ${COLORS.backgroundMediumGray};
 `;
+
+export const StyledSubscriptionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+`;

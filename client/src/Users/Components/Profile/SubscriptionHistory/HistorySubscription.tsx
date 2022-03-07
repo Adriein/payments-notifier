@@ -12,7 +12,7 @@ import SubscriptionResume from "../SubscriptionResume";
 
 const HistorySubscription = ({ inactiveSubscriptions }: HistorySubscriptionProps) => {
   const { t } = useTranslation('profile');
-  console.log(inactiveSubscriptions)
+
   return (
     <StyledSubscriptionHistoryContainer>
       <Text type={"h2"}>{t('subscription_history')}</Text>
@@ -20,6 +20,9 @@ const HistorySubscription = ({ inactiveSubscriptions }: HistorySubscriptionProps
         <StyledViewport>
           <StyledScrollContent>
             {inactiveSubscriptions.map((subscription: Subscription, index: number) => {
+              if (index === 0) {
+                return null;
+              }
               return (
                 <SubscriptionResume
                   key={index}
@@ -27,6 +30,7 @@ const HistorySubscription = ({ inactiveSubscriptions }: HistorySubscriptionProps
                   duration={subscription.pricing.duration}
                   price={subscription.pricing.price}
                   validTo={subscription.validTo}
+                  expired={subscription.isExpired}
                 />
               );
             })}
