@@ -49,6 +49,6 @@ export const ActiveBadge = styled(Badge)`
 `;
 
 export const ExpiredBadge = styled(Badge)`
-  background-color: #f8e6e6;
-  color: #c42828;
+  background-color: #FCDCE1;
+  color: #F24B69;
 `;

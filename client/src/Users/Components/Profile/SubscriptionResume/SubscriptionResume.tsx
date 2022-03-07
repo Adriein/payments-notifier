@@ -29,9 +29,9 @@ const SubscriptionResume = ({ name, price, validTo, duration, expired }: Subscri
         <Text type={"h3"}>{firstLetterUpperCase(name)}</Text>
         {expired ? <ExpiredBadge text={t('subscription_badge_expired')}/> :
           <ActiveBadge text={t('subscription_badge_active')}/>}
-        <StyledOptionContainer>
+        {!expired && <StyledOptionContainer>
           <StyledOptionsIcon/>
-        </StyledOptionContainer>
+        </StyledOptionContainer>}
       </StyledTitleContainer>
       <StyledDetailsContainer>
         <span>{t('subscription_duration')} {duration} {t('subscription_days')}</span>
