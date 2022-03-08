@@ -1,25 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import {
-  StyledPersonalInfoContainer,
   StyledProfileContainer,
-  StyledUserName,
-  StyledUserResume,
-  StyledUserResumeContainer,
-  StyledPersonalSubscriptionInfo,
-  StyledPersonalSubscriptionInfoNavigation, StyledSubscriptionContainer
 } from "./Styles";
 
-import { FiChevronDown } from "react-icons/fi";
-import Avatar from "../../../Shared/Components/Avatar";
 import { UserProfileProps } from "./UserProfileProps";
-import Button from "../../../Shared/Components/Button";
+
 import { UsersContext } from "../../Context/UsersContext";
-import ProfileClientInfo from "./ProfileClientInfo/ProfileClientInfo";
-import ActiveSubscription from "./ActiveSubscription";
-import HistorySubscription from "./SubscriptionHistory";
+import Loader from "../../../Shared/Components/Loader";
+import test from '../../../Shared/Components/Loader/Captura.png'
 
 const Profile = ({ id }: UserProfileProps) => {
-  const { state, fetchClientProfile } = useContext(UsersContext);
+  const { state: { clientProfile, isLoading }, fetchClientProfile } = useContext(UsersContext);
 
   useEffect(() => {
     (async () => {
@@ -29,31 +20,38 @@ const Profile = ({ id }: UserProfileProps) => {
 
   return (
     <StyledProfileContainer>
-      {state.clientProfile && (
-        <>
-          <StyledPersonalInfoContainer>
-            <StyledUserResumeContainer>
-              <Avatar name={state.clientProfile.username} size={50}/>
-              <StyledUserName>{state.clientProfile.username}</StyledUserName>
-              {state.clientProfile.email}
-              <StyledUserResume>
+      <Loader size={80} color={"blue"}/>
+      {/*clientProfile && !isLoading ? (
+       <>
+       <StyledPersonalInfoContainer>
+       <StyledUserResumeContainer>
+       <Avatar name={clientProfile.username} size={50}/>
+       <StyledUserName>{clientProfile.username}</StyledUserName>
+       {clientProfile.email}
+       <StyledUserResume>
 
-              </StyledUserResume>
-            </StyledUserResumeContainer>
-            <ProfileClientInfo client={state.clientProfile}/>
-          </StyledPersonalInfoContainer>
-          <StyledPersonalSubscriptionInfo>
-            <StyledPersonalSubscriptionInfoNavigation>
-              <Button size={'small'} variant={'fill'}>Overview</Button>
-              <Button size={'small'} variant={'fill'}>Actions <FiChevronDown/></Button>
-            </StyledPersonalSubscriptionInfoNavigation>
-            <StyledSubscriptionContainer>
-              <ActiveSubscription subscription={state.clientProfile.subscription[0]}/>
-              <HistorySubscription inactiveSubscriptions={state.clientProfile.subscription}/>
-            </StyledSubscriptionContainer>
-          </StyledPersonalSubscriptionInfo>
-        </>
-      )}
+       </StyledUserResume>
+       </StyledUserResumeContainer>
+       <ProfileClientInfo client={clientProfile}/>
+       </StyledPersonalInfoContainer>
+       <StyledPersonalSubscriptionInfo>
+       <StyledPersonalSubscriptionInfoNavigation>
+       <Button size={'small'} variant={'fill'}>Overview</Button>
+       <Button size={'small'} variant={'fill'}>Actions <FiChevronDown/></Button>
+       </StyledPersonalSubscriptionInfoNavigation>
+       <StyledSubscriptionContainer>
+       <ActiveSubscription subscription={clientProfile.subscription[0]}/>
+       <HistorySubscription inactiveSubscriptions={clientProfile.subscription}/>
+       </StyledSubscriptionContainer>
+       </StyledPersonalSubscriptionInfo>
+       </>
+       ) : (
+       <StyledLoaderContainer>
+       <Loader size={80} color={"blue"}>
+       <StyledLogoImg src={test}/>
+       </Loader>
+       </StyledLoaderContainer>
+       )*/}
     </StyledProfileContainer>
   );
 }
