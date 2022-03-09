@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 
 const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) => {
   const { t } = useTranslation('profile');
-  console.log(subscription);
   return (
     <StyledSubscriptionInfoContainer>
       <Text type={"h2"}>{t('subscription_active')}</Text>

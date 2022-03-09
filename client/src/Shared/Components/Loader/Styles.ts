@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import { COLORS } from "../Utils/Colors";
 
-export const StyledLoader = styled.span`
+export const StyledLoader = styled.span<any>`
   display: inline-block;
   border-width: 2px;
   border-style: solid;
-  background-color: ${COLORS.backgroundLightGray};
-  border-color: rgba(0, 0, 0, 0.08) rgba(0, 0, 0, 0.08) rgba(0, 0, 0, 0.08) rgb(5, 86, 222);
+  ${(props) => props.logo && `background-color: ${COLORS.backgroundLightGray}`};
+  border-color: rgba(0, 0, 0, 0.08) rgba(0, 0, 0, 0.08) rgba(0, 0, 0, 0.08) ${COLORS.primary};
   border-radius: 50%;
   vertical-align: text-bottom;
-  width: 60px;
-  height: 60px;
+  width: ${({ size }) => size ?? 60}px;
+  height: ${({ size }) => size ?? 60}px;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   animation-duration: 0.8s;
@@ -34,12 +34,12 @@ export const StyledLoaderContainer = styled.div`
   width: 100%;
 `;
 
-export const StyledLogoImg = styled.img`
+export const StyledLogoImg = styled.img<any>`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: ${({ size }) => size ? size / 2 : 30}px;
+  height: ${({ size }) => size ? size / 2 : 30}px;
 `;

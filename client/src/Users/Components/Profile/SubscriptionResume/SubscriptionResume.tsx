@@ -22,7 +22,6 @@ const firstLetterUpperCase = (word: string) => {
 const SubscriptionResume = ({ name, price, validTo, duration, expired }: SubscriptionResumeProps) => {
   const { format } = useDateFormatter();
   const { t } = useTranslation('profile');
-  console.log(expired)
   return (
     <StyledActiveSubscription>
       <StyledTitleContainer>
