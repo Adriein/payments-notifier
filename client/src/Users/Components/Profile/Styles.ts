@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { COLORS } from "../../../Shared/Components/Utils/Colors";
 import { MIXIN } from "../../../Shared/Components/Utils/Mixin";
 import Form from "../../../Shared/Components/Form";
+import Tabs from "../../../Shared/Components/Tabs";
+import { font } from "../../../Shared/Components/Utils/Font";
 
 export const StyledProfileContainer = styled.div`
   display: flex;
@@ -45,7 +47,7 @@ export const StyledFormActions = styled.div`
   gap: 20px;
 `;
 
-export const StyledPersonalSubscriptionInfo = styled.div`
+export const StyledPersonalSubscriptionInfo = styled(Tabs)`
   display: flex;
   flex-direction: column;
   width: 62%;
@@ -61,7 +63,35 @@ export const StyledPersonalSubscriptionInfoNavigation = styled.div`
 
 export const StyledSubscriptionContainer = styled.div`
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   gap: 10px;
   padding: 20px;
+`;
+
+export const StyledTabList = styled(Tabs.List)`
+  display: flex;
+`;
+
+export const StyledTabTrigger = styled(Tabs.Trigger)`
+  all: unset;
+  padding: 15px;
+  width: 50%;
+  text-align: center;
+  border-bottom: 2px solid ${COLORS.backgroundMediumGray};
+
+  ${font.size(15)}
+  ${MIXIN.clickable}
+  &:hover {
+    color: ${COLORS.primary};
+  }
+
+  &[data-state="active"] {
+    color: ${COLORS.primary};
+    border-bottom: 2px solid ${COLORS.primary};
+  }
+`;
+
+export const StyledTabContent = styled(Tabs.Content)`
+  display: flex;
 `;
