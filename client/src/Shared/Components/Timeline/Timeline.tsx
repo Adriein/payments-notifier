@@ -15,7 +15,6 @@ const Timeline = ({ children }: TimelineProps) => {
 }
 
 Timeline.Item = ({ color, title, bullet, children, isLast }: TimelineItemProps) => {
-  console.log(color)
   return (
     <StyledTimeLineItemContainer>
       <StyledTimeLineBulletContainer isLast={isLast}>

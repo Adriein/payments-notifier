@@ -5,9 +5,11 @@ export type GetClientProfileResponse = {
   active: boolean,
   subscription: SubscriptionResponse[],
   config: ConfigResponse,
+  revenue: ClientRevenue,
 };
 
 export type SubscriptionResponse = {
+  id: string,
   pricing: SubscriptionPricing,
   lastPayment: string,
   validTo: string,
@@ -32,4 +34,10 @@ type SubscriptionPricing = {
   price: number;
   name: string;
   duration: number;
+}
+
+type ClientRevenue = {
+  spent: number,
+  since: string,
+  monthlyRecurringRevenue: number,
 }

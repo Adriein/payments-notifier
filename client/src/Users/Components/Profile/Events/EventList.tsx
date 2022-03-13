@@ -1,6 +1,6 @@
 import Timeline from "../../../../Shared/Components/Timeline";
 import { EventListProps } from "./EventListProps";
-import { FiDatabase, FiAlertTriangle, FiClock, FiX, FiCheckCircle } from "react-icons/fi";
+import { FiAlertTriangle, FiClock, FiX, FiCheckCircle } from "react-icons/fi";
 import useDateFormatter from "../../../../Shared/Hooks/useDateFormatter";
 import { Subscription, SubscriptionHistory } from "../../../types";
 import { StyledEventListContainer } from "./Styles";
@@ -38,30 +38,29 @@ const EventList = ({ list }: EventListProps) => {
           <StyledScrollContent separation={80}>
             {list.map((subscription: Subscription) => {
               return (
-                <>
-                  <Timeline>
-                    {subscription.history.map(({ event, createdAt }: SubscriptionHistory, index: number) => {
-                      const isLast = index === subscription.history.length - 1;
-                      const { color, icon } = eventIcon[event];
-                      return (
-                        <Timeline.Item
-                          color={color}
-                          bullet={icon}
-                          title={t(`subscription_events.${event}`)}
-                          isLast={isLast}
-                        >
+                <Timeline key={subscription.id}>
+                  {subscription.history.map(({ event, createdAt }: SubscriptionHistory, index: number) => {
+                    const isLast = index === subscription.history.length - 1;
+                    const { color, icon } = eventIcon[event];
+                    return (
+                      <Timeline.Item
+                        key={index}
+                        color={color}
+                        bullet={icon}
+                        title={t(`subscription_events.${event}`)}
+                        isLast={isLast}
+                      >
                           <span>
                             {t(
                               `${event}_event_body`,
                               { pricingName: subscription.pricing.name }
                             )}
                           </span>
-                          <Text type={"subtitle"}>{format(createdAt)}</Text>
-                        </Timeline.Item>
-                      )
-                    })}
-                  </Timeline>
-                </>
+                        <Text type={"subtitle"}>{format(createdAt)}</Text>
+                      </Timeline.Item>
+                    )
+                  })}
+                </Timeline>
               );
             })}
           </StyledScrollContent>

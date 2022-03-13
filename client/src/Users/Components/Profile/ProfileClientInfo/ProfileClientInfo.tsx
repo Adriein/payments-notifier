@@ -11,6 +11,7 @@ import { useToggle } from "../../../../Shared/Hooks/useToggle";
 import useBooleanBeautifier from "../../../../Shared/Hooks/useBooleanBeautifier";
 import Accordion from "../../../../Shared/Components/Accordion";
 import ProfileForm from "../ProfileForm";
+import { StringHelper } from "../../../../Shared/Services/StringHelper";
 
 const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
   const { t } = useTranslation('profile');
@@ -52,7 +53,7 @@ const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
           <StyledContentTitle type={"subtitle"} bold>{t('config_language')}</StyledContentTitle>
           <StyledContent>{client.config.language}</StyledContent>
           <StyledContentTitle type={"subtitle"} bold>{t('config_notifications')}</StyledContentTitle>
-          <StyledContent>{beautify(client.config.sendNotifications)}</StyledContent>
+          <StyledContent>{StringHelper.firstLetterToUpperCase(beautify(client.config.sendNotifications))}</StyledContent>
         </StyledAccordionContent>
       </Accordion.Item>
     </StyledAccordionRoot>

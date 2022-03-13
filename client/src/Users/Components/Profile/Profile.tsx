@@ -36,6 +36,8 @@ const Profile = ({ id }: UserProfileProps) => {
     })();
   }, []);
 
+  console.log(clientProfile)
+
   return (
     <StyledProfileContainer>
       {clientProfile && !isLoading ? (

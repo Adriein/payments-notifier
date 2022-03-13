@@ -9,6 +9,7 @@ export type User = {
 };
 
 export type Subscription = {
+  id: string,
   pricing: SubscriptionPricing,
   lastPayment: string,
   validTo: string

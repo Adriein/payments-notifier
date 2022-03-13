@@ -56,6 +56,10 @@ export class GetClientProfileHandler implements IHandler<NutrilogResponse<GetCli
   }
 
   private async responseBuilder(user: User, subscriptionList: Subscription[]): Promise<GetClientProfileResponse> {
+    const subscriptionResponseList = await this.subscriptionBuilder(subscriptionList);
+    const spent = this.calculateTotalRevenue(subscriptionResponseList);
+    const monthlyRecurringRevenue = spent > 0 && subscriptionResponseList.length > 1 ? spent / subscriptionResponseList.length : spent;
+
     return {
       id: user.id().value,
       username: user.name(),
@@ -67,7 +71,12 @@ export class GetClientProfileHandler implements IHandler<NutrilogResponse<GetCli
         sendNotifications: user.sendNotifications(),
         role: user.roleId().value
       },
-      subscription: await this.subscriptionBuilder(subscriptionList)
+      subscription: subscriptionResponseList,
+      revenue: {
+        since: Time.format(user.createdAt(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
+        spent,
+        monthlyRecurringRevenue
+      }
     }
   }
 
@@ -77,6 +86,7 @@ export class GetClientProfileHandler implements IHandler<NutrilogResponse<GetCli
     for (const subscription of subscriptionList) {
       const pricing = await this.queryBus.ask<PricingResponse>(new GetPricingQuery(subscription.pricingId()));
       response.push({
+        id: subscription.id().value,
         pricing: {
           price: pricing.price,
           name: pricing.name,
@@ -101,5 +111,11 @@ export class GetClientProfileHandler implements IHandler<NutrilogResponse<GetCli
         updatedAt: Time.format(history.updatedAt(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
       }
     });
+  }
+
+  private calculateTotalRevenue(subscriptionResponse: SubscriptionResponse[]): number {
+    return subscriptionResponse.reduce((total, subscription: SubscriptionResponse) => {
+      return total + subscription.pricing.price;
+    }, 0);
   }
 }
