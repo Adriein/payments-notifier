@@ -8,9 +8,9 @@ export const StyledSubscriptionInfoContainer = styled.div`
   padding: 10px;
 `;
 
-export const StyledScrollArea = styled(ScrollArea)`
+export const StyledScrollArea = styled<any>(ScrollArea)`
   width: 100%;
-  max-height: 300px;
+  max-height: ${({ height }: any) => height ? `${height}px` : '100%'};
   overflow: hidden;
   border-radius: 4px;
 `;

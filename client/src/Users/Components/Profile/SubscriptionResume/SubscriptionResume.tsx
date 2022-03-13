@@ -14,10 +14,7 @@ import {
   StyledSeparator, ActiveBadge, ExpiredBadge,
 } from './Styles'
 import { SubscriptionResumeProps } from "./SubscriptionResumeProps";
-
-const firstLetterUpperCase = (word: string) => {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-}
+import { StringHelper } from "../../../../Shared/Services/StringHelper";
 
 const SubscriptionResume = ({ name, price, validTo, duration, expired }: SubscriptionResumeProps) => {
   const { format } = useDateFormatter();
@@ -25,7 +22,7 @@ const SubscriptionResume = ({ name, price, validTo, duration, expired }: Subscri
   return (
     <StyledActiveSubscription>
       <StyledTitleContainer>
-        <Text type={"h3"}>{firstLetterUpperCase(name)}</Text>
+        <Text type={"h3"}>{StringHelper.firstLetterToUpperCase(name)}</Text>
         {expired ? <ExpiredBadge text={t('subscription_badge_expired')}/> :
           <ActiveBadge text={t('subscription_badge_active')}/>}
         {!expired && <StyledOptionContainer>

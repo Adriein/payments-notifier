@@ -21,6 +21,7 @@ import { FiChevronDown } from "react-icons/fi";
 import ActiveSubscription from "./ActiveSubscription";
 import HistorySubscription from "./SubscriptionHistory";
 import Tabs from "../../../Shared/Components/Tabs";
+import EventList from "./Events";
 
 
 const Profile = ({ id }: UserProfileProps) => {
@@ -58,9 +59,9 @@ const Profile = ({ id }: UserProfileProps) => {
                 <HistorySubscription inactiveSubscriptions={clientProfile.subscription}/>
               </StyledSubscriptionContainer>
             </StyledTabContent>
-            <Tabs.Content value={"tab2"}>
-              <p>events changelog</p>
-            </Tabs.Content>
+            <StyledTabContent value={"tab2"}>
+              <EventList list={clientProfile.subscription}/>
+            </StyledTabContent>
           </StyledPersonalSubscriptionInfo>
         </>
       ) : <Loader logo size={80} color={"blue"}/>}

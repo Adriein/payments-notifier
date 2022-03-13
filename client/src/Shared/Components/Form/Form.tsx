@@ -2,11 +2,11 @@ import React from 'react';
 import { Formik, Form as FormikForm, Field as FormikField } from 'formik';
 import { get, mapValues } from 'lodash';
 
-import { is } from '../Services/Validation';
+import { is } from '../../Services/Validation';
 
 import Field, { FieldProps } from './Field';
 import { FieldAttributes } from "formik/dist/Field";
-import { ErrorGenerator } from "../Services/ErrorGenerator";
+import { ErrorGenerator } from "../../Services/ErrorGenerator";
 import { FormProps } from "./FormProps";
 
 
