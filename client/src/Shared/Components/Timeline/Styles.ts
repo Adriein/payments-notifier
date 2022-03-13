@@ -12,17 +12,17 @@ export const StyledTimeLineItemContainer = styled.div`
   flex-grow: 1;
 `;
 
-export const StyledTimeLineBulletContainer = styled.div`
+export const StyledTimeLineBulletContainer = styled.div<{ isLast?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   flex-basis: 48px;
-  min-height: 100px;
+  ${({ isLast }) => !isLast && 'min-height: 100px'};
 `;
 
 export const StyledTimeLineBar = styled.div`
   width: 2px;
-  background-color: ${COLORS.primary};
+  background-color: ${COLORS.lightGray};
   height: 100%;
 `;
 
@@ -33,11 +33,11 @@ export const StyledBulletContainer = styled.div`
   align-items: center;
 `;
 
-export const StyledBullet = styled.div`
+export const StyledBullet = styled.div<{ color: string }>`
   width: 30px;
   height: 30px;
   color: ${COLORS.backgroundWhite};
-  background-color: ${COLORS.primary};
+  background-color: ${({ color }) => color};
   display: flex;
   justify-content: center;
   align-items: center;

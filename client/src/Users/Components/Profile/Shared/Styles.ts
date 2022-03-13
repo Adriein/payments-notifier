@@ -43,8 +43,8 @@ export const StyledThumb = styled(ScrollArea.Thumb)`
   border-radius: 10px;
 `;
 
-export const StyledScrollContent = styled.div`
+export const StyledScrollContent = styled.div<any>`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: ${({ separation }) => separation ? separation : '5'}px;
 `;

@@ -14,12 +14,13 @@ const Timeline = ({ children }: TimelineProps) => {
   return <StyledTimeLineContainer>{children}</StyledTimeLineContainer>
 }
 
-Timeline.Item = ({ title, bullet, children, isLast }: TimelineItemProps) => {
+Timeline.Item = ({ color, title, bullet, children, isLast }: TimelineItemProps) => {
+  console.log(color)
   return (
     <StyledTimeLineItemContainer>
-      <StyledTimeLineBulletContainer>
+      <StyledTimeLineBulletContainer isLast={isLast}>
         <StyledBulletContainer>
-          <StyledBullet>{bullet}</StyledBullet>
+          <StyledBullet color={color}>{bullet}</StyledBullet>
         </StyledBulletContainer>
         {!isLast && <StyledTimeLineBar/>}
       </StyledTimeLineBulletContainer>

@@ -17,5 +17,17 @@
   "subscription_price": "Precio",
   "subscription_valid_to": "Válido hasta",
   "subscription_days": "dias",
-  "subscription_history": "Historial"
+  "subscription_history": "Historial",
+  "subscription_overview_title": "Resumen",
+  "subscription_events_title": "Eventos",
+  "subscription_events": {
+    "created": "creado",
+    "about_to_expire": "apunto de expirar",
+    "expired": "expirado",
+    "inactive": "inactivo"
+  },
+  "created_event_body": "Subscripción creada para la tarifa {{pricingName}}",
+  "about_to_expire_event_body": "Email de preavíso enviado al usuario",
+  "expired_event_body": "Subscripción con la tarifa {{pricingName}} expirada",
+  "inactive_event_body": "Subscripción con la tarifa {{pricingName}} desactivada"
 }

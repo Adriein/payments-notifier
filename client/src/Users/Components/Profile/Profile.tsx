@@ -22,10 +22,13 @@ import ActiveSubscription from "./ActiveSubscription";
 import HistorySubscription from "./SubscriptionHistory";
 import Tabs from "../../../Shared/Components/Tabs";
 import EventList from "./Events";
+import { useTranslation } from "react-i18next";
 
 
 const Profile = ({ id }: UserProfileProps) => {
   const { state: { clientProfile, isLoading }, fetchClientProfile } = useContext(UsersContext);
+
+  const { t } = useTranslation('profile');
 
   useEffect(() => {
     (async () => {
@@ -50,8 +53,8 @@ const Profile = ({ id }: UserProfileProps) => {
           </StyledPersonalInfoContainer>
           <StyledPersonalSubscriptionInfo defaultValue={"tab1"}>
             <StyledTabList>
-              <StyledTabTrigger value={"tab1"}>Overview</StyledTabTrigger>
-              <StyledTabTrigger value={"tab2"}>Events</StyledTabTrigger>
+              <StyledTabTrigger value={"tab1"}>{t('subscription_overview_title')}</StyledTabTrigger>
+              <StyledTabTrigger value={"tab2"}>{t('subscription_events_title')}</StyledTabTrigger>
             </StyledTabList>
             <StyledTabContent value={"tab1"}>
               <StyledSubscriptionContainer>

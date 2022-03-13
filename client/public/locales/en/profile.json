@@ -17,5 +17,17 @@
   "subscription_price": "Price",
   "subscription_valid_to": "Valid to",
   "subscription_days": "days",
-  "subscription_history": "History"
+  "subscription_history": "History",
+  "subscription_overview_title": "Overview",
+  "subscription_events_title": "Events",
+  "subscription_events": {
+    "created": "created",
+    "about_to_expire": "about to expire",
+    "expired": "expired",
+    "inactive": "inactive"
+  },
+  "created_event_body": "Subscription created with pricing name {{pricingName}}",
+  "about_to_expire_event_body": "About to expire email sent to user",
+  "expired_event_body": "Subscription with pricing name {{pricingName}} expired",
+  "inactive_event_body": "Subscription with pricing name {{pricingName}} inactivated on renewal"
 }
