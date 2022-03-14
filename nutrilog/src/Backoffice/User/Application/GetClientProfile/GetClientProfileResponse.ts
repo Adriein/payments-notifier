@@ -37,7 +37,7 @@ type SubscriptionPricing = {
 }
 
 type ClientRevenue = {
-  spent: number,
+  spent: string,
   since: string,
-  monthlyRecurringRevenue: number,
+  monthlyRecurringRevenue: string,
 }

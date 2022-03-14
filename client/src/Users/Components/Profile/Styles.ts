@@ -27,8 +27,6 @@ export const StyledUserName = styled.h1`
   margin: 20px 0 10px 0;
 `;
 
-export const StyledUserResume = styled.div``;
-
 export const StyledEdit = styled.p`
   color: ${COLORS.primary};
   ${MIXIN.clickable}
@@ -51,14 +49,6 @@ export const StyledPersonalSubscriptionInfo = styled(Tabs)`
   display: flex;
   flex-direction: column;
   width: 62%;
-`;
-
-export const StyledPersonalSubscriptionInfoNavigation = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 15px;
-  border-bottom: 2px solid ${COLORS.backgroundMediumGray};
 `;
 
 export const StyledSubscriptionContainer = styled.div`

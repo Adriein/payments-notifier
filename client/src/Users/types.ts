@@ -6,6 +6,7 @@ export type User = {
   active: boolean,
   subscription: Subscription[],
   config: Config,
+  revenue: ClientRevenue
 };
 
 export type Subscription = {
@@ -55,3 +56,9 @@ export type ClientList = {
   sendWarnings: boolean,
   pricingName: string
 };
+
+export type ClientRevenue = {
+  spent: string,
+  since: string,
+  monthlyRecurringRevenue: string,
+}

@@ -74,8 +74,8 @@ export class GetClientProfileHandler implements IHandler<NutrilogResponse<GetCli
       subscription: subscriptionResponseList,
       revenue: {
         since: Time.format(user.createdAt(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
-        spent,
-        monthlyRecurringRevenue
+        spent: `${spent} €`,
+        monthlyRecurringRevenue: `${monthlyRecurringRevenue} €`
       }
     }
   }
