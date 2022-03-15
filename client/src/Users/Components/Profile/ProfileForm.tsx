@@ -24,7 +24,6 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
       }}
       validations={{
         email: [ Form.is.email(), Form.is.required() ],
-        billingEmail: [ Form.is.email(), Form.is.required() ],
         username: Form.is.required(),
       }}
       onSubmit={async ({ username, email, billingEmail }: FormProps) => {
@@ -34,7 +33,6 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
       <StyledUserProfileForm>
         <StyledFormInput name="username" label={t('username')} value={user.username}/>
         <StyledFormInput name="email" label={t('email')} value={user.email}/>
-        <StyledFormInput name="billingEmail" label={t('billing_email')} value={user.email}/>
         <StyledFormActions>
           <Button size={'small'} variant={'fill'} type={"submit"}>{t('save')}</Button>
           <Button size={'small'} variant={'fill'} type={"submit"}>{t('cancel')}</Button>

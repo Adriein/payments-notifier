@@ -16,7 +16,7 @@ const HistorySubscription = ({ inactiveSubscriptions }: HistorySubscriptionProps
   return (
     <StyledSubscriptionHistoryContainer>
       <Text type={"h2"}>{t('subscription_history')}</Text>
-      <StyledScrollArea height={300}>
+      <StyledScrollArea height={373}>
         <StyledViewport>
           <StyledScrollContent>
             {inactiveSubscriptions.map((subscription: Subscription, index: number) => {

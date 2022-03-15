@@ -5,5 +5,5 @@ export const StyledEventListContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   flex-grow: 1;
-  height: 500px;
+  height: 557px;
 `;

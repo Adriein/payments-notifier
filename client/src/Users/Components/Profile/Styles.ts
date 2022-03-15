@@ -41,7 +41,6 @@ export const StyledFormInput = styled(Form.Field.Input)`
 
 export const StyledFormActions = styled.div`
   display: flex;
-  margin-top: 30px;
   gap: 20px;
 `;
 
