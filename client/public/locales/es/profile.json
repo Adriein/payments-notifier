@@ -29,5 +29,8 @@
   "created_event_body": "Subscripción creada para la tarifa {{pricingName}}",
   "about_to_expire_event_body": "Email de preavíso enviado al usuario",
   "expired_event_body": "Subscripción con la tarifa {{pricingName}} expirada",
-  "inactive_event_body": "Subscripción con la tarifa {{pricingName}} desactivada"
+  "inactive_event_body": "Subscripción con la tarifa {{pricingName}} desactivada",
+  "resume_spent": "Gastado",
+  "resume_since": "Desde",
+  "resume_recurrent_income": "Imr"
 }

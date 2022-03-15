@@ -29,5 +29,8 @@
   "created_event_body": "Subscription created with pricing name {{pricingName}}",
   "about_to_expire_event_body": "About to expire email sent to user",
   "expired_event_body": "Subscription with pricing name {{pricingName}} expired",
-  "inactive_event_body": "Subscription with pricing name {{pricingName}} inactivated on renewal"
+  "inactive_event_body": "Subscription with pricing name {{pricingName}} inactivated on renewal",
+  "resume_spent": "Spent",
+  "resume_since": "Since",
+  "resume_recurrent_income": "Mrr"
 }
