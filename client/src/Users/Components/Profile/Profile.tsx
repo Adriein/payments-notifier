@@ -20,7 +20,7 @@ import EventList from "./Events";
 import { useTranslation } from "react-i18next";
 import ClientRevenue from "./ClientRevenue";
 import { useToggle } from "../../../Shared/Hooks/useToggle";
-import ProfileForm from "./ProfileForm";
+import ProfileForm from "./ProfileForm/ProfileForm";
 
 
 const Profile = ({ id }: UserProfileProps) => {

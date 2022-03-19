@@ -29,19 +29,21 @@ Form.Element = (props: any) => <FormikForm noValidate {...props} />;
 
 Form.Field = mapValues(
   Field,
-  (FieldComponent) => ({ name, validate, ...props }: FieldProps) => (
-    <FormikField name={name} validate={validate}>
-      {({ field, form: { touched, errors, setFieldValue } }: FieldAttributes<any>) => (
-        <FieldComponent
-          {...field}
-          {...props}
-          name={name}
-          error={get(touched, name) && get(errors, name)}
-          onChange={(value: React.ChangeEvent<any>) => setFieldValue(name, value)}
-        />
-      )}
-    </FormikField>
-  )
+  (FieldComponent) => ({ name, validate, ...props }: FieldProps) => {
+    return (
+      <FormikField name={name} validate={validate}>
+        {({ field, form: { touched, errors, setFieldValue } }: FieldAttributes<any>) => (
+          <FieldComponent
+            {...field}
+            {...props}
+            name={name}
+            error={get(touched, name) && get(errors, name)}
+            onChange={(value: React.ChangeEvent<any>) => setFieldValue(name, value)}
+          />
+        )}
+      </FormikField>
+    );
+  }
 );
 
 Form.is = is;

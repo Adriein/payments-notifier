@@ -24,7 +24,7 @@ export interface FieldProps {
 }
 
 
-const buildField = (FormComponent: any, type?: string) => {
+const buildField = (FormComponent: any) => {
   return ({
     className,
     label,
@@ -36,7 +36,7 @@ const buildField = (FormComponent: any, type?: string) => {
     const fieldId = uniqueId('form-field-');
 
     return (
-      <StyledField className={className} type={type}>
+      <StyledField className={className}>
         {label && <FieldLabel htmlFor={fieldId}>{label}</FieldLabel>}
         <FormComponent
           id={fieldId}
@@ -53,5 +53,5 @@ const buildField = (FormComponent: any, type?: string) => {
 
 export default {
   Input: buildField(Input),
-  Select: buildField(Select, 'select')
+  Select: buildField(Select)
 };

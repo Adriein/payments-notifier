@@ -1,62 +1,67 @@
-import Form from "../../../Shared/Components/Form";
-import { StyledFormActions, StyledFormInput, StyledUserProfileForm, StyledFormRow } from "./Styles";
-import Button from "../../../Shared/Components/Button";
-import Text from "../../../Shared/Components/Text";
+import Form from "../../../../Shared/Components/Form";
+import { StyledFormActions, StyledFormInput, StyledUserProfileForm, StyledFormRow } from "../Styles";
+import Button from "../../../../Shared/Components/Button";
+import Text from "../../../../Shared/Components/Text";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ProfileFormProps } from "./ProfileFormProps";
-import useBooleanBeautifier from "../../../Shared/Hooks/useBooleanBeautifier";
 import { FiChevronDown } from "react-icons/fi";
-import Select from "../../../Shared/Components/Select";
+import Select from "../../../../Shared/Components/Select";
 
 interface FormProps {
   username: string;
   email: string;
-  billingEmail: string;
+  address: string;
+  city: string;
+  dni: string;
+  phone: string;
+  language: string;
+  sendNotifications: string,
+  sendWarnings: string
+  role: string,
 }
 
 const ProfileForm = ({ user }: ProfileFormProps) => {
   const { t } = useTranslation('profile');
-  const { beautify } = useBooleanBeautifier({
-    isTrue: 'active',
-    isFalse: 'inactive'
-  });
 
   return (
     <Form
       enableReinitialize
       initialValues={{
-        username: '',
-        email: '',
-        billingEmail: '',
+        username: user.username,
+        email: user.email,
+        address: '',
+        city: '',
+        dni: '',
+        phone: '',
+        language: user.config.language,
+        sendNotifications: 'true',
+        sendWarnings: 'false',
+        role: 'user',
       }}
-      validations={{
-        email: [ Form.is.email(), Form.is.required() ],
-        username: Form.is.required(),
-      }}
-      onSubmit={async ({ username, email, billingEmail }: FormProps) => {
-
+      validations={{}}
+      onSubmit={async ({ username, email, address, role }: FormProps) => {
+        console.log(role, username)
       }}
     >
       <StyledUserProfileForm>
         <Text type={"h2"}>{t('details')}</Text>
-        <StyledFormInput name="username" label={t('username')} value={user.username}/>
-        <StyledFormInput name="email" label={t('email')} value={user.email}/>
+        <StyledFormInput name="username" label={t('username')}/>
+        <StyledFormInput name="email" label={t('email')}/>
         <StyledFormRow>
-          <StyledFormInput name="address" label={t('address')} value={user.email}/>
-          <StyledFormInput name="city" label={t('city')} value={user.email}/>
+          <StyledFormInput name="address" label={t('address')}/>
+          <StyledFormInput name="city" label={t('city')}/>
         </StyledFormRow>
         <StyledFormRow>
-          <StyledFormInput name="dni" label={t('dni')} value={user.email}/>
-          <StyledFormInput name="phone" label={t('phone')} value={user.email}/>
+          <StyledFormInput name="dni" label={t('dni')}/>
+          <StyledFormInput name="phone" label={t('phone')}/>
         </StyledFormRow>
         <Text type={"h2"}>{t('config')}</Text>
         <StyledFormRow>
-          <StyledFormInput name="language" label={t('config_language')} value={user.config.language}/>
+          <StyledFormInput name="language" label={t('config_language')}/>
         </StyledFormRow>
         <StyledFormRow isLast>
-
-          <Form.Field.Select name="sendNotifications" label={t('notifications')} defaultValue="true">
+          <Form.Field.Select name="sendNotifications" label={t('notifications')}>
             <Select.Trigger>
               <Select.Value/>
               <Select.Icon><FiChevronDown/></Select.Icon>
@@ -74,7 +79,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
               <Select.ScrollDownButton/>
             </Select.Content>
           </Form.Field.Select>
-          <Form.Field.Select name="sendNotifications" label={t('warnings')} defaultValue="true">
+          <Form.Field.Select name="sendWarnings" label={t('warnings')}>
             <Select.Trigger>
               <Select.Value/>
               <Select.Icon><FiChevronDown/></Select.Icon>
@@ -92,7 +97,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
               <Select.ScrollDownButton/>
             </Select.Content>
           </Form.Field.Select>
-          <Form.Field.Select name="role" label={t('role')} defaultValue="user">
+          <Form.Field.Select name="role" label={t('role')}>
             <Select.Trigger>
               <Select.Value/>
               <Select.Icon><FiChevronDown/></Select.Icon>
