@@ -9,6 +9,8 @@
   "role": "Role",
   "dni": "Dni",
   "city": "City",
+  "notifications": "Notifications",
+  "warnings": "Warnings",
   "save": "Save",
   "cancel": "Cancel",
   "account_details": "Account details:",

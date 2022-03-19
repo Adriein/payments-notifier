@@ -3,8 +3,8 @@ import { COLORS } from "../Utils/Colors";
 import { font } from "../Utils/Font";
 
 
-export const StyledField = styled.div`
-  width: 100%;
+export const StyledField = styled.div<{ className: any, type?: string }>`
+  width: 100%
 `;
 
 export const FieldLabel = styled.label`
