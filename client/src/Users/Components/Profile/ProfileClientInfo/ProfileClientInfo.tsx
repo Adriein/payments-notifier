@@ -7,15 +7,12 @@ import {
   StyledAccordionHeader, StyledAccordionRoot, StyledAccordionTrigger, StyledContent, StyledContentTitle,
 } from "./Styles";
 import { useTranslation } from "react-i18next";
-import { useToggle } from "../../../../Shared/Hooks/useToggle";
 import useBooleanBeautifier from "../../../../Shared/Hooks/useBooleanBeautifier";
 import Accordion from "../../../../Shared/Components/Accordion";
-import ProfileForm from "../ProfileForm";
 import { StringHelper } from "../../../../Shared/Services/StringHelper";
 
-const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
+const ProfileClientInfo = ({ client, toggleEdit }: ProfileClientInfoProps) => {
   const { t } = useTranslation('profile');
-  const [ edit, toggleEdit ] = useToggle();
   const { beautify } = useBooleanBeautifier({
     isTrue: 'enabled',
     isFalse: 'disabled'
@@ -32,13 +29,9 @@ const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
           <StyledEdit onClick={toggleEdit}>{t('edit')}</StyledEdit>
         </StyledAccordionHeader>
         <StyledAccordionContent>
-          {edit ? <ProfileForm user={client}/> :
-            <>
-              <StyledContentTitle type={"subtitle"} bold>{t('account_details')}</StyledContentTitle>
-              <StyledContent>{client.username}</StyledContent>
-              <StyledContent>{client.email}</StyledContent>
-            </>
-          }
+          <StyledContentTitle type={"subtitle"} bold>{t('account_details')}</StyledContentTitle>
+          <StyledContent>{client.username}</StyledContent>
+          <StyledContent>{client.email}</StyledContent>
         </StyledAccordionContent>
       </Accordion.Item>
       <Accordion.Item value="item-2">
@@ -47,7 +40,7 @@ const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
             <FiChevronDown/>
             <span>{t('config')}</span>
           </StyledAccordionTrigger>
-          <StyledEdit onClick={toggleEdit}>{t('edit')}</StyledEdit>
+          <StyledEdit>{t('edit')}</StyledEdit>
         </StyledAccordionHeader>
         <StyledAccordionContent>
           <StyledContentTitle type={"subtitle"} bold>{t('config_language')}</StyledContentTitle>

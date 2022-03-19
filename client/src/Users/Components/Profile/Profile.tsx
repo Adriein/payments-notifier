@@ -19,12 +19,15 @@ import HistorySubscription from "./SubscriptionHistory";
 import EventList from "./Events";
 import { useTranslation } from "react-i18next";
 import ClientRevenue from "./ClientRevenue";
+import { useToggle } from "../../../Shared/Hooks/useToggle";
+import ProfileForm from "./ProfileForm";
 
 
 const Profile = ({ id }: UserProfileProps) => {
   const { state: { clientProfile, isLoading }, fetchClientProfile } = useContext(UsersContext);
 
   const { t } = useTranslation('profile');
+  const [ edit, toggleEdit ] = useToggle();
 
   useEffect(() => {
     (async () => {
@@ -45,23 +48,25 @@ const Profile = ({ id }: UserProfileProps) => {
               {clientProfile.email}
               <ClientRevenue revenue={clientProfile.revenue}/>
             </StyledUserResumeContainer>
-            <ProfileClientInfo client={clientProfile}/>
+            <ProfileClientInfo client={clientProfile} toggleEdit={toggleEdit}/>
           </StyledPersonalInfoContainer>
-          <StyledPersonalSubscriptionInfo defaultValue={"tab1"}>
-            <StyledTabList>
-              <StyledTabTrigger value={"tab1"}>{t('subscription_overview_title')}</StyledTabTrigger>
-              <StyledTabTrigger value={"tab2"}>{t('subscription_events_title')}</StyledTabTrigger>
-            </StyledTabList>
-            <StyledTabContent value={"tab1"}>
-              <StyledSubscriptionContainer>
-                <ActiveSubscription subscription={clientProfile.subscription[0]}/>
-                <HistorySubscription inactiveSubscriptions={clientProfile.subscription}/>
-              </StyledSubscriptionContainer>
-            </StyledTabContent>
-            <StyledTabContent value={"tab2"}>
-              <EventList list={clientProfile.subscription}/>
-            </StyledTabContent>
-          </StyledPersonalSubscriptionInfo>
+          {edit ? <ProfileForm user={clientProfile}/> : (
+            <StyledPersonalSubscriptionInfo defaultValue={"tab1"}>
+              <StyledTabList>
+                <StyledTabTrigger value={"tab1"}>{t('subscription_overview_title')}</StyledTabTrigger>
+                <StyledTabTrigger value={"tab2"}>{t('subscription_events_title')}</StyledTabTrigger>
+              </StyledTabList>
+              <StyledTabContent value={"tab1"}>
+                <StyledSubscriptionContainer>
+                  <ActiveSubscription subscription={clientProfile.subscription[0]}/>
+                  <HistorySubscription inactiveSubscriptions={clientProfile.subscription}/>
+                </StyledSubscriptionContainer>
+              </StyledTabContent>
+              <StyledTabContent value={"tab2"}>
+                <EventList list={clientProfile.subscription}/>
+              </StyledTabContent>
+            </StyledPersonalSubscriptionInfo>
+          )}
         </>
       ) : <Loader logo size={80} color={"blue"}/>}
     </StyledProfileContainer>

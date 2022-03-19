@@ -33,6 +33,18 @@ export const StyledEdit = styled.p`
 `;
 
 export const StyledUserProfileForm = styled(Form.Element)`
+  width: 100%;
+  max-width: 620px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const StyledFormRow = styled.div<{ isLast?: boolean }>`
+  display: flex;
+  gap: 10px;
+  ${({ isLast }) => isLast && 'flex-grow: 1'};
 `;
 
 export const StyledFormInput = styled(Form.Field.Input)`
@@ -41,6 +53,7 @@ export const StyledFormInput = styled(Form.Field.Input)`
 
 export const StyledFormActions = styled.div`
   display: flex;
+  align-self: flex-end;
   gap: 20px;
 `;
 
