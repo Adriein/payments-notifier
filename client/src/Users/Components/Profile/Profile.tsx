@@ -34,9 +34,7 @@ const Profile = ({ id }: UserProfileProps) => {
       await fetchClientProfile({ clientId: id });
     })();
   }, []);
-
-  console.log(clientProfile)
-
+  
   return (
     <StyledProfileContainer>
       {clientProfile && !isLoading ? (
