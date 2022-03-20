@@ -16,12 +16,8 @@ const TableHeader = ({ addFilter }: TableHeaderProps) => {
   const { state } = useContext(UsersContext);
   const [ query, setQuery ] = useState('');
   const debouncedSetQuery = useDebounce(setQuery, 1000);
-  const { isFilterActive, applyFilter } = useFilters(state.filters, addFilter);
-
-  useEffect(() => {
-    applyFilter(NAME_FILTER, query)();
-  }, [ query ])
-
+  //const { isFilterActive, applyFilter } = useFilters(state.filters, addFilter);
+  
   return (
     <StyledContainer>
       <StyledFilterForm>
@@ -38,11 +34,11 @@ const TableHeader = ({ addFilter }: TableHeaderProps) => {
           <span>{t('add_filter_button')}</span>
         </MenuButton>
         <MenuButton.MenuList>
-          <MenuButton.MenuItem onSelect={applyFilter(ACTIVE_FILTER)}>
-            <Checkbox active={isFilterActive(ACTIVE_FILTER)} name={t('active_filter_button')}/>
+          <MenuButton.MenuItem onSelect={() => {}}>
+            <Checkbox active={false} name={t('active_filter_button')}/>
           </MenuButton.MenuItem>
-          <MenuButton.MenuItem onSelect={applyFilter(EXPIRED_FILTER)}>
-            <Checkbox active={isFilterActive(EXPIRED_FILTER)} name={t('expired_filter_button')}/>
+          <MenuButton.MenuItem onSelect={() => {}}>
+            <Checkbox active={false} name={t('expired_filter_button')}/>
           </MenuButton.MenuItem>
         </MenuButton.MenuList>
       </MenuButton.Menu>

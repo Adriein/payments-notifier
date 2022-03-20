@@ -12,6 +12,6 @@ export const {
   Context: UsersContext
 } = createDataContext<UserStateProps, UsersActionProps>(
   usersReducer,
-  { fetchClientList, addFilter, fetchClientProfile, fetchTotalClients },
+  { fetchClientList, addFilter, fetchClientProfile },
   { clientList: [], isLoading: false, filters: [], totalUsers: 0, clientProfile: undefined }
 );

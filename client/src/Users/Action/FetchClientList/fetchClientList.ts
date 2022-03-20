@@ -6,6 +6,7 @@ import { FetchClientListActionProps } from "./FetchClientListActionProps";
 import { FETCH_CLIENT_LIST_ACTION } from "../../constants";
 import { ASYNC_ACTION } from "../../../Shared/constants";
 import { FetchClientListPayload } from "../../types";
+import { fetchTotalClients } from "../FetchTotalClients/fetchTotalClients";
 
 
 export const fetchClientList = (dispatch: Dispatch<ActionProps<FetchClientListPayload>>) => {
@@ -18,6 +19,8 @@ export const fetchClientList = (dispatch: Dispatch<ActionProps<FetchClientListPa
       { quantity, page, filters }
     );
 
-    dispatch({ type: FETCH_CLIENT_LIST_ACTION, payload: { clientList: response.data } });
+    const totalUsers = await fetchTotalClients();
+
+    dispatch({ type: FETCH_CLIENT_LIST_ACTION, payload: { clientList: response.data, totalUsers } });
   };
 };

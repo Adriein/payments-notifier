@@ -17,6 +17,4 @@ export interface UsersActionProps {
   }: FetchClientProfileActionProps) => Promise<void>;
 
   addFilter: (dispatch: Dispatch<ActionProps>) => (filter: FilterProps) => void;
-  
-  fetchTotalClients: (dispatch: Dispatch<ActionProps>) => () => void;
 }

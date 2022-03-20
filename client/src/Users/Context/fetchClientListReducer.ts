@@ -11,5 +11,6 @@ export const fetchClientListReducer = (
     ...state,
     ...resolveAsyncAction(),
     clientList: action.payload?.clientList ?? [],
+    totalUsers: action.payload?.totalUsers ?? 0,
   };
 };

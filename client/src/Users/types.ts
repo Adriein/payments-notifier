@@ -40,6 +40,7 @@ type SubscriptionPricing = {
 
 export type FetchClientListPayload = {
   clientList: ClientList[];
+  totalUsers: number;
 }
 
 export type FetchClientProfilePayload = {

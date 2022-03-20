@@ -3,7 +3,7 @@ import Table from "../../../Shared/Components/Table";
 import { ClientList } from "../../types";
 import { StyledTableCell, StyledTableRow } from "../../../Shared/Components/Table/TableBody/Styles";
 import Avatar from "../../../Shared/Components/Avatar";
-import { FiArrowRight } from "react-icons/fi";
+import { FiArrowRight, FiMoreVertical } from "react-icons/fi";
 import { UsersContext } from "../../Context/UsersContext";
 import useToastError from "../../../Shared/Hooks/useToastError";
 import usePagination from "../../../Shared/Hooks/usePagination";
@@ -12,9 +12,11 @@ import usePricingBeautifier from "../../Hooks/usePricingBeautifier";
 import useDateFormatter from "../../../Shared/Hooks/useDateFormatter";
 import useBooleanBeautifier from "../../../Shared/Hooks/useBooleanBeautifier";
 import { UserTableProps } from "./UserTableProps";
+import Loader from "../../../Shared/Components/Loader";
+import { StringHelper } from "../../../Shared/Services/StringHelper";
 
 const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
-  const { state, fetchClientList, addFilter, fetchTotalClients } = useContext(UsersContext);
+  const { state, fetchClientList, addFilter } = useContext(UsersContext);
   const { notify } = useToastError('login');
   const { pagination, setPage } = usePagination({ total: state.totalUsers });
   const { t } = useTranslation([ 'clients', 'common' ]);
@@ -28,7 +30,6 @@ const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
   useEffect(() => {
     (async () => {
       try {
-        await fetchTotalClients();
         await fetchClientList({ ...pagination, filters: state.filters });
       } catch (error: unknown) {
         notify(error);
@@ -42,48 +43,52 @@ const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
   }
 
   return (
-    <Table>
-      <Table.Header
-        addFilter={addFilter}
-      />
-      <Table.Body
-        collection={state.clientList}
-        rows={[
-          t('username_header'),
-          t('pricing_header'),
-          t('send_warning_notification_header'),
-          t('subscription_period_header')
-        ]}
-        renderRow={(client: ClientList, index: number) => {
-          const isLast = index === state.clientList.length - 1
-          return (
-            <StyledTableRow key={client.id} isLast={isLast} onClick={() => onClientSelection(client.id)}>
-              <StyledTableCell>
-                <Avatar name={client.username} size={35}/>
-                {client.username}
-              </StyledTableCell>
-              <StyledTableCell>
-                {pricingBeautifier(client.pricingName)}
-              </StyledTableCell>
-              <StyledTableCell>
-                {booleanBeautifier(client.sendWarnings)}
-              </StyledTableCell>
-              <StyledTableCell>
-                {format(client.lastPaymentDate)}
-                <FiArrowRight/>
-                {format(client.validTo)}
-              </StyledTableCell>
-            </StyledTableRow>
-          );
-        }}
-      />
-      <Table.Footer
-        totalItems={state.totalUsers}
-        itemPerPage={pagination.quantity}
-        currentPage={pagination.page}
-        setPage={setPage}
-      />
-    </Table>
+    <>
+      {state.isLoading ? <Loader color={"blue"} size={80} logo/> : (
+        <Table>
+          <Table.Header
+            addFilter={addFilter}
+          />
+          <Table.Body
+            collection={state.clientList}
+            rows={[
+              t('username_header'),
+              t('pricing_header'),
+              t('send_warning_notification_header'),
+              t('subscription_period_header'),
+            ]}
+            renderRow={(client: ClientList, index: number) => {
+              const isLast = index === state.clientList.length - 1
+              return (
+                <StyledTableRow key={client.id} isLast={isLast} onClick={() => onClientSelection(client.id)}>
+                  <StyledTableCell>
+                    <Avatar name={client.username} size={35}/>
+                    {client.username}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {StringHelper.firstLetterToUpperCase(pricingBeautifier(client.pricingName))}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {StringHelper.firstLetterToUpperCase(booleanBeautifier(client.sendWarnings))}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {format(client.lastPaymentDate)}
+                    <FiArrowRight/>
+                    {format(client.validTo)}
+                  </StyledTableCell>
+                </StyledTableRow>
+              );
+            }}
+          />
+          <Table.Footer
+            totalItems={state.totalUsers}
+            itemPerPage={pagination.quantity}
+            currentPage={pagination.page}
+            setPage={setPage}
+          />
+        </Table>
+      )}
+    </>
   );
 }
 
