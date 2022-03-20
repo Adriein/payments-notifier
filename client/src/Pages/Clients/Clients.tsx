@@ -22,7 +22,7 @@ const Clients = () => {
           )}
         />
       )}
-      <UserTable openProfileModal={open} selectUser={setSelectedClient}/>
+      <UserTable openProfileModal={open} isModalOpen={isOpen} selectUser={setSelectedClient}/>
     </>
   )
 }

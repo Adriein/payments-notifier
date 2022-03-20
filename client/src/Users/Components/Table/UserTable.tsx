@@ -15,7 +15,7 @@ import { UserTableProps } from "./UserTableProps";
 import Loader from "../../../Shared/Components/Loader";
 import { StringHelper } from "../../../Shared/Services/StringHelper";
 
-const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
+const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps) => {
   const { state, fetchClientList, addFilter } = useContext(UsersContext);
   const { notify } = useToastError('login');
   const { pagination, setPage } = usePagination({ total: state.totalUsers });
@@ -44,7 +44,7 @@ const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
 
   return (
     <>
-      {state.isLoading ? <Loader color={"blue"} size={80} logo/> : (
+      {state.isLoading && !isModalOpen() ? <Loader color={"blue"} size={80} logo/> : (
         <Table>
           <Table.Header
             addFilter={addFilter}
