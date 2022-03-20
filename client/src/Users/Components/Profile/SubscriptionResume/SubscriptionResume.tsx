@@ -10,11 +10,12 @@ import {
   StyledDetailsContainer,
   StyledOptionContainer,
   StyledTitleContainer,
-  StyledOptionsIcon,
-  StyledSeparator, ActiveBadge, ExpiredBadge,
+  StyledSeparator, ActiveBadge, ExpiredBadge, StyledDropdownMenuTrigger, StyledDropdownMenuArrow,
 } from './Styles'
 import { SubscriptionResumeProps } from "./SubscriptionResumeProps";
 import { StringHelper } from "../../../../Shared/Services/StringHelper";
+import DropdownMenu from "../../../../Shared/Components/DropdownMenu";
+import { FiMoreVertical, FiArchive, FiZap, FiTrash } from "react-icons/fi";
 
 const SubscriptionResume = ({ name, price, validTo, duration, expired }: SubscriptionResumeProps) => {
   const { format } = useDateFormatter();
@@ -26,7 +27,18 @@ const SubscriptionResume = ({ name, price, validTo, duration, expired }: Subscri
         {expired ? <ExpiredBadge text={t('subscription_badge_expired')}/> :
           <ActiveBadge text={t('subscription_badge_active')}/>}
         {!expired && <StyledOptionContainer>
-          <StyledOptionsIcon/>
+          <DropdownMenu>
+            <StyledDropdownMenuTrigger>
+              <FiMoreVertical/>
+            </StyledDropdownMenuTrigger>
+            <DropdownMenu.Content sideOffset={5}>
+              <DropdownMenu.Item><FiZap/> Renew</DropdownMenu.Item>
+              <DropdownMenu.Item><FiArchive/> Pause</DropdownMenu.Item>
+              <DropdownMenu.Separator/>
+              <DropdownMenu.Item><FiTrash/> Cancel</DropdownMenu.Item>
+              <StyledDropdownMenuArrow/>
+            </DropdownMenu.Content>
+          </DropdownMenu>
         </StyledOptionContainer>}
       </StyledTitleContainer>
       <StyledDetailsContainer>

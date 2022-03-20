@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { COLORS } from "../../../../Shared/Components/Utils/Colors";
 import Separator from "../../../../Shared/Components/Separator";
-import { FiMoreVertical } from "react-icons/fi";
 import { MIXIN } from "../../../../Shared/Components/Utils/Mixin";
 import Badge from "../../../../Shared/Components/Badge";
+import DropdownMenu from "../../../../Shared/Components/DropdownMenu";
+import { font } from "../../../../Shared/Components/Utils/Font";
 
 export const StyledActiveSubscription = styled.div`
   display: flex;
@@ -26,12 +27,25 @@ export const StyledOptionContainer = styled.div`
   justify-content: flex-end;
 `;
 
-export const StyledOptionsIcon = styled(FiMoreVertical)`
-  width: 18px;
-  height: 18px;
+export const StyledDropdownMenuTrigger = styled(DropdownMenu.Trigger)`
+  all: unset;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   ${MIXIN.clickable}
+  ${font.size(18)};
+
+  &:hover {
+    background-color: ${COLORS.backgroundLightGray};
+  }
 `;
+export const StyledDropdownMenuArrow = styled(DropdownMenu.Arrow)`
+  fill: ${COLORS.backgroundWhite};
+`;
+
 
 export const StyledDetailsContainer = styled.div`
   display: flex;

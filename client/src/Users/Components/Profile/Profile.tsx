@@ -50,7 +50,7 @@ const Profile = ({ id }: UserProfileProps) => {
             </StyledUserResumeContainer>
             <ProfileClientInfo client={clientProfile} toggleEdit={toggleEdit}/>
           </StyledPersonalInfoContainer>
-          {edit ? <ProfileForm user={clientProfile}/> : (
+          {edit ? <ProfileForm user={clientProfile} toggleEdit={toggleEdit}/> : (
             <StyledPersonalSubscriptionInfo defaultValue={"tab1"}>
               <StyledTabList>
                 <StyledTabTrigger value={"tab1"}>{t('subscription_overview_title')}</StyledTabTrigger>

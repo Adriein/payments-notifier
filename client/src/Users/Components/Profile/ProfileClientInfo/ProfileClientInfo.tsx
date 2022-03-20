@@ -29,9 +29,14 @@ const ProfileClientInfo = ({ client, toggleEdit }: ProfileClientInfoProps) => {
           <StyledEdit onClick={toggleEdit}>{t('edit')}</StyledEdit>
         </StyledAccordionHeader>
         <StyledAccordionContent>
-          <StyledContentTitle type={"subtitle"} bold>{t('account_details')}</StyledContentTitle>
+          <StyledContentTitle type={"subtitle"} bold>{t('username')}</StyledContentTitle>
           <StyledContent>{client.username}</StyledContent>
+          <StyledContentTitle type={"subtitle"} bold>{t('email')}</StyledContentTitle>
           <StyledContent>{client.email}</StyledContent>
+          {/*<StyledContentTitle type={"subtitle"} bold>{t('address')}</StyledContentTitle>
+           <StyledContentTitle type={"subtitle"} bold>{t('city')}</StyledContentTitle>
+           <StyledContentTitle type={"subtitle"} bold>{t('dni')}</StyledContentTitle>
+           <StyledContentTitle type={"subtitle"} bold>{t('phone')}</StyledContentTitle>*/}
         </StyledAccordionContent>
       </Accordion.Item>
       <Accordion.Item value="item-2">

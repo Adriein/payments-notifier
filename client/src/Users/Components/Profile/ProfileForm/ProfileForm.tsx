@@ -21,7 +21,7 @@ interface FormProps {
   role: string,
 }
 
-const ProfileForm = ({ user }: ProfileFormProps) => {
+const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
   const { t } = useTranslation('profile');
 
   return (
@@ -118,7 +118,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
         </StyledFormRow>
         <StyledFormActions>
           <Button size={'small'} variant={'fill'} type={"submit"}>{t('save')}</Button>
-          <Button size={'small'} variant={'fill'} type={"submit"}>{t('cancel')}</Button>
+          <Button size={'small'} variant={'fill'} type={"submit"} onClick={toggleEdit}>{t('cancel')}</Button>
         </StyledFormActions>
       </StyledUserProfileForm>
     </Form>
