@@ -14,7 +14,7 @@ import useBooleanBeautifier from "../../../Shared/Hooks/useBooleanBeautifier";
 import { UserTableProps } from "./UserTableProps";
 
 const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
-  const { state, fetchClientList, addFilter } = useContext(UsersContext);
+  const { state, fetchClientList, addFilter, fetchTotalClients } = useContext(UsersContext);
   const { notify } = useToastError('login');
   const { pagination, setPage } = usePagination({ total: state.totalUsers });
   const { t } = useTranslation([ 'clients', 'common' ]);
@@ -26,8 +26,14 @@ const UserTable = ({ openProfileModal, selectUser }: UserTableProps) => {
   });
 
   useEffect(() => {
-    fetchClientList({ ...pagination, filters: state.filters })
-      .catch(error => notify(error));
+    (async () => {
+      try {
+        await fetchTotalClients();
+        await fetchClientList({ ...pagination, filters: state.filters });
+      } catch (error: unknown) {
+        notify(error);
+      }
+    })();
   }, [ state.filters, pagination ]);
 
   const onClientSelection = (id: string) => {
