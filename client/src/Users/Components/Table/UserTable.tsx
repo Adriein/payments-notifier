@@ -14,6 +14,7 @@ import useBooleanBeautifier from "../../../Shared/Hooks/useBooleanBeautifier";
 import { UserTableProps } from "./UserTableProps";
 import Loader from "../../../Shared/Components/Loader";
 import { StringHelper } from "../../../Shared/Services/StringHelper";
+import ContextMenu from "../../../Shared/Components/ContextMenu";
 
 const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps) => {
   const { state, fetchClientList, addFilter } = useContext(UsersContext);
@@ -60,23 +61,33 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
             renderRow={(client: ClientList, index: number) => {
               const isLast = index === state.clientList.length - 1
               return (
-                <StyledTableRow key={client.id} isLast={isLast} onClick={() => onClientSelection(client.id)}>
-                  <StyledTableCell>
-                    <Avatar name={client.username} size={35}/>
-                    {client.username}
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    {StringHelper.firstLetterToUpperCase(pricingBeautifier(client.pricingName))}
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    {StringHelper.firstLetterToUpperCase(booleanBeautifier(client.sendWarnings))}
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    {format(client.lastPaymentDate)}
-                    <FiArrowRight/>
-                    {format(client.validTo)}
-                  </StyledTableCell>
-                </StyledTableRow>
+                <ContextMenu>
+                  <ContextMenu.Trigger>
+                    <StyledTableRow key={client.id} isLast={isLast} onClick={() => onClientSelection(client.id)}>
+                      <StyledTableCell>
+                        <Avatar name={client.username} size={35}/>
+                        {client.username}
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        {StringHelper.firstLetterToUpperCase(pricingBeautifier(client.pricingName))}
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        {StringHelper.firstLetterToUpperCase(booleanBeautifier(client.sendWarnings))}
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        {format(client.lastPaymentDate)}
+                        <FiArrowRight/>
+                        {format(client.validTo)}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  </ContextMenu.Trigger>
+                  <ContextMenu.Content>
+                    <ContextMenu.Item>Renew subscription</ContextMenu.Item>
+                    <ContextMenu.Item>Delete client</ContextMenu.Item>
+                    <ContextMenu.Item>Activate warnings</ContextMenu.Item>
+                    <ContextMenu.Item>Activate notifications</ContextMenu.Item>
+                  </ContextMenu.Content>
+                </ContextMenu>
               );
             }}
           />
