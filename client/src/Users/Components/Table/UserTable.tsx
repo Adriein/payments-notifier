@@ -3,7 +3,7 @@ import Table from "../../../Shared/Components/Table";
 import { ClientList } from "../../types";
 import { StyledTableCell, StyledTableRow } from "../../../Shared/Components/Table/TableBody/Styles";
 import Avatar from "../../../Shared/Components/Avatar";
-import { FiArrowRight, FiMoreVertical } from "react-icons/fi";
+import { FiArrowRight, FiTrash, FiRefreshCcw } from "react-icons/fi";
 import { UsersContext } from "../../Context/UsersContext";
 import useToastError from "../../../Shared/Hooks/useToastError";
 import usePagination from "../../../Shared/Hooks/usePagination";
@@ -82,10 +82,16 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
                     </StyledTableRow>
                   </ContextMenu.Trigger>
                   <ContextMenu.Content>
-                    <ContextMenu.Item>Renew subscription</ContextMenu.Item>
-                    <ContextMenu.Item>Delete client</ContextMenu.Item>
+                    <ContextMenu.Label>
+                      <Avatar name={client.username} size={20}/>
+                      {client.username}
+                    </ContextMenu.Label>
+                    <ContextMenu.Separator/>
+                    <ContextMenu.Item><FiRefreshCcw/> Renew subscription</ContextMenu.Item>
                     <ContextMenu.Item>Activate warnings</ContextMenu.Item>
                     <ContextMenu.Item>Activate notifications</ContextMenu.Item>
+                    <ContextMenu.Separator/>
+                    <ContextMenu.Item><FiTrash/> Delete client</ContextMenu.Item>
                   </ContextMenu.Content>
                 </ContextMenu>
               );
