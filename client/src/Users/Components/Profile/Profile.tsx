@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import {
+  StyledEditIcon,
   StyledPersonalInfoContainer,
   StyledPersonalSubscriptionInfo,
   StyledProfileContainer,
@@ -21,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import ClientRevenue from "./ClientRevenue";
 import { useToggle } from "../../../Shared/Hooks/useToggle";
 import ProfileForm from "./ProfileForm/ProfileForm";
+import { FiEdit3 } from "react-icons/fi";
 
 
 const Profile = ({ id }: UserProfileProps) => {
@@ -34,7 +36,7 @@ const Profile = ({ id }: UserProfileProps) => {
       await fetchClientProfile({ clientId: id });
     })();
   }, []);
-  
+
   return (
     <StyledProfileContainer>
       {clientProfile && !isLoading ? (
@@ -42,11 +44,22 @@ const Profile = ({ id }: UserProfileProps) => {
           <StyledPersonalInfoContainer>
             <StyledUserResumeContainer>
               <Avatar name={clientProfile.username} size={50}/>
-              <StyledUserName>{clientProfile.username}</StyledUserName>
+              <StyledUserName>
+                {clientProfile.username}
+                <StyledEditIcon
+                  onClick={toggleEdit}
+                  size={'md'}
+                  color={'blue'}
+                  radius={'xl'}
+                  variant={'hover'}
+                >
+                  <FiEdit3/>
+                </StyledEditIcon>
+              </StyledUserName>
               {clientProfile.email}
               <ClientRevenue revenue={clientProfile.revenue}/>
             </StyledUserResumeContainer>
-            <ProfileClientInfo client={clientProfile} toggleEdit={toggleEdit}/>
+            <ProfileClientInfo client={clientProfile}/>
           </StyledPersonalInfoContainer>
           {edit ? <ProfileForm user={clientProfile} toggleEdit={toggleEdit}/> : (
             <StyledPersonalSubscriptionInfo defaultValue={"tab1"}>

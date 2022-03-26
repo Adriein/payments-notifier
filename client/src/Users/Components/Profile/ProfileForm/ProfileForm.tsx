@@ -94,6 +94,9 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
               <Select.ScrollDownButton/>
             </Select.Content>
           </Form.Field.Select>
+        </StyledFormRow>
+        <StyledFormRow isLast>
+          <StyledFormInput name="language" label={t('config_language')}/>
           <Form.Field.Select name="role" label={t('role')}>
             <Select.Trigger>
               <Select.Value/>
@@ -112,9 +115,6 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
               <Select.ScrollDownButton/>
             </Select.Content>
           </Form.Field.Select>
-        </StyledFormRow>
-        <StyledFormRow isLast>
-          <StyledFormInput name="language" label={t('config_language')}/>
         </StyledFormRow>
         <StyledFormActions>
           <Button size={'small'} variant={'fill'} type={"submit"}>{t('save')}</Button>

@@ -4,6 +4,7 @@ import { MIXIN } from "../../../Shared/Components/Utils/Mixin";
 import Form from "../../../Shared/Components/Form";
 import Tabs from "../../../Shared/Components/Tabs";
 import { font } from "../../../Shared/Components/Utils/Font";
+import ActionIcon from "../../../Shared/Components/ActionIcon";
 
 export const StyledProfileContainer = styled.div`
   display: flex;
@@ -25,6 +26,13 @@ export const StyledPersonalInfoContainer = styled.div`
 
 export const StyledUserName = styled.h1`
   margin: 20px 0 10px 0;
+  position: relative;
+`;
+
+export const StyledEditIcon = styled(ActionIcon)`
+  position: absolute;
+  top: 6px;
+  right: -50px;
 `;
 
 export const StyledEdit = styled.p`

@@ -1,7 +1,6 @@
 import React from "react";
 import { ProfileClientInfoProps } from "./ProfileClientInfoProps";
 import { FiChevronDown } from "react-icons/fi";
-import { StyledEdit } from "../Styles";
 import {
   StyledAccordionContent,
   StyledAccordionHeader, StyledAccordionRoot, StyledAccordionTrigger, StyledContent, StyledContentTitle,
@@ -11,7 +10,7 @@ import useBooleanBeautifier from "../../../../Shared/Hooks/useBooleanBeautifier"
 import Accordion from "../../../../Shared/Components/Accordion";
 import { StringHelper } from "../../../../Shared/Services/StringHelper";
 
-const ProfileClientInfo = ({ client, toggleEdit }: ProfileClientInfoProps) => {
+const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
   const { t } = useTranslation('profile');
   const { beautify } = useBooleanBeautifier({
     isTrue: 'enabled',
@@ -26,7 +25,6 @@ const ProfileClientInfo = ({ client, toggleEdit }: ProfileClientInfoProps) => {
             <FiChevronDown/>
             <span>{t('details')}</span>
           </StyledAccordionTrigger>
-          <StyledEdit onClick={toggleEdit}>{t('edit')}</StyledEdit>
         </StyledAccordionHeader>
         <StyledAccordionContent>
           <StyledContentTitle type={"subtitle"} bold>{t('username')}</StyledContentTitle>
@@ -45,7 +43,6 @@ const ProfileClientInfo = ({ client, toggleEdit }: ProfileClientInfoProps) => {
             <FiChevronDown/>
             <span>{t('config')}</span>
           </StyledAccordionTrigger>
-          <StyledEdit>{t('edit')}</StyledEdit>
         </StyledAccordionHeader>
         <StyledAccordionContent>
           <StyledContentTitle type={"subtitle"} bold>{t('config_language')}</StyledContentTitle>

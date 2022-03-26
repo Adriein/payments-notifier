@@ -35,3 +35,44 @@ export const COLORS = {
 
   lightGray: '#dfdfdf',
 };
+
+export const COLOR = {
+  dark: [
+    '#C1C2C5',
+    '#A6A7AB',
+    '#909296',
+    '#5c5f66',
+    '#373A40',
+    '#2C2E33',
+    '#25262b',
+    '#1A1B1E',
+    '#141517',
+    '#101113',
+  ],
+  gray: [
+    '#f8f9fa',
+    '#f1f3f5',
+    '#e9ecef',
+    '#dee2e6',
+    '#ced4da',
+    '#adb5bd',
+    '#868e96',
+    '#495057',
+    '#343a40',
+    '#212529',
+  ],
+
+  blue: [
+    '#eef0fe',
+    '#dce0fd',
+    '#cbd1fc',
+    '#b9c1fb',
+    '#a8b2fb',
+    '#96a3fa',
+    '#8593f9',
+    '#7384f8',
+    '#6274f7',
+    '#5065f6'
+  ]
+
+}

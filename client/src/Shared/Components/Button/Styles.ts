@@ -16,7 +16,8 @@ const ButtonBase = styled.button`
   border-radius: var(--borderRadius);
   border: 2px solid transparent;
 
-  ${MIXIN.clickable}
+  ${MIXIN.clickable};
+
   &:focus {
     outline-color: ${COLORS.primary};
     outline-offset: 4px;
