@@ -1,22 +1,24 @@
-import styled from 'styled-components';
+import styled, { ThemedStyledInterface } from 'styled-components';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { COLORS } from "../Utils/Colors";
 import { MIXIN } from "../Utils/Mixin";
+import React from "react";
 
 export const StyledSelectRoot = styled(SelectPrimitive.Root)`
 
 `;
 
-export const StyledSelectTrigger = styled(SelectPrimitive.Trigger)`
+export const StyledSelectTrigger = styled(
+  SelectPrimitive.Trigger)`
   all: unset;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
   padding: 5px;
-  gap: 5px;
   border: 1px solid ${COLORS.borderLightest};
   background-color: ${COLORS.backgroundLightest};
   border-radius: 3px;
+
+  box-sizing: inherit;
+  width: 100%;
 
   &:hover {
     background: ${COLORS.backgroundLight};
@@ -33,7 +35,7 @@ export const StyledSelectContent = styled(SelectPrimitive.Content)`
   overflow: hidden;
   background-color: ${COLORS.backgroundWhite};
   border-radius: 6px;
-  box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+  box-shadow: 0 10px 38px -10px rgba(22, 23, 24, 0.35), 0 10px 20px -15px rgba(22, 23, 24, 0.2);
 `;
 
 export const StyledSelectViewport = styled(SelectPrimitive.Viewport)`
@@ -60,5 +62,9 @@ export const StyledSelectItem = styled(SelectPrimitive.Item)`
   }
 
   ${MIXIN.clickable};
+`;
+
+export const StyledSelectedValue = styled(SelectPrimitive.Icon)`
+  margin-left: auto;
 `;
 

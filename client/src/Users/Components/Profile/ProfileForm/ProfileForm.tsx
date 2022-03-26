@@ -39,15 +39,15 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
         sendWarnings: 'false',
         role: 'user',
       }}
-      validations={{}}
       onSubmit={async ({ username, email, address, role }: FormProps) => {
         console.log(role, username)
       }}
     >
       <StyledUserProfileForm>
-        <Text type={"h2"}>{t('details')}</Text>
+        <Text type={"h3"}>{t('details')}</Text>
         <StyledFormInput name="username" label={t('username')}/>
         <StyledFormInput name="email" label={t('email')}/>
+        <Text type={"h3"}>{t('billing_details')}</Text>
         <StyledFormRow>
           <StyledFormInput name="address" label={t('address')}/>
           <StyledFormInput name="city" label={t('city')}/>
@@ -56,11 +56,8 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
           <StyledFormInput name="dni" label={t('dni')}/>
           <StyledFormInput name="phone" label={t('phone')}/>
         </StyledFormRow>
-        <Text type={"h2"}>{t('config')}</Text>
+        <Text type={"h3"}>{t('config')}</Text>
         <StyledFormRow>
-          <StyledFormInput name="language" label={t('config_language')}/>
-        </StyledFormRow>
-        <StyledFormRow isLast>
           <Form.Field.Select name="sendNotifications" label={t('notifications')}>
             <Select.Trigger>
               <Select.Value/>
@@ -115,6 +112,9 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
               <Select.ScrollDownButton/>
             </Select.Content>
           </Form.Field.Select>
+        </StyledFormRow>
+        <StyledFormRow isLast>
+          <StyledFormInput name="language" label={t('config_language')}/>
         </StyledFormRow>
         <StyledFormActions>
           <Button size={'small'} variant={'fill'} type={"submit"}>{t('save')}</Button>

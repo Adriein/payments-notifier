@@ -39,5 +39,6 @@
   "inactive_event_body": "Subscripción con la tarifa {{pricingName}} desactivada",
   "resume_spent": "Gastado",
   "resume_since": "Desde",
-  "resume_recurrent_income": "Imr"
+  "resume_recurrent_income": "Imr",
+  "billing_details": "Detalles de facturación"
 }

@@ -61,9 +61,9 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
             renderRow={(client: ClientList, index: number) => {
               const isLast = index === state.clientList.length - 1
               return (
-                <ContextMenu>
+                <ContextMenu key={client.id}>
                   <ContextMenu.Trigger>
-                    <StyledTableRow key={client.id} isLast={isLast} onClick={() => onClientSelection(client.id)}>
+                    <StyledTableRow isLast={isLast} onClick={() => onClientSelection(client.id)}>
                       <StyledTableCell>
                         <Avatar name={client.username} size={35}/>
                         {client.username}

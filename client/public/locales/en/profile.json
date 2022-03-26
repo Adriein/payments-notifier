@@ -39,5 +39,6 @@
   "inactive_event_body": "Subscription with pricing name {{pricingName}} inactivated on renewal",
   "resume_spent": "Spent",
   "resume_since": "Since",
-  "resume_recurrent_income": "Mrr"
+  "resume_recurrent_income": "Mrr",
+  "billing_details": "Billing details"
 }

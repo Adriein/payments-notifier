@@ -1,6 +1,6 @@
 import * as SelectPrimitive from '@radix-ui/react-select';
 import {
-  StyledSelectContent,
+  StyledSelectContent, StyledSelectedValue,
   StyledSelectItem,
   StyledSelectRoot,
   StyledSelectTrigger,
@@ -11,7 +11,7 @@ const Select = ({
   onChange,
   children,
   ...otherProps
-}: SelectPrimitive.SelectProps & { onChange: (value: string) => void }) => {
+}: SelectPrimitive.SelectProps & { onChange: (value: string) => void, fullWidth?: boolean }) => {
   return (
     <StyledSelectRoot
       onValueChange={onChange}
@@ -23,7 +23,7 @@ const Select = ({
 
 Select.Trigger = StyledSelectTrigger;
 Select.Value = SelectPrimitive.Value;
-Select.Icon = SelectPrimitive.Icon;
+Select.Icon = StyledSelectedValue;
 Select.Content = StyledSelectContent;
 Select.ScrollUpButton = SelectPrimitive.ScrollUpButton;
 Select.ScrollDownButton = SelectPrimitive.ScrollDownButton;
