@@ -1,6 +1,5 @@
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHandler.decorator";
-import { CreateClientCommand } from "./CreateClientCommand";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
@@ -14,18 +13,18 @@ import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { Tenant } from "../../Domain/Entity/Tenant.entity";
 import { IClientRepository } from "../../Domain/IClientRepository";
 import { TenantFinder } from "../Service/TenantFinder";
+import { UpdateClientCommand } from "./UpdateClientCommand";
 
-@CommandHandler(CreateClientCommand)
-export class CreateClientHandler implements IHandler<void> {
+@CommandHandler(UpdateClientCommand)
+export class UpdateClientHandler implements IHandler<void> {
   constructor(
     private readonly clientRepository: IClientRepository,
-    private readonly subscriptionRepository: ISubscriptionRepository,
     private readonly queryBus: IQueryBus,
     private readonly finder: TenantFinder,
   ) {}
 
   @Log(process.env.LOG_LEVEL)
-  public async handle(command: CreateClientCommand): Promise<void> {
+  public async handle(command: UpdateClientCommand): Promise<void> {
     const email = new Email(command.email);
     await this.ensureUserNotExists(email);
 
@@ -37,13 +36,6 @@ export class CreateClientHandler implements IHandler<void> {
 
     await this.clientRepository.save(client);
 
-    const subscription = client.createSubscription(
-      new ID(command.pricingId),
-      new DateVo(command.lastPaymentDate),
-      command.pricingDuration
-    );
-
-    await this.subscriptionRepository.save(subscription);
   }
 
   private async findTenant(id: string): Promise<Tenant> {
