@@ -13,7 +13,6 @@ export class UpdateClientController extends BaseController<void> {
   @use(currentUser)
   public async updateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      throw new Error();
       await this.commandBus.dispatch(
         new UpdateClientCommand(
           req.body.clientId,
