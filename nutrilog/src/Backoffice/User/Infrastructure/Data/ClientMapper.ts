@@ -50,13 +50,13 @@ export class ClientMapper implements IMapper<Client, Prisma.userCreateInput | Pr
         }
       },
       config: {
-        create: {
+        update: {
           id: domain.configId().value,
           send_warnings: domain.sendWarnings(),
           send_notifications: domain.sendNotifications(),
           language: domain.language(),
-          created_at: new Date(),
-          updated_at: new Date()
+          created_at: domain.createdAt(),
+          updated_at: domain.updatedAt(),
         }
       }
     }
@@ -77,7 +77,7 @@ export class ClientMapper implements IMapper<Client, Prisma.userCreateInput | Pr
       new Email(dataModel.email!),
       config,
       new ID(dataModel.owner_id!),
-      dataModel.role.id,
+      new ID(dataModel.role.id),
       dataModel.active,
       new Date(dataModel.created_at),
       new Date(dataModel.updated_at)

@@ -10,7 +10,7 @@ import { GetClientProfileResponse } from "../../Application/GetClientProfile/Get
 
 @Controller()
 export class GetClientProfileController extends BaseController {
-  @get('/client/profile/:id')
+  @get('/client/:id/profile')
   @use(requireAuth)
   @use(currentUser)
   public async getUser(

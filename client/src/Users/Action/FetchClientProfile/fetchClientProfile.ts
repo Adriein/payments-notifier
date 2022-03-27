@@ -13,7 +13,7 @@ export const fetchClientProfile = (dispatch: Dispatch<ActionProps<FetchClientPro
     dispatch({ type: ASYNC_ACTION });
     const api = ApiService.instance();
 
-    const response = await api.get<FetchClientProfileApiCall>(`/client/profile/${clientId}`);
+    const response = await api.get<FetchClientProfileApiCall>(`/client/${clientId}/profile`);
 
     dispatch({ type: FETCH_CLIENT_PROFILE_ACTION, payload: { clientProfile: response.data } });
   };

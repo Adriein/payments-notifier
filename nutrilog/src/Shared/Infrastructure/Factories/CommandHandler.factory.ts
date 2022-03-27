@@ -104,7 +104,6 @@ export default class CommandHandlerFactory {
       UpdateClientCommand.name,
       new UpdateClientHandler(
         this.clientRepository,
-        QueryBus.instance(),
       )
     );
 
