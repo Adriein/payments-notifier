@@ -23,7 +23,7 @@ interface FormProps {
 }
 
 const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
-  const { t } = useContext(UsersContext);
+  const { t, notify } = useContext(UsersContext);
   const { updateClient, fetchClientProfile } = useContext(UsersContext);
 
   return (
@@ -42,17 +42,21 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
         role: 'user',
       }}
       onSubmit={async ({ username, email, role, language, sendNotifications, sendWarnings }: FormProps) => {
-        await updateClient({
-          language,
-          email,
-          username,
-          clientId: user.id,
-          rol: role,
-          notifications: sendNotifications,
-          warnings: sendWarnings
-        });
+        try {
+          await updateClient({
+            language,
+            email,
+            username,
+            clientId: user.id,
+            rol: role,
+            notifications: sendNotifications,
+            warnings: sendWarnings
+          });
 
-        await fetchClientProfile({ clientId: user.id })
+          await fetchClientProfile({ clientId: user.id })
+        } catch (error) {
+          notify(error);
+        }
       }}
     >
       <StyledUserProfileForm>

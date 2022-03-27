@@ -9,9 +9,13 @@ export const updateClient = (dispatch: Dispatch<ActionProps<any>>) => {
   return async (props: UpdateClientActionProps): Promise<void> => {
     dispatch({ type: ASYNC_ACTION });
     const api = ApiService.instance();
+    try {
+      await api.put<UpdateClientActionProps>('/user', props);
 
-    await api.put<UpdateClientActionProps>('/user', props);
-
-    dispatch({ type: UPDATE_CLIENT_ACTION });
+    } catch (error) {
+      throw error;
+    } finally {
+      dispatch({ type: UPDATE_CLIENT_ACTION });
+    }
   };
 };

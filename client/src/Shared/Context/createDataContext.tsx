@@ -14,7 +14,7 @@ const createDataContext = <State extends unknown, Action extends { [key: string]
       const [ state, dispatch ] = useReducer<Reducer<State, any>>(reducer, defaultValue);
 
       const { t } = useTranslation([ 'landing', 'login', 'register', 'profile', 'clients', 'common' ]);
-      const { notify } = useToastError(t);
+      const { notify } = useToastError(t, 'common');
 
       const boundActions: { [key: string]: any } = {};
 

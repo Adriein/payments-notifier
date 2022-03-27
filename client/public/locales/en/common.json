@@ -26,5 +26,6 @@
   "quarterly_pricing": "quarterly",
   "monthly_pricing": "monthly",
   "enabled": "enabled",
-  "disabled": "disabled"
+  "disabled": "disabled",
+  "something_went_wrong_error": "Something went wrong"
 }

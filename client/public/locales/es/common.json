@@ -26,5 +26,6 @@
   "quarterly_pricing": "trimestral",
   "monthly_pricing": "mensual",
   "enabled": "activado",
-  "disabled": "desactivado"
+  "disabled": "desactivado",
+  "something_went_wrong_error": "Ha ocurrido un error inesperado"
 }
