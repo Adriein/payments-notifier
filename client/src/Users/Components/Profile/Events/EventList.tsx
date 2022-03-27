@@ -4,10 +4,10 @@ import { FiAlertTriangle, FiClock, FiX, FiCheckCircle } from "react-icons/fi";
 import useDateFormatter from "../../../../Shared/Hooks/useDateFormatter";
 import { Subscription, SubscriptionHistory } from "../../../types";
 import { StyledEventListContainer } from "./Styles";
-import React from "react";
+import React, { useContext } from "react";
 import { StyledScrollArea, StyledScrollBar, StyledScrollContent, StyledThumb, StyledViewport } from "../Shared/Styles";
-import { useTranslation } from "react-i18next";
 import Text from "../../../../Shared/Components/Text";
+import { UsersContext } from "../../../Context/UsersContext";
 
 const eventIcon: { [key: string]: { color: string, icon: React.ReactNode } } = {
   created: {
@@ -29,7 +29,7 @@ const eventIcon: { [key: string]: { color: string, icon: React.ReactNode } } = {
 }
 
 const EventList = ({ list }: EventListProps) => {
-  const { t } = useTranslation('profile');
+  const { t } = useContext(UsersContext);
   const { format } = useDateFormatter();
   return (
     <StyledEventListContainer>
@@ -47,12 +47,12 @@ const EventList = ({ list }: EventListProps) => {
                         key={index}
                         color={color}
                         bullet={icon}
-                        title={t(`subscription_events.${event}`)}
+                        title={t(`profile:subscription_events.${event}`)}
                         isLast={isLast}
                       >
                           <span>
                             {t(
-                              `${event}_event_body`,
+                              `profile:${event}_event_body`,
                               { pricingName: subscription.pricing.name }
                             )}
                           </span>

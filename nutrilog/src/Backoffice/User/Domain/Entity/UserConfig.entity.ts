@@ -47,4 +47,8 @@ export class UserConfig extends BaseEntity {
     this._sendNotifications = false;
     this.entityUpdated()
   }
+
+  public changeLanguage(language: string): void {
+    this._lang = language
+  }
 }

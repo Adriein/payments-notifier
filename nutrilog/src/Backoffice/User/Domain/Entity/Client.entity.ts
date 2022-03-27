@@ -28,4 +28,9 @@ export class Client extends User {
   ) {
     super(_id, _name, _password, _email, _config, _tenantId, _roleId, _active, _createdAt, _updatedAt);
   }
+
+  public changeRole(roleId: ID): void {
+    this._roleId = roleId;
+    this.entityUpdated();
+  }
 }

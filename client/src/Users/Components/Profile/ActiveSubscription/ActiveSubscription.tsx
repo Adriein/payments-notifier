@@ -1,18 +1,17 @@
 import { ActiveSubscriptionProps } from "./ActiveSubscriptionProps";
-import React from "react";
+import React, { useContext } from "react";
 import SubscriptionResume from "../SubscriptionResume";
 import Text from "../../../../Shared/Components/Text";
 import {
   StyledSubscriptionInfoContainer,
 } from "./Styles";
-
-import { useTranslation } from "react-i18next";
+import { UsersContext } from "../../../Context/UsersContext";
 
 const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) => {
-  const { t } = useTranslation('profile');
+  const { t } = useContext(UsersContext);
   return (
     <StyledSubscriptionInfoContainer>
-      <Text type={"h2"}>{t('subscription_active')}</Text>
+      <Text type={"h2"}>{t('profile:subscription_active')}</Text>
       <SubscriptionResume
         name={subscription.pricing.name}
         duration={subscription.pricing.duration}

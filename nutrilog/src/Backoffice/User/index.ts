@@ -1,6 +1,7 @@
 export * from './Infrastructure/Controller/GetClientProfileController';
 export * from './Infrastructure/Controller/FindUsersController';
 export * from './Infrastructure/Controller/CreateUserController';
+export * from './Infrastructure/Controller/UpdateClientController';
 export * from './Infrastructure/Controller/DeleteUserController';
 export * from './Infrastructure/Controller/UpdatePaymentController';
 export * from '../../Auth/Infrastructure/Controller/UpdatePasswordController';

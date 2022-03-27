@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ProfileClientInfoProps } from "./ProfileClientInfoProps";
 import { FiChevronDown } from "react-icons/fi";
 import {
   StyledAccordionContent,
   StyledAccordionHeader, StyledAccordionRoot, StyledAccordionTrigger, StyledContent, StyledContentTitle,
 } from "./Styles";
-import { useTranslation } from "react-i18next";
+
 import useBooleanBeautifier from "../../../../Shared/Hooks/useBooleanBeautifier";
 import Accordion from "../../../../Shared/Components/Accordion";
 import { StringHelper } from "../../../../Shared/Services/StringHelper";
+import { UsersContext } from "../../../Context/UsersContext";
 
 const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
-  const { t } = useTranslation('profile');
+  const { t } = useContext(UsersContext);
   const { beautify } = useBooleanBeautifier({
     isTrue: 'enabled',
     isFalse: 'disabled'
@@ -23,13 +24,13 @@ const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
         <StyledAccordionHeader>
           <StyledAccordionTrigger>
             <FiChevronDown/>
-            <span>{t('details')}</span>
+            <span>{t('profile:details')}</span>
           </StyledAccordionTrigger>
         </StyledAccordionHeader>
         <StyledAccordionContent>
-          <StyledContentTitle type={"subtitle"} bold>{t('username')}</StyledContentTitle>
+          <StyledContentTitle type={"subtitle"} bold>{t('profile:username')}</StyledContentTitle>
           <StyledContent>{client.username}</StyledContent>
-          <StyledContentTitle type={"subtitle"} bold>{t('email')}</StyledContentTitle>
+          <StyledContentTitle type={"subtitle"} bold>{t('profile:email')}</StyledContentTitle>
           <StyledContent>{client.email}</StyledContent>
           {/*<StyledContentTitle type={"subtitle"} bold>{t('address')}</StyledContentTitle>
            <StyledContentTitle type={"subtitle"} bold>{t('city')}</StyledContentTitle>
@@ -41,13 +42,13 @@ const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
         <StyledAccordionHeader>
           <StyledAccordionTrigger>
             <FiChevronDown/>
-            <span>{t('config')}</span>
+            <span>{t('profile:config')}</span>
           </StyledAccordionTrigger>
         </StyledAccordionHeader>
         <StyledAccordionContent>
-          <StyledContentTitle type={"subtitle"} bold>{t('config_language')}</StyledContentTitle>
+          <StyledContentTitle type={"subtitle"} bold>{t('profile:config_language')}</StyledContentTitle>
           <StyledContent>{client.config.language}</StyledContent>
-          <StyledContentTitle type={"subtitle"} bold>{t('config_notifications')}</StyledContentTitle>
+          <StyledContentTitle type={"subtitle"} bold>{t('profile:config_notifications')}</StyledContentTitle>
           <StyledContent>{StringHelper.firstLetterToUpperCase(beautify(client.config.sendNotifications))}</StyledContent>
         </StyledAccordionContent>
       </Accordion.Item>

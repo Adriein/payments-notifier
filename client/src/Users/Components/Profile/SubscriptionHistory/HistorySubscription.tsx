@@ -1,21 +1,21 @@
 import { HistorySubscriptionProps } from "./HistorySubscriptionProps";
 import {
-  StyledScrollArea, StyledScrollBar, StyledScrollContent, StyledSubscriptionInfoContainer,
+  StyledScrollArea, StyledScrollBar, StyledScrollContent,
   StyledThumb, StyledViewport
 } from "../Shared/Styles";
 import Text from "../../../../Shared/Components/Text";
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React, { useContext } from "react";
 import { StyledSubscriptionHistoryContainer } from "./Styles";
 import { Subscription } from "../../../types";
 import SubscriptionResume from "../SubscriptionResume";
+import { UsersContext } from "../../../Context/UsersContext";
 
 const HistorySubscription = ({ inactiveSubscriptions }: HistorySubscriptionProps) => {
-  const { t } = useTranslation('profile');
+  const { t } = useContext(UsersContext);
 
   return (
     <StyledSubscriptionHistoryContainer>
-      <Text type={"h2"}>{t('subscription_history')}</Text>
+      <Text type={"h2"}>{t('profile:subscription_history')}</Text>
       <StyledScrollArea height={398}>
         <StyledViewport>
           <StyledScrollContent>

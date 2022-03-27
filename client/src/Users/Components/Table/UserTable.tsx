@@ -5,9 +5,7 @@ import { StyledTableCell, StyledTableRow } from "../../../Shared/Components/Tabl
 import Avatar from "../../../Shared/Components/Avatar";
 import { FiArrowRight, FiTrash, FiRefreshCcw } from "react-icons/fi";
 import { UsersContext } from "../../Context/UsersContext";
-import useToastError from "../../../Shared/Hooks/useToastError";
 import usePagination from "../../../Shared/Hooks/usePagination";
-import { useTranslation } from "react-i18next";
 import usePricingBeautifier from "../../Hooks/usePricingBeautifier";
 import useDateFormatter from "../../../Shared/Hooks/useDateFormatter";
 import useBooleanBeautifier from "../../../Shared/Hooks/useBooleanBeautifier";
@@ -17,10 +15,8 @@ import { StringHelper } from "../../../Shared/Services/StringHelper";
 import ContextMenu from "../../../Shared/Components/ContextMenu";
 
 const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps) => {
-  const { state, fetchClientList, addFilter } = useContext(UsersContext);
-  const { notify } = useToastError('login');
+  const { state, fetchClientList, addFilter, t, notify } = useContext(UsersContext);
   const { pagination, setPage } = usePagination({ total: state.totalUsers });
-  const { t } = useTranslation([ 'clients', 'common' ]);
   const { beautify: pricingBeautifier } = usePricingBeautifier();
   const { format } = useDateFormatter();
   const { beautify: booleanBeautifier } = useBooleanBeautifier({
@@ -53,10 +49,10 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
           <Table.Body
             collection={state.clientList}
             rows={[
-              t('username_header'),
-              t('pricing_header'),
-              t('send_warning_notification_header'),
-              t('subscription_period_header'),
+              t('clients:username_header'),
+              t('clients:pricing_header'),
+              t('clients:send_warning_notification_header'),
+              t('clients:subscription_period_header'),
             ]}
             renderRow={(client: ClientList, index: number) => {
               const isLast = index === state.clientList.length - 1

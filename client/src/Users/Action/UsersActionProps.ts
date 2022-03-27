@@ -3,7 +3,7 @@ import { ActionProps } from "../../Shared/Action/ActionProps";
 import { FetchClientListActionProps } from "./FetchClientList/FetchClientListActionProps";
 import { FilterProps } from "../../Shared/Action/Filter/FilterProps";
 import { FetchClientProfileActionProps } from "./FetchClientProfile/FetchClientProfileActionProps";
-import { fetchTotalClients } from "./FetchTotalClients/fetchTotalClients";
+import { UpdateClientActionProps } from "./UpdateClient/UpdateClientActionProps";
 
 export interface UsersActionProps {
   fetchClientList: (dispatch: Dispatch<ActionProps>) => ({
@@ -17,4 +17,6 @@ export interface UsersActionProps {
   }: FetchClientProfileActionProps) => Promise<void>;
 
   addFilter: (dispatch: Dispatch<ActionProps>) => (filter: FilterProps) => void;
+
+  updateClient: (dispatch: Dispatch<ActionProps>) => (payload: UpdateClientActionProps) => void;
 }

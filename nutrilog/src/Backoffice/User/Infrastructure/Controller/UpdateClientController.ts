@@ -11,10 +11,12 @@ export class UpdateClientController extends BaseController<void> {
   @put('/user')
   @use(requireAuth)
   @use(currentUser)
-  public async createUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async updateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      throw new Error();
       await this.commandBus.dispatch(
         new UpdateClientCommand(
+          req.body.clientId,
           req.body.username,
           req.body.email,
           req.body.notifications,

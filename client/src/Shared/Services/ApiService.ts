@@ -22,20 +22,24 @@ export class ApiService {
     });
   }
 
-  public async get<R>(path: string): Promise<R> {
-    return this.call<R>(async () => await this.api.get<R, AxiosResponse<R>>(path));
+  public async get<Res>(path: string): Promise<Res> {
+    return this.call<Res>(async () => await this.api.get<Res, AxiosResponse<Res>>(path));
   }
 
-  public async post<R, P>(path: string, payload: P): Promise<R> {
-    return await this.call(async () => await this.api.post<R, AxiosResponse<R>>(path, payload));
+  public async post<Res, Payload>(path: string, payload: Payload): Promise<Res> {
+    return await this.call(async () => await this.api.post<Res, AxiosResponse<Res>>(path, payload));
   }
 
-  private async call<R>(fn: () => Promise<AxiosResponse<R>>): Promise<R> {
+  public async put<Payload, Res = any>(path: string, payload: Payload): Promise<Res> {
+    return await this.call(async () => await this.api.put<Res, AxiosResponse<Res>>(path, payload))
+  }
+
+  private async call<Res>(fn: () => Promise<AxiosResponse<Res>>): Promise<Res> {
     try {
       const result = await fn();
 
       return result.data;
-      
+
     } catch (error: any) {
       const axiosError = error?.response;
 

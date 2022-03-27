@@ -29,6 +29,9 @@ import { ClientRepository } from "../../../Backoffice/User/Infrastructure/Data/C
 import { ClientFinder } from "../../../Backoffice/User/Application/Service/ClientFinder";
 import { GetTotalClientsQuery } from "../../../Backoffice/User/Application/GetTotalClients/GetTotalClientsQuery";
 import { GetTotalClientsHandler } from "../../../Backoffice/User/Application/GetTotalClients/GetTotalClientsHandler";
+import { GetClientProfileQuery } from "../../../Backoffice/User/Application/GetClientProfile/GetClientProfileQuery";
+import { FindTenantClientsQuery } from "../../../Backoffice/User/Application/FindTenantClients/FindTenantClientsQuery";
+import { SigninQuery } from "../../../Auth/Domain/Query/SigninQuery";
 
 export default class QueryHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -94,7 +97,7 @@ export default class QueryHandlerFactory {
     //Auth BC
 
     this.handlers.set(
-      SignInHandler.name,
+      SigninQuery.name,
       new SignInHandler(this.authRepository, this.cryptoService)
     );
 
@@ -102,7 +105,7 @@ export default class QueryHandlerFactory {
     //User
 
     this.handlers.set(
-      GetClientProfileHandler.name,
+      GetClientProfileQuery.name,
       new GetClientProfileHandler(
         this.clientFinder,
         this.subscriptionRepository,
@@ -111,7 +114,7 @@ export default class QueryHandlerFactory {
     );
 
     this.handlers.set(
-      FindTenantClientsHandler.name,
+      FindTenantClientsQuery.name,
       new FindTenantClientsHandler(this.clientRepository, this.subscriptionRepository, QueryBus.instance())
     );
 

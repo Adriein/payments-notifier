@@ -11,13 +11,13 @@ import { DomainEventsManager } from "../../../../Shared/Domain/Entities/DomainEv
 export class User extends AggregateRoot {
   constructor(
     _id: ID,
-    private _name: string,
-    private _password: Password,
-    private _email: Email,
-    private _config: UserConfig,
-    private _tenantId: ID,
-    private _roleId: ID,
-    private _active: boolean,
+    protected _name: string,
+    protected _password: Password,
+    protected _email: Email,
+    protected _config: UserConfig,
+    protected _tenantId: ID,
+    protected _roleId: ID,
+    protected _active: boolean,
     _createdAt?: Date,
     _updatedAt?: Date
   ) {
@@ -73,10 +73,37 @@ export class User extends AggregateRoot {
   public createSubscription(pricingId: ID, paymentDate: DateVo, pricingDuration: number): Subscription {
     return Subscription.build(this.id(), pricingId, paymentDate, pricingDuration);
   }
-  
+
   public async deactivate(): Promise<void> {
     this._active = false;
     this.addEvent(new RenewedSubscriptionDomainEvent(this.id()));
     await DomainEventsManager.publishEvents(this.id());
+  }
+
+  public changePersonalInfo(name: string, email: Email): void {
+    this._name = name;
+    this._email = email;
+    this.entityUpdated();
+  }
+
+  public changeConfig(warnings: boolean, notifications: boolean, language: string,): void {
+    if (warnings) {
+      this._config.activateWarnings();
+    }
+
+    if (!warnings) {
+      this._config.deactivateWarnings();
+    }
+
+    if (notifications) {
+      this._config.activateNotifications();
+    }
+
+    if (!notifications) {
+      this._config.deactivateNotifications();
+    }
+
+    this._config.changeLanguage(language);
+    this.entityUpdated();
   }
 }

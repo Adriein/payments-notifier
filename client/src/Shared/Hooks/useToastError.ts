@@ -1,8 +1,6 @@
 import toast from 'react-hot-toast';
-import { useTranslation } from "react-i18next";
 
-const useToastError = (namespace: string) => {
-  const { t } = useTranslation(namespace);
+const useToastError = (t: (key: string) => string) => {
   const notify = (error: any) => toast.error(t(error.key));
 
   return { notify };

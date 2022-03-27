@@ -18,7 +18,6 @@ import ProfileClientInfo from "./ProfileClientInfo/ProfileClientInfo";
 import ActiveSubscription from "./ActiveSubscription";
 import HistorySubscription from "./SubscriptionHistory";
 import EventList from "./Events";
-import { useTranslation } from "react-i18next";
 import ClientRevenue from "./ClientRevenue";
 import { useToggle } from "../../../Shared/Hooks/useToggle";
 import ProfileForm from "./ProfileForm/ProfileForm";
@@ -28,7 +27,7 @@ import { FiEdit3 } from "react-icons/fi";
 const Profile = ({ id }: UserProfileProps) => {
   const { state: { clientProfile, isLoading }, fetchClientProfile } = useContext(UsersContext);
 
-  const { t } = useTranslation('profile');
+  const { t } = useContext(UsersContext);
   const [ edit, toggleEdit ] = useToggle();
 
   useEffect(() => {
@@ -64,8 +63,8 @@ const Profile = ({ id }: UserProfileProps) => {
           {edit ? <ProfileForm user={clientProfile} toggleEdit={toggleEdit}/> : (
             <StyledPersonalSubscriptionInfo defaultValue={"tab1"}>
               <StyledTabList>
-                <StyledTabTrigger value={"tab1"}>{t('subscription_overview_title')}</StyledTabTrigger>
-                <StyledTabTrigger value={"tab2"}>{t('subscription_events_title')}</StyledTabTrigger>
+                <StyledTabTrigger value={"tab1"}>{t('profile:subscription_overview_title')}</StyledTabTrigger>
+                <StyledTabTrigger value={"tab2"}>{t('profile:subscription_events_title')}</StyledTabTrigger>
               </StyledTabList>
               <StyledTabContent value={"tab1"}>
                 <StyledSubscriptionContainer>

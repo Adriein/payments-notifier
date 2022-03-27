@@ -5,13 +5,13 @@ import { UsersActionProps } from "../Action/UsersActionProps";
 import { fetchClientList } from '../Action/FetchClientList/fetchClientList';
 import { addFilter } from "../../Shared/Action/Filter/addFilter";
 import { fetchClientProfile } from "../Action/FetchClientProfile/fetchClientProfile";
-import { fetchTotalClients } from "../Action/FetchTotalClients/fetchTotalClients";
+import { updateClient } from "../Action/UpdateClient/updateClient";
 
 export const {
   Provider: UsersProvider,
-  Context: UsersContext
+  Context: UsersContext,
 } = createDataContext<UserStateProps, UsersActionProps>(
   usersReducer,
-  { fetchClientList, addFilter, fetchClientProfile },
+  { fetchClientList, addFilter, fetchClientProfile, updateClient },
   { clientList: [], isLoading: false, filters: [], totalUsers: 0, clientProfile: undefined }
 );

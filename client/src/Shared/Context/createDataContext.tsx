@@ -1,25 +1,30 @@
 import React, { useReducer, createContext, Reducer } from 'react';
-import { MappedActions } from "../types";
+import { BaseDataContext, MappedActions } from "../types";
+import { useTranslation } from "react-i18next";
+import useToastError from "../Hooks/useToastError";
 
-const createDataContext = <T extends unknown, A extends { [key: string]: any }>(
-    reducer: Reducer<T, any>,
-    actions: A,
-    defaultValue: T
+const createDataContext = <State extends unknown, Action extends { [key: string]: any }>(
+    reducer: Reducer<State, any>,
+    actions: Action,
+    defaultValue: State
   ) => {
-    const Context = createContext<{ state: T } & MappedActions<A>>({ state: defaultValue, ...actions });
+    const Context = createContext<BaseDataContext<State, Action>>(undefined!);
 
     const Provider = ({ children }: any) => {
-      const [ state, dispatch ] = useReducer<Reducer<T, any>>(reducer, defaultValue);
+      const [ state, dispatch ] = useReducer<Reducer<State, any>>(reducer, defaultValue);
+
+      const { t } = useTranslation([ 'landing', 'login', 'register', 'profile', 'clients', 'common' ]);
+      const { notify } = useToastError(t);
 
       const boundActions: { [key: string]: any } = {};
 
       for (let key in actions) {
-        boundActions[key] = actions[key](dispatch) as MappedActions<A>;
+        boundActions[key] = actions[key](dispatch) as MappedActions<Action>;
       }
-      const actionsWithDispatch = { ...boundActions } as MappedActions<A>
-      
+      const actionsWithDispatch = { ...boundActions } as MappedActions<Action>
+
       return (
-        <Context.Provider value={{ state, ...actionsWithDispatch }}>
+        <Context.Provider value={{ state, t, notify, ...actionsWithDispatch }}>
           {children}
         </Context.Provider>
       );

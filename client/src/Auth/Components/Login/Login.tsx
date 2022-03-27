@@ -9,15 +9,11 @@ import {
 } from './Styles';
 import Button from "../../../Shared/Components/Button";
 import { AuthContext } from "../../Context/AuthContext";
-import { useTranslation } from "react-i18next";
-import useToastError from "../../../Shared/Hooks/useToastError";
 import { LoginProps } from "./LoginProps";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ onSubmit }: LoginProps) => {
-  const { notify } = useToastError('login');
-  const { t } = useTranslation('login');
-  const { signIn } = useContext(AuthContext);
+  const { signIn, t, notify } = useContext(AuthContext);
   let navigate = useNavigate();
 
   return (
@@ -43,14 +39,14 @@ const Login = ({ onSubmit }: LoginProps) => {
     >
       <StyledFormElement>
         <StyledFormHeading>
-          {t('title')}<StyledFormTitleSpan>{t('span')}</StyledFormTitleSpan>
+          {t('login:title')}<StyledFormTitleSpan>{t('login:span')}</StyledFormTitleSpan>
         </StyledFormHeading>
         <StyledFormSubHeading>
-          {t('subtitle')} <StyledLink to={'/?modal-register=true'}>{t('create_account')}</StyledLink>
+          {t('login:subtitle')} <StyledLink to={'/?modal-register=true'}>{t('login:create_account')}</StyledLink>
         </StyledFormSubHeading>
         <StyledFormInput name="email" label="Email"/>
         <StyledFormInput name="password" label="Password" type="password"/>
-        <Button size={'medium'} variant={'fill'} type={"submit"}>{t('button')}</Button>
+        <Button size={'medium'} variant={'fill'} type={"submit"}>{t('login:button')}</Button>
       </StyledFormElement>
     </Form>
   );

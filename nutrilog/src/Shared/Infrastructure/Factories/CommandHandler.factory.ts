@@ -26,6 +26,13 @@ import { CheckForExpiredSubscriptionsCommand } from "../../../Backoffice/User/Ap
 import { CheckForExpiredSubscriptionsHandler } from "../../../Backoffice/User/Application/CheckForExpiredSubscriptions/CheckForExpiredSubscriptionsHandler";
 import { GenerateExpiredSubscriptionsReportCommand } from "../../../Backoffice/User/Application/GenerateExpiredSubscriptionReport/GenerateExpiredSubscriptionsReportCommand";
 import { GenerateExpiredSubscriptionsReportHandler } from "../../../Backoffice/User/Application/GenerateExpiredSubscriptionReport/GenerateExpiredSubscriptionsReportHandler";
+import { UpdateClientHandler } from "../../../Backoffice/User/Application/UpdateClient/UpdateClientHandler";
+import { RegisterAdminCommand } from "../../../Auth/Domain/Command/RegisterAdminCommand";
+import { CreateClientCommand } from "../../../Backoffice/User/Application/CreateClient/CreateClientCommand";
+import { UpdateClientCommand } from "../../../Backoffice/User/Application/UpdateClient/UpdateClientCommand";
+import { RenewSubscriptionCommand } from "../../../Backoffice/User/Application/RenewSubscription/RenewSubscriptionCommand";
+import { DeactivateClientCommand } from "../../../Backoffice/User/Application/DeactivateClient/DeactivateClientCommand";
+import { CreatePricingCommand } from "../../../Backoffice/Pricing/Domain/Command/CreatePricingCommand";
 
 export default class CommandHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -79,17 +86,25 @@ export default class CommandHandlerFactory {
     //BackOffice BC
     //User Module
     this.handlers.set(
-      RegisterAdminHandler.name,
+      RegisterAdminCommand.name,
       new RegisterAdminHandler()
     );
 
     this.handlers.set(
-      CreateClientHandler.name,
+      CreateClientCommand.name,
       new CreateClientHandler(
         this.clientRepository,
         this.subscriptionRepository,
         QueryBus.instance(),
         this.tenantFinder
+      )
+    );
+
+    this.handlers.set(
+      UpdateClientCommand.name,
+      new UpdateClientHandler(
+        this.clientRepository,
+        QueryBus.instance(),
       )
     );
 
@@ -123,19 +138,18 @@ export default class CommandHandlerFactory {
     );
 
     this.handlers.set(
-      RenewSubscriptionHandler.name,
+      RenewSubscriptionCommand.name,
       new RenewSubscriptionHandler(this.userFinder, this.subscriptionRepository)
     );
 
     this.handlers.set(
-      DeactivateClientHandler.name,
-      new DeactivateClientHandler(this.userRepository)
+      DeactivateClientCommand.name,
+      new DeactivateClientHandler(this.clientRepository)
     );
 
     //Pricing Module
-
     this.handlers.set(
-      CreatePricingHandler.name,
+      CreatePricingCommand.name,
       new CreatePricingHandler(this.pricingRepository)
     )
   }

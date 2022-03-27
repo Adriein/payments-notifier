@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import useDateFormatter from "../../../../Shared/Hooks/useDateFormatter";
 import { useTranslation } from "react-i18next";
@@ -16,16 +16,17 @@ import { SubscriptionResumeProps } from "./SubscriptionResumeProps";
 import { StringHelper } from "../../../../Shared/Services/StringHelper";
 import DropdownMenu from "../../../../Shared/Components/DropdownMenu";
 import { FiMoreVertical, FiArchive, FiZap, FiTrash } from "react-icons/fi";
+import { UsersContext } from "../../../Context/UsersContext";
 
 const SubscriptionResume = ({ name, price, validTo, duration, expired }: SubscriptionResumeProps) => {
   const { format } = useDateFormatter();
-  const { t } = useTranslation('profile');
+  const { t } = useContext(UsersContext);
   return (
     <StyledActiveSubscription>
       <StyledTitleContainer>
         <Text type={"h3"}>{StringHelper.firstLetterToUpperCase(name)}</Text>
-        {expired ? <ExpiredBadge text={t('subscription_badge_expired')}/> :
-          <ActiveBadge text={t('subscription_badge_active')}/>}
+        {expired ? <ExpiredBadge text={t('profile:subscription_badge_expired')}/> :
+          <ActiveBadge text={t('profile:subscription_badge_active')}/>}
         {!expired && <StyledOptionContainer>
           <DropdownMenu>
             <StyledDropdownMenuTrigger>
@@ -42,11 +43,11 @@ const SubscriptionResume = ({ name, price, validTo, duration, expired }: Subscri
         </StyledOptionContainer>}
       </StyledTitleContainer>
       <StyledDetailsContainer>
-        <span>{t('subscription_duration')} {duration} {t('subscription_days')}</span>
+        <span>{t('profile:subscription_duration')} {duration} {t('profile:subscription_days')}</span>
         <StyledSeparator decorative orientation="vertical"/>
-        <span>{t('subscription_price')} {price} €</span>
+        <span>{t('profile:subscription_price')} {price} €</span>
         <StyledSeparator decorative orientation="vertical"/>
-        <span>{t('subscription_valid_to')} {format(validTo)}</span>
+        <span>{t('profile:subscription_valid_to')} {format(validTo)}</span>
       </StyledDetailsContainer>
     </StyledActiveSubscription>
   )

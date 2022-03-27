@@ -3,54 +3,46 @@ import { CommandHandler } from "../../../../Shared/Domain/Decorators/CommandHand
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { IHandler } from "../../../../Shared/Domain/Interfaces/IHandler";
-import { UserAlreadyExistsError } from "../../Domain/Error/UserAlreadyExistsError";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
-import { CLIENT_ROLE } from "../../Domain/constants";
-import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
-import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
-import { Tenant } from "../../Domain/Entity/Tenant.entity";
 import { IClientRepository } from "../../Domain/IClientRepository";
-import { TenantFinder } from "../Service/TenantFinder";
 import { UpdateClientCommand } from "./UpdateClientCommand";
+import { Client } from "../../Domain/Entity/Client.entity";
 
 @CommandHandler(UpdateClientCommand)
 export class UpdateClientHandler implements IHandler<void> {
   constructor(
     private readonly clientRepository: IClientRepository,
     private readonly queryBus: IQueryBus,
-    private readonly finder: TenantFinder,
   ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: UpdateClientCommand): Promise<void> {
+    const id = new ID(command.clientId);
     const email = new Email(command.email);
-    await this.ensureUserNotExists(email);
 
-    const role = await this.getUserRole();
+    const role = await this.getRole(command.rol);
+    const client = await this.getClient(id);
 
-    const tenant = await this.findTenant(command.tenantId);
+    client.changePersonalInfo(command.username, email);
+    client.changeConfig(command.warnings, command.notifications, command.language);
+    client.changeRole(new ID(role.id));
 
-    const client = tenant.registerClient(command.username, email, new ID(role.id));
-
-    await this.clientRepository.save(client);
-
+    await this.clientRepository.update(client);
   }
 
-  private async findTenant(id: string): Promise<Tenant> {
-    return await this.finder.execute(new ID(id));
+  private async getRole(role: string): Promise<SearchRoleResponse> {
+    return await this.queryBus.ask(new SearchRoleQuery(role));
   }
 
-  private async ensureUserNotExists(email: Email): Promise<void> {
-    const result = await this.clientRepository.findByEmail(email.value);
+  private async getClient(id: ID): Promise<Client> {
+    const result = await this.clientRepository.findOne(id.value);
 
-    if (result.isRight()) {
-      throw new UserAlreadyExistsError();
+    if (result.isLeft()) {
+      throw result;
     }
-  }
 
-  private async getUserRole(): Promise<SearchRoleResponse> {
-    return await this.queryBus.ask(new SearchRoleQuery(CLIENT_ROLE));
+    return result.value;
   }
 }

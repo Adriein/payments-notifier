@@ -2,11 +2,12 @@ import Form from "../../../../Shared/Components/Form";
 import { StyledFormActions, StyledFormInput, StyledUserProfileForm, StyledFormRow } from "../Styles";
 import Button from "../../../../Shared/Components/Button";
 import Text from "../../../../Shared/Components/Text";
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { ProfileFormProps } from "./ProfileFormProps";
 import { FiChevronDown } from "react-icons/fi";
 import Select from "../../../../Shared/Components/Select";
+import { UsersContext } from "../../../Context/UsersContext";
 
 interface FormProps {
   username: string;
@@ -22,7 +23,8 @@ interface FormProps {
 }
 
 const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
-  const { t } = useTranslation('profile');
+  const { t } = useContext(UsersContext);
+  const { updateClient, fetchClientProfile } = useContext(UsersContext);
 
   return (
     <Form
@@ -39,26 +41,36 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
         sendWarnings: 'false',
         role: 'user',
       }}
-      onSubmit={async ({ username, email, address, role }: FormProps) => {
-        console.log(role, username)
+      onSubmit={async ({ username, email, role, language, sendNotifications, sendWarnings }: FormProps) => {
+        await updateClient({
+          language,
+          email,
+          username,
+          clientId: user.id,
+          rol: role,
+          notifications: sendNotifications,
+          warnings: sendWarnings
+        });
+
+        await fetchClientProfile({ clientId: user.id })
       }}
     >
       <StyledUserProfileForm>
-        <Text type={"h3"}>{t('details')}</Text>
-        <StyledFormInput name="username" label={t('username')}/>
-        <StyledFormInput name="email" label={t('email')}/>
-        <Text type={"h3"}>{t('billing_details')}</Text>
+        <Text type={"h3"}>{t('profile:details')}</Text>
+        <StyledFormInput name="username" label={t('profile:username')}/>
+        <StyledFormInput name="email" label={t('profile:email')}/>
+        <Text type={"h3"}>{t('profile:billing_details')}</Text>
         <StyledFormRow>
-          <StyledFormInput name="address" label={t('address')}/>
-          <StyledFormInput name="city" label={t('city')}/>
+          <StyledFormInput name="address" label={t('profile:address')}/>
+          <StyledFormInput name="city" label={t('profile:city')}/>
         </StyledFormRow>
         <StyledFormRow>
-          <StyledFormInput name="dni" label={t('dni')}/>
-          <StyledFormInput name="phone" label={t('phone')}/>
+          <StyledFormInput name="dni" label={t('profile:dni')}/>
+          <StyledFormInput name="phone" label={t('profile:phone')}/>
         </StyledFormRow>
-        <Text type={"h3"}>{t('config')}</Text>
+        <Text type={"h3"}>{t('profile:config')}</Text>
         <StyledFormRow>
-          <Form.Field.Select name="sendNotifications" label={t('notifications')}>
+          <Form.Field.Select name="sendNotifications" label={t('profile:notifications')}>
             <Select.Trigger>
               <Select.Value/>
               <Select.Icon><FiChevronDown/></Select.Icon>
@@ -76,7 +88,7 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
               <Select.ScrollDownButton/>
             </Select.Content>
           </Form.Field.Select>
-          <Form.Field.Select name="sendWarnings" label={t('warnings')}>
+          <Form.Field.Select name="sendWarnings" label={t('profile:warnings')}>
             <Select.Trigger>
               <Select.Value/>
               <Select.Icon><FiChevronDown/></Select.Icon>
@@ -96,8 +108,8 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
           </Form.Field.Select>
         </StyledFormRow>
         <StyledFormRow isLast>
-          <StyledFormInput name="language" label={t('config_language')}/>
-          <Form.Field.Select name="role" label={t('role')}>
+          <StyledFormInput name="language" label={t('profile:config_language')}/>
+          <Form.Field.Select name="role" label={t('profile:role')}>
             <Select.Trigger>
               <Select.Value/>
               <Select.Icon><FiChevronDown/></Select.Icon>
@@ -117,8 +129,8 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
           </Form.Field.Select>
         </StyledFormRow>
         <StyledFormActions>
-          <Button size={'small'} variant={'fill'} type={"submit"}>{t('save')}</Button>
-          <Button size={'small'} variant={'fill'} type={"submit"} onClick={toggleEdit}>{t('cancel')}</Button>
+          <Button size={'small'} variant={'fill'} type={"submit"}>{t('profile:save')}</Button>
+          <Button size={'small'} variant={'fill'} type={"submit"} onClick={toggleEdit}>{t('profile:cancel')}</Button>
         </StyledFormActions>
       </StyledUserProfileForm>
     </Form>

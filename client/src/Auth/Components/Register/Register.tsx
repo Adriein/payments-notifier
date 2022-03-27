@@ -10,13 +10,9 @@ import {
 } from './Styles';
 import Button from "../../../Shared/Components/Button";
 import { AuthContext } from "../../Context/AuthContext";
-import { useTranslation } from "react-i18next";
-import useToastError from "../../../Shared/Hooks/useToastError";
 
 const Register = () => {
-  const { notify } = useToastError('login');
-  const { t } = useTranslation('register');
-  const { signUp } = useContext(AuthContext);
+  const { signUp, t, notify } = useContext(AuthContext);
 
   return (
     <Form
@@ -41,15 +37,15 @@ const Register = () => {
     >
       <StyledFormElement>
         <StyledFormHeading>
-          {t('title')}<StyledFormTitleSpan>{t('span')}</StyledFormTitleSpan>
+          {t('register:title')}<StyledFormTitleSpan>{t('register:span')}</StyledFormTitleSpan>
         </StyledFormHeading>
         <StyledFormSubHeading>
-          {t('subtitle')} <StyledLink to={'/?modal-login=true'}>{t('create_account')}</StyledLink>
+          {t('register:subtitle')} <StyledLink to={'/?modal-login=true'}>{t('register:create_account')}</StyledLink>
         </StyledFormSubHeading>
-        <StyledFormInput name="name" label={t('username_label')}/>
+        <StyledFormInput name="name" label={t('register:username_label')}/>
         <StyledFormInput name="email" label="Email"/>
         <StyledFormInput name="password" label="Password" type="password"/>
-        <Button size={'medium'} variant={'fill'} type={"submit"}>{t('button')}</Button>
+        <Button size={'medium'} variant={'fill'} type={"submit"}>{t('register:button')}</Button>
       </StyledFormElement>
     </Form>
   );
