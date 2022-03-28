@@ -46,7 +46,7 @@ const Login = ({ onSubmit }: LoginProps) => {
         </StyledFormSubHeading>
         <StyledFormInput name="email" label="Email"/>
         <StyledFormInput name="password" label="Password" type="password"/>
-        <Button size={'md'} variant={'hover'} type={"submit"} color={'blue'} radius={'md'}>{t('login:button')}</Button>
+        <Button size={'md'} variant={'filled'} type={"submit"} color={'blue'} radius={'md'}>{t('login:button')}</Button>
       </StyledFormElement>
     </Form>
   );

@@ -10,7 +10,7 @@ const Header = ({ onClick }: any) => {
       <StyledNav>
         <StyledNavOptions>
           <StyledLink>
-            <Button size={'md'} variant={'hover'} color={'blue'} radius={'md'} onClick={onClick}>{t('login')}</Button>
+            <Button size={'md'} variant={'filled'} color={'blue'} radius={'md'} onClick={onClick}>{t('login')}</Button>
           </StyledLink>
         </StyledNavOptions>
       </StyledNav>
