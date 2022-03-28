@@ -32,17 +32,23 @@ const TableFooter = ({ totalItems, itemPerPage, setPage, currentPage }: TableFoo
         </StyledCurrentPage>
         <StyledPaginationButtons>
           <StyledControlPageButton
-            size={'small'}
-            variant={'icon'}
-            icon={<FiArrowLeft/>}
+            size={'md'}
+            variant={'hover'}
+            radius={'md'}
+            color={'gray'}
             onClick={() => setPage(currentPage - 1)}
-          />
+          >
+            <FiArrowLeft/>
+          </StyledControlPageButton>
           <StyledControlPageButton
-            size={'small'}
-            variant={'icon'}
-            icon={<FiArrowRight/>}
+            size={'md'}
+            variant={'hover'}
+            radius={'md'}
+            color={'gray'}
             onClick={() => setPage(currentPage + 1)}
-          />
+          >
+            <FiArrowRight/>
+          </StyledControlPageButton>
         </StyledPaginationButtons>
       </StyledPagination>
     </StyledContainer>

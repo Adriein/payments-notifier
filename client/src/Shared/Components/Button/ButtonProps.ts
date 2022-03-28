@@ -1,13 +1,14 @@
 import { ReactElement } from "react";
 
 export interface ButtonProps {
-  children?: any;
-  icon?: ReactElement;
-  iconSize?: number;
-  disabled?: boolean;
+  children: string;
+  onClick?: () => void;
+  size: "xs" | "sm" | "md" | "lg" | "xl";
+  color: 'dark' | 'gray' | 'blue';
+  radius: "xs" | "sm" | "md" | "lg" | "xl";
+  variant: 'hover' | 'filled';
+  type?: 'submit';
+  leftIcon?: ReactElement;
+  rightIcon?: ReactElement;
   isLoading?: boolean;
-  size: 'small' | 'medium' | 'large';
-  variant: 'fill' | 'icon' | 'outline';
-  onClick?: Function;
-  type?: string
 }

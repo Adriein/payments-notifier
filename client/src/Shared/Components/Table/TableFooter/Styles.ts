@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { COLORS } from "../../Utils/Colors";
 import { font } from "../../Utils/Font";
-import Button from "../../Button";
+import ActionIcon from "../../ActionIcon";
 
 export const StyledContainer = styled.div`
   width: 100%;
@@ -31,7 +31,7 @@ export const StyledPaginationButtons = styled.div`
   gap: 10px;
 `;
 
-export const StyledControlPageButton = styled(Button)`
+export const StyledControlPageButton = styled(ActionIcon)`
   border-radius: 10px;
   background-color: ${COLORS.backgroundWhite};
   color: ${COLORS.black};

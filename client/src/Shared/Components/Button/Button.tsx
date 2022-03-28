@@ -1,43 +1,76 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import { ButtonProps } from "./ButtonProps";
-import { StyledFillButton, StyledRadioIconButton, StyledIcon, StyledOutlineButton } from './Styles';
+import { ButtonBase } from './Styles';
+import { getSharedColorScheme } from "../../Services/SharedColorScheme";
 
-const SIZES = {
-  small: {
-    "--borderRadius": "2px",
-    "--fontSize": "14px",
-    "--padding": "8px"
+const SIZE = {
+  xs: {
+    'font-size': '12px',
+    'height': '30px',
+    'padding': '0 14px',
   },
-  medium: {
-    "--borderRadius": "2px",
-    "--fontSize": 18 / 16 + "rem",
-    "--padding": "12px 20px"
+  sm: {
+    'font-size': '14px',
+    'height': '36px',
+    'padding': '0 18px',
   },
-  large: {
-    "--borderRadius": "4px",
-    "--fontSize": 21 / 16 + "rem",
-    "--padding": "16px 32px"
+  md: {
+    'font-size': '16px',
+    'height': '42px',
+    'padding': '0 22px',
+  },
+  lg: {
+    'font-size': '18px',
+    'height': '50px',
+    'padding': '0 26px',
+  },
+  xl: {
+    'font-size': '20px',
+    'height': '60px',
+    'padding': '0 32px',
   }
 };
 
-const TYPE = {
-  icon: StyledRadioIconButton,
-  fill: StyledFillButton,
-  outline: StyledOutlineButton
+const RADIUS = {
+  xs: {
+    'border-radius': '2px'
+  },
+  sm: {
+    'border-radius': '4px'
+  },
+  md: {
+    'border-radius': '8px'
+  },
+  lg: {
+    'border-radius': '16px'
+  },
+  xl: {
+    'border-radius': '32px'
+  }
 }
 
+
 const Button = forwardRef((
-  { children, icon, isLoading, onClick, size, variant, ...otherProps }: ButtonProps,
+  { children, onClick, size, variant, rightIcon, leftIcon, isLoading, radius, color, ...otherProps }: ButtonProps,
   ref: ForwardedRef<ButtonProps>
 ) => {
-  const styles = SIZES[size];
-  const StyledButton = TYPE[variant];
+  const themedStyles = getSharedColorScheme({ color, variant })
+
+  const styles = {
+    ...SIZE[size],
+    ...RADIUS[radius],
+    'background-color': themedStyles.background,
+    'color': themedStyles.color
+  };
+
+  const hover = {
+    'background-color': themedStyles.hover
+  }
 
   return (
-    <StyledButton ref={ref} onClick={onClick} style={styles} {...otherProps}>
-      {icon && <StyledIcon>{icon}</StyledIcon>}
+    <ButtonBase ref={ref} onClick={onClick} theme={styles} hover={hover} {...otherProps}>
       {children}
-    </StyledButton>
+    </ButtonBase>
   );
 });
 

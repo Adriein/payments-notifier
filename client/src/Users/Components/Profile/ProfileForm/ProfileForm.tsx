@@ -3,7 +3,6 @@ import { StyledFormActions, StyledFormInput, StyledUserProfileForm, StyledFormRo
 import Button from "../../../../Shared/Components/Button";
 import Text from "../../../../Shared/Components/Text";
 import React, { useContext } from "react";
-import { useTranslation } from "react-i18next";
 import { ProfileFormProps } from "./ProfileFormProps";
 import { FiChevronDown } from "react-icons/fi";
 import Select from "../../../../Shared/Components/Select";
@@ -133,8 +132,25 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
           </Form.Field.Select>
         </StyledFormRow>
         <StyledFormActions>
-          <Button size={'small'} variant={'fill'} type={"submit"}>{t('profile:save')}</Button>
-          <Button size={'small'} variant={'fill'} type={"submit"} onClick={toggleEdit}>{t('profile:cancel')}</Button>
+          <Button
+            size={'xs'}
+            type={"submit"}
+            variant={'filled'}
+            color={'blue'}
+            radius={'xs'}
+          >
+            {t('profile:save')}
+          </Button>
+          <Button
+            size={'xs'}
+            type={"submit"}
+            onClick={toggleEdit}
+            variant={'filled'}
+            color={'blue'}
+            radius={'xs'}
+          >
+            {t('profile:cancel')}
+          </Button>
         </StyledFormActions>
       </StyledUserProfileForm>
     </Form>

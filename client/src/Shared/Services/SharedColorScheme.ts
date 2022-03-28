@@ -16,6 +16,14 @@ export const getSharedColorScheme = (scheme: SharedColorScheme) => {
     }
   }
 
+  if (scheme.variant === 'filled') {
+    return {
+      background: color[9],
+      color: 'white',
+      hover: color[7],
+    }
+  }
+
   return {
     background: color[0],
     color: color[6],
