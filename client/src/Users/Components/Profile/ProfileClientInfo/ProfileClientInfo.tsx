@@ -28,9 +28,9 @@ const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
           </StyledAccordionTrigger>
         </StyledAccordionHeader>
         <StyledAccordionContent>
-          <StyledContentTitle type={"subtitle"} bold>{t('profile:username')}</StyledContentTitle>
+          <StyledContentTitle type={"subtitle"}>{t('profile:username')}</StyledContentTitle>
           <StyledContent>{client.username}</StyledContent>
-          <StyledContentTitle type={"subtitle"} bold>{t('profile:email')}</StyledContentTitle>
+          <StyledContentTitle type={"subtitle"}>{t('profile:email')}</StyledContentTitle>
           <StyledContent>{client.email}</StyledContent>
           {/*<StyledContentTitle type={"subtitle"} bold>{t('address')}</StyledContentTitle>
            <StyledContentTitle type={"subtitle"} bold>{t('city')}</StyledContentTitle>
@@ -46,9 +46,9 @@ const ProfileClientInfo = ({ client }: ProfileClientInfoProps) => {
           </StyledAccordionTrigger>
         </StyledAccordionHeader>
         <StyledAccordionContent>
-          <StyledContentTitle type={"subtitle"} bold>{t('profile:config_language')}</StyledContentTitle>
+          <StyledContentTitle type={"subtitle"}>{t('profile:config_language')}</StyledContentTitle>
           <StyledContent>{client.config.language}</StyledContent>
-          <StyledContentTitle type={"subtitle"} bold>{t('profile:config_notifications')}</StyledContentTitle>
+          <StyledContentTitle type={"subtitle"}>{t('profile:config_notifications')}</StyledContentTitle>
           <StyledContent>{StringHelper.firstLetterToUpperCase(beautify(client.config.sendNotifications))}</StyledContent>
         </StyledAccordionContent>
       </Accordion.Item>

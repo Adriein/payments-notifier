@@ -45,8 +45,8 @@ const Register = () => {
         <StyledFormInput name="name" label={t('register:username_label')}/>
         <StyledFormInput name="email" label="Email"/>
         <StyledFormInput name="password" label="Password" type="password"/>
-        <Button size={'md'} variant={'filled'} type={"submit"} color={'blue'}
-                radius={'md'}>{t('register:button')}</Button>
+        <Button size={'sm'} variant={'filled'} type={"submit"} color={'blue'}
+                radius={'xs'}>{t('register:button')}</Button>
       </StyledFormElement>
     </Form>
   );

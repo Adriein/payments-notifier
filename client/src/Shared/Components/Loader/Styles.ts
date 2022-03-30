@@ -15,6 +15,7 @@ export const StyledLoader = styled.span<any>`
   animation-timing-function: linear;
   animation-duration: 0.8s;
   animation-name: spinner-loading;
+
   @keyframes spinner-loading {
     0% {
       transform: rotate(0deg);
@@ -23,15 +24,6 @@ export const StyledLoader = styled.span<any>`
       transform: rotate(1turn);
     }
   }
-`;
-
-export const StyledLoaderContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  height: 500px;
-  width: 100%;
 `;
 
 export const StyledLogoImg = styled.img<any>`

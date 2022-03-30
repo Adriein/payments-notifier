@@ -2,6 +2,7 @@ import React, { ForwardedRef, forwardRef } from 'react';
 import { ButtonProps } from "./ButtonProps";
 import { ButtonBase } from './Styles';
 import { getSharedColorScheme } from "../../Services/SharedColorScheme";
+import Loader from "../Loader";
 
 const SIZE = {
   xs: {
@@ -68,8 +69,18 @@ const Button = forwardRef((
   }
 
   return (
-    <ButtonBase ref={ref} onClick={onClick} theme={styles} hover={hover} {...otherProps}>
+    <ButtonBase
+      ref={ref}
+      onClick={onClick}
+      theme={styles}
+      hover={hover}
+      disabled={isLoading}
+      {...otherProps}
+    >
+      {isLoading && <Loader color={'gray'} size={20}/>}
+      {!isLoading && leftIcon}
       {children}
+      {!isLoading && rightIcon}
     </ButtonBase>
   );
 });

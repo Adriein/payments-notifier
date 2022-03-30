@@ -26,7 +26,7 @@ export const getSharedColorScheme = (scheme: SharedColorScheme) => {
 
   return {
     background: color[0],
-    color: color[6],
+    color: color[4],
     hover: color[1],
   }
 }

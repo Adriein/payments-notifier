@@ -105,3 +105,12 @@ export const StyledTabTrigger = styled(Tabs.Trigger)`
 export const StyledTabContent = styled(Tabs.Content)`
   display: flex;
 `;
+
+export const StyledLoaderContainer = styled.div<any>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 500px;
+  width: 100%;
+`;

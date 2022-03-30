@@ -5,6 +5,12 @@ export const MIXIN = {
     cursor: pointer;
     user-select: none;
   `,
+
+  disabled: css`
+    cursor: not-allowed;
+    user-select: none;
+  `,
+  
   scrollableY: css`
     overflow-x: hidden;
     overflow-y: auto;

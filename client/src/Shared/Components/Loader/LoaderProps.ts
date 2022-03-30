@@ -1,5 +1,5 @@
 export interface LoaderProps {
   size?: number;
-  color: string;
+  color: 'dark' | 'gray' | 'blue';
   logo?: boolean;
 }

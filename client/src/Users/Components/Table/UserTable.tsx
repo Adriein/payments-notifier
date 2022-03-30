@@ -13,6 +13,7 @@ import { UserTableProps } from "./UserTableProps";
 import Loader from "../../../Shared/Components/Loader";
 import { StringHelper } from "../../../Shared/Services/StringHelper";
 import ContextMenu from "../../../Shared/Components/ContextMenu";
+import { StyledLoaderContainer } from "./Styles";
 
 const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps) => {
   const { state, fetchClientList, addFilter, t, notify } = useContext(UsersContext);
@@ -41,7 +42,11 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
 
   return (
     <>
-      {state.isLoading && !isModalOpen() ? <Loader color={"blue"} size={80} logo/> : (
+      {state.isLoading && !isModalOpen() ? (
+        <StyledLoaderContainer>
+          <Loader color={"blue"} size={80} logo/>
+        </StyledLoaderContainer>
+      ) : (
         <Table>
           <Table.Header
             addFilter={addFilter}

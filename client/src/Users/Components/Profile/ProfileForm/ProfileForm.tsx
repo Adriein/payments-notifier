@@ -148,6 +148,7 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
             variant={'filled'}
             color={'blue'}
             radius={'xs'}
+            isLoading={true}
           >
             {t('profile:cancel')}
           </Button>

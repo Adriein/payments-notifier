@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import {
-  StyledEditIcon,
+  StyledEditIcon, StyledLoaderContainer,
   StyledPersonalInfoContainer,
   StyledPersonalSubscriptionInfo,
   StyledProfileContainer,
@@ -78,7 +78,11 @@ const Profile = ({ id }: UserProfileProps) => {
             </StyledPersonalSubscriptionInfo>
           )}
         </>
-      ) : <Loader logo size={80} color={"blue"}/>}
+      ) : (
+        <StyledLoaderContainer>
+          <Loader logo size={80} color={"blue"}/>
+        </StyledLoaderContainer>
+      )}
     </StyledProfileContainer>
   );
 }
