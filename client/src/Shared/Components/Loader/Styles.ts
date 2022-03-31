@@ -6,7 +6,6 @@ export const StyledLoader = styled.span<any>`
   border-width: 2px;
   border-style: solid;
   ${(props) => props.logo && `background-color: ${COLORS.backgroundLightGray}`};
-  border-color: rgba(0, 0, 0, 0.08) rgba(0, 0, 0, 0.08) rgba(0, 0, 0, 0.08) ${COLORS.primary};
   border-radius: 50%;
   vertical-align: text-bottom;
   width: ${({ size }) => size ?? 60}px;
@@ -15,6 +14,8 @@ export const StyledLoader = styled.span<any>`
   animation-timing-function: linear;
   animation-duration: 0.8s;
   animation-name: spinner-loading;
+
+  ${({ theme }) => theme};
 
   @keyframes spinner-loading {
     0% {

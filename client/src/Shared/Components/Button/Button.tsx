@@ -77,7 +77,7 @@ const Button = forwardRef((
       disabled={isLoading}
       {...otherProps}
     >
-      {isLoading && <Loader color={'gray'} size={20}/>}
+      {isLoading && <Loader color={'gray'} size={16}/>}
       {!isLoading && leftIcon}
       {children}
       {!isLoading && rightIcon}

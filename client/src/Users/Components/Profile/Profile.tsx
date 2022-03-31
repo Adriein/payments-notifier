@@ -80,7 +80,7 @@ const Profile = ({ id }: UserProfileProps) => {
         </>
       ) : (
         <StyledLoaderContainer>
-          <Loader logo size={80} color={"blue"}/>
+          <Loader logo size={80} color={"blue"} variant={'filled'}/>
         </StyledLoaderContainer>
       )}
     </StyledProfileContainer>

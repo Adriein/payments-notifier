@@ -23,7 +23,7 @@ interface FormProps {
 
 const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
   const { t, notify } = useContext(UsersContext);
-  const { updateClient, fetchClientProfile } = useContext(UsersContext);
+  const { state, updateClient, fetchClientProfile } = useContext(UsersContext);
 
   return (
     <Form
@@ -52,7 +52,8 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
             warnings: sendWarnings
           });
 
-          await fetchClientProfile({ clientId: user.id })
+          await fetchClientProfile({ clientId: user.id });
+          notify({ key: 'user_updated' }, 'success');
         } catch (error) {
           notify(error);
         }
@@ -138,6 +139,7 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
             variant={'filled'}
             color={'blue'}
             radius={'xs'}
+            isLoading={state.isLoading}
           >
             {t('profile:save')}
           </Button>
@@ -148,7 +150,6 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
             variant={'filled'}
             color={'blue'}
             radius={'xs'}
-            isLoading={true}
           >
             {t('profile:cancel')}
           </Button>

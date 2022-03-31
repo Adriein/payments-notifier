@@ -10,5 +10,10 @@ export type Pagination = {
 export type ListItemHasId = { id: string };
 
 export type BaseDataContext<State, Actions> =
-  { state: State, t: (key: string, ...args: any[]) => string, notify: (error: any) => string }
+  {
+    state: State, t: (key: string, ...args: any[]) => string, notify: (
+      message: any,
+      variant?: 'error' | 'success'
+    ) => string
+  }
   & MappedActions<Actions>

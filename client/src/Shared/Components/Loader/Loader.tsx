@@ -7,11 +7,18 @@ import {
 import logoLoader from './Logoloader.svg'
 import { getSharedColorScheme } from "../../Services/SharedColorScheme";
 
-const Loader = ({ size, color, logo, ...others }: LoaderProps) => {
-  const themedStyles = getSharedColorScheme({ color });
+const Loader = ({ size, color, logo, variant, ...others }: LoaderProps) => {
+  const themedStyles = getSharedColorScheme({ color, variant });
+  let borderColor;
+
+  if (variant === 'filled') {
+    borderColor = `rgba(0, 0, 0, 0.08) rgba(0, 0, 0, 0.08) rgba(0, 0, 0, 0.08) ${themedStyles.background}`;
+  } else {
+    borderColor = `${themedStyles.color} ${themedStyles.color} ${themedStyles.color} ${themedStyles.background}`;
+  }
 
   const styles = {
-    'border-color': `${themedStyles.color} ${themedStyles.color} ${themedStyles.color} ${themedStyles.background}`,
+    'border-color': borderColor,
   }
 
   return (

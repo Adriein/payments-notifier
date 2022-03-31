@@ -8,9 +8,9 @@ export const MIXIN = {
 
   disabled: css`
     cursor: not-allowed;
-    user-select: none;
+    pointer-events: none;
   `,
-  
+
   scrollableY: css`
     overflow-x: hidden;
     overflow-y: auto;

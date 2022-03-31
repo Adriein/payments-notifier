@@ -44,7 +44,7 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
     <>
       {state.isLoading && !isModalOpen() ? (
         <StyledLoaderContainer>
-          <Loader color={"blue"} size={80} logo/>
+          <Loader color={"blue"} size={80} variant={'filled'} logo/>
         </StyledLoaderContainer>
       ) : (
         <Table>

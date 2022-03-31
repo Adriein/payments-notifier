@@ -27,5 +27,6 @@
   "monthly_pricing": "mensual",
   "enabled": "activado",
   "disabled": "desactivado",
-  "something_went_wrong_error": "Ha ocurrido un error inesperado"
+  "something_went_wrong_error": "Ha ocurrido un error inesperado",
+  "user_updated": "Usuario modificado correctamente"
 }
