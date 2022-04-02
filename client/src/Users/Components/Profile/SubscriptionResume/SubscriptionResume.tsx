@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 
 import useDateFormatter from "../../../../Shared/Hooks/useDateFormatter";
-import { useTranslation } from "react-i18next";
-
 import Text from "../../../../Shared/Components/Text";
 
 import {
