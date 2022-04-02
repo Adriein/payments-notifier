@@ -76,8 +76,8 @@ export const StyledContextMenuItem = styled(RadixContextMenu.Item)`
   ${font.medium};
 
   &:hover {
-    background-color: ${COLORS.primaryLight3};
-    color: ${COLORS.primary}
+    background-color: ${COLORS.primary};
+    color: ${COLORS.backgroundWhite}
   }
 
   ${MIXIN.clickable};
