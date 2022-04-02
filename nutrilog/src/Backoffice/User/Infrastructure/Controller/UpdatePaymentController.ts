@@ -8,17 +8,16 @@ import { put } from "../../../../Shared/Infrastructure/Decorators/routes";
 
 @Controller()
 export class UpdateUserPaymentController extends BaseController<void> {
-  @put('/users/subscription/payment')
+  @put('/user/subscription/renew')
   @use(requireAuth)
   @use(currentUser)
-  public async updatePayment(req: Request, res: Response, next: NextFunction) {
+  public async renewSubscription(req: Request, res: Response, next: NextFunction) {
     try {
       await this.commandBus.dispatch(
         new RenewSubscriptionCommand(
-          req.body.id,
+          req.body.clientId,
           req.body.pricingId,
-          req.body.lastPaymentDate,
-          req.body.pricingDuration
+          req.body.paymentDate,
         )
       );
 

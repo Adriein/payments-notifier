@@ -10,7 +10,7 @@ import { Subscription } from "../../../types";
 import SubscriptionResume from "../SubscriptionResume";
 import { UsersContext } from "../../../Context/UsersContext";
 
-const HistorySubscription = ({ inactiveSubscriptions }: HistorySubscriptionProps) => {
+const HistorySubscription = ({ inactiveSubscriptions, clientId }: HistorySubscriptionProps) => {
   const { t } = useContext(UsersContext);
 
   return (
@@ -31,6 +31,8 @@ const HistorySubscription = ({ inactiveSubscriptions }: HistorySubscriptionProps
                   price={subscription.pricing.price}
                   validTo={subscription.validTo}
                   expired={subscription.isExpired}
+                  clientId={clientId}
+                  pricingId={subscription.pricing.id}
                 />
               );
             })}

@@ -7,7 +7,7 @@ import {
 } from "./Styles";
 import { UsersContext } from "../../../Context/UsersContext";
 
-const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) => {
+const ActiveSubscription = ({ subscription, clientId }: ActiveSubscriptionProps) => {
   const { t } = useContext(UsersContext);
   return (
     <StyledSubscriptionInfoContainer>
@@ -18,6 +18,8 @@ const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) => {
         price={subscription.pricing.price}
         validTo={subscription.validTo}
         expired={subscription.isExpired}
+        pricingId={subscription.pricing.id}
+        clientId={clientId}
       />
     </StyledSubscriptionInfoContainer>
 

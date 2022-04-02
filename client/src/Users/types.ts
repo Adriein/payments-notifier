@@ -33,6 +33,7 @@ type Config = {
 }
 
 type SubscriptionPricing = {
+  id: string;
   price: number;
   name: string;
   duration: number;

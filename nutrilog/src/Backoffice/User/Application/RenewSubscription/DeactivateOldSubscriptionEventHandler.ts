@@ -16,7 +16,7 @@ export class DeactivateOldSubscriptionEventHandler implements IDomainEventHandle
 
     const subscriptionList = await this.findActiveSubscriptionList(event);
 
-    const activeSubscription = await subscriptionList.getActiveSubscription();
+    const activeSubscription = subscriptionList.getActiveSubscription();
 
     activeSubscription.deactivate();
 

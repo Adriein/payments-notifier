@@ -28,5 +28,7 @@
   "enabled": "activado",
   "disabled": "desactivado",
   "something_went_wrong_error": "Ha ocurrido un error inesperado",
-  "user_updated": "Usuario modificado correctamente"
+  "user_updated": "Usuario modificado correctamente",
+  "subscription_renewed_success": "Subscripción renovada correctamente",
+  "subscription_renewed_error_date": "Error actualizando la subscripción falta fecha válida"
 }

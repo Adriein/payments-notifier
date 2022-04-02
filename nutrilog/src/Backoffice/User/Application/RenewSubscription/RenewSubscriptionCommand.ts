@@ -4,8 +4,7 @@ export class RenewSubscriptionCommand implements ICommand {
   public constructor(
     public userId: string,
     public pricingId: string,
-    public paymentDate: string,
-    public pricingDuration: number
+    public paymentDate: string
   ) {
   }
 }

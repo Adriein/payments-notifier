@@ -27,5 +27,7 @@
   "monthly_pricing": "monthly",
   "enabled": "enabled",
   "disabled": "disabled",
-  "something_went_wrong_error": "Something went wrong"
+  "something_went_wrong_error": "Something went wrong",
+  "subscription_renewed_success": "Success on subscription renewal",
+  "subscription_renewed_error_date": "Error renewing subscription, no valid date provided"
 }

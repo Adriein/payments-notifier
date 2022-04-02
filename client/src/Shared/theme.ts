@@ -1,4 +1,5 @@
 import { MantineThemeOverride } from "@mantine/core";
+import 'dayjs/locale/es';
 
 export const theme: MantineThemeOverride = {
   colors: {
@@ -14,5 +15,9 @@ export const theme: MantineThemeOverride = {
       '#6274f7',
       '#5065f6'
     ]
-  }
+  },
+  headings: {
+    fontFamily: 'Roboto, sans-serif',
+  },
+  datesLocale: 'es'
 }

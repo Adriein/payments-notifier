@@ -88,6 +88,7 @@ export class GetClientProfileHandler implements IHandler<NutrilogResponse<GetCli
       response.push({
         id: subscription.id().value,
         pricing: {
+          id: pricing.id,
           price: pricing.price,
           name: pricing.name,
           duration: pricing.duration

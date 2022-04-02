@@ -6,19 +6,29 @@ import { RenewSubscriptionCommand } from "./RenewSubscriptionCommand";
 import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { UserFinder } from "../Service/UserFinder";
+import { QueryBus } from "../../../../Shared/Infrastructure/Bus/QueryBus";
+import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
+import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 
 @CommandHandler(RenewSubscriptionCommand)
 export class RenewSubscriptionHandler implements IHandler<void> {
-  constructor(private finder: UserFinder, private subscriptionRepository: ISubscriptionRepository) {}
+  constructor(
+    private finder: UserFinder,
+    private subscriptionRepository: ISubscriptionRepository,
+    private queryBus: QueryBus
+  ) {}
 
   @Log(process.env.LOG_LEVEL)
   public async handle(command: RenewSubscriptionCommand): Promise<void> {
+    const pricingId = new ID(command.pricingId);
     const user = await this.finder.execute(new ID(command.userId));
 
+    const { duration } = await this.queryBus.ask<PricingResponse>(new GetPricingQuery(command.pricingId));
+
     const subscription = await user.renewSubscription(
-      new ID(command.pricingId),
+      pricingId,
       new DateVo(command.paymentDate),
-      command.pricingDuration
+      duration
     );
 
     await this.subscriptionRepository.save(subscription);

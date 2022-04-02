@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import * as RadixContextMenu from '@radix-ui/react-context-menu';
 import { COLORS } from "../Utils/Colors";
 import { MIXIN } from "../Utils/Mixin";
+import { font } from "../Utils/Font";
 
 const slideUpAndFade = keyframes({
   '0%': { opacity: 0, transform: 'translateY(2px)' },
@@ -71,6 +72,8 @@ export const StyledContextMenuItem = styled(RadixContextMenu.Item)`
   height: 25px;
   padding: 0 5px;
   position: relative;
+
+  ${font.medium};
 
   &:hover {
     background-color: ${COLORS.primaryLight3};

@@ -10,6 +10,10 @@ export class DateVo extends ValueObject {
 
   constructor(date: string | Date) {
     super();
+    if (!date) {
+      throw new LastPaymentDateError();
+    }
+
     if (date instanceof Date) {
       date = date.toString();
     }

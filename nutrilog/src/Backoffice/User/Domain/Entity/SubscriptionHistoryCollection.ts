@@ -11,11 +11,9 @@ export class SubscriptionHistoryCollection extends Collection<SubscriptionHistor
   constructor(data: SubscriptionHistory[]) {
     super(data);
   }
-
-  public containsAboutToExpireEvent(): boolean {
+  
+  public containsEvent(event: SUBSCRIPTION_STATUS): boolean {
     return !!this.data()
-      .find((history: SubscriptionHistory) => history.event() === SUBSCRIPTION_STATUS.ABOUT_TO_EXPIRE);
+      .find((history: SubscriptionHistory) => history.event() === event);
   }
-
-
 }

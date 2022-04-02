@@ -102,7 +102,7 @@ export class Subscription extends AggregateRoot {
   };
 
   public isAboutToExpire(): boolean {
-    return this._history.containsAboutToExpireEvent();
+    return this._history.containsEvent(SUBSCRIPTION_STATUS.ABOUT_TO_EXPIRE);
   }
 
   public isExpirationDateOlderThan(days: number) {
@@ -113,7 +113,15 @@ export class Subscription extends AggregateRoot {
 
   public deactivate = (): void => {
     this._isActive = false;
-    this.entityUpdated();
+    this._isExpired = true;
+
+    const isExpired = this._history.containsEvent(SUBSCRIPTION_STATUS.EXPIRED);
+
+    if (!isExpired) {
+      this.addEventToHistory(SubscriptionHistory.build(SUBSCRIPTION_STATUS.EXPIRED));
+    }
+
     this.addEventToHistory(SubscriptionHistory.build(SUBSCRIPTION_STATUS.INACTIVE));
+    this.entityUpdated();
   }
 }

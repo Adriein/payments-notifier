@@ -42,5 +42,9 @@
   "resume_spent": "Spent",
   "resume_since": "Since",
   "resume_recurrent_income": "Mrr",
-  "billing_details": "Billing details"
+  "billing_details": "Billing details",
+  "subscription_action_pause": "Pause",
+  "subscription_action_renew": "Renew",
+  "pick_date": "Select renew date",
+  "pick_date_placeholder": "Date"
 }

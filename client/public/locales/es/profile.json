@@ -42,5 +42,9 @@
   "resume_spent": "Gastado",
   "resume_since": "Desde",
   "resume_recurrent_income": "Imr",
-  "billing_details": "Detalles de facturación"
+  "billing_details": "Detalles de facturación",
+  "subscription_action_pause": "Pausar",
+  "subscription_action_renew": "Renovar",
+  "pick_date": "Selecciona fecha de renovación",
+  "pick_date_placeholder": "Fecha"
 }

@@ -41,6 +41,9 @@ export class SubscriptionMapper implements IMapper<Subscription, Prisma.subscrip
       payment_date: domain.paymentDate(),
       created_at: domain.createdAt(),
       updated_at: domain.updatedAt(),
+      history: {
+        connectOrCreate: this.subscriptionHistoryCreate(domain)
+      },
       pricing: {
         connect: {
           id: domain.pricingId()

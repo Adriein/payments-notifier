@@ -44,9 +44,9 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
       const clientList = await this.findActiveClientListByTenant(tenant.id());
 
       for (const client of clientList) {
-        const { duration } = await this.queryBus.ask(new GetPricingQuery(client.id().value));
-
         const activeSubscription = await this.findActiveSubscription(client.id());
+
+        const { duration } = await this.queryBus.ask(new GetPricingQuery(activeSubscription.id().value));
 
         activeSubscription.checkIsExpired(duration);
 

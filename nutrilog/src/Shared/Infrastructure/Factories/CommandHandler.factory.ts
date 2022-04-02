@@ -138,7 +138,7 @@ export default class CommandHandlerFactory {
 
     this.handlers.set(
       RenewSubscriptionCommand.name,
-      new RenewSubscriptionHandler(this.userFinder, this.subscriptionRepository)
+      new RenewSubscriptionHandler(this.userFinder, this.subscriptionRepository, QueryBus.instance()),
     );
 
     this.handlers.set(

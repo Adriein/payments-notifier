@@ -68,8 +68,8 @@ const Profile = ({ id }: UserProfileProps) => {
               </StyledTabList>
               <StyledTabContent value={"tab1"}>
                 <StyledSubscriptionContainer>
-                  <ActiveSubscription subscription={clientProfile.subscription[0]}/>
-                  <HistorySubscription inactiveSubscriptions={clientProfile.subscription}/>
+                  <ActiveSubscription subscription={clientProfile.subscription[0]} clientId={clientProfile.id}/>
+                  <HistorySubscription inactiveSubscriptions={clientProfile.subscription} clientId={clientProfile.id}/>
                 </StyledSubscriptionContainer>
               </StyledTabContent>
               <StyledTabContent value={"tab2"}>

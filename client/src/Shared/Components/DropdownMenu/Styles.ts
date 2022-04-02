@@ -1,7 +1,8 @@
 import styled, { keyframes } from 'styled-components';
 import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
-import { COLORS } from "../Utils/Colors";
+import { COLOR, COLORS } from "../Utils/Colors";
 import { MIXIN } from "../Utils/Mixin";
+import { font } from "../Utils/Font";
 
 const slideUpAndFade = keyframes({
   '0%': { opacity: 0, transform: 'translateY(2px)' },
@@ -72,6 +73,8 @@ export const StyledDropDownItem = styled(RadixDropdownMenu.Item)`
   padding: 0 5px;
   position: relative;
 
+  ${font.medium};
+  
   &:hover {
     background-color: ${COLORS.primaryLight3};
     color: ${COLORS.primary}
