@@ -1,5 +1,5 @@
 import { User } from "../../types";
 
-export interface FetchClientProfileApiCall {
+export interface FetchClientProfileResponse {
   data: User
 }

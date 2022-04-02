@@ -1,32 +1,22 @@
-import React, { useState } from "react";
-import { Input, Label, CheckboxContainer } from './Styles';
+import React, { ChangeEvent, useState } from "react";
 import { CheckboxProps } from "./CheckboxProps";
+import { Checkbox as MantineCheckBox } from '@mantine/core';
 
-const Checkbox = ({ name, onChange, active }: CheckboxProps) => {
-  const controlled = active !== undefined;
-  const initialState = controlled ? active : false;
+const Checkbox = ({ text, value, onChange }: CheckboxProps) => {
+  const [ checked, setChecked ] = useState(value);
 
-  const [ checked, setChecked ] = useState(initialState);
-
-  const onCheck = (event: any) => {
-    event.preventDefault();
+  const handleOnChangeCheckBox = (event: ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
-      onChange();
+      onChange(event.currentTarget.checked);
     }
-
-    if (controlled) {
-      setChecked(active);
-      return;
-    }
-
-    setChecked(!checked);
+    setChecked(event.currentTarget.checked)
   }
 
   return (
-    <CheckboxContainer onClick={(event: any) => onCheck(event)}>
-      <Input id={name} name={name}/>
-      <Label htmlFor={name} checked={checked}>{name}</Label>
-    </CheckboxContainer>
+    <MantineCheckBox
+      label={text} checked={checked}
+      onChange={(event: ChangeEvent<HTMLInputElement>) => handleOnChangeCheckBox(event)}
+    />
   );
 }
 

@@ -5,12 +5,14 @@ import { uniqueId } from 'lodash';
 import { FieldError, FieldLabel, FieldTip, StyledField } from './Styles';
 import Input from "../Input";
 import Select from "../Select";
+import Checkbox from "../Checkbox";
 
 
 export interface FieldProps {
   name: string;
   value?: string;
   type?: string;
+  text?: string;
   placeholder?: string;
   validate?: Function;
   className?: any;
@@ -21,6 +23,7 @@ export interface FieldProps {
   inverted?: boolean;
   children?: ReactElement[];
   defaultValue?: string;
+  checked?: boolean;
 }
 
 
@@ -53,5 +56,6 @@ const buildField = (FormComponent: any) => {
 
 export default {
   Input: buildField(Input),
-  Select: buildField(Select)
+  Select: buildField(Select),
+  Checkbox: buildField(Checkbox)
 };

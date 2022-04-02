@@ -1,10 +1,10 @@
 import { Dispatch } from "react";
 import { ActionProps } from "../../Shared/Action/ActionProps";
-import { SignInActionPayload } from "./SignIn/SignInActionPayload";
-import { SignUpActionPayload } from "./SignUp/SignUpActionPayload";
+import { SignInRequest } from "./SignIn/SignInRequest";
+import { SignUpRequest } from "./SignUp/SignUpRequest";
 
 export interface AuthActionProps {
-  signIn: (dispatch: Dispatch<ActionProps>) => ({ email, password }: SignInActionPayload) => Promise<void>;
-  signUp: (dispatch: Dispatch<ActionProps>) => ({ name, email, password }: SignUpActionPayload) => Promise<void>;
+  signIn: (dispatch: Dispatch<ActionProps>) => ({ email, password }: SignInRequest) => Promise<void>;
+  signUp: (dispatch: Dispatch<ActionProps>) => ({ name, email, password }: SignUpRequest) => Promise<void>;
   getToken: () => () => string | undefined;
 }

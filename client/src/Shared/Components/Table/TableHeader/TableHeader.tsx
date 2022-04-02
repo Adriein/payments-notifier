@@ -33,10 +33,10 @@ const TableHeader = ({ addFilter }: TableHeaderProps) => {
         </MenuButton>
         <MenuButton.MenuList>
           <MenuButton.MenuItem onSelect={() => {}}>
-            <Checkbox active={false} name={t('clients:active_filter_button')}/>
+            <Checkbox text={t('clients:active_filter_button')}/>
           </MenuButton.MenuItem>
           <MenuButton.MenuItem onSelect={() => {}}>
-            <Checkbox active={false} name={t('clients:expired_filter_button')}/>
+            <Checkbox text={t('clients:expired_filter_button')}/>
           </MenuButton.MenuItem>
         </MenuButton.MenuList>
       </MenuButton.Menu>

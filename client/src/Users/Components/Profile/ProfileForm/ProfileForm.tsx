@@ -36,8 +36,8 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
         dni: '',
         phone: '',
         language: user.config.language,
-        sendNotifications: 'true',
-        sendWarnings: 'false',
+        sendNotifications: user.config.sendNotifications,
+        sendWarnings: user.config.sendWarnings,
         role: 'user',
       }}
       onSubmit={async ({ username, email, role, language, sendNotifications, sendWarnings }: FormProps) => {
@@ -74,44 +74,6 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
         </StyledFormRow>
         <Text type={"h3"}>{t('profile:config')}</Text>
         <StyledFormRow>
-          <Form.Field.Select name="sendNotifications" label={t('profile:notifications')}>
-            <Select.Trigger>
-              <Select.Value/>
-              <Select.Icon><FiChevronDown/></Select.Icon>
-            </Select.Trigger>
-            <Select.Content>
-              <Select.ScrollUpButton/>
-              <Select.Viewport>
-                <Select.Item value="true">
-                  <Select.ItemText>Active</Select.ItemText>
-                </Select.Item>
-                <Select.Item value="false">
-                  <Select.ItemText>Inactive</Select.ItemText>
-                </Select.Item>
-              </Select.Viewport>
-              <Select.ScrollDownButton/>
-            </Select.Content>
-          </Form.Field.Select>
-          <Form.Field.Select name="sendWarnings" label={t('profile:warnings')}>
-            <Select.Trigger>
-              <Select.Value/>
-              <Select.Icon><FiChevronDown/></Select.Icon>
-            </Select.Trigger>
-            <Select.Content>
-              <Select.ScrollUpButton/>
-              <Select.Viewport>
-                <Select.Item value="true">
-                  <Select.ItemText>Active</Select.ItemText>
-                </Select.Item>
-                <Select.Item value="false">
-                  <Select.ItemText>Inactive</Select.ItemText>
-                </Select.Item>
-              </Select.Viewport>
-              <Select.ScrollDownButton/>
-            </Select.Content>
-          </Form.Field.Select>
-        </StyledFormRow>
-        <StyledFormRow isLast>
           <StyledFormInput name="language" label={t('profile:config_language')}/>
           <Form.Field.Select name="role" label={t('profile:role')}>
             <Select.Trigger>
@@ -131,6 +93,18 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
               <Select.ScrollDownButton/>
             </Select.Content>
           </Form.Field.Select>
+        </StyledFormRow>
+        <StyledFormRow isLast>
+          <Form.Field.Checkbox
+            name="sendNotifications"
+            label={t('profile:notifications_label')}
+            text={t('profile:notifications')}
+          />
+          <Form.Field.Checkbox
+            name="sendWarnings"
+            label={t('profile:warnings_label')}
+            text={t('profile:warnings')}
+          />
         </StyledFormRow>
         <StyledFormActions>
           <Button

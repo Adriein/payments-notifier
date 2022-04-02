@@ -1,4 +1,4 @@
-export interface UpdateClientActionProps {
+export interface UpdateClientRequest {
   clientId: string;
   username: string;
   email: string;

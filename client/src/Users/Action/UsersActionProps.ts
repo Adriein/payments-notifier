@@ -1,22 +1,22 @@
 import { Dispatch } from "react";
 import { ActionProps } from "../../Shared/Action/ActionProps";
-import { FetchClientListActionProps } from "./FetchClientList/FetchClientListActionProps";
+import { FetchClientListRequest } from "./FetchClientList/FetchClientListRequest";
 import { FilterProps } from "../../Shared/Action/Filter/FilterProps";
-import { FetchClientProfileActionProps } from "./FetchClientProfile/FetchClientProfileActionProps";
-import { UpdateClientActionProps } from "./UpdateClient/UpdateClientActionProps";
+import { FetchClientProfileRequest } from "./FetchClientProfile/FetchClientProfileRequest";
+import { UpdateClientRequest } from "./UpdateClient/UpdateClientRequest";
 
 export interface UsersActionProps {
   fetchClientList: (dispatch: Dispatch<ActionProps>) => ({
     page,
     quantity,
     filters
-  }: FetchClientListActionProps) => Promise<void>;
+  }: FetchClientListRequest) => Promise<void>;
 
   fetchClientProfile: (dispatch: Dispatch<ActionProps>) => ({
     clientId
-  }: FetchClientProfileActionProps) => Promise<void>;
+  }: FetchClientProfileRequest) => Promise<void>;
 
   addFilter: (dispatch: Dispatch<ActionProps>) => (filter: FilterProps) => void;
 
-  updateClient: (dispatch: Dispatch<ActionProps>) => (payload: UpdateClientActionProps) => void;
+  updateClient: (dispatch: Dispatch<ActionProps>) => (payload: UpdateClientRequest) => void;
 }

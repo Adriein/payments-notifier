@@ -1,10 +1,10 @@
 import { ApiService } from "../../../Shared/Services/ApiService";
-import { FetchTotalClientsApiCall } from "./FetchTotalClientsApiCall";
+import { FetchTotalClientsResponse } from "./FetchTotalClientsResponse";
 
 export const fetchTotalClients = async (): Promise<number> => {
   const api = ApiService.instance();
 
-  const response = await api.get<FetchTotalClientsApiCall>('/client/total');
+  const response = await api.get<FetchTotalClientsResponse>('/client/total');
 
   return response.data
 };

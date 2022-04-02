@@ -1,4 +1,4 @@
-export interface SignInApiCall {
+export interface SignUpResponse {
   id: string;
   username: string;
 }
