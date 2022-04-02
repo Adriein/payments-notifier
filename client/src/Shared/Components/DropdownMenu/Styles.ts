@@ -72,12 +72,17 @@ export const StyledDropDownItem = styled(RadixDropdownMenu.Item)`
   height: 25px;
   padding: 0 5px;
   position: relative;
-
+  color: ${COLORS.primary};
   ${font.medium};
-  
+
   &:hover {
-    background-color: ${COLORS.primaryLight3};
-    color: ${COLORS.primary}
+    background-color: ${COLORS.primary};
+    color: ${COLORS.backgroundWhite}
+  }
+
+  &[data-disabled] {
+    color: ${COLORS.gray};
+    pointer-events: none;
   }
 
   ${MIXIN.clickable};
