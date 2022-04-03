@@ -8,7 +8,7 @@ export const StyledContainer = styled.div`
   ${font.size(14)}
   border-radius: 8px;
   background-color: ${COLORS.backgroundLightGray};
-  padding: 10px;
+  padding: 20px;
   display: flex;
   align-items: center;
 `;

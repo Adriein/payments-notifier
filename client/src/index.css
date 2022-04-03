@@ -15,6 +15,11 @@
 body {
     font-family: var(--body-font);
     font-size: var(--font-size);
+    height: 100vh;
+}
+
+#root {
+    height: inherit;
 }
 
 

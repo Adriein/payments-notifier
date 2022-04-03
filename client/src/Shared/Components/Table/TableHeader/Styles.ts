@@ -7,9 +7,6 @@ export const StyledContainer = styled.div`
   border-radius: 8px;
   background-color: ${COLORS.backgroundLightGray};
   padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 40px;
 `;
 
 export const StyledFilterForm = styled.div`

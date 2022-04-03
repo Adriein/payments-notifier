@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import { COLORS } from "../../Utils/Colors";
 import { MIXIN } from "../../Utils/Mixin";
 
+export const StyledTableBody = styled.div`
+  flex-grow: 1;
+`;
+
 export const StyledTableContainer = styled.ul`
   border: 2px solid ${COLORS.backgroundMediumGray};
   border-radius: 8px;
