@@ -1,5 +1,6 @@
-import { ClientRevenue } from "../../../types";
+import { Revenue } from "../../../Models/Client";
+
 
 export interface ClientRevenueProps {
-  revenue: ClientRevenue
+  revenue: Revenue
 }

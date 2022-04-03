@@ -1,4 +1,4 @@
-export type FindTenantClientsResponse = {
+export interface ClientList {
   id: string;
   username: string;
   email: string;
@@ -8,4 +8,4 @@ export type FindTenantClientsResponse = {
   sendWarnings: boolean;
   pricingName: string;
   isSubscriptionExpired: boolean;
-};
+}

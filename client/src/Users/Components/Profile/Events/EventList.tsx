@@ -1,13 +1,16 @@
-import Timeline from "../../../../Shared/Components/Timeline";
-import { EventListProps } from "./EventListProps";
-import { FiAlertTriangle, FiClock, FiX, FiCheckCircle } from "react-icons/fi";
-import useDateFormatter from "../../../../Shared/Hooks/useDateFormatter";
-import { Subscription, SubscriptionHistory } from "../../../types";
-import { StyledEventListContainer } from "./Styles";
 import React, { useContext } from "react";
+import { FiAlertTriangle, FiClock, FiX, FiCheckCircle } from "react-icons/fi";
+
 import { StyledScrollArea, StyledScrollBar, StyledScrollContent, StyledThumb, StyledViewport } from "../Shared/Styles";
-import Text from "../../../../Shared/Components/Text";
+import { StyledEventListContainer } from "./Styles";
+
 import { UsersContext } from "../../../Context/UsersContext";
+import { EventListProps } from "./EventListProps";
+import { Subscription, SubscriptionHistory } from "../../../Models/Subscription";
+
+import Timeline from "../../../../Shared/Components/Timeline";
+import Text from "../../../../Shared/Components/Text";
+import useDateFormatter from "../../../../Shared/Hooks/useDateFormatter";
 
 const eventIcon: { [key: string]: { color: string, icon: React.ReactNode } } = {
   created: {

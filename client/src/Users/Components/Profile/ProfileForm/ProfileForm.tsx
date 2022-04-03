@@ -53,9 +53,9 @@ const ProfileForm = ({ user, toggleEdit }: ProfileFormProps) => {
           });
 
           await fetchClientProfile({ clientId: user.id });
-          notify({ key: 'user_updated' }, 'success');
-        } catch (error) {
-          notify(error);
+          notify.success(t('profile:user_updated'));
+        } catch (error: any) {
+          notify.error(t(`common:${error.key}`));
         }
       }}
     >

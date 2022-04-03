@@ -1,4 +1,5 @@
-import { ClientList } from "../../types";
+import { ClientList } from "../../Models/ClientList";
+
 
 export interface FetchClientListResponse {
   data: ClientList[]

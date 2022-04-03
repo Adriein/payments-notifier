@@ -40,16 +40,16 @@ const SubscriptionResume = ({
     setOpen(false);
 
     if (!paymentDate) {
-      notify({ key: 'subscription_renewed_error_date' });
+      notify.error(t('profile:subscription_renewed_error_date'));
       return;
     }
 
     renewSubscription({ clientId, pricingId, paymentDate: paymentDate.toString() })
-      .then(() => notify({ key: 'subscription_renewed_success' }, 'success'))
-      .catch((error) => notify(error));
+      .then(() => notify.success('profile:subscription_renewed_success'))
+      .catch((error: any) => notify.error(`profile:${error.key}`));
 
     fetchClientProfile({ clientId })
-      .catch((error) => notify(error));
+      .catch((error: any) => notify.error(`profile:${error.key}`));
   }
 
   return (

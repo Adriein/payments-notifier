@@ -1,5 +1,5 @@
-import { User } from "../../../types";
+import { Client } from "../../../Models/Client";
 
 export interface ProfileClientInfoProps {
-  client: User
+  client: Client
 }

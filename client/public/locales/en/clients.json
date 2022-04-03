@@ -9,5 +9,6 @@
   "pricing_header": "Pricing",
   "send_warning_notification_header": "Send warnings",
   "subscription_period_header": "Subscription",
-  "renew_subscription": "Renew subscription"
+  "renew_subscription": "Renew subscription",
+  "subscription_status_header": "Subscription status"
 }

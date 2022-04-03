@@ -15,7 +15,8 @@ export class FindTenantClientsResponseBuilder {
       sendWarnings: user.sendWarnings(),
       pricingName: pricing.name,
       validTo: Time.format(subscription.validTo(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
-      lastPaymentDate: Time.format(subscription.paymentDate(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT)
+      lastPaymentDate: Time.format(subscription.paymentDate(), Time.AMERICAN_BEAUTIFIED_DATE_FORMAT),
+      isSubscriptionExpired: subscription.isExpired()
     }
   }
 }

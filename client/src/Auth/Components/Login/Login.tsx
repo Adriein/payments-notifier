@@ -32,8 +32,8 @@ const Login = ({ onSubmit }: LoginProps) => {
           await signIn({ email, password });
           onSubmit();
           navigate('/clients', { replace: true });
-        } catch (error: unknown) {
-          notify(error);
+        } catch (error: any) {
+          notify.error(t(`common:${error.key}`));
         }
       }}
     >

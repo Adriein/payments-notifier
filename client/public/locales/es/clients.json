@@ -9,5 +9,5 @@
   "pricing_header": "Tarifa",
   "send_warning_notification_header": "Enviar avisos",
   "subscription_period_header": "Subscripción",
-  "renew_subscription": "Renovar subscripción "
+  "subscription_status_header": "Estado subscripción"
 }

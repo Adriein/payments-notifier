@@ -30,8 +30,8 @@ const Register = () => {
       onSubmit={async ({ name, email, password }: any) => {
         try {
           await signUp({ name, email, password });
-        } catch (error: unknown) {
-          notify(error);
+        } catch (error: any) {
+          notify.error(t(`common:${error.key}`));
         }
       }}
     >

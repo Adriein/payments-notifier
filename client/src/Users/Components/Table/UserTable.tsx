@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import Table from "../../../Shared/Components/Table";
-import { ClientList } from "../../types";
 import { StyledTableCell, StyledTableRow } from "../../../Shared/Components/Table/TableBody/Styles";
 import Avatar from "../../../Shared/Components/Avatar";
 import { FiArrowRight, FiTrash, FiRefreshCcw } from "react-icons/fi";
@@ -14,6 +13,8 @@ import Loader from "../../../Shared/Components/Loader";
 import { StringHelper } from "../../../Shared/Services/StringHelper";
 import ContextMenu from "../../../Shared/Components/ContextMenu";
 import { StyledLoaderContainer } from "./Styles";
+import { ClientList } from "../../Models/ClientList";
+import { ActiveBadge, ExpiredBadge } from "../Profile/SubscriptionResume/Styles";
 
 const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps) => {
   const { state, fetchClientList, addFilter, t, notify } = useContext(UsersContext);
@@ -29,8 +30,8 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
     (async () => {
       try {
         await fetchClientList({ ...pagination, filters: state.filters });
-      } catch (error: unknown) {
-        notify(error);
+      } catch (error: any) {
+        notify.error(t(`common:${error.key}`));
       }
     })();
   }, [ state.filters, pagination ]);
@@ -56,6 +57,7 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
             rows={[
               t('clients:username_header'),
               t('clients:pricing_header'),
+              t('clients:subscription_status_header'),
               t('clients:send_warning_notification_header'),
               t('clients:subscription_period_header'),
             ]}
@@ -71,6 +73,10 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
                       </StyledTableCell>
                       <StyledTableCell>
                         {StringHelper.firstLetterToUpperCase(pricingBeautifier(client.pricingName))}
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        {client.isSubscriptionExpired ? <ExpiredBadge text={t('profile:subscription_badge_expired')}/> :
+                          <ActiveBadge text={t('profile:subscription_badge_active')}/>}
                       </StyledTableCell>
                       <StyledTableCell>
                         {StringHelper.firstLetterToUpperCase(booleanBeautifier(client.sendWarnings))}

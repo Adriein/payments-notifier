@@ -6,9 +6,9 @@ import {
 import Text from "../../../../Shared/Components/Text";
 import React, { useContext } from "react";
 import { StyledSubscriptionHistoryContainer } from "./Styles";
-import { Subscription } from "../../../types";
 import SubscriptionResume from "../SubscriptionResume";
 import { UsersContext } from "../../../Context/UsersContext";
+import { Subscription } from "../../../Models/Subscription";
 
 const HistorySubscription = ({ inactiveSubscriptions, clientId }: HistorySubscriptionProps) => {
   const { t } = useContext(UsersContext);

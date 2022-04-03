@@ -1,7 +1,10 @@
 import toast from 'react-hot-toast';
 
-const useToast = (t: (key: string) => string, namespace: string) => {
-  const notify = (message: any, type: 'error' | 'success' = 'error') => toast[type](t(`${namespace}:${message.key}`));
+const useToast = () => {
+  const notify = {
+    error: (message: string) => toast.error(message),
+    success: (message: string) => toast.success(message)
+  };
 
   return { notify };
 };
