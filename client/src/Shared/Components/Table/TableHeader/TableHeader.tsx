@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { TableHeaderProps } from "./TableHeaderProps";
 import { StyledContainer, StyledFilterForm, StyledSearchInput } from './Styles';
 import { FiSearch, FiPlus } from 'react-icons/fi';
@@ -11,12 +11,11 @@ import useFilters from "../../../Hooks/useFilters";
 import { ActionIcon, TextInput, Button, Popover, Grid, Group, Checkbox, Menu } from '@mantine/core';
 
 const TableHeader = ({ addFilter }: TableHeaderProps) => {
-  const { state, t } = useContext(UsersContext);
+  const { t } = useContext(UsersContext);
   const [ query, setQuery ] = useState('');
-  const debouncedSetQuery = useDebounce(setQuery, 1000);
+  const [ debounced ] = useDebounce(query, 1000);
 
-  const [ open, setOpen ] = useState(false);
-  //const { isFilterActive, applyFilter } = useFilters(state.filters, addFilter);
+  const [ , setOpen ] = useState(false);
 
   return (
     <StyledContainer>
@@ -26,7 +25,8 @@ const TableHeader = ({ addFilter }: TableHeaderProps) => {
             placeholder={t('clients:search_filter_placeholder')}
             icon={<FiSearch/>}
             size={'sm'}
-            onChange={debouncedSetQuery}
+            value={query}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.currentTarget.value)}
           />
         </Grid.Col>
         <Grid.Col span={6} offset={3}>
@@ -54,17 +54,28 @@ const TableHeader = ({ addFilter }: TableHeaderProps) => {
                 />
               </Menu.Item>
               <Menu.Item>
-                <Checkbox size="sm" label={t('clients:inactive_filter_button')}/>
+                <Checkbox
+                  size="sm"
+                  label={t('clients:inactive_filter_button')}
+                  styles={{ label: { cursor: "pointer" }, input: { cursor: "pointer" } }}
+                />
               </Menu.Item>
               <Menu.Label>Filtros de subscripción</Menu.Label>
               <Menu.Item>
-                <Checkbox size="sm" label={t('clients:expired_filter_button')}/>
+                <Checkbox
+                  size="sm"
+                  label={t('clients:expired_filter_button')}
+                  styles={{ label: { cursor: "pointer" }, input: { cursor: "pointer" } }}
+                />
               </Menu.Item>
               <Menu.Item>
-                <Checkbox size="sm" label={t('clients:active_subscription_filter_button')}/>
+                <Checkbox
+                  size="sm"
+                  label={t('clients:active_subscription_filter_button')}
+                  styles={{ label: { cursor: "pointer" }, input: { cursor: "pointer" } }}
+                />
               </Menu.Item>
             </Menu>
-
             <Button variant={'default'} leftIcon={<FiPlus/>}>
               {t('clients:create_user')}
             </Button>

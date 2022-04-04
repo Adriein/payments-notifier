@@ -15,9 +15,10 @@ import ContextMenu from "../../../Shared/Components/ContextMenu";
 import { StyledLoaderContainer } from "./Styles";
 import { ClientList } from "../../Models/ClientList";
 import { ActiveBadge, ExpiredBadge } from "../Profile/SubscriptionResume/Styles";
+import useFilters from "../../../Shared/Hooks/useFilters";
 
 const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps) => {
-  const { state, fetchClientList, addFilter, t, notify } = useContext(UsersContext);
+  const { state, fetchClientList, t, notify } = useContext(UsersContext);
   const { pagination, setPage } = usePagination({ total: state.totalUsers });
   const { beautify: pricingBeautifier } = usePricingBeautifier();
   const { format } = useDateFormatter();
@@ -25,6 +26,7 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
     isTrue: 'enabled',
     isFalse: 'disabled'
   });
+  const { filters, addFilter } = useFilters();
 
   useEffect(() => {
     (async () => {
@@ -34,7 +36,7 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
         notify.error(t(`common:${error.key}`));
       }
     })();
-  }, [ state.filters, pagination ]);
+  }, [ filters, pagination ]);
 
   const onClientSelection = (id: string) => {
     openProfileModal();
