@@ -15,6 +15,12 @@ const TableHeader = ({ addFilter }: TableHeaderProps) => {
   const [ query, setQuery ] = useState('');
   const [ debounced ] = useDebounce(query, 1000);
 
+  useEffect(() => {
+    if (debounced) {
+      addFilter({ field: 'name', value: debounced });
+    }
+  }, [ debounced ]);
+
   const [ , setOpen ] = useState(false);
 
   return (
