@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
 import { TableHeaderProps } from "./TableHeaderProps";
 import { StyledContainer, StyledFilterForm, StyledSearchInput } from './Styles';
 import { FiSearch, FiPlus } from 'react-icons/fi';
@@ -6,20 +6,25 @@ import { IoIosOptions } from 'react-icons/io';
 import useDebounce from "../../../Hooks/useDebounce";
 import { ACTIVE_FILTER, EXPIRED_FILTER, NAME_FILTER } from "../../../../Users/constants";
 import { UsersContext } from "../../../../Users/Context/UsersContext";
-import useFilters from "../../../Hooks/useFilters";
 
 import { ActionIcon, TextInput, Button, Popover, Grid, Group, Checkbox, Menu } from '@mantine/core';
+import useList from "../../../Hooks/useList";
+import { debounce } from "lodash";
 
-const TableHeader = ({ addFilter }: TableHeaderProps) => {
-  const { t } = useContext(UsersContext);
+const TableHeader = () => {
+  const { state, t, addFilter } = useContext(UsersContext);
+  const { hasItem, getItemByValue } = useList(state.filters)
   const [ query, setQuery ] = useState('');
-  const [ debounced ] = useDebounce(query, 1000);
+  const debounceQueryMemo = useMemo(() => debounce(setQuery, 500), []);
 
   useEffect(() => {
-    if (debounced) {
-      addFilter({ field: 'name', value: debounced });
+    if (query.length) {
+      console.log(query)
+      addFilter({ field: NAME_FILTER, value: query });
     }
-  }, [ debounced ]);
+
+    return () => debounceQueryMemo.cancel()
+  }, [ query ]);
 
   const [ , setOpen ] = useState(false);
 
@@ -32,7 +37,7 @@ const TableHeader = ({ addFilter }: TableHeaderProps) => {
             icon={<FiSearch/>}
             size={'sm'}
             value={query}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.currentTarget.value)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => debounceQueryMemo(event.currentTarget.value)}
           />
         </Grid.Col>
         <Grid.Col span={6} offset={3}>
@@ -55,8 +60,10 @@ const TableHeader = ({ addFilter }: TableHeaderProps) => {
               <Menu.Item>
                 <Checkbox
                   size="sm"
+                  checked={hasItem({ field: 'active' })}
                   label={t('clients:active_filter_button')}
                   styles={{ label: { cursor: "pointer" }, input: { cursor: "pointer" } }}
+                  onClick={() => addFilter({ field: ACTIVE_FILTER })}
                 />
               </Menu.Item>
               <Menu.Item>

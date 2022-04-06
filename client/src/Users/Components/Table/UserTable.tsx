@@ -15,7 +15,6 @@ import ContextMenu from "../../../Shared/Components/ContextMenu";
 import { StyledLoaderContainer } from "./Styles";
 import { ClientList } from "../../Models/ClientList";
 import { ActiveBadge, ExpiredBadge } from "../Profile/SubscriptionResume/Styles";
-import useFilters from "../../../Shared/Hooks/useFilters";
 
 const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps) => {
   const { state, fetchClientList, t, notify } = useContext(UsersContext);
@@ -26,7 +25,6 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
     isTrue: 'enabled',
     isFalse: 'disabled'
   });
-  const { filters, addFilter } = useFilters();
 
   useEffect(() => {
     (async () => {
@@ -36,7 +34,7 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
         notify.error(t(`common:${error.key}`));
       }
     })();
-  }, [ filters, pagination ]);
+  }, [ state.filters, pagination ]);
 
   const onClientSelection = (id: string) => {
     openProfileModal();
@@ -44,77 +42,71 @@ const UserTable = ({ openProfileModal, selectUser, isModalOpen }: UserTableProps
   }
 
   return (
-    <>
+    <Table>
+      <Table.Header/>
       {state.isLoading && !isModalOpen() ? (
         <StyledLoaderContainer>
           <Loader color={"blue"} size={80} variant={'filled'} logo/>
         </StyledLoaderContainer>
-      ) : (
-        <Table>
-          <Table.Header
-            addFilter={addFilter}
-          />
-          <Table.Body
-            collection={state.clientList}
-            rows={[
-              t('clients:username_header'),
-              t('clients:pricing_header'),
-              t('clients:subscription_status_header'),
-              t('clients:send_warning_notification_header'),
-              t('clients:subscription_period_header'),
-            ]}
-            renderRow={(client: ClientList, index: number) => {
-              const isLast = index === state.clientList.length - 1
-              return (
-                <ContextMenu key={client.id}>
-                  <ContextMenu.Trigger>
-                    <StyledTableRow isLast={isLast} onClick={() => onClientSelection(client.id)}>
-                      <StyledTableCell>
-                        <Avatar name={client.username} size={35}/>
-                        {client.username}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {StringHelper.firstLetterToUpperCase(pricingBeautifier(client.pricingName))}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {client.isSubscriptionExpired ? <ExpiredBadge text={t('profile:subscription_badge_expired')}/> :
-                          <ActiveBadge text={t('profile:subscription_badge_active')}/>}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {StringHelper.firstLetterToUpperCase(booleanBeautifier(client.sendWarnings))}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {format(client.lastPaymentDate)}
-                        <FiArrowRight/>
-                        {format(client.validTo)}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  </ContextMenu.Trigger>
-                  <ContextMenu.Content>
-                    <ContextMenu.Label>
-                      <Avatar name={client.username} size={20}/>
-                      {client.username}
-                    </ContextMenu.Label>
-                    <ContextMenu.Separator/>
-                    <ContextMenu.Item><FiRefreshCcw/> Renew subscription</ContextMenu.Item>
-                    <ContextMenu.Item>Activate warnings</ContextMenu.Item>
-                    <ContextMenu.Item>Activate notifications</ContextMenu.Item>
-                    <ContextMenu.Separator/>
-                    <ContextMenu.Item><FiTrash/> Delete client</ContextMenu.Item>
-                  </ContextMenu.Content>
-                </ContextMenu>
-              );
-            }}
-          />
-          <Table.Footer
-            totalItems={state.totalUsers}
-            itemPerPage={pagination.quantity}
-            currentPage={pagination.page}
-            setPage={setPage}
-          />
-        </Table>
-      )}
-    </>
+      ) : (<Table.Body
+        collection={state.clientList}
+        rows={[
+          t('clients:username_header'),
+          t('clients:pricing_header'),
+          t('clients:subscription_status_header'),
+          t('clients:send_warning_notification_header'),
+          t('clients:subscription_period_header'),
+        ]}
+        renderRow={(client: ClientList, index: number) => {
+          const isLast = index === state.clientList.length - 1
+          return (
+            <ContextMenu key={client.id}>
+              <ContextMenu.Trigger>
+                <StyledTableRow isLast={isLast} onClick={() => onClientSelection(client.id)}>
+                  <StyledTableCell>
+                    <Avatar name={client.username} size={35}/>
+                    {client.username}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {StringHelper.firstLetterToUpperCase(pricingBeautifier(client.pricingName))}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {client.isSubscriptionExpired ? <ExpiredBadge text={t('profile:subscription_badge_expired')}/> :
+                      <ActiveBadge text={t('profile:subscription_badge_active')}/>}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {StringHelper.firstLetterToUpperCase(booleanBeautifier(client.sendWarnings))}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {format(client.lastPaymentDate)}
+                    <FiArrowRight/>
+                    {format(client.validTo)}
+                  </StyledTableCell>
+                </StyledTableRow>
+              </ContextMenu.Trigger>
+              <ContextMenu.Content>
+                <ContextMenu.Label>
+                  <Avatar name={client.username} size={20}/>
+                  {client.username}
+                </ContextMenu.Label>
+                <ContextMenu.Separator/>
+                <ContextMenu.Item><FiRefreshCcw/> Renew subscription</ContextMenu.Item>
+                <ContextMenu.Item>Activate warnings</ContextMenu.Item>
+                <ContextMenu.Item>Activate notifications</ContextMenu.Item>
+                <ContextMenu.Separator/>
+                <ContextMenu.Item><FiTrash/> Delete client</ContextMenu.Item>
+              </ContextMenu.Content>
+            </ContextMenu>
+          );
+        }}
+      />)}
+      <Table.Footer
+        totalItems={state.totalUsers}
+        itemPerPage={pagination.quantity}
+        currentPage={pagination.page}
+        setPage={setPage}
+      />
+    </Table>
   );
 }
 

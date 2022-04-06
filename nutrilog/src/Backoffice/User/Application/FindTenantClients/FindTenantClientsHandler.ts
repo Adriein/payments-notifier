@@ -37,7 +37,7 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
     const id = new ID(tenantId);
 
     const clientCriteria = await this.createClientCriteria(id.value, page, quantity, filters);
-
+    debug(clientCriteria)
     const clientList = await this.findClientsByCriteria(clientCriteria);
 
 
