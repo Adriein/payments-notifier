@@ -37,7 +37,7 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
     const id = new ID(tenantId);
 
     const clientCriteria = await this.createClientCriteria(id.value, page, quantity, filters);
-    debug(clientCriteria)
+
     const clientList = await this.findClientsByCriteria(clientCriteria);
 
 
@@ -73,6 +73,10 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
     for (const filter of filters) {
       if (filter.field === USER_FILTERS.ACTIVE) {
         criteria.equal('active', true);
+      }
+
+      if (filter.field === USER_FILTERS.INACTIVE) {
+        criteria.equal('active', false);
       }
 
       if (filter.field === USER_FILTERS.NAME) {

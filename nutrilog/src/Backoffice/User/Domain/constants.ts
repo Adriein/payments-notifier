@@ -1,10 +1,12 @@
 export enum USER_FILTERS {
   ACTIVE = 'active',
+  INACTIVE = 'inactive',
   NAME = 'name',
   EXPIRED = 'expired'
 }
 
 export type UserFilters = {
+  inactive: boolean;
   active: boolean;
   name: string;
   expired: boolean;

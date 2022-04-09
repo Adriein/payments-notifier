@@ -6,4 +6,5 @@ export const RENEW_SUBSCRIPTION_ACTION = 'RENEW_SUBSCRIPTION_ACTION';
 
 export const EXPIRED_FILTER = 'expired';
 export const ACTIVE_FILTER = 'active';
+export const INACTIVE_FILTER = 'inactive';
 export const NAME_FILTER = 'name';
