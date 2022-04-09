@@ -7,6 +7,7 @@ import { IAppFilterRepository } from "../../Domain/IAppFilterRepository";
 import { AppFilter } from "../../Domain/Entity/AppFilter.entity";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { AppFilterFilter } from "../../Domain/Filter/AppFilterFilter";
+import { Log } from "../../../../Shared/Domain/Decorators/Log";
 
 @QueryHandler(FindFiltersQuery)
 export class FindFiltersHandler implements IHandler<NutrilogResponse<FindFiltersResponseDto[]>> {
@@ -14,6 +15,7 @@ export class FindFiltersHandler implements IHandler<NutrilogResponse<FindFilters
 
   constructor(private readonly repository: IAppFilterRepository) {}
 
+  @Log(process.env.LOG_LEVEL)
   public async handle(query: FindFiltersQuery): Promise<NutrilogResponse<FindFiltersResponseDto[]>> {
     const appFilterList = await this.findEntityFilters(this.ENTITIES);
 
