@@ -5,6 +5,10 @@ export class AppFilterMysqlMapper extends MysqlMapper {
     entity: {
       field: 'entity',
       type: 'string'
+    },
+    tenantId: {
+      field: 'tenant_id',
+      type: 'string'
     }
   }
 

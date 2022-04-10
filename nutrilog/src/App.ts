@@ -26,6 +26,7 @@ import './Backoffice/User';
 import './Backoffice/Notifications';
 import './Backoffice/Metrics';
 import './Backoffice/Pricing';
+import './Backoffice/Filters';
 
 
 export default class App {

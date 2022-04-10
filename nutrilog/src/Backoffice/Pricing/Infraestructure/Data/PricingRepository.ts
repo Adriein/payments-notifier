@@ -7,6 +7,7 @@ import { Either } from "../../../../Shared/Domain/types";
 import { Left } from "../../../../Shared/Domain/Entities/Left";
 import { PricingNotExistsError } from "../../Domain/PricingNotExistsError";
 import { Right } from "../../../../Shared/Domain/Entities/Right";
+import { Prisma } from "@prisma/client";
 
 export class PricingRepository implements IPricingRepository {
   private readonly mapper = new PricingMapper();
@@ -96,6 +97,28 @@ export class PricingRepository implements IPricingRepository {
         return Left.error(new PricingNotExistsError(`Admin with id: ${adminId} not has pricing registered`))
       }
 
+      return Right.success(results.map((result) => this.mapper.toDomain(result)));
+    } catch (error: any) {
+      this.prisma.$disconnect();
+      return Left.error(error);
+    }
+  }
+
+  @Log(process.env.LOG_LEVEL)
+  public async findDistinctValues(
+    tenantId: string,
+    value: Prisma.PricingScalarFieldEnum
+  ): Promise<Either<Error, Pricing[]>> {
+    try {
+      const results = await this.prisma.pricing.findMany({
+        distinct: [ value ],
+        where: {
+          user_id: tenantId
+        }
+      });
+
+      this.prisma.$disconnect();
+      
       return Right.success(results.map((result) => this.mapper.toDomain(result)));
     } catch (error: any) {
       this.prisma.$disconnect();

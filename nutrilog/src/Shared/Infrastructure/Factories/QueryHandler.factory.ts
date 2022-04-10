@@ -32,6 +32,11 @@ import { GetTotalClientsHandler } from "../../../Backoffice/User/Application/Get
 import { GetClientProfileQuery } from "../../../Backoffice/User/Application/GetClientProfile/GetClientProfileQuery";
 import { FindTenantClientsQuery } from "../../../Backoffice/User/Application/FindTenantClients/FindTenantClientsQuery";
 import { SigninQuery } from "../../../Auth/Domain/Query/SigninQuery";
+import { AppFilterRepository } from "../../../Backoffice/Filters/Infrastructure/Data/AppFilterRepository";
+import { FindFiltersQuery } from "../../../Backoffice/Filters/Application/FindFilters/FindFiltersQuery";
+import { FindFiltersHandler } from "../../../Backoffice/Filters/Application/FindFilters/FindFiltersHandler";
+import { GetPricingDistinctValuesQuery } from "../../../Backoffice/Pricing/Application/GetPricingDistinctValues/GetPricingDistinctValuesQuery";
+import { GetPricingDistinctValuesHandler } from "../../../Backoffice/Pricing/Application/GetPricingDistinctValues/GetPricingDistinctValuesHandler";
 
 export default class QueryHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
@@ -47,6 +52,7 @@ export default class QueryHandlerFactory {
   private nutritionRepository: NutritionRepository = new NutritionRepository();
   private tenantRepository = new TenantRepository();
   private clientRepository = new ClientRepository();
+  private appFiltersRepository = new AppFilterRepository();
 
   private cryptoService: CryptoService = new CryptoService();
   private nutritionBuilder = new NutritionResponseBuilder();
@@ -141,6 +147,18 @@ export default class QueryHandlerFactory {
       SearchPricingHandler.name,
       new SearchPricingHandler(this.pricingRepository)
     );
+
+    this.handlers.set(
+      GetPricingDistinctValuesQuery.name,
+      new GetPricingDistinctValuesHandler(this.pricingRepository)
+    );
+
+    //Filters
+
+    this.handlers.set(
+      FindFiltersQuery.name,
+      new FindFiltersHandler(this.appFiltersRepository, QueryBus.instance())
+    )
 
   }
 

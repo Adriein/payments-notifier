@@ -135,6 +135,48 @@ async function main() {
     }
   });
 
+  const ENTITIES: Record<string, { field: string, type: string }[]> = {
+    user: [
+      { field: 'active', type: 'boolean' }
+    ],
+    subscription: [
+      { field: 'payment_date', type: 'date' },
+      { field: 'valid_to', type: 'date' },
+      { field: 'active', type: 'boolean' },
+      { field: 'expired', type: 'boolean' },
+    ],
+    config: [
+      { field: 'language', type: 'string' },
+      { field: 'send_notifications', type: 'boolean' },
+      { field: 'send_warnings', type: 'boolean' },
+    ],
+    pricing: [
+      { field: 'pricing_name', type: 'string' },
+      { field: 'duration', type: 'number' },
+      { field: 'amount', type: 'number' },
+    ],
+
+  }
+
+  for (const entity in ENTITIES) {
+    for (const detail of ENTITIES[entity]) {
+      await prisma.app_filter.create(
+        {
+          data: {
+            id: ID.generate().value,
+            entity: entity,
+            field: detail.field,
+            type: detail.type,
+            tenant_id: id,
+            created_at: new Date(),
+            updated_at: new Date()
+          }
+        }
+      );
+    }
+
+  }
+
   console.log({ yearly, monthly, quarterly, adminRole, clientRole, tenantRole, user })
 }
 

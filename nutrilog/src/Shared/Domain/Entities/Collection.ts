@@ -24,4 +24,29 @@ export class Collection<T extends BaseEntity> {
     this.collection.push(item)
     return this;
   }
+
+  public getBy(fn: (item: T) => boolean): T {
+    const result = this.collection.find(fn);
+
+    if (!result) {
+      throw new Error('Not found any item');
+    }
+
+    return result;
+  }
+
+  public upsert(newItem: T, fn: (item: T) => boolean): void {
+    try {
+      this.getBy(fn);
+
+      for (const [ index, item ] of this.collection.entries()) {
+        if (fn(item)) {
+          this.collection.splice(index, 1, newItem)
+          break;
+        }
+      }
+    } catch (error) {
+      this.add(newItem);
+    }
+  }
 }

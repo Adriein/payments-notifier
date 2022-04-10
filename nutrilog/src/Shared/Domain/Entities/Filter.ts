@@ -5,7 +5,7 @@ export class Filter<T> {
   constructor(
     private _column: keyof T,
     private _operation: OPERATORS,
-    private _value: KeyReturnType<T>
+    private _value: KeyReturnType<T> | KeyReturnType<T>[]
   ) {}
 
 
@@ -13,7 +13,7 @@ export class Filter<T> {
     return this._column as unknown as string;
   }
 
-  public value(): KeyReturnType<T> {
+  public value(): KeyReturnType<T> | KeyReturnType<T>[] {
     return this._value;
   }
 

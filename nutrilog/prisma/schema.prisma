@@ -93,6 +93,7 @@ model app_config {
 
 model app_filter {
     id String @id
+    tenant_id String
     entity String
     field String
     type String

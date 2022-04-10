@@ -30,9 +30,8 @@ export class Criteria<T> {
   }
 
   public in(field: keyof T, values: KeyReturnType<T>[]): void {
-    for (const value of values) {
-      this._filters.push(new Filter<T>(field, OPERATORS.equal, value));
-    }
+    this._filters.push(new Filter<T>(field, OPERATORS.in, values));
+
   }
 
   public page(): number | undefined {
