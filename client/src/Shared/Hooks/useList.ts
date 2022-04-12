@@ -1,48 +1,23 @@
-import { useState } from "react";
+import { useListState } from '@mantine/hooks';
 import { isEqual } from "lodash";
+import { UseListStateHandler } from "@mantine/hooks/lib/use-list-state/use-list-state";
 
-const useList = <T extends Record<string, any>>(list: T[]) => {
-  const [ state, setState ] = useState<T[]>(list);
+type ExtendedUseListStateHandler<T> = [ T[], UseListStateHandler<T> & {
+  get: (findFn: (item: T) => boolean) => T | undefined,
+  has: (item: T) => boolean
+} ]
 
-  const hasItem = (item: T) => !!state.find((current: T) => isEqual(item, current));
+const useList = <T>(list: T[]): ExtendedUseListStateHandler<T> => {
+  const [ value, handlers ]: [ T[], UseListStateHandler<T> & { get?: Function, has?: Function } ] = useListState<T>(list);
 
-  const getItem = (item: T) => state.find((current: T) => isEqual(item, current));
+  handlers.get = (findFn: (item: T) => boolean) => value.find(findFn);
 
-  const getItemByValue = (value: any) => state.find((current: T) => {
-    for (const key of Object.keys(current)) {
-      return current[key] === value;
-    }
+  handlers.has = (item: T) => !!value.find((current: T) => isEqual(item, current));
 
-    return false;
-  });
-
-  const removeItem = (item: T): void => {
-    const position = state.indexOf(item);
-    const clone = [ ...state ];
-
-    clone.splice(position, 1);
-  }
-
-  const upsertItem = (item: T) => {
-    if (hasItem(item)) {
-      const inserted = getItem(item);
-
-      removeItem(item);
-
-      const clone = { ...inserted, ...item }
-
-      setState([ ...state, clone ]);
-
-      return;
-    }
-
-    setState([ ...state, item ])
-  };
-
-  return {
-    hasItem,
-    getItemByValue
-  }
+  return [
+    value,
+    handlers
+  ] as ExtendedUseListStateHandler<T>;
 }
 
 export default useList;
