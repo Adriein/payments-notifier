@@ -38,14 +38,10 @@ const TableHeader = () => {
   const [ query, setQuery ] = useState('');
   const [ open, toggle ] = useToggle(false);
 
-  const [ fields, setFields ] = useList([ {
-    value: '',
-    label: ''
-  } ]);
-
   const form = useForm({
     initialValues: {
-      filters: formList([ { entity: '', field: '', operation: '', value: '' } ]),
+      filters: formList<{ entity: string, fields: { value: string, label: string }[], operations: { value: string, label: string }[], values: { value: string, label: string }[] }>(
+        [ { entity: '', fields: [], operations: [], values: [] } ]),
     },
   });
 
@@ -74,16 +70,32 @@ const TableHeader = () => {
     }));
   }
 
-  const handleEntitySelection = (entity: string) => {
+  const handleEntitySelection = (index: number) => (entity: string) => {
     const filter = handlers.get((filter: Filter) => filter.entity === entity);
-    const fields = Object.keys(filter!.fields).map((key: string) => ({
-      value: key,
-      label: StringHelper.firstLetterToUpperCase(key)
-    }));
+    const fields = Object.keys(filter!.fields).map((key: string) => {
+      return {
+        value: key,
+        label: StringHelper.firstLetterToUpperCase(key)
+      }
+    });
 
-    setFields.setState(fields);
+    form.setListItem('filters', index, { entity, fields: fields, operations: [], values: [] });
   }
 
+  const handleFieldSelection = (index: number, entity: string) => (field: string) => {
+    const filter = handlers.get((filter: Filter) => filter.entity === entity);
+
+    const values = filter!.fields[field].map((value: string) => ({
+      value,
+      label: value
+    }))
+
+    form.setListItem(
+      'filters',
+      index,
+      { entity, fields: form.getListInputProps('filters', index, 'fields').value, operations: [], values: values }
+    );
+  }
   /*const getEntityFields = (entity: string): { value: string, label: string }[] => {
    const filter = filterList.find((filter: Filter) => filter.entity === entity);
 
@@ -148,31 +160,41 @@ const TableHeader = () => {
                 </ActionIcon>
               }>
               <Grid>
-                <Grid.Col span={3}>
-                  <Select
-                    label="Pick an entity"
-                    data={getEntities()}
-                    onChange={handleEntitySelection}
-                  />
-                </Grid.Col>
-                <Grid.Col span={3}>
-                  <Select
-                    label="Pick a field"
-                    data={fields}
-                  />
-                </Grid.Col>
-                <Grid.Col span={3}>
-                  <Select
-                    label="Pick an operation"
-                    data={[]}
-                  />
-                </Grid.Col>
-                <Grid.Col span={3}>
-                  <Select
-                    label="Pick a value"
-                    data={value}
-                  />
-                </Grid.Col>
+                {form.values.filters.map((_, index: number) => {
+                  return (
+                    <>
+                      <Grid.Col span={3}>
+                        <Select
+                          label="Pick an entity"
+                          data={getEntities()}
+                          onChange={handleEntitySelection(index)}
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        <Select
+                          label="Pick a field"
+                          data={form.getListInputProps('filters', index, 'fields').value}
+                          onChange={handleFieldSelection(
+                            index,
+                            form.getListInputProps('filters', index, 'entity').value
+                          )}
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        <Select
+                          label="Pick an operation"
+                          data={[]}
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        <Select
+                          label="Pick a value"
+                          data={form.getListInputProps('filters', index, 'values').value}
+                        />
+                      </Grid.Col>
+                    </>
+                  );
+                })}
                 <Grid.Col span={12}>
                   <Button variant={'default'} leftIcon={<FiPlus/>} size={"xs"}>
                     Filter
