@@ -14,21 +14,7 @@ import { FilterCall } from "../../../../Users/Api/Filter";
 import { Filter } from "../../../../Users/Models/Filter";
 import useList from "../../../Hooks/useList";
 import { StringHelper } from "../../../Services/StringHelper";
-
-
-const field = [
-  { value: 'user_active', label: 'active', group: 'User' },
-  { value: 'user_inactive', label: 'inactive', group: 'User' },
-  { value: 'type', label: 'type', group: 'Pricing' },
-  { value: 'duration', label: 'duration', group: 'Pricing' },
-  { value: 'subscription_active', label: 'active', group: 'Subscription' },
-  { value: 'subscription_inactive', label: 'inactive', group: 'Subscription' },
-]
-
-const value = [
-  { value: 'true', label: 'True' },
-  { value: 'false', label: 'False' },
-]
+import { FilterForm, SelectedFilterForm } from "../../../../Users/types";
 
 const TableHeader = () => {
   const { state, t, addFilter } = useContext(UsersContext);
@@ -38,10 +24,16 @@ const TableHeader = () => {
   const [ query, setQuery ] = useState('');
   const [ open, toggle ] = useToggle(false);
 
-  const form = useForm({
+  const existingFilter = useForm({
     initialValues: {
-      filters: formList<{ entity: string, fields: { value: string, label: string }[], operations: { value: string, label: string }[], values: { value: string, label: string }[] }>(
+      filters: formList<FilterForm>(
         [ { entity: '', fields: [], operations: [], values: [] } ]),
+    },
+  });
+
+  const selectedFilter = useForm({
+    initialValues: {
+      filters: formList<SelectedFilterForm>([]),
     },
   });
 
@@ -51,7 +43,6 @@ const TableHeader = () => {
     (async () => {
       const filterList = await FilterCall.getClientTableFilters();
       handlers.setState(filterList);
-      console.log(filterList);
     })();
 
     addFilter({ field: NAME_FILTER, value: query });
@@ -79,7 +70,12 @@ const TableHeader = () => {
       }
     });
 
-    form.setListItem('filters', index, { entity, fields: fields, operations: [], values: [] });
+    const operations = filter!.operations.map((operation: string) => ({
+      value: operation,
+      label: operation
+    }));
+
+    existingFilter.setListItem('filters', index, { entity, fields: fields, operations: operations, values: [] });
   }
 
   const handleFieldSelection = (index: number, entity: string) => (field: string) => {
@@ -90,30 +86,45 @@ const TableHeader = () => {
       label: value
     }))
 
-    form.setListItem(
+    existingFilter.setListItem(
       'filters',
       index,
-      { entity, fields: form.getListInputProps('filters', index, 'fields').value, operations: [], values: values }
+      {
+        entity,
+        fields: existingFilter.getListInputProps('filters', index, 'fields').value,
+        operations: existingFilter.getListInputProps('filters', index, 'operations').value,
+        values: values
+      }
     );
   }
-  /*const getEntityFields = (entity: string): { value: string, label: string }[] => {
-   const filter = filterList.find((filter: Filter) => filter.entity === entity);
 
-   return Object.keys(filter!.fields).map((key: string) => ({
-   value: key,
-   label: key
-   }));
-   }
+  const handleOperationSelection = (index: number, entity: string) => (operation: string) => {
+    selectedFilter.setListItem('filters', index, { entity: entity, field: '', operation: operation, value: '' });
+  }
 
-   const getOperations = (entity: string): { value: string, label: string }[] => {
-   const filter = filterList.find((filter: Filter) => filter.entity === entity);
+  const handleValueSelection = (index: number, entity: string) => (field: string) => {
+    const filter = handlers.get((filter: Filter) => filter.entity === entity);
 
-   return filter!.operations.map((operation: string) => ({ value: operation, label: operation }));
-   }
+    const values = filter!.fields[field].map((value: string) => ({
+      value,
+      label: value
+    }))
 
-   const handleOnEntitySelection = (value: string) => {
-   setEntity(value)
-   }*/
+    existingFilter.setListItem(
+      'filters',
+      index,
+      {
+        entity,
+        fields: existingFilter.getListInputProps('filters', index, 'fields').value,
+        operations: existingFilter.getListInputProps('filters', index, 'operations').value,
+        values: values
+      }
+    );
+  }
+
+  const handleAddNewFilter = () => {
+    existingFilter.addListItem('filters', { entity: '', fields: [], operations: [], values: [] });
+  }
 
   const handleCheckBoxFilter = (event: ChangeEvent<HTMLInputElement>) => {
     const checkBox = event.currentTarget.name;
@@ -160,43 +171,61 @@ const TableHeader = () => {
                 </ActionIcon>
               }>
               <Grid>
-                {form.values.filters.map((_, index: number) => {
-                  return (
-                    <>
-                      <Grid.Col span={3}>
-                        <Select
-                          label="Pick an entity"
-                          data={getEntities()}
-                          onChange={handleEntitySelection(index)}
-                        />
-                      </Grid.Col>
-                      <Grid.Col span={3}>
-                        <Select
-                          label="Pick a field"
-                          data={form.getListInputProps('filters', index, 'fields').value}
-                          onChange={handleFieldSelection(
-                            index,
-                            form.getListInputProps('filters', index, 'entity').value
-                          )}
-                        />
-                      </Grid.Col>
-                      <Grid.Col span={3}>
-                        <Select
-                          label="Pick an operation"
-                          data={[]}
-                        />
-                      </Grid.Col>
-                      <Grid.Col span={3}>
-                        <Select
-                          label="Pick a value"
-                          data={form.getListInputProps('filters', index, 'values').value}
-                        />
-                      </Grid.Col>
-                    </>
-                  );
-                })}
                 <Grid.Col span={12}>
-                  <Button variant={'default'} leftIcon={<FiPlus/>} size={"xs"}>
+                  {existingFilter.values.filters.map((_, index: number) => {
+                    return (
+                      <Grid>
+                        <Grid.Col span={3}>
+                          <Select
+                            label="Pick an entity"
+                            clearable
+                            withinPortal={false}
+                            data={getEntities()}
+                            onChange={handleEntitySelection(index)}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                          <Select
+                            label="Pick a field"
+                            clearable
+                            withinPortal={false}
+                            data={existingFilter.getListInputProps('filters', index, 'fields').value}
+                            onChange={handleFieldSelection(
+                              index,
+                              existingFilter.getListInputProps('filters', index, 'entity').value
+                            )}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                          <Select
+                            label="Pick an operation"
+                            clearable
+                            withinPortal={false}
+                            data={existingFilter.getListInputProps('filters', index, 'operations').value}
+                            onChange={handleOperationSelection(
+                              index,
+                              existingFilter.getListInputProps('filters', index, 'entity').value
+                            )}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                          <Select
+                            label="Pick a value"
+                            clearable
+                            withinPortal={false}
+                            data={existingFilter.getListInputProps('filters', index, 'values').value}
+                            onChange={handleValueSelection(
+                              index,
+                              existingFilter.getListInputProps('filters', index, 'entity').value
+                            )}
+                          />
+                        </Grid.Col>
+                      </Grid>
+                    );
+                  })}
+                </Grid.Col>
+                <Grid.Col span={12}>
+                  <Button variant={'default'} leftIcon={<FiPlus/>} size={"xs"} onClick={handleAddNewFilter}>
                     Filter
                   </Button>
                 </Grid.Col>
