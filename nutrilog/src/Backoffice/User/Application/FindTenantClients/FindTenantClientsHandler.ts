@@ -32,14 +32,13 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
   @Log(process.env.LOG_LEVEL)
   public async handle(query: FindTenantClientsQuery): Promise<NutrilogResponse<FindTenantClientsResponse[]>> {
     const responseBuilder = new FindTenantClientsResponseBuilder();
-    debug(query);
     const { filters, tenantId, page, quantity } = query;
     const id = new ID(tenantId);
 
     const clientCriteria = await this.createClientCriteria(id.value, page, quantity, filters);
 
     const clientList = await this.findClientsByCriteria(clientCriteria);
-    
+
     const responses = [];
 
     for (const client of clientList) {
