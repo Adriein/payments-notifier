@@ -18,7 +18,7 @@ import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
 @QueryHandler(FindFiltersQuery)
 export class FindFiltersHandler implements IHandler<NutrilogResponse<FindFiltersResponseDto[]>> {
   private readonly ENTITIES = [ 'user', 'subscription', 'config', 'pricing' ];
-  private readonly OPERATIONS = [ 'equal', 'not_equal', 'in', 'not_in' ];
+  private readonly OPERATIONS = [ 'equal', 'not_equal' ];
   private readonly PRICING_ENTITY = 'pricing';
   private readonly CONFIG_ENTITY = 'config';
 
@@ -77,7 +77,7 @@ export class FindFiltersHandler implements IHandler<NutrilogResponse<FindFilters
 
       filter.fillBooleanFieldValues();
     }
-    
+
     return collection;
   }
 

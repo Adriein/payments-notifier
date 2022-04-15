@@ -1,5 +1,5 @@
 export * from './Infrastructure/Controller/GetClientProfileController';
-export * from './Infrastructure/Controller/FindUsersController';
+export * from './Infrastructure/Controller/FindTenantClientsController';
 export * from './Infrastructure/Controller/CreateUserController';
 export * from './Infrastructure/Controller/UpdateClientController';
 export * from './Infrastructure/Controller/DeleteUserController';

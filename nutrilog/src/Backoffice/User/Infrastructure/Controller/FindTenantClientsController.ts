@@ -9,7 +9,7 @@ import { FindTenantClientsResponse } from "../../Application/FindTenantClients/F
 import { NutrilogResponse } from "../../../../Shared/Application/NutrilogResponse";
 
 @Controller()
-export class FindUsersController extends BaseController<NutrilogResponse<FindTenantClientsResponse[]>> {
+export class FindTenantClientsController extends BaseController<NutrilogResponse<FindTenantClientsResponse[]>> {
   @post('/users')
   @use(requireAuth)
   @use(currentUser)
