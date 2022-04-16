@@ -8,7 +8,7 @@ import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { Client } from "../../Domain/Entity/Client.entity";
-import { UserFilter } from "../../Domain/Filter/UserFilter";
+import { ClientRepositoryFilter } from "../../Domain/Filter/ClientRepositoryFilter";
 import { SubscriptionCollection } from "../../Domain/Entity/SubscriptionCollection";
 import { IClientRepository } from "../../Domain/IClientRepository";
 
@@ -37,7 +37,7 @@ export class GenerateExpiredSubscriptionsReportHandler implements IHandler<void>
   }
 
   private async findClientsByTenant(tenantId: ID): Promise<Client[]> {
-    const criteria = new Criteria<UserFilter>();
+    const criteria = new Criteria<ClientRepositoryFilter>();
 
     criteria.equal('tenantId', tenantId.value);
     criteria.equal('active', true);

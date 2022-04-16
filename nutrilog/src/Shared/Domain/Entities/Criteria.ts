@@ -33,7 +33,7 @@ export class Criteria<T> {
     this._filters.push(new Filter<T>(field, OPERATORS.in, values));
 
   }
-
+  
   public page(): number | undefined {
     return this._page;
   }

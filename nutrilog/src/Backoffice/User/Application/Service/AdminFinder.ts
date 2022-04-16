@@ -1,7 +1,7 @@
 import { User } from "../../Domain/Entity/User.entity";
 import { IUserRepository } from "../../Domain/IUserRepository";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { UserFilter } from "../../Domain/Filter/UserFilter";
+import { ClientRepositoryFilter } from "../../Domain/Filter/ClientRepositoryFilter";
 import { SearchRoleResponse } from "../../../Role/Application/SearchRoleResponse";
 import { SearchRoleQuery } from "../../../Role/Domain/SearchRoleQuery";
 import { ADMIN_ROLE } from "../../Domain/constants";
@@ -11,7 +11,7 @@ export class AdminFinder {
   constructor(private readonly repository: IUserRepository, private readonly queryBus: IQueryBus) {}
 
   public async execute(): Promise<User> {
-    const criteria = new Criteria<UserFilter>();
+    const criteria = new Criteria<ClientRepositoryFilter>();
     const adminRole = await this.queryBus.ask<SearchRoleResponse>(new SearchRoleQuery(ADMIN_ROLE));
 
     criteria.equal('roleId', adminRole.id);

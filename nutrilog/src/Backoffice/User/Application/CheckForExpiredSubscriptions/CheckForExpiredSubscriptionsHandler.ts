@@ -5,7 +5,7 @@ import { PricingResponse } from "../../../Pricing/Application/Find/PricingRespon
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
 import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { UserFilter } from "../../Domain/Filter/UserFilter";
+import { ClientRepositoryFilter } from "../../Domain/Filter/ClientRepositoryFilter";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
@@ -78,7 +78,7 @@ export class CheckForExpiredSubscriptionsHandler implements IHandler<void> {
   }
 
   private async findActiveClientListByTenant(tenantId: ID): Promise<Client[]> {
-    const criteria = new Criteria<UserFilter>();
+    const criteria = new Criteria<ClientRepositoryFilter>();
 
     criteria.equal('tenantId', tenantId.value);
     criteria.equal('active', true);

@@ -7,7 +7,7 @@ import { GetAppConfigQuery } from "../../../AppConfig/Domain/Query/GetAppConfigQ
 import { CheckForAboutToExpireSubscriptionsCommand } from "./CheckForAboutToExpireSubscriptionsCommand";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { UserFilter } from "../../Domain/Filter/UserFilter";
+import { ClientRepositoryFilter } from "../../Domain/Filter/ClientRepositoryFilter";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { Subscription } from "../../Domain/Entity/Subscription.entity";
@@ -67,7 +67,7 @@ export class CheckForAboutToExpireSubscriptionsHandler implements IHandler<void>
   }
 
   private async getClientList(tenantId: ID): Promise<Client[]> {
-    const criteria = new Criteria<UserFilter>();
+    const criteria = new Criteria<ClientRepositoryFilter>();
     criteria.equal('active', true);
     criteria.equal('sendWarnings', true);
     criteria.equal('tenantId', tenantId.value);
