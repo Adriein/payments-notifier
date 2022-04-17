@@ -1,6 +1,7 @@
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Email } from "../../../../Shared/Domain/VO/Email.vo";
 import { RepositoryFilter } from "../../../../Shared/Domain/Entities/RepositoryFilter";
+import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 
 export interface ClientRepositoryFilter extends RepositoryFilter {
   withName(name: string): this;
@@ -17,7 +18,15 @@ export interface ClientRepositoryFilter extends RepositoryFilter {
 
   withActiveSubscription(activeSubscription: boolean): this;
 
+  withSubscriptionValidTo(validTo: DateVo): this;
+
+  withSubscriptionExpired(expired: boolean): this;
+
+  withSubscriptionPaymentDate(paymentDate: DateVo): this;
+
   acceptReceiveWarnings(warnings: boolean): this;
+
+  acceptReceiveNotifications(notifications: boolean): this;
 
   hasPricingOfType(pricingName: string): this;
 

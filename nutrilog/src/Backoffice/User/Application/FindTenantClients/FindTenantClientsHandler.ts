@@ -18,6 +18,7 @@ import { SubscriptionFilter } from "../../Domain/Filter/SubscriptionFilter";
 import { ISubscriptionRepository } from "../../Domain/ISubscriptionRepository";
 import { PricingResponse } from "../../../Pricing/Application/Find/PricingResponse";
 import { GetPricingQuery } from "../../../Pricing/Domain/Query/GetPricingQuery";
+import { DateVo } from "../../../../Shared/Domain/VO/Date.vo";
 
 
 @QueryHandler(FindTenantClientsQuery)
@@ -35,9 +36,9 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
     const { filters, tenantId, page, quantity } = query;
     const id = new ID(tenantId);
 
-    const clientCriteria = await this.createClientCriteria(id.value, page, quantity, filters);
+    this.createClientCriteria(id.value, page, quantity, filters);
 
-    const clientList = await this.findClientsByCriteria(clientCriteria);
+    const clientList = await this.findClientsByCriteria();
 
     const responses = [];
 
@@ -52,12 +53,52 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
     return new NutrilogResponse(responses);
   }
 
-  private async createClientCriteria(
+  private createClientCriteria(
     tenantId: string,
     page: number,
     quantity: number,
     filters: FilterRequestDto[]
-  ): Promise<any> {
+  ): void {
+
+    for (const filter of filters) {
+      switch (filter.entity) {
+        case 'user':
+          this.clientFilter.isActive(Boolean(filter.value));
+          continue;
+        case 'pricing':
+          if (filter.field === 'duration') {
+            this.clientFilter.hasPricingWithDurationOf(Number(filter.value));
+          }
+          if (filter.field === 'amount') {
+            this.clientFilter.hasPricingWithCostOf(Number(filter.value));
+          }
+          if (filter.field === 'pricing_name') {
+            this.clientFilter.hasPricingOfType(filter.value);
+          }
+          continue;
+        case 'config':
+          if (filter.field === 'send_warnings') {
+            this.clientFilter.acceptReceiveWarnings(Boolean(filter.value));
+          }
+          if (filter.field === 'send_notifications') {
+            this.clientFilter.acceptReceiveNotifications(Boolean(filter.value));
+          }
+          continue;
+        case 'subscription':
+          if (filter.field === 'valid_to') {
+            this.clientFilter.withSubscriptionValidTo(new DateVo(filter.value));
+          }
+          if (filter.field === 'payment_date') {
+            this.clientFilter.withSubscriptionPaymentDate(new DateVo(filter.value));
+          }
+          if (filter.field === 'active') {
+            this.clientFilter.withActiveSubscription(Boolean(filter.value));
+          }
+          if (filter.field === 'expired') {
+            this.clientFilter.withSubscriptionExpired(Boolean(filter.value));
+          }
+      }
+    }
 
     this.clientFilter
       .withTenant(new ID(tenantId))
@@ -66,8 +107,8 @@ export class FindTenantClientsHandler implements IHandler<NutrilogResponse<FindT
       .setPage(page);
   }
 
-  private async findClientsByCriteria(criteria: Criteria<ClientRepositoryFilter>): Promise<Client[]> {
-    const result = await this.clientRepository.find(criteria);
+  private async findClientsByCriteria(): Promise<Client[]> {
+    const result = await this.clientRepository.find(this.clientFilter);
 
     if (result.isLeft()) {
       throw result.value;
