@@ -6,7 +6,7 @@ import { ClientRepositoryFilter } from "./Filter/ClientRepositoryFilter";
 import { Client } from "./Entity/Client.entity";
 
 export interface IClientRepository extends IRepository<Client> {
-  find(criteria: Criteria<ClientRepositoryFilter>): Promise<Either<Error | UserNotExistError, Client[]>>;
+  find(filter: ClientRepositoryFilter): Promise<Either<Error | UserNotExistError, Client[]>>;
 
   findByEmail(email: string): Promise<Either<Error | UserNotExistError, Client>>;
 

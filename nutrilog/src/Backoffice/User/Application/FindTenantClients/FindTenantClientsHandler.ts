@@ -5,7 +5,7 @@ import { Log } from "../../../../Shared/Domain/Decorators/Log";
 import { FilterRequestDto } from "./FilterRequestDto";
 import { FindTenantClientsResponse } from "./FindTenantClientsResponse";
 import { IQueryBus } from "../../../../Shared/Domain/Bus/IQueryBus";
-import { CLIENT_ROLE, USER_FILTERS } from "../../Domain/constants";
+import { CLIENT_ROLE } from "../../Domain/constants";
 import { ID } from "../../../../Shared/Domain/VO/Id.vo";
 import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
 import { ClientRepositoryFilter } from "../../Domain/Filter/ClientRepositoryFilter";

@@ -7,9 +7,7 @@ export interface ClientRepositoryFilter extends RepositoryFilter {
   withName(name: string): this;
 
   isActive(isActive: boolean): this;
-
-  roleId(id: ID): this;
-
+  
   withRole(roleName: string): this;
 
   withTenant(id: ID): this;

@@ -1,5 +1,3 @@
-import { RegisterApiUsageHandler } from '../../../Backoffice/Metrics';
-import { ApiUsageRepository } from '../../../Backoffice/Metrics/Infraestructure/Data/ApiUsageRepository';
 import { IDomainEventHandler } from '../../Domain/Interfaces/IDomainEventHandler';
 import { ConstructorFunc } from '../../Domain/types';
 import { RegisteredTenantDomainEventHandler } from "../../../Backoffice/User/Application/CreateTenant/RegisteredTenantDomainEventHandler";
@@ -18,7 +16,6 @@ import { DeactivateOldSubscriptionEventHandler } from "../../../Backoffice/User/
 export default class DomainEventHandlerFactory {
   private handlers: Map<string, IDomainEventHandler> = new Map();
 
-  private apiUsageRepo = new ApiUsageRepository();
   private userRepository = new UserRepository();
   private tenantRepository = new TenantRepository();
   private clientRepository = new ClientRepository();
@@ -42,8 +39,6 @@ export default class DomainEventHandlerFactory {
   }
 
   private register(): void {
-    this.handlers.set(RegisterApiUsageHandler.name, new RegisterApiUsageHandler(this.apiUsageRepo));
-
     this.handlers.set(
       RegisteredTenantDomainEventHandler.name,
       new RegisteredTenantDomainEventHandler(

@@ -1,11 +1,5 @@
-import { NutritionRepository } from '../../../Alimentation/Nutrition/Infrastructure/Data/NutritionRepository';
 import { ConstructorFunc } from '../../Domain/types';
-import { GetDietsHandler } from '../../../Alimentation/Diet/Application/Find/GetDietsHandler';
-import { DietRepository } from '../../../Alimentation/Diet/Infrastructure/Data/DietRepository';
 import { QueryBus } from '../Bus/QueryBus';
-import { SearchFoodHandler } from '../../../Alimentation/Food/Application/SearchFoodHandler';
-import { FoodRepository } from '../../../Alimentation/Food/Infrastructure/Data/FoodRepository';
-import { NutritionixRepository } from '../../../Alimentation/Food/Infrastructure/Data/NutritionixRepository';
 import { AuthRepository } from "../../../Auth/Infrastructure/Data/AuthRepository";
 import { SignInHandler } from "../../../Auth/Application/SignInHandler";
 import { CryptoService } from "../../Domain/Services/CryptoService";
@@ -17,11 +11,7 @@ import { SearchRoleHandler } from "../../../Backoffice/Role/Application/SearchRo
 import { RoleRepository } from "../../../Backoffice/Role/Infrastructure/RoleRepository";
 import { SearchPricingHandler } from "../../../Backoffice/Pricing/Application/Find/SearchPricingHandler";
 import { IHandler } from "../../Domain/Interfaces/IHandler";
-import { FindNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/FindNutritionHandler";
-import { NutritionResponseBuilder } from "../../../Alimentation/Nutrition/Application/Services/NutritionResponseBuilder";
 import { GetClientProfileHandler } from "../../../Backoffice/User/Application/GetClientProfile/GetClientProfileHandler";
-import { GetNutritionHandler } from "../../../Alimentation/Nutrition/Application/Find/GetNutritionHandler";
-import { GetDietResponseBuilder } from "../../../Alimentation/Diet/Application/Services/GetDietResponseBuilder";
 import { SubscriptionRepository } from "../../../Backoffice/User/Infrastructure/Data/SubscriptionRepository";
 import { UserFinder } from "../../../Backoffice/User/Application/Service/UserFinder";
 import { TenantRepository } from "../../../Backoffice/User/Infrastructure/Data/TenantRepository";
@@ -37,25 +27,22 @@ import { FindFiltersQuery } from "../../../Backoffice/Filters/Application/FindFi
 import { FindFiltersHandler } from "../../../Backoffice/Filters/Application/FindFilters/FindFiltersHandler";
 import { GetPricingDistinctValuesQuery } from "../../../Backoffice/Pricing/Application/GetPricingDistinctValues/GetPricingDistinctValuesQuery";
 import { GetPricingDistinctValuesHandler } from "../../../Backoffice/Pricing/Application/GetPricingDistinctValues/GetPricingDistinctValuesHandler";
+import { PrismaClientFilter } from "../../../Backoffice/User/Infrastructure/Data/PrismaClientFilter";
+import { PrismaQueryBuilder } from "../Data/PrismaQueryBuilder";
 
 export default class QueryHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
 
   private authRepository: AuthRepository = new AuthRepository();
-  private dietRepository: DietRepository = new DietRepository();
-  private foodRepository: FoodRepository = new FoodRepository();
-  private nutritionixRepository: NutritionixRepository = new NutritionixRepository();
   private pricingRepository: PricingRepository = new PricingRepository();
   private userRepository: UserRepository = new UserRepository();
   private subscriptionRepository: SubscriptionRepository = new SubscriptionRepository();
   private roleRepository: RoleRepository = new RoleRepository();
-  private nutritionRepository: NutritionRepository = new NutritionRepository();
   private tenantRepository = new TenantRepository();
   private clientRepository = new ClientRepository();
   private appFiltersRepository = new AppFilterRepository();
 
   private cryptoService: CryptoService = new CryptoService();
-  private nutritionBuilder = new NutritionResponseBuilder();
 
   private userFinder = new UserFinder(this.userRepository);
   private clientFinder = new ClientFinder(this.clientRepository);
@@ -76,30 +63,6 @@ export default class QueryHandlerFactory {
   }
 
   private register() {
-    //Alimentation BC
-    //Nutrition
-
-    this.handlers.set(
-      FindNutritionHandler.name,
-      new FindNutritionHandler(this.nutritionRepository, QueryBus.instance(), this.nutritionBuilder)
-    );
-
-    this.handlers.set(
-      GetNutritionHandler.name,
-      new GetNutritionHandler(this.nutritionRepository, QueryBus.instance(), this.nutritionBuilder)
-    );
-
-    this.handlers.set(
-      GetDietsHandler.name,
-      new GetDietsHandler(this.dietRepository, new GetDietResponseBuilder())
-    );
-
-
-    this.handlers.set(
-      SearchFoodHandler.name,
-      new SearchFoodHandler(this.foodRepository, this.nutritionixRepository)
-    );
-
     //Auth BC
 
     this.handlers.set(
@@ -121,7 +84,12 @@ export default class QueryHandlerFactory {
 
     this.handlers.set(
       FindTenantClientsQuery.name,
-      new FindTenantClientsHandler(this.clientRepository, this.subscriptionRepository, QueryBus.instance())
+      new FindTenantClientsHandler(
+        this.clientRepository,
+        this.subscriptionRepository,
+        new PrismaClientFilter(new PrismaQueryBuilder()),
+        QueryBus.instance()
+      )
     );
 
     this.handlers.set(

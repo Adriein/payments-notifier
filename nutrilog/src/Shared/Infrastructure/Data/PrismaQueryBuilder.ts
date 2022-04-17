@@ -1,100 +1,25 @@
-import { Criteria } from "../../Domain/Entities/Criteria";
-import { JSObject, ModelSchema } from "../../Domain/types";
-import { Filter } from "../../Domain/Entities/Filter";
-import { PrismaOrderBy, PrismaPagination } from "../types";
-import { MysqlMapper } from "./MysqlMapper";
-import { JoinTypeMissingError } from "./JoinTypeMissingError";
-import { ID } from "../../Domain/VO/Id.vo";
-import { OPERATORS } from "../../Domain/constants";
+import { JSObject } from "../../Domain/types";
 
-export class PrismaQueryBuilder<F, M extends MysqlMapper> {
-  private prismaWhereInput: JSObject = {};
+export class PrismaQueryBuilder<WhereType extends JSObject> {
+  private prismaWhereInput!: WhereType;
 
-  constructor(private readonly criteria: Criteria<F>, private readonly model: MysqlMapper) {}
+  public build(attributes: WhereType): WhereType {
+    for (const key in attributes) {
+      if (this.isAJoin(key)) {
 
-  public build<R>(): R {
-    const filters = this.criteria.filters();
-    for (const filter of filters) {
-      const schema = this.model.get(filter.column());
-
-      this.buildPrismaWhereInput(schema, filter);
-    }
-
-    return this.prismaWhereInput as unknown as R;
-  }
-
-  public orderBy(): PrismaOrderBy | {} {
-    const orderBy = this.criteria.containsOrderBy();
-    if (orderBy) {
-      const schema = this.model.get(orderBy.column());
-      return {
-        orderBy: [ {
-          [schema.field]: orderBy.value()
-        } ],
       }
+
+      this.prismaWhereInput = { ...this.prismaWhereInput, [key]: attributes[key] }
     }
 
-    return {};
+    return this.prismaWhereInput;
   }
 
-
-  public pagination(): PrismaPagination | {} {
-    if (this.criteria.page() && this.criteria.quantity()) {
-      return {
-        take: this.criteria.quantity()!,
-        skip: (this.criteria.page()! - 1) * this.criteria.quantity()!
-      }
-    }
-
-    return {};
+  private isAJoin(key: string): boolean {
+    return key.includes('.');
   }
 
-  private buildPrismaWhereInput(schema: ModelSchema, filter: Filter<F>): void {
-    if (this.isJoin(schema.field)) {
-      this.prismaWhereInput = { ...this.prismaWhereInput, ...this.joinTable(schema, filter) };
-      return;
-    }
-    const dbOperation = filter.operation();
+  private createJoin(attributes: WhereType): void {
 
-    const fieldValue = filter.value();
-
-    if (filter.operation() === OPERATORS.order) {
-      return;
-    }
-
-    if (fieldValue instanceof ID) {
-      this.prismaWhereInput = { ...this.prismaWhereInput, [schema.field]: { [dbOperation]: fieldValue.value } };
-      return;
-    }
-
-    this.prismaWhereInput = { ...this.prismaWhereInput, [schema.field]: { [dbOperation]: fieldValue } };
-  }
-
-  private isJoin(column: string): boolean {
-    return column.includes('.');
-  }
-
-  private joinTable(schema: ModelSchema, filter: Filter<F>) {
-    const [ table, field ] = schema.field.split('.');
-
-    if (!schema.hasOwnProperty('joinType')) {
-      throw new JoinTypeMissingError();
-    }
-
-    return {
-      [table]: {
-        ...(schema.joinType === 'array' ? {
-          some: {
-            [field]: {
-              [filter.operation()]: filter.value()
-            }
-          }
-        } : {
-          [field]: {
-            [filter.operation()]: filter.value()
-          }
-        })
-      }
-    }
   }
 }

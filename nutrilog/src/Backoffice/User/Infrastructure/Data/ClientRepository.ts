@@ -4,14 +4,10 @@ import { Either } from "../../../../Shared/Domain/types";
 import { UserNotExistError } from "../../Domain/Error/UserNotExistError";
 import { Left } from "../../../../Shared/Domain/Entities/Left";
 import { Right } from "../../../../Shared/Domain/Entities/Right";
-import { Criteria } from "../../../../Shared/Domain/Entities/Criteria";
-import { ClientRepositoryFilter } from "../../Domain/Filter/ClientRepositoryFilter";
-import { PrismaQueryBuilder } from "../../../../Shared/Infrastructure/Data/PrismaQueryBuilder";
-import { UserMysqlMapper } from "./UserMysqlMapper";
-import { Prisma } from "@prisma/client";
 import { IClientRepository } from "../../Domain/IClientRepository";
 import { Client } from "../../Domain/Entity/Client.entity";
 import { ClientMapper } from "./ClientMapper";
+import { PrismaClientFilter } from "./PrismaClientFilter";
 
 export class ClientRepository implements IClientRepository {
   private mapper = new ClientMapper();
@@ -37,16 +33,12 @@ export class ClientRepository implements IClientRepository {
   }
 
   @Log(process.env.LOG_LEVEL)
-  public async find(criteria: Criteria<ClientRepositoryFilter>): Promise<Either<Error | UserNotExistError, Client[]>> {
+  public async find(filter: PrismaClientFilter): Promise<Either<Error | UserNotExistError, Client[]>> {
     try {
-      const queryBuilder = new PrismaQueryBuilder<ClientRepositoryFilter, UserMysqlMapper>(
-        criteria,
-        new UserMysqlMapper()
-      );
-      const query = queryBuilder.build<Prisma.userWhereInput>();
+      const query = filter.apply();
 
-      const pagination = queryBuilder.pagination();
-      const order = queryBuilder.orderBy();
+      const pagination = filter.pagination();
+      const order = filter.orderBy();
 
       const results = await this.prisma.user.findMany({
         ...pagination,

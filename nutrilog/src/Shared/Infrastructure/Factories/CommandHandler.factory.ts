@@ -1,14 +1,8 @@
 import { IHandler } from "../../Domain/Interfaces/IHandler";
 import { ConstructorFunc } from "../../Domain/types";
-import { NutritionRepository } from "../../../Alimentation/Nutrition/Infrastructure/Data/NutritionRepository";
-import { DietRepository } from "../../../Alimentation/Diet/Infrastructure/Data/DietRepository";
-import { CryptoService } from "../../Domain/Services/CryptoService";
 import { PricingRepository } from "../../../Backoffice/Pricing/Infraestructure/Data/PricingRepository";
 import { UserRepository } from "../../../Backoffice/User/Infrastructure/Data/UserRepository";
-import { CreateNutritionHandler } from "../../../Alimentation/Nutrition/Application/Create/CreateNutritionHandler";
-import { CreateDietHandler } from "../../../Alimentation/Diet/Application/Create/CreateDietHandler";
 import { QueryBus } from "../Bus/QueryBus";
-import { ModifyDietHandler } from "../../../Alimentation/Diet/Application/Update/ModifyDietHandler";
 import { RegisterAdminHandler } from "../../../Auth/Application/RegisterAdminHandler";
 import { CreateClientHandler } from "../../../Backoffice/User/Application/CreateClient/CreateClientHandler";
 import { RenewSubscriptionHandler } from "../../../Backoffice/User/Application/RenewSubscription/RenewSubscriptionHandler";
@@ -37,8 +31,6 @@ import { CreatePricingCommand } from "../../../Backoffice/Pricing/Domain/Command
 export default class CommandHandlerFactory {
   private handlers: Map<string, IHandler<any>> = new Map();
 
-  private nutritionRepository: NutritionRepository = new NutritionRepository();
-  private dietRepository: DietRepository = new DietRepository();
   private pricingRepository: PricingRepository = new PricingRepository();
   private userRepository: UserRepository = new UserRepository();
   private subscriptionRepository: SubscriptionRepository = new SubscriptionRepository();
@@ -65,24 +57,6 @@ export default class CommandHandlerFactory {
   }
 
   private register() {
-    //Alimentation BC
-    this.handlers.set(
-      CreateNutritionHandler.name,
-      new CreateNutritionHandler(this.nutritionRepository)
-    );
-
-    this.handlers.set(
-      CreateDietHandler.name,
-      new CreateDietHandler(
-        this.dietRepository
-      )
-    );
-
-    this.handlers.set(
-      ModifyDietHandler.name,
-      new ModifyDietHandler(this.dietRepository)
-    );
-
     //BackOffice BC
     //User Module
     this.handlers.set(
